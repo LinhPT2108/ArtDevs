@@ -1,0 +1,16 @@
+@charset "UTF-8";
+.card-title {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.lof-clock-detail{
+	border-radius: 20px;
+	font-weight: bold;
+}
+.view-all-collection{
+	border-radius: 20px;
+	padding: 8px;
+}

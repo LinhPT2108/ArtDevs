@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	<div class="site-product">
+		<form th:action="@{/admin/userCustom}" th:object="${userCustom}" method="post" id="formUserCustom"
+			class="row g-3 needs-validation" enctype="multipart/form-data">
+			<div class="row">
+				<div class="col-xs-12 col-md-7">
+					<div class="row">
+						<div class="col-12 mb-3">
+							<input type="hidden" th:field="*{accountId}" readonly="true" />
+							<div class="text-danger" th:errors="*{accountId}"></div>
+						</div>
+						<div class="col-12 mb-3">
+							<label for="email" class="form-label">Email</label>
+							<input type="email" class="form-control" th:field="*{email}" />
+							<div class="text-danger" th:errors="*{email}"></div>
+						</div>
+						<div class="col-12 mb-3">
+							<label for="roleName" class="form-label">Chức vụ</label>
+							<select class="form-select">
+								<option value="" label="Chọn..."></option>
+								<option th:each="role : ${roles}" th:value="${role.roleName}"
+									th:text="${role.roleName}"></option>
+							</select>
+						</div>
+						<div class="col-12 mb-3">
+							<label for="fullname" class="form-label">Họ và tên</label>
+							<input type="text" class="form-control" th:field="*{fullname}" />
+							<div class="text-danger" th:errors="*{fullname}"></div>
+						</div>
+						<div class="col-12 mb-3">
+							<label for="password" class="form-label">Mật khẩu</label>
+							<input type="password" class="form-control" th:field="*{password}" />
+							<div class="text-danger" th:errors="*{password}"></div>
+						</div>
+						<div class="col-12 mb-3">
+							<label for="del" class="form-label">Trạng thái:</label>
+							<input type="radio" th:field="*{del}" value="false" id="del1" />
+							<label for="del1">Đang hoạt động</label>
+							<input type="radio" th:field="*{del}" value="true" id="del2" />
+							<label for="del2">Đã bị khóa</label>
+							<div class="text-danger" th:errors="*{del}"></div>
+						</div>
+					</div>
+					<div class="col-12">
+						<button class="btn btn-success" formaction="/admin/userCustom/create"
+							th:text="${typeButton}"></button>
+						<button class="btn btn-warning" formaction="/admin/userCustom/update"
+							th:text="${updateButton}"></button>
+						<button class="btn btn-danger" formaction="/admin/userCustom/delete/${userCustom.accountId}"
+							th:text="${deleteButton}"></button>
+						<a href="/admin/userCustom" class="btn btn-primary">Reset</a>
+					</div>
+				</div>
+				<div class="col-xs-12 col-md-5">
+					<div class="mb-3">
+						<label for="image" class="form-label">Hình ảnh</label>
+						<br />
+						<img alt="" th:src="@{/images/avatar/{userCustom.image}}" id="image" width="300" height="300"
+							style="margin: 10px" />
+						<input name="avatar" type="file" id="imageFile" accept="image/gif, image/jpeg, image/png"
+							onchange="chooseFile(this)" />
+					</div>
+				</div>
+			</div>
+		</form>
+		<hr />
+		<br />
+		<div class="table-responsive">
+			<table id="statisticalTable" class="table table-hover">
+				<thead>
+					<tr>
+						<th>Email</th>
+						<th>Fullname</th>
+						<th>Role</th>
+						<th>Image</th>
+						<th>Trạng thái</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="userCustom : ${userCustoms}">
+						<td th:text="${userCustom.email}"></td>
+						<td th:text="${userCustom.fullname}"></td>
+						<td th:text="${userCustom.roleName.roleName}"></td>
+						<td th:text="${userCustom.image}"></td>
+						<td>
+							<span th:utext="${userCustom.del == true ? 'Đã bị khóa' : 'Đang hoạt động'}"></span>
+						</td>
+						<td><a
+								th:href="@{/admin/userCustom/edit/{accountId}(accountId=${userCustom.accountId})}">Edit</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<script type="text/javascript">
+		function generateRandomString() {
+			var randomString = '';
+			var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+			var charactersLength = characters.length;
+			for (var i = 0; i < 8; i++) {
+				randomString += characters.charAt(Math.floor(Math.random() * charactersLength));
+			}
+
+			var currentTimeMillis = new Date().getTime();
+
+			var finalString = randomString + currentTimeMillis.toString();
+
+			return finalString;
+		}
+
+		var randomString = generateRandomString();
+		console.log(randomString);
+		$(document).ready(function () {
+			console.log($('#accountId').val() == '')
+			$('#accountId').val() == '' ? $('#accountId').val(randomString) : '';
+		})
+	</script>
+
+</body>
+
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	<div class="table-responsive">
+		<table id="statisticalTable" class="table table-hover">
+			<thead>
+				<tr>
+					<th>STT</th>
+					<th>Họ tên</th>
+					<th>Ngày mua</th>
+					<th>Tổng tiền</th>
+					<th>Trạng thái</th>
+					<th>Ghi chú</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="item : ${invoice}">
+					<td th:text="${item.id}"></td>
+					<td th:text="${item.user.fullname}"></td>
+					<td>
+						<fmt:formatDate value="${item.invoiceDate}" pattern="dd/MM/yyyy"
+							th:text="${item.invoiceDate}" />
+					</td>
+					<td>
+						<fmt:setLocale value="vi_VN" />
+						<fmt:formatNumber value="${item.totalAmount}" type="currency" currencyCode="VND"
+							maxFractionDigits="0" minFractionDigits="0" th:text="${item.totalAmount}" />
+					</td>
+					<td>
+						<select class="form-select statusSelect" th:disabled="${item.status==3}"
+							aria-label="Default select example" style="padding: 1px 38px 1px 16px;"
+							th:data-item-id="${item.id}" th:value="${item.status}">
+							<option value="1" th:selected="${item.status==1}">Đang xử lý</option>
+							<option value="2" th:selected="${item.status==2}">Đang giao hàng</option>
+							<option value="3" th:selected="${item.status==3}">Giao hàng thành công</option>
+						</select>
+					</td>
+					<td th:text="${item.note}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<script>
+		$(document).ready(function () {
+			$(".statusSelect").change(function () {
+				var selectedValue = $(this).val();
+				var itemId = $(this).data("item-id");
+
+				// Gửi yêu cầu Ajax
+				$.ajax({
+					url: "/admin/update-status", // Thay đổi đường dẫn tới endpoint cập nhật trạng thái
+					type: "POST",
+					data: {
+						itemId: itemId,
+						status: selectedValue
+					},
+					success: function (response) {
+						// Xử lý phản hồi từ máy chủ (nếu cần)
+					},
+					error: function (xhr) {
+						// Xử lý lỗi (nếu cần)
+					}
+				});
+			});
+		});
+	</script>
+
+</body>
+
+</html>

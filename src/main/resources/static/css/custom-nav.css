@@ -1,0 +1,8 @@
+@charset "UTF-8";
+.main-category {
+	display: none;
+}
+
+.all-category:hover .main-category {
+	display: block;
+}
