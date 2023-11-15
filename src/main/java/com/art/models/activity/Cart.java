@@ -24,14 +24,17 @@ public class Cart {
 	private int cartId;
 
 	@ManyToOne
-	@JoinColumn(name = "userCart")
+	@JoinColumn(name = "userId")
 	private Account user;
 
 	@ManyToOne
 	@JoinColumn(name = "productCart")
 	private Product product;
 
-	@Column(name = "quantity", nullable = false)
+	@Column
 	private int quantity;
+	
+	@Column
+	private double price;
 
 }

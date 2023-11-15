@@ -21,14 +21,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class InvoiceDetail {
+public class OrderDetail {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	@ManyToOne
-	@JoinColumn(name = "invoice_id")
-	private Invoice invoice;
+	@JoinColumn(name = "order_id")
+	private Order order;
 
 	@ManyToOne
 	@JoinColumn(name = "product_id")
@@ -40,6 +40,6 @@ public class InvoiceDetail {
 	@Column
 	private BigDecimal price;
 
-	@OneToOne(mappedBy = "invoiceDetail")
+	@OneToOne(mappedBy = "orderDetail")
 	private Comment comment;
 }

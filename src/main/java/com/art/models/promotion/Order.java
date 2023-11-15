@@ -1,7 +1,10 @@
 package com.art.models.promotion;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
+import org.hibernate.annotations.Nationalized;
 
 import com.art.models.user.Account;
 
@@ -14,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
@@ -24,27 +28,37 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class FlashSale {
+@Table(name="orders")
+public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column
-	private Date startDay;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column
-	private Date endDay;
-
-	@Column
-	private boolean status = true;
-
-	@OneToMany(mappedBy = "flashSale", cascade = CascadeType.ALL)
-	private List<PromotionalDetails> promotionalDetailsList;
-	
 	@ManyToOne
-	@JoinColumn(name="userFlashSale")
+	@JoinColumn(name = "userId")
 	private Account user;
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column 
+	private Date orderDate;
+
+	@Column
+	private BigDecimal totalAmount;
+	
+	@Column
+	private int status;
+	
+	@Column
+	@Nationalized
+	private String deliveryAddress;
+	
+	@Column
+	@Nationalized
+	private String note;
+
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+	private List<OrderDetail> orderDetails;
+	
+	@OneToMany(mappedBy = "orderStatus")
+	private List<DeliveryStatus> orderStatus;
 }

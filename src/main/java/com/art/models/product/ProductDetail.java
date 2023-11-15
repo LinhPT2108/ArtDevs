@@ -1,14 +1,10 @@
-package com.art.models.promotion;
+package com.art.models.product;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.annotations.Nationalized;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import com.art.models.user.Account;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,35 +20,39 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
-public class Invoice {
+public class ProductDetail {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
+	@Column
+	private int quantityInStock;
 
-	@ManyToOne
-	@JoinColumn(name = "userInvoice")
-	private Account user;
-
+	@Column
+	private String size;
+	
+	@Column
+	private String color;
+	
+	@Column
+	private double weight;
+	
+	@Column
+	private double power;
+	
+	@Column
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column 
-	private Date invoiceDate;
-
-	@Column
-	private BigDecimal totalAmount;
+	private Date productionDate;
 	
-	@Column
-	private int status;
+	@OneToMany(mappedBy = "productDetail")
+	private List<DetailDescription> detailDescriptions;
 	
-	@Column
-	@Nationalized
-	private String note;
-
-	@OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
-	private List<InvoiceDetail> invoiceDetails;
-	
-	@OneToMany(mappedBy = "invoiceStatus")
-	private List<DeliveryStatus> invoiceStatus;
+	@JsonBackReference("productDetailReference")
+	@ManyToOne
+	@JoinColumn(name = "product_id")
+	private Product product;
 }

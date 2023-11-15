@@ -23,11 +23,11 @@ public class AccountRole {
 	private int id;
 
 	@ManyToOne
-	@JoinColumn(name = "userRole")
+	@JoinColumn(name = "userId")
 	private Account user;
 
 	@ManyToOne
-	@JoinColumn(name = "role_id")
+	@JoinColumn(name = "roleId")
 	private Role role;
 
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import org.hibernate.annotations.Nationalized;
 
 import com.art.models.product.Product;
-import com.art.models.promotion.InvoiceDetail;
+import com.art.models.promotion.OrderDetail;
 import com.art.models.user.Account;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -60,8 +60,8 @@ public class Comment {
 	
 	@JsonBackReference
 	@OneToOne
-	@JoinColumn(name = "invoiceDetail")
-	private InvoiceDetail invoiceDetail;
+	@JoinColumn(name = "orderDetailId")
+	private OrderDetail orderDetail;
 
 	@OneToMany(mappedBy = "comment", fetch =  FetchType.EAGER)
 	@JsonManagedReference 

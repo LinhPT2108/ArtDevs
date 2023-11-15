@@ -35,8 +35,11 @@ public class PromotionalDetails {
 
 	@Column
 	private double discountedPrice;
+	
+	@Column
+	private double discountedQuantity;
 
 	@Column
-	private boolean status;
+	private boolean status = true;
 
 }

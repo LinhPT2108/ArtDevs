@@ -3,11 +3,11 @@ package com.art.dao.product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.art.models.product.DetailDescription;
+import com.art.models.product.ProductDetail;
 
 
 @Transactional
-public interface DetailDescriptionDAO extends JpaRepository<DetailDescription, Integer> {
+public interface ProductDetailDAO extends JpaRepository<ProductDetail, Integer> {
 //
 //	@SuppressWarnings("unchecked")
 //	// Thêm hoặc cập nhật một đối tượng DetailDescription.
