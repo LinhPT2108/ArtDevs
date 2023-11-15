@@ -1,6 +1,9 @@
 <!-- Slider Area -->
 <custom-banner></custom-banner>
 <!--/ End Slider Area -->
+
+<custom-flashsale></custom-flashsale>
+
 <!-- Start Product Area -->
 <div class="product-area section">
     <div class="container">
@@ -2158,7 +2161,7 @@
 <!-- End Shop Services Area -->
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" ng-controller="mainCtrl">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -2215,7 +2218,7 @@
                                 <div class="row">
                                     <div class="col-lg-6 col-12">
                                         <h5 class="title">Size</h5>
-                                        <select>
+                                        <select nice-select>
                                             <option selected="selected">s</option>
                                             <option>m</option>
                                             <option>l</option>
@@ -2224,7 +2227,7 @@
                                     </div>
                                     <div class="col-lg-6 col-12">
                                         <h5 class="title">Color</h5>
-                                        <select>
+                                        <select nice-select>
                                             <option selected="selected">orange</option>
                                             <option>purple</option>
                                             <option>black</option>
@@ -2233,11 +2236,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="quantity">
+                            <div class="quantity" quantity-control>
                                 <!-- Input Order -->
                                 <div class="input-group">
                                     <div class="button minus">
-                                        <button type="button" class="btn btn-primary btn-number" disabled="disabled"
+                                        <button type="button" class="btn btn-primary btn-number"
                                             data-type="minus" data-field="quant[1]">
                                             <i class="ti-minus"></i>
                                         </button>
