@@ -62,7 +62,7 @@ public class categoryController {
 	public String create(@ModelAttribute("ct") Category ct) {
 		Account user = sessionService.get("userLogin");
 		ct.setUser(user);
-		ct.setDel(true);
+		ct.setStatus(true);
 		categoryReponsitory.save(ct);
 		return "redirect:/admin/category";
 	}
@@ -72,7 +72,7 @@ public class categoryController {
 
 		Account user = sessionService.get("userLogin");
 		ct.setUser(user);
-		ct.setDel(true);
+		ct.setStatus(true);
 		categoryReponsitory.save(ct);
 		return "redirect:/admin/category";
 	}
@@ -82,7 +82,7 @@ public class categoryController {
 
 		Account user = sessionService.get("userLogin");
 		ct.setUser(user);
-		ct.setDel(false);
+		ct.setStatus(false);
 		categoryReponsitory.save(ct);
 		return "redirect:/admin/category";
 	}

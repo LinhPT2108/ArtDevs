@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.hibernate.annotations.Nationalized;
 
-import com.art.models.activity.Cart;
 import com.art.models.activity.Comment;
 import com.art.models.activity.RecentlyViewed;
 import com.art.models.promotion.OrderDetail;
@@ -92,23 +91,19 @@ public class Product {
 
 	@OneToMany(mappedBy = "product")
 	@JsonIgnore
-	private List<Cart> productCart;
-
-	@OneToMany(mappedBy = "product")
-	@JsonIgnore
 	private List<RecentlyViewed> productRecentlyViewed;
 
 	@OneToMany(mappedBy = "product")
 	@JsonManagedReference
 	private List<ProductDetail> productDetail;
-
-	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+	
+	@OneToMany(mappedBy = "product")
 	@JsonManagedReference
-	private List<Image> productImage;
+	private List<DetailDescription> productDescriptions;
 	
 	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
 	@JsonManagedReference
-	private List<Price> productPrice;
+	private List<Image> productImage;
 	
 	@OneToMany(mappedBy = "product")
 	@JsonIgnore

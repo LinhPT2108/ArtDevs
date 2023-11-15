@@ -35,6 +35,6 @@ public class Price {
 	private Date createdDate;
 	
 	@ManyToOne
-	@JoinColumn(name = "product_id")
-	private Product product;
+	@JoinColumn(name = "product_detail_id")
+	private ProductDetail productDetail;
 }

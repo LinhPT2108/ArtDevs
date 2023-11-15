@@ -8,23 +8,23 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.art.dao.promotion.InvoiceDAO;
-import com.art.dao.promotion.InvoiceDetailDAO;
+import com.art.dao.promotion.OrderDAO;
+import com.art.dao.promotion.OrderDetailDAO;
 
 @Controller
 @RequestMapping("/admin")
 public class adminController {
 	@Autowired
-	InvoiceDAO revenueService;
+	OrderDAO revenueService;
 
 	@Autowired
-	InvoiceDetailDAO idDAO;
+	OrderDetailDAO idDAO;
 	
 	@GetMapping("/dashboard")
 	public String dashboard(Model model) {
 		model.addAttribute("views", "dashboard");
 		model.addAttribute("title", "Trang chủ");
-		model.addAttribute("invoice", revenueService.findAllByOrderByInvoiceDateDesc());
+		model.addAttribute("invoice", revenueService.findAllByOrderByOrderDateDesc());
 		model.addAttribute("bestSellers", idDAO.countProductsOrderByCountDesc());
 		getRateYear(model);
 		getRateMonth(model);
@@ -63,7 +63,7 @@ public class adminController {
 	@RequestMapping()
 	public String test(Model model) {
 		model.addAttribute("title", "Trang chủ");
-		model.addAttribute("invoice", revenueService.findAllByOrderByInvoiceDateDesc());
+		model.addAttribute("invoice", revenueService.findAllByOrderByOrderDateDesc());
 		model.addAttribute("bestSellers", idDAO.countProductsOrderByCountDesc());
 		getRateYear(model);
 		getRateMonth(model);

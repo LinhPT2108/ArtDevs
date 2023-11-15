@@ -84,7 +84,7 @@ public class userCustomController {
 			List<Account> userCustoms = userCustomDAO.findAll();
 			Account usercus = userCustomDAO.getById(userId);
 			model.addAttribute("userCustom", usercus);
-			model.addAttribute("roles", usercus.getRoleName());
+			model.addAttribute("roles", usercus.getUserRole());
 			model.addAttribute("userCustoms", userCustoms);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -132,7 +132,7 @@ public class userCustomController {
 		}else {
 			userCustom.setImage(userCustomDAO.getById(userId).getImage());
 		}
-		userCustom.setDel(true);
+		userCustom.setStatus(true);
 		userCustomDAO.save(userCustom);
 		return "redirect:/admin/userCustom";
 	}

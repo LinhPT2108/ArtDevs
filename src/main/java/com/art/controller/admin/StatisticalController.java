@@ -16,21 +16,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.art.dao.promotion.InvoiceDAO;
-import com.art.dao.promotion.InvoiceDetailDAO;
+import com.art.dao.promotion.OrderDAO;
+import com.art.dao.promotion.OrderDetailDAO;
 import com.art.dao.user.UserCustomDAO;
 import com.art.models.product.Product;
-import com.art.models.promotion.Invoice;
+import com.art.models.promotion.Order;
 
 @Controller
 @RequestMapping("/admin")
 public class StatisticalController {
 
 	@Autowired
-	InvoiceDAO revenueService;
+	OrderDAO revenueService;
 	
 	@Autowired
-	InvoiceDetailDAO idDAO;
+	OrderDetailDAO idDAO;
 	
 	@Autowired
 	UserCustomDAO uDAO;
@@ -74,16 +74,13 @@ public class StatisticalController {
 	        return ResponseEntity.ok(responseData);
 	    }
 	
-
+	  //Chỉnh lại phần invoice -> order dòng 83
 	@GetMapping("/statistical-order")
 	public String showOrders(@ModelAttribute("pd") Product pd, Model model) {
 
 //		model.addAttribute("views", "order-form");
 		model.addAttribute("title", "Thống kê đơn hàng");
-		model.addAttribute("invoice", revenueService.findAllByOrderByInvoiceDateDesc());
-		System.out.println("status: "+revenueService.findAllByOrderByInvoiceDateDesc().get(0).getStatus());
-
-		System.out.println(revenueService.findAllByOrderByInvoiceDateDesc().get(0).getStatus()==1?"ok":"fail");
+//		model.addAttribute("invoice", revenueService.findAllByOrderByInvoiceDateDesc());
 		return "admin/statisticaloder-form";
 	}
 
@@ -96,9 +93,9 @@ public class StatisticalController {
     }
     
     public void updateStatusOrder(int itemId, Integer status) {
-        Optional<Invoice> optionalInvoice = Optional.of(revenueService.findById(itemId));
+        Optional<Order> optionalInvoice = Optional.of(revenueService.findById(itemId));
         if (optionalInvoice.isPresent()) {
-            Invoice invoice = optionalInvoice.get();
+        	Order invoice = optionalInvoice.get();
             invoice.setStatus(status);
             revenueService.save(invoice);
         }
@@ -126,12 +123,13 @@ public class StatisticalController {
 		return "admin/static-best-seller";
 	}
 
+	//Chỉnh lại phần product -> product detail dòng 132
 	@GetMapping("/statistical-orders-by-user")
 	public String showOrdersByUser(@ModelAttribute("pd") Product pd, Model model) {
 
 		model.addAttribute("views", "orders-by-user-form");
 		model.addAttribute("title", "Thống kê đơn hàng theo tài khoản");
-		model.addAttribute("ordersByUser", uDAO.getUsersWithInvoiceCount());
+//		model.addAttribute("ordersByUser", uDAO.getUsersWithInvoiceCount());
 		
 		return "admin/orders-by-user-form";
 	}

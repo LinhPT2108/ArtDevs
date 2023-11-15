@@ -35,6 +35,6 @@ public class DetailDescription {
 
 	@JsonBackReference("productDetailReference")
 	@ManyToOne
-	@JoinColumn(name = "product_detail_id")
-	private ProductDetail productDetail;
+	@JoinColumn(name = "product_id")
+	private Product product;
 }

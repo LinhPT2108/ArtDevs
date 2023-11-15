@@ -76,4 +76,6 @@ public interface ProductDAO extends JpaRepository<Product, String> {
 
 //    // Tìm Product theo ID của Manufacturer
 	List<Product> findByManufacturerProduct(Manufacturer manufacturerProduct);
+
+	List<Product> findByAvailable(boolean b);
 }

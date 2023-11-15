@@ -60,7 +60,7 @@ public class productController {
 
 	@ModelAttribute("categoriesList")
 	public Map<Category, String> getCategories() {
-		List<Category> listCate = caDAO.findByDel(true);
+		List<Category> listCate = caDAO.findByStatus(true);
 		Map<Category, String> map = new HashMap<>();
 		for (Category c : listCate) {
 			map.put(c, c.getCategoryName());
@@ -84,11 +84,12 @@ public class productController {
 		model.addAttribute("views", "product-form");
 		model.addAttribute("title", "Quản lí sản phẩm");
 		model.addAttribute("typeButton", false);
-		model.addAttribute("products", pdDAO.findByDel(false));
+		model.addAttribute("products",pdDAO.findByAvailable(false));
 
 		return "admin/product-form";
 	}
 
+	//Chỉnh lại phần product -> product detail dòng 145
 	@PostMapping("/product")
 	public ResponseEntity<?> createProduct(@Valid @ModelAttribute("pd") Product product, BindingResult result,
 			@RequestParam("listImage") MultipartFile[] listImage, @RequestParam("descriptions") String descriptions) {
@@ -139,9 +140,9 @@ public class productController {
 			for (Map<String, String> map : list) {
 
 				DetailDescription detailDescription = new DetailDescription();
-				detailDescription.setTile((map.get("tieuDe")));
+				detailDescription.setTitle((map.get("tieuDe")));
 				detailDescription.setDescription(map.get("description"));
-				detailDescription.setProduct(product);
+//				detailDescription.setProduct(product);
 
 				detailDescriptionDAO.save(detailDescription);
 			}
@@ -158,7 +159,7 @@ public class productController {
 				return ResponseEntity.ok("fail");
 			} else {
 				Product pd = pdDAO.getById(id);
-				pd.setDel(true);
+				pd.setAvailable(true);
 				pdDAO.save(pd);
 				return ResponseEntity.ok("success");
 			}
@@ -175,7 +176,7 @@ public class productController {
 		model.addAttribute("views", "product-form");
 		model.addAttribute("title", "Quản lí sản phẩm");
 		model.addAttribute("typeButton", true);
-		model.addAttribute("products", pdDAO.findByDel(false));
+		model.addAttribute("products", pdDAO.findByAvailable(false));
 		Product pd = pdDAO.getById(productId);
 		model.addAttribute("pd", pd);
 		System.out.println(productId);
@@ -183,6 +184,7 @@ public class productController {
 		return "admin/index";
 	}
 
+	//Chỉnh lại phần product -> product detail dòng 248, 237
 	@PostMapping("/product/update-product")
 	public ResponseEntity<?> updateProduct(@Valid @ModelAttribute("pd") Product product, BindingResult result,
 			@RequestParam("listImage") MultipartFile[] listImage, @RequestParam("descriptions") String descriptions) {
@@ -232,7 +234,7 @@ public class productController {
 				}
 			}
 
-			detailDescriptionDAO.deleteByProduct(product);
+//			detailDescriptionDAO.deleteByProduct(product);
 			Gson gson = new Gson();
 			List<Map<String, String>> list = gson.fromJson(descriptions, new TypeToken<List<Map<String, String>>>() {
 			}.getType());
@@ -242,9 +244,9 @@ public class productController {
 			}
 			for (Map<String, String> map : list) {
 				DetailDescription detailDescription = new DetailDescription();
-				detailDescription.setTile((map.get("tieuDe")));
+				detailDescription.setTitle((map.get("tieuDe")));
 				detailDescription.setDescription(map.get("description"));
-				detailDescription.setProduct(product);
+//				detailDescription.setProduct(product);
 
 				detailDescriptionDAO.save(detailDescription);
 			}
