@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	<div class="site-product">
+		<form action="admin/product" th:object="${pd}" method="POST"
+			th:id="${typeButton ? 'formProductEdit' : 'formProduct'}" enctype="multipart/form-data"
+			class="row g-3 needs-validation">
+			<div class="col-xs-12 col-md-7">
+				<div class="row">
+					<input type="hidden" th:field="*{productId}" />
+					<div class="col-12 mb-3">
+						<label for="productName" class="form-label">Tên sản phẩm</label>
+						<input type="text" th:field="*{productName}" class="form-control" autocomplete="none" />
+						<small class="text-danger fst-italic" id="productNameError"></small>
+					</div>
+					<div class="col-md-6 mb-3">
+						<label for="categoryProduct" class="form-label">Loại sản phẩm</label>
+						<select th:field="*{categoryProduct}" class="form-select">
+							<option value="" label="Chọn..."></option>
+							<option th:each="category : ${categoriesList}" th:value="${category}" th:text="${category}">
+							</option>
+						</select>
+						<small class="text-danger fst-italic" id="categoryProductError"></small>
+					</div>
+
+					<div class="col-md-6 mb-3">
+						<label for="manufacturerProduct" class="form-label">Thương hiệu</label>
+						<select class="form-select" th:field="*{manufacturerProduct}">
+							<option value="" label="Chọn..."></option>
+							<option th:each="manufacturer : ${manufacturerList}" th:value="${manufacturer}"
+								th:text="${manufacturer}"></option>
+						</select>
+						<small class="text-danger fst-italic" id="manufacturerProductError"></small>
+					</div>
+					<div class="col-md-6 mb-3">
+						<label for="price" class="form-label">Giá bán</label>
+						<input type="number" th:field="*{price}" class="form-control" autocomplete="none" />
+						<small class="text-danger fst-italic" id="priceError"></small>
+					</div>
+					<div class="col-md-6 mb-3">
+						<label for="quantityInStock" class="form-label">Số lượng trong kho</label>
+						<input type="number" th:field="*{quantityInStock}" class="form-control" autocomplete="none" />
+						<small class="text-danger fst-italic" id="quantityInStockError"></small>
+					</div>
+					<div class="col-12 mb-3">
+						<label class="form-label mb-3">Thông tin chi tiết:</label>
+						<small class="text-danger fst-italic" id="detailDecriptionError"></small>
+						<div class="describe row">
+							<th:block th:switch="${typeButton}">
+								<th:block th:case="false">
+									<div class="description-container col-xs-12 col-md-6 mb-3">
+										<!-- ... rest of the code ... -->
+									</div>
+								</th:block>
+								<th:block th:case="true">
+									<th:block th:each="p, i : ${pd.productDetailDescription}">
+										<div class="col-xs-12 col-md-6 mb-3 description-container">
+											<!-- ... rest of the code ... -->
+										</div>
+									</th:block>
+								</th:block>
+							</th:block>
+							<button type="button" class="button ms-2 mb-3" onclick="themMoTa()">
+								<span class="button__text">Thêm mô tả</span>
+								<span class="button__icon">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24"
+										stroke-width="2" stroke-linejoin="round" stroke-linecap="round"
+										stroke="currentColor" height="24" fill="none" class="svg">
+										<line y2="19" y1="5" x2="12" x1="12"></line>
+										<line y2="12" y1="12" x2="19" x1="5"></line>
+									</svg>
+								</span>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="col-12">
+					<th:block th:switch="${typeButton}">
+						<th:block th:case="true">
+							<button type="submit" class="btn btn-warning" id="btnUpdateProduct">Cập nhật</button>
+						</th:block>
+						<th:block th:case="false">
+							<button type="submit" class="btn btn-primary" id="btnAddProduct">Thêm</button>
+						</th:block>
+					</th:block>
+					<a role="button" href="/admin/product" class="btn btn-secondary">Làm mới</a>
+				</div>
+			</div>
+			<div class="col-xs-12 col-md-5">
+				<div class="mb-3">
+					<label class="form-label">Hình ảnh:</label>
+					<small class="text-danger fst-italic" id="imageError"></small>
+					<ul id="imageList">
+						<!-- ... rest of the code ... -->
+					</ul>
+				</div>
+			</div>
+		</form>
+		<div id="errorMessages"></div>
+	</div>
+
+	<div class="table-responsive mt-3">
+		<table id="statisticalTable" class="table table-hover">
+			<thead>
+				<tr>
+					<th>Mã sản phẩm</th>
+					<th>Tên sản phẩm</th>
+					<th>Số lượng</th>
+					<th>Đơn giá</th>
+					<th>Ngày tạo</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="product : ${products}">
+					<td th:text="${product.productId}"></td>
+					<td th:text="${product.productName}"></td>
+					<td th:text="${product.quantityInStock}"></td>
+					<td>
+						<fmt:setLocale value="vi_VN" />
+						<fmt:formatNumber value="${product.price}" type="currency" currencyCode="VND"
+							maxFractionDigits="0" minFractionDigits="0" />
+					</td>
+					<td>
+						<fmt:formatDate value="${product.createdDate}" pattern="dd/MM/yyyy" />
+					</td>
+					<td class="d-flex justify-content-between">
+						<a type="button" class="btn btn-secondary"
+							th:href="@{/admin/product/edit/{productId}(productId=${product.productId})}">Chỉnh sửa</a>
+						<a type="button" class="btn btn-danger btnDelProduct"
+							th:href="@{/admin/product/remove/{productId}(productId=${product.productId})}">Xóa</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<style>
+		.image-container {
+			position: relative;
+		}
+
+		.delete-button {
+			position: absolute;
+			top: -10px;
+			right: -5px;
+			background: red;
+			color: white;
+			border: none;
+			cursor: pointer;
+		}
+	</style>
+	<script type="text/javascript">
+		function generateRandomString() {
+			var randomString = '';
+			var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+			var charactersLength = characters.length;
+			for (var i = 0; i < 8; i++) {
+				randomString += characters.charAt(Math.floor(Math.random() * charactersLength));
+			}
+
+			var currentTimeMillis = new Date().getTime();
+
+			var finalString = randomString + currentTimeMillis.toString();
+
+			return finalString;
+		}
+
+		var randomString = generateRandomString();
+		console.log(document.getElementById('productId').value);
+		document.getElementById('productId').value == "" ? document.getElementById('productId').value = randomString : '';
+
+
+		let counter = $('.description-container').length;
+		console.log(counter)
+		function themMoTa() {
+			counter++;
+
+			const newRow = document.createElement("div");
+			newRow.className = "col-xs-12 col-md-6 mb-3 description-container";
+			newRow.innerHTML = `
+        <div class=" border border-1 p-3 position-relative description-product">
+            <span class="position-absolute z-3 bg-white motaClass" style="top: -13px" data-counter-number="${counter}">Mô tả ${counter}:</span>
+            <div class="mb-3">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="tieude${counter}" placeholder="">
+                    <label for="tieude${counter}">Tiêu đề:</label>
+                </div>
+            </div>
+            <div class="form-floating">
+                <textarea class="form-control" placeholder="Leave a comment here" id="noidung${counter}" style="height: 100px;"></textarea>
+                <label for="noidung${counter}">Nội dung:</label>
+            </div>
+            <button class="btn btn-danger" onclick="xoaMoTa(this)" style="
+				    position: absolute;
+				    top: -13px;
+				    right: -12px;
+				    padding: 2px 6px;
+				    border-radius: 50%;
+				">X</button>
+				        </div>`;
+
+			const addButton = document.querySelector(".button");
+			addButton.parentElement.insertBefore(newRow, addButton);
+		}
+		function checkFileSize(e) {
+			var file_list = e.files;
+			var totalSize = 0; // Tổng kích thước của tất cả các tệp
+
+			for (var i = 0; i < file_list.length; i++) {
+				var file = file_list[i];
+				var fileExtension = file.name.split('.')[file.name.split('.').length - 1].toLowerCase();
+				var iConvert;
+
+				if (file.size > (1024 * 1024)) {
+					iConvert = (file.size / (1024 * 1024)).toFixed(2); // Chuyển đổi thành MB
+				} else {
+					iConvert = (file.size / 1024).toFixed(2); // Chuyển đổi thành KB
+				}
+
+				totalSize += file.size;
+
+				txt = "File type: " + fileExtension + "\n";
+				txt += "Size: " + iConvert + (file.size > (1024 * 1024) ? " MB" : " KB") + "\n";
+			}
+
+			if (totalSize > 10 * 1024 * 1024) {
+				console.log('Vượt quá kích thước');
+				Swal.fire({
+					icon: 'warning',
+					title: 'Vượt quá kích thước',
+					text: "Vui lòng chọn ảnh kích thước lớn nhỏ hơn 10MB !",
+					showConfirmButton: true
+				});
+				e.value = null;
+			}
+		}
+
+
+		function layDuLieuMoTa() {
+			// Sử dụng jQuery để tìm thẻ có class "motaClass" cuối cùng và lấy giá trị "data-counter-number"
+			var lastMotaClassElement = $('.motaClass').last();
+			var counterNumber = lastMotaClassElement.data('counter-number');
+
+			const moTaObjects = [];
+
+			for (let index = 0; index <= counterNumber; index++) {
+				const tieuDe = $(`#tieude${index}`).val() || '';
+				const noiDung = $(`#noidung${index}`).val() || '';
+
+				// Kiểm tra nếu cả hai ô đều trống thì không thêm vào moTaObjects
+				if (tieuDe.trim() !== "" || noiDung.trim() !== "") {
+					const moTa = {
+						tieuDe: tieuDe,
+						description: noiDung
+					};
+
+					moTaObjects.push(moTa);
+				}
+			}
+
+			return moTaObjects;
+		}
+
+
+
+
+		function xoaMoTa(button) {
+			button.parentElement.parentElement.remove();
+			// Sử dụng jQuery để tìm thẻ có class "motaClass" cuối cùng
+			var lastMotaClassElement = $('.motaClass').last();
+
+			// Lấy giá trị từ thuộc tính "data-counter-number"
+			var counterNumber = lastMotaClassElement.data('counter-number');
+			counter = counterNumber;
+			console.log(counter)
+
+		}
+
+
+		$(document).ready(function () {
+			const fileInput = $("#listImage");
+			const previewImages = $("#listImg");
+
+			fileInput.on("change", function () {
+				// Xóa tất cả các thẻ con
+				previewImages.empty();
+
+				for (let i = 0; i < fileInput[0].files.length; i++) {
+					const file = fileInput[0].files[i];
+					const imageContainer = $("<div>").addClass("image-container").css({
+						display: "inline-block",
+						margin: "5px"
+					});
+					const image = $("<img>").css({
+						maxWidth: "100px",
+						maxHeight: "100px"
+					}).attr("src", URL.createObjectURL(file));
+
+					imageContainer.append(image);
+					previewImages.append(imageContainer);
+				}
+				console.log(fileInput[0].files)
+			});
+		});
+
+
+		$(document).ready(function () {
+			$('#formProduct').submit(function (event) {
+				event.preventDefault();
+				// Lấy dữ liệu từ form
+				var formData = new FormData(this);
+
+				var descriptions = layDuLieuMoTa();
+				formData.append("descriptions", JSON.stringify(descriptions));
+
+				console.log(formData);
+				for (var pair of formData.entries()) {
+					console.log(pair[0] + ': ' + pair[1]);
+				}
+				$.ajax({
+					type: 'POST',
+					enctype: 'multipart/form-data',
+					upload: true,
+					url: '/admin/product',
+					processData: false,
+					contentType: false,
+					cache: false,
+					data: formData,
+					success: function (data) {
+						if (data == 'success') {
+							/*Swal
+								.fire({
+									icon: 'success',
+									title: 'Thêm thành công',
+									text: "Sản phẩm đã được thêm vào hệ thống !",
+									showConfirmButton: true,
+									timer: 1500
+								});*/
+
+							console.log(formData);
+							let timerInterval
+							Swal.fire({
+								icon: 'success',
+								title: 'Dữ liệu đang được thêm vào hệ thông!',
+								html: 'sẽ làm mới trang trong <b></b> mili giây.',
+								timer: 1500,
+								allowOutsideClick: false,
+								timerProgressBar: true,
+								didOpen: () => {
+									Swal.showLoading()
+									const b = Swal.getHtmlContainer().querySelector('b')
+									timerInterval = setInterval(() => {
+										b.textContent = Swal.getTimerLeft()
+									}, 100)
+								},
+								willClose: () => {
+									clearInterval(timerInterval)
+								}
+							}).then((result) => {
+								/* Read more about handling dismissals below */
+								if (result.dismiss === Swal.DismissReason.timer) {
+									console.log('I was closed by the timer')
+									location.reload();
+								}
+							})
+						} else {
+
+							$("#productNameError").html('');
+							$("#categoryProductError").html('');
+							$("#manufacturerProductError").html('');
+							$("#quantityInStockError").html('');
+							$("#priceError").html('');
+							$('#imageError').html('');
+							$('#detailDecriptionError').html('');
+							$("#productNameError").html(data.productName);
+							$("#categoryProductError").html(data.categoryProduct);
+							$("#manufacturerProductError").html(data.manufacturerProduct);
+							$("#quantityInStockError").html(data.quantityInStock);
+							$("#priceError").html(data.price);
+							$('#imageError').html(data.image);
+							$('#detailDecriptionError').html(data.detailDecription);
+							Swal.fire({
+								icon: 'error',
+								title: 'Thêm sản phẩm thất bại',
+								text: "Vui lòng kiểm tra lại thông tin !",
+								showConfirmButton: true,
+								timer: 1500
+							});
+							console.log(data)
+						}
+					},
+					error: function (xhr, status, error) {
+						console
+							.log('Ajax errors');
+					}
+				});
+			});
+
+			$('#formProductEdit').submit(function (event) {
+				event.preventDefault();
+				// Lấy dữ liệu từ form
+				var formData = new FormData(this);
+
+				var descriptions = layDuLieuMoTa();
+				formData.append("descriptions", JSON.stringify(descriptions));
+				console.log(formData);
+				for (var pair of formData.entries()) {
+					console.log(pair[0] + ': ' + pair[1]);
+				}
+				$.ajax({
+					type: 'POST',
+					enctype: 'multipart/form-data',
+					upload: true,
+					url: '/admin/product/update-product',
+					processData: false,
+					contentType: false,
+					cache: false,
+					data: formData,
+					success: function (data) {
+						if (data == 'success') {
+
+							let timerInterval
+							Swal.fire({
+								icon: 'success',
+								title: 'Dữ liệu đang được cập nhật vào hệ thông!',
+								html: 'sẽ làm mới trang trong <b></b> mili giây.',
+								timer: 1500,
+								allowOutsideClick: false,
+								timerProgressBar: true,
+								didOpen: () => {
+									Swal.showLoading()
+									const b = Swal.getHtmlContainer().querySelector('b')
+									timerInterval = setInterval(() => {
+										b.textContent = Swal.getTimerLeft()
+									}, 100)
+								},
+								willClose: () => {
+									clearInterval(timerInterval)
+								}
+							}).then((result) => {
+								/* Read more about handling dismissals below */
+								if (result.dismiss === Swal.DismissReason.timer) {
+									console.log('I was closed by the timer')
+									location.reload();
+								}
+							})
+						} else {
+
+							$("#productNameError").html('');
+							$("#categoryProductError").html('');
+							$("#manufacturerProductError").html('');
+							$("#quantityInStockError").html('');
+							$("#priceError").html('');
+							$('#imageError').html('');
+							$('#detailDecriptionError').html('');
+							$("#productNameError").html(data.productName);
+							$("#categoryProductError").html(data.categoryProduct);
+							$("#manufacturerProductError").html(data.manufacturerProduct);
+							$("#quantityInStockError").html(data.quantityInStock);
+							$("#priceError").html(data.price);
+							$('#imageError').html(data.image);
+							$('#detailDecriptionError').html(data.detailDecription);
+							Swal.fire({
+								icon: 'warning',
+								title: 'Cập nhật sản phẩm thất bại',
+								text: "Vui lòng kiểm tra lại thông tin !",
+								showConfirmButton: true,
+								timer: 1500
+							});
+							console.log(data)
+						}
+					},
+					error: function (xhr, status, error) {
+						console
+							.log('Ajax errors');
+					}
+				});
+			});
+
+
+			$('.btnDelProduct').click(function (e) {
+				e.preventDefault();
+				console.log('del')
+				Swal.fire({
+					icon: 'info',
+					title: 'Bạn muốn xóa sản phẩm đã chọn ?',
+					text: 'Ấn OK để xóa !',
+					confirmButtonText: 'OK',
+					showCancelButton: true,
+				}).then((result) => {
+					if (result.isConfirmed) {
+						var hrefValue = $(this).attr("href");
+						$.ajax({
+							type: 'POST',
+							url: hrefValue,
+							success: function (resp) {
+								console.log(resp)
+								if (resp == 'success') {
+									Swal.fire({
+										icon: 'success',
+										title: 'Xóa thành công',
+										text: "Sản phẩm đã được xóa !",
+										showConfirmButton: true,
+										timer: 1500
+									});
+									location.reload();
+								} else if (resp == 'fail') {
+									Swal
+										.fire({
+											icon: 'error',
+											title: 'Xóa thất bại',
+											text: "Có lỗi xảy ra, vui lòng thử lại !",
+											showConfirmButton: false,
+											timer: 1500
+										});
+								}
+							},
+							error: function (xhr,
+								status, error) {
+								Swal
+									.fire({
+										icon: 'error',
+										title: 'Xoa thất bại',
+										text: "Có lỗi xảy ra, vui lòng thử lại !",
+										showConfirmButton: false,
+										timer: 1500
+									});
+							}
+						});
+					}
+				})
+			})
+		});
+
+	</script>
+
+
+</body>
+
+</html>

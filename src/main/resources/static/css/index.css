@@ -14,11 +14,3 @@
 	border-radius: 20px;
 	padding: 8px;
 }
-
-.main-category {
-	display: none;
-}
-
-.all-category:hover .main-category {
-	display: block;
-}

@@ -1,0 +1,146 @@
+.custum-file-upload {
+	height: 100px;
+	width: 150px;
+	display: flex;
+	flex-direction: column;
+	align-items: space-between;
+	gap: 10px;
+	cursor: pointer;
+	align-items: center;
+	justify-content: center;
+	border: 2px dashed #cacaca;
+	background-color: rgba(255, 255, 255, 1);
+	padding: 1.5rem;
+	border-radius: 10px;
+	box-shadow: 0px 48px 35px -48px rgba(0, 0, 0, 0.1);
+}
+
+.custum-file-upload .icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	align-items: center;
+}
+
+.custum-file-upload .icon svg {
+	height: 60px;
+	fill: rgba(75, 85, 99, 1);
+}
+
+.custum-file-upload .text {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.custum-file-upload .text span {
+	font-weight: 400;
+	color: rgba(75, 85, 99, 1);
+}
+
+.custum-file-upload input {
+	display: none;
+}
+
+#imageList,
+#listImg {
+	list-style: none;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+}
+
+.delete-button {
+	position: absolute;
+	top: 3px;
+	right: 8px;
+	color: rgb(8, 8, 8);
+	border: none;
+	border-radius: 50%;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+#imageList li {
+	margin: 10px;
+}
+
+#imageList img {
+	width: 200px;
+	height: 100px;
+	border-radius: 10px;
+}
+
+#fileContainer {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+}
+
+#file {
+	flex: 0 0 auto;
+}
+
+
+.button {
+	position: relative;
+	width: 150px;
+	height: 40px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	border: 1px solid #34974d;
+	background-color: #3aa856;
+}
+
+.button,
+.button__icon,
+.button__text {
+	transition: all 0.3s;
+}
+
+.button .button__text {
+	transform: translateX(30px);
+	color: #fff;
+	font-weight: 600;
+}
+
+.button .button__icon {
+	position: absolute;
+	transform: translateX(109px);
+	height: 100%;
+	width: 39px;
+	background-color: #34974d;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.button .svg {
+	width: 30px;
+	stroke: #fff;
+}
+
+.button:hover {
+	background: #34974d;
+}
+
+.button:hover .button__text {
+	color: transparent;
+}
+
+.button:hover .button__icon {
+	width: 148px;
+	transform: translateX(0);
+}
+
+.button:active .button__icon {
+	background-color: #2e8644;
+}
+
+.button:active {
+	border: 1px solid #2e8644;
+}
