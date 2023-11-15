@@ -1,4 +1,5 @@
-
+CREATE DATABASE art_devs;
+GO
 USE art_devs;
 GO 
 INSERT INTO dbo.role

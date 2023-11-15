@@ -1,0 +1,79 @@
+<!-- main content  -->
+<div class="container my-5 p-1" ng-controller="accountCtrl">
+    <div class="row">
+        <div class="col-12 col-md-3">
+            <div class="d-flex  border border-right-0 border-top-0 border-left-0 pb-2">
+                <div class="avatar">
+                    <img alt="" src="../../images/avatar/default-avatar.jpg" class="rounded-circle" width="60px"
+                        height="60px" id="avatar-right">
+                </div>
+                <div class="username p-2 d-flex flex-column">
+                    <span class="font-weight-bold">${userLogin.fullname }</span>
+                    <div class="bot">
+                        <i class="ti ti-pencil"></i> <span>Sửa hồ sơ</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="list-option mt-2">
+                <div id="accordion">
+                    <div class="border-0 mb-2">
+                        <div class="bg-white p-0" id="headingOne">
+                            <a class="btn-default border-0 bg-white font-weight-normal stardust-dropdown"
+                                data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                                aria-controls="collapseOne"> <i class="ti ti-user mr-2"></i>Tài khoản của tôi
+                            </a>
+                        </div>
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                            data-parent="#accordion">
+                            <div class="px-4">
+                                <div class="list-group list-group-flush">
+                                    <a href="/account/profile"
+                                        class="list-group-item list-group-item-action item-custom item-custom-option">Hồ
+                                        sơ</a> <a href="/account/address"
+                                        class="list-group-item list-group-item-action item-custom item-custom-option">Địa
+                                        chỉ</a> <a href="/account/change-password"
+                                        class="list-group-item list-group-item-action item-custom item-custom-option">Đổi
+                                        mật khẩu</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" border-0 mb-1">
+                        <div class=" bg-white p-0" id="headingTwo">
+                            <a class="btn-default border-0 bg-white font-weight-normal stardust-dropdown"
+                                data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+                                aria-controls="collapseTwo"> <i class="ti ti-clipboard mr-2"></i>Đơn mua
+                            </a>
+                        </div>
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                            <div class="px-4">
+                                <div class="list-group list-group-flush">
+                                    <a href="/account/purchased-order/3"
+                                        class="list-group-item list-group-item-action item-custom  item-custom-option">Hoàn
+                                        thành</a> <a href="/account/purchased-order/2"
+                                        class="list-group-item list-group-item-action item-custom item-custom-option">Đang
+                                        giao hàng</a> <a href="/account/purchased-order/1"
+                                        class="list-group-item list-group-item-action item-custom item-custom-option">Đang
+                                        xử lí</a><a href="/account/purchased-order/-1"
+                                        class="list-group-item list-group-item-action item-custom item-custom-option">Đơn
+                                        đã hủy</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border-0 mb-1">
+                        <a class="btn-default border-0 bg-white font-weight-normal stardust-dropdown item-custom p-0"
+                            href="/account/wish-list"> <i class="ti ti-heart mr-2"></i>Sản
+                            phẩm yêu thích
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-12 col-md-9 border border-bottom-0 border-right-0 border-top-0 ">
+            <div ng-include="'../templates/components/'+views+'.html'"></div>
+        </div>
+    </div>
+</div>
