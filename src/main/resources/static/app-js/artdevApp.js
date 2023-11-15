@@ -15,6 +15,22 @@ app.config(function ($routeProvider, $locationProvider) {
       templateUrl: "templates/user/views/account.html",
       controller: "addressCtrl",
     })
+    .when("/account/change-password", {
+      templateUrl: "templates/user/views/account.html",
+      controller: "changePasswordCtrl",
+    })
+    .when("/account/change-password", {
+      templateUrl: "templates/user/views/forgotPass.html",
+      controller: "forgotPasswordCtrl",
+    })
+    .when("/cart", {
+      templateUrl: "templates/user/views/cart.html",
+      controller: "cartCtrl",
+    })
+    .when("/product", {
+      templateUrl: "templates/user/views/shop-grid.html",
+      controller: "productsiteCtrl",
+    })
     .otherwise({
       redirectTo: "/",
     });
@@ -41,5 +57,30 @@ app.service("ApiService", function ($http) {
 app.controller("headerCtrl", function ($scope) {
   $(".top-search a").on("click", function () {
     $(".search-top").toggleClass("active");
+  });
+});
+
+app.controller("mainCtrl", function ($scope, $timeout) {
+  console.log(123);
+  $scope.quickViews = function () {
+    $(".quickview-slider-active").owlCarousel({
+      items: 1,
+      autoplay: true,
+      autoplayTimeout: 5000,
+      smartSpeed: 400,
+      autoplayHoverPause: true,
+      nav: true,
+      loop: true,
+      merge: true,
+      dots: false,
+      navText: [
+        '<i class=" ti-arrow-left"></i>',
+        '<i class=" ti-arrow-right"></i>',
+      ],
+    });
+  };
+
+  $timeout(function () {
+    $scope.quickViews();
   });
 });
