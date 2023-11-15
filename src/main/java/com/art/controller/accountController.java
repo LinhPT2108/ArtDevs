@@ -17,4 +17,14 @@ public class accountController {
     public String getAddress(Model model) {
         return "index";
     }
+
+    @GetMapping(value = "/change-password")
+    public String getChangePassword(Model model) {
+        return "index";
+    }
+
+     @GetMapping(value = "/forgot-password")
+    public String getForgotPassword(Model model) {
+        return "index";
+    }
 } 

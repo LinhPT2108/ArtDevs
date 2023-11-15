@@ -162,40 +162,40 @@ Version:1.0
     /*===========================
 		  Quick View Slider JS
 		=============================*/
-    $(".quickview-slider-active").owlCarousel({
-      items: 1,
-      autoplay: true,
-      autoplayTimeout: 5000,
-      smartSpeed: 400,
-      autoplayHoverPause: true,
-      nav: true,
-      loop: true,
-      merge: true,
-      dots: false,
-      navText: [
-        '<i class=" ti-arrow-left"></i>',
-        '<i class=" ti-arrow-right"></i>',
-      ],
-    });
+    // $(".quickview-slider-active").owlCarousel({
+    //   items: 1,
+    //   autoplay: true,
+    //   autoplayTimeout: 5000,
+    //   smartSpeed: 400,
+    //   autoplayHoverPause: true,
+    //   nav: true,
+    //   loop: true,
+    //   merge: true,
+    //   dots: false,
+    //   navText: [
+    //     '<i class=" ti-arrow-left"></i>',
+    //     '<i class=" ti-arrow-right"></i>',
+    //   ],
+    // });
 
     /*===========================
 		  Home Slider 4 JS
 		=============================*/
-    $(".home-slider-4").owlCarousel({
-      items: 1,
-      autoplay: true,
-      autoplayTimeout: 5000,
-      smartSpeed: 400,
-      autoplayHoverPause: true,
-      nav: true,
-      loop: true,
-      merge: true,
-      dots: false,
-      navText: [
-        '<i class=" ti-arrow-left"></i>',
-        '<i class=" ti-arrow-right"></i>',
-      ],
-    });
+    // $(".home-slider-4").owlCarousel({
+    //   items: 1,
+    //   autoplay: true,
+    //   autoplayTimeout: 5000,
+    //   smartSpeed: 400,
+    //   autoplayHoverPause: true,
+    //   nav: true,
+    //   loop: true,
+    //   merge: true,
+    //   dots: false,
+    //   navText: [
+    //     '<i class=" ti-arrow-left"></i>',
+    //     '<i class=" ti-arrow-right"></i>',
+    //   ],
+    // });
 
     /*====================================
 		14. CountDown
@@ -313,7 +313,6 @@ Version:1.0
   /*====================================
 	18. Nice Select JS
 	======================================*/
-    
 
   /*=====================================
 	 Others JS
