@@ -67,7 +67,7 @@ Version:1.0
 	border-radius: 5px 0 0 5px;
 	background: #fff;
 	text-align: center;
-	color: #333;
+	color: #615858;
 	top: 0;
 	cursor: pointer;
 	box-shadow: -4px 0px 5px #00000036;
@@ -222,7 +222,7 @@ Version:1.0
 	font-weight: 500;
 	font-size: 14px;
 	color: #fff;
-	background: #333;
+	background: #615858;
 	display: inline-block;
 	-webkit-transition: all 0.4s ease;
 	-moz-transition: all 0.4s ease;
@@ -251,7 +251,7 @@ Version:1.0
 	width: 40px;
 	line-height: 40px;
 	background: transparent;
-	background: #222;
+	background: #615858;
 	border-radius: 0;
 	font-size: 18px;
 	-webkit-transition: all 500ms ease;
@@ -297,7 +297,7 @@ Version:1.0
 
 .header.v3 .navbar-expand-lg .navbar-collapse {
 	display: block !important;
-	background: #333;
+	background: #615858;
 }
 
 .header .nav li a i {
@@ -312,9 +312,9 @@ Version:1.0
 	position: absolute;
 	top: 100%;
 	z-index: 999;
-	-webkit-box-shadow: 0px 3px 5px #3333334d;
-	-moz-box-shadow: 0px 3px 5px #3333334d;
-	box-shadow: 0px 3px 5px #3333334d;
+	-webkit-box-shadow: 0px 3px 5px #6158583334d;
+	-moz-box-shadow: 0px 3px 5px #6158583334d;
+	box-shadow: 0px 3px 5px #6158583334d;
 	transform-origin: 0 0 0;
 	transform: scaleY(0.2);
 	-webkit-transition: all 0.3s ease 0s;
@@ -381,7 +381,7 @@ Version:1.0
 	-webkit-box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
 	-moz-box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
 	box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
-	box-shadow: 0px 3px 5px #3333334d;
+	box-shadow: 0px 3px 5px #6158583334d;
 	transform-origin: 0 0 0;
 	transform: scaleY(0.2);
 	-webkit-transition: all 0.3s ease 0s;
@@ -472,7 +472,7 @@ Version:1.0
 
 .header.shop .list-main li {
 	display: inline-block;
-	color: #333;
+	color: #615858;
 	font-size: 13px;
 	font-weight: 500;
 	border-right: 1px solid #f0f0f0;
@@ -494,7 +494,7 @@ Version:1.0
 }
 
 .header.shop .list-main li a {
-	color: #333;
+	color: #615858;
 }
 
 .header.shop .list-main li a:hover {
@@ -548,7 +548,7 @@ Version:1.0
 .header .shopping .icon {
 	position: relative;
 	cursor: pointer;
-	color: #222;
+	color: #615858;
 }
 
 .header .shopping .shopping-item {
@@ -589,7 +589,7 @@ Version:1.0
 
 .header .shopping .dropdown-cart-header span {
 	text-transform: uppercase;
-	color: #222;
+	color: #615858;
 	font-size: 13px;
 	font-weight: 600;
 }
@@ -597,7 +597,7 @@ Version:1.0
 .header .shopping .dropdown-cart-header a {
 	float: right;
 	text-transform: uppercase;
-	color: #222;
+	color: #615858;
 	font-size: 13px;
 	font-weight: 600;
 }
@@ -620,14 +620,14 @@ Version:1.0
 	line-height: 18px;
 	text-align: center;
 	background: #fff;
-	color: #222;
+	color: #615858;
 	border-radius: 0;
 	font-size: 11px;
 	border: 1px solid #ededed;
 }
 
 .header .shopping-list li .remove:hover {
-	background: #222;
+	background: #615858;
 	color: #fff !important;
 	border-color: transparent;
 }
@@ -661,7 +661,7 @@ Version:1.0
 .header .shopping-list h4 a {
 	font-weight: 600;
 	font-size: 13px;
-	color: #333;
+	color: #615858;
 }
 
 .header .shopping-list h4 a:hover {
@@ -680,7 +680,7 @@ Version:1.0
 
 .header .shopping-item .total span {
 	text-transform: uppercase;
-	color: #222;
+	color: #615858;
 	font-size: 13px;
 	font-weight: 600;
 	float: left;
@@ -692,7 +692,7 @@ Version:1.0
 }
 
 .header .shopping-item .bottom .btn {
-	background: #222;
+	background: #615858;
 	padding: 10px 20px;
 	display: block;
 	color: #fff;
@@ -732,7 +732,7 @@ Version:1.0
 }
 
 .header.shop .right-nav li a {
-	color: #333;
+	color: #615858;
 }
 
 .header.shop .logo {
@@ -839,7 +839,7 @@ Version:1.0
 	text-align: center;
 	font-size: 18px;
 	color: #fff;
-	background: #333333;
+	background: #615858;
 	position: absolute;
 	right: -2px;
 	top: -1px;
@@ -878,7 +878,7 @@ Version:1.0
 }
 
 .header.shop .header-inner {
-	background: #333;
+	background: #615858;
 }
 
 .header.shop.v3 .header-inner {
@@ -891,7 +891,7 @@ Version:1.0
 }
 
 .header.shop .topbar p {
-	color: #333;
+	color: #615858;
 }
 
 .header.shop .all-category {
@@ -942,7 +942,7 @@ Version:1.0
 .header.shop .main-category li a {
 	font-size: 14px;
 	font-weight: 600;
-	color: #333;
+	color: #615858;
 	padding: 13px 25px 13px 25px;
 	display: block;
 	text-transform: uppercase;
@@ -1051,7 +1051,7 @@ Version:1.0
 }
 
 .header.shop .main-category li .mega-menu .single-menu .title-link:hover {
-	background: #333;
+	background: #615858;
 	color: #fff;
 }
 
@@ -1110,7 +1110,7 @@ Version:1.0
 }
 
 .header.shop.v2 .nav li a {
-	color: #333;
+	color: #615858;
 }
 
 .header.shop .nav li a {
@@ -1142,7 +1142,7 @@ Version:1.0
 }
 
 .header.shop.v2 .nav li.active a {
-	color: #333 !important;
+	color: #615858 !important;
 	background: transparent !important;
 }
 
@@ -1159,7 +1159,7 @@ Version:1.0
 }
 
 .header.shop.v2 .nav li.active .dropdown li a {
-	color: #333 !important;
+	color: #615858 !important;
 }
 
 .header.shop.v2 .nav li.active .dropdown li a:hover {
@@ -1176,14 +1176,14 @@ Version:1.0
 }
 
 .header.shop .nav li .dropdown li a {
-	color: #333;
+	color: #615858;
 	padding: 8px 15px;
 	font-weight: 400;
 	background: #fff;
 }
 
 .header.shop.v2 .nav li .dropdown li a {
-	color: #333;
+	color: #615858;
 	background: #fff;
 }
 
@@ -1223,7 +1223,7 @@ Version:1.0
 }
 
 .header.shop .right-bar .sinlge-bar .single-icon {
-	color: #333;
+	color: #615858;
 	font-size: 20px;
 	position: relative;
 }
@@ -1313,7 +1313,7 @@ Version:1.0
 	border-radius: 3px;
 	border: none;
 	background: #fff;
-	color: #333;
+	color: #615858;
 	border-radius: 0;
 }
 
@@ -1330,7 +1330,7 @@ Version:1.0
 	border-radius: 0;
 	border-left: 1px solid #eee;
 	font-size: 15px;
-	color: #333;
+	color: #615858;
 	-webkit-transition: all 0.4s ease;
 	-moz-transition: all 0.4s ease;
 	transition: all 0.4s ease;
@@ -1369,7 +1369,7 @@ Version:1.0
 }
 
 .header.sticky .header-inner .nav li a {
-	color: #333;
+	color: #615858;
 }
 
 .header.sticky.v3 .header-inner .nav li a {
@@ -1385,11 +1385,11 @@ Version:1.0
 }
 
 .header.sticky .header-inner .nav li .dropdown li a {
-	color: #333;
+	color: #615858;
 }
 
 .header.sticky.v2 .header-inner .nav li .dropdown li a {
-	color: #333;
+	color: #615858;
 }
 
 .header.sticky .header-inner .nav li .dropdown li a:hover {
@@ -1463,13 +1463,13 @@ Version:1.0
 	font-size: 20px;
 	display: block;
 	margin-bottom: 12px;
-	color: #333;
+	color: #615858;
 	font-weight: 700;
 	line-height: initial;
 }
 
 .hero-slider .hero-text p {
-	color: #333;
+	color: #615858;
 	margin-bottom: 35px;
 }
 
@@ -1479,7 +1479,7 @@ Version:1.0
 
 .hero-slider .hero-text .btn {
 	color: #fff;
-	background: #333;
+	background: #615858;
 	padding: 13px 30px;
 	line-height: initial;
 	border: none;
@@ -1574,7 +1574,7 @@ Version:1.0
 
 .hero-area2 .single-slider .content .button .btn:hover {
 	background: #fff;
-	color: #333;
+	color: #615858;
 	border-color: transparent;
 }
 
@@ -1592,7 +1592,7 @@ Version:1.0
 	width: 40px;
 	line-height: 60px;
 	text-align: center;
-	background: #333;
+	background: #615858;
 	color: #fff;
 	font-size: 14px;
 	position: absolute;
@@ -1707,8 +1707,8 @@ Version:1.0
 .hero-area3 .small-content .button .btn {
 	background: transparent;
 	padding: 0;
-	color: #333;
-	border-bottom: 2px solid #333;
+	color: #615858;
+	border-bottom: 2px solid #615858;
 	font-size: 13px;
 }
 
@@ -1772,7 +1772,7 @@ Version:1.0
 	width: 40px;
 	line-height: 40px;
 	text-align: center;
-	background: #333;
+	background: #615858;
 	color: #fff;
 	font-size: 14px;
 	position: absolute;
@@ -1834,7 +1834,7 @@ Version:1.0
 	font-size: 22px;
 	font-weight: 700;
 	text-transform: capitalize;
-	color: #333;
+	color: #615858;
 }
 
 .small-banner .single-banner h3 span {
@@ -1850,14 +1850,14 @@ Version:1.0
 }
 
 .small-banner .single-banner a {
-	color: #333;
+	color: #615858;
 	margin-top: 22px;
 	display: block;
 	font-size: 12px;
 	font-weight: 500;
 	display: inline-block;
 	text-transform: uppercase;
-	border-bottom: 2px solid #333;
+	border-bottom: 2px solid #615858;
 }
 
 .small-banner .single-banner a:hover {
@@ -1900,7 +1900,7 @@ Version:1.0
 	font-size: 27px;
 	font-weight: 700;
 	text-transform: uppercase;
-	color: #333;
+	color: #615858;
 	line-height: 30px;
 }
 
@@ -1927,7 +1927,7 @@ Version:1.0
 	padding: .375rem .75rem;
 	font-size: 13px;
 	border-radius: .25rem;
-	background: #333;
+	background: #615858;
 	color: #fff !important;
 	padding: 10px 27px;
 	border-radius: 30px;
@@ -1980,7 +1980,7 @@ Version:1.0
 	width: 30px;
 	line-height: 58px;
 	background: #fff;
-	color: #333;
+	color: #615858;
 	position: absolute;
 	margin: 0;
 	border-radius: 0;
@@ -1989,7 +1989,7 @@ Version:1.0
 	-webkit-transition: all 0.4s ease;
 	-moz-transition: all 0.4s ease;
 	transition: all 0.4s ease;
-	box-shadow: 0px 0px 10px #3333331c;
+	box-shadow: 0px 0px 10px #333;
 }
 
 .most-popular .owl-carousel .owl-nav div:hover {
@@ -2025,14 +2025,14 @@ Version:1.0
 }
 
 .product-area .nav-tabs li a {
-	color: #333;
+	color: #615858;
 	text-transform: uppercase;
 	display: inline-block;
 	position: relative;
 	margin-right: 5px;
 	font-weight: 500;
 	background: #fff;
-	color: #333;
+	color: #615858;
 	padding: 3px 14px;
 	border-radius: 3px;
 	font-size: 13px;
@@ -2147,7 +2147,7 @@ Version:1.0
 
 .single-product .product-img .product-action a {
 	background-color: transparent;
-	color: #333;
+	color: #615858;
 	display: block;
 	font-size: 16px;
 	display: inline-block;
@@ -2208,7 +2208,7 @@ Version:1.0
 .single-product .product-img .product-action a:hover span {
 	visibility: visible;
 	opacity: 1;
-	color: #333;
+	color: #615858;
 	background: #fff;
 	margin-top: -12px;
 }
@@ -2241,7 +2241,7 @@ Version:1.0
 .single-product .product-img .product-action-2 a {
 	display: block;
 	background-color: transparent;
-	color: #333;
+	color: #615858;
 	text-align: left;
 	font-size: 12px;
 	font-weight: 600;
@@ -2303,7 +2303,7 @@ Version:1.0
 }
 
 .single-product .product-img .shop-list-quickview a:hover {
-	background-color: #222;
+	background-color: #615858;
 	color: #fff;
 }
 
@@ -2413,7 +2413,7 @@ Version:1.0
 
 .shop .range #slider-range .ui-slider-range {
 	box-shadow: none;
-	background: #222;
+	background: #615858;
 	border-radius: 0px;
 	border: none;
 }
@@ -2422,7 +2422,7 @@ Version:1.0
 	width: 14px;
 	height: 14px;
 	line-height: 10px;
-	background: #222;
+	background: #615858;
 	border: none;
 	border-radius: 100%;
 	top: -5px;
@@ -2448,7 +2448,7 @@ Version:1.0
 	margin: 0;
 	font-weight: 600;
 	font-size: 14px;
-	color: #222;
+	color: #615858;
 	background: transparent;
 }
 
@@ -2475,7 +2475,7 @@ Version:1.0
 	margin: 0;
 	font-size: 14px;
 	font-weight: 400;
-	color: #333;
+	color: #615858;
 	cursor: pointer;
 }
 
@@ -2546,7 +2546,7 @@ Version:1.0
 }
 
 .shop-sidebar .single-post .content h5 a {
-	color: #222;
+	color: #615858;
 	font-weight: 500;
 	font-size: 14px;
 	font-weight: 500;
@@ -2559,7 +2559,7 @@ Version:1.0
 
 .shop-sidebar .single-post .content .price {
 	display: block;
-	color: #333;
+	color: #615858;
 	font-weight: 500;
 	margin: 5px 0 0px 0;
 	text-transform: uppercase;
@@ -2777,13 +2777,13 @@ Version:1.0
 
 .shop.single .product-des .price {
 	font-size: 20px;
-	color: #333;
+	color: #615858;
 	font-weight: 600;
 	margin-top: 15px;
 }
 
 .shop.single .product-des .price s {
-	color: #333;
+	color: #615858;
 }
 
 .shop.single .product-des .price span {
@@ -2834,7 +2834,7 @@ Version:1.0
 	line-height: 30px;
 	text-align: center;
 	display: block;
-	background: #333;
+	background: #615858;
 }
 
 .shop.single .product-des .color ul li a i {
@@ -2983,7 +2983,7 @@ Version:1.0
 	text-transform: capitalize;
 	margin-right: 5px;
 	border-radius: 0px;
-	background: #333;
+	background: #615858;
 	color: #fff;
 	display: inline-block;
 	font-weight: 500;
@@ -3005,7 +3005,7 @@ Version:1.0
 .shop.single .cat {
 	font-size: 14px;
 	font-weight: 500;
-	color: #333;
+	color: #615858;
 	margin-top: 30px;
 }
 
@@ -3019,7 +3019,7 @@ Version:1.0
 }
 
 .shop.single .availability {
-	color: #333;
+	color: #615858;
 	font-size: 14px;
 	margin-top: 6px;
 }
@@ -3045,7 +3045,7 @@ Version:1.0
 	border: 0px solid;
 	border-radius: 0px;
 	background: #fff;
-	color: #333;
+	color: #615858;
 	padding: 10px 30px;
 	font-weight: 500;
 	font-size: 14px;
@@ -3220,7 +3220,7 @@ Version:1.0
 }
 
 .shop.single .comment-review .add-review p {
-	color: #333;
+	color: #615858;
 }
 
 .shop.single .comment-review h4 {
@@ -3250,7 +3250,7 @@ Version:1.0
 
 .shop.single .avg-ratting h4 {
 	font-size: 20px;
-	color: #333;
+	color: #615858;
 }
 
 .shop.single .avg-ratting {}
@@ -3263,7 +3263,7 @@ Version:1.0
 	border: 1px solid #ddd;
 	resize: none;
 	border-radius: 0;
-	color: #333;
+	color: #615858;
 }
 
 .shop.single .form .form-group button {
@@ -3279,11 +3279,11 @@ Version:1.0
 	border: 1px solid #ddd;
 	resize: none;
 	border-radius: 0;
-	color: #333;
+	color: #615858;
 }
 
 .shop.single .form .form-group label {
-	color: #333;
+	color: #615858;
 	position: relative;
 }
 
@@ -3388,7 +3388,7 @@ Version:1.0
 
 .shop-home-list .single-list .list-image .buy:hover {
 	background: #fff;
-	color: #333;
+	color: #615858;
 }
 
 .shop-home-list .single-list .list-image:hover .buy {
@@ -3421,7 +3421,7 @@ Version:1.0
 }
 
 .shop-home-list .single-list .content .titlea {
-	color: #333;
+	color: #615858;
 }
 
 .shop-home-list .single-list .content a:hover {
@@ -3613,7 +3613,7 @@ Version:1.0
 	width: 220px;
 	display: inline-block;
 	height: 48px;
-	color: #333;
+	color: #615858;
 	padding: 0px 20px;
 	border: none;
 	box-shadow: 0px 0px 5px #0000000a;
@@ -3625,7 +3625,7 @@ Version:1.0
 	border: navajowhite;
 	margin-left: 4px;
 	background: transparent;
-	color: #333;
+	color: #615858;
 	background: #fff;
 	box-shadow: 0px 0px 5px #00000012;
 }
@@ -3638,7 +3638,7 @@ Version:1.0
 .shopping-cart .total-amount .left label {
 	font-size: 22px;
 	font-weight: 500;
-	color: #333;
+	color: #615858;
 }
 
 .shopping-cart .total-amount .left .checkbox {
@@ -3650,7 +3650,7 @@ Version:1.0
 .shopping-cart .total-amount .left .checkbox label {
 	font-size: 15px;
 	font-weight: 400;
-	color: #333;
+	color: #615858;
 	position: relative;
 	padding-left: 30px;
 }
@@ -3710,14 +3710,14 @@ Version:1.0
 .shopping-cart .total-amount .right ul li {
 	font-size: 15px;
 	font-weight: 400;
-	color: #333;
+	color: #615858;
 	margin-bottom: 12px;
 }
 
 .shopping-cart .total-amount .right ul li.last {
 	padding-top: 12px;
 	border-top: 1px solid #c8c8c8;
-	color: #333;
+	color: #615858;
 	font-size: 15px;
 	font-weight: 400;
 }
@@ -3758,14 +3758,14 @@ Version:1.0
 
 .shop.checkout .checkout-form h2 {
 	font-size: 25px;
-	color: #333;
+	color: #615858;
 	font-weight: 700;
 	line-height: 27px;
 }
 
 .shop.checkout .checkout-form p {
 	font-size: 16px;
-	color: #333;
+	color: #615858;
 	font-weight: 400;
 	margin-top: 12px;
 	margin-bottom: 30px;
@@ -3778,7 +3778,7 @@ Version:1.0
 }
 
 .shop.checkout .form .form-group label {
-	color: #333;
+	color: #615858;
 	position: relative;
 }
 
@@ -3798,7 +3798,7 @@ Version:1.0
 	padding: 0 20px;
 	border-radius: 3px;
 	border-radius: 0px;
-	color: #333 !important;
+	color: #615858 !important;
 	border: none;
 	background: #F6F7FB;
 }
@@ -3823,12 +3823,12 @@ Version:1.0
 .shop.checkout .nice-select .list li {}
 
 .shop.checkout .nice-select .list li.option {
-	color: #333;
+	color: #615858;
 }
 
 .shop.checkout .nice-select .list li.option:hover {
 	background: #F6F7FB;
-	color: #333;
+	color: #615858;
 }
 
 .shop.checkout .form .address input {
@@ -3878,7 +3878,7 @@ Version:1.0
 	padding: 10px 30px;
 	line-height: 24px;
 	text-transform: uppercase;
-	color: #333;
+	color: #615858;
 	padding-bottom: 5px;
 }
 
@@ -3901,7 +3901,7 @@ Version:1.0
 	padding: 0px 30px;
 	font-size: 15px;
 	font-weight: 400;
-	color: #333;
+	color: #615858;
 	margin-bottom: 12px;
 }
 
@@ -3916,7 +3916,7 @@ Version:1.0
 	display: block;
 	font-size: 15px;
 	font-weight: 400;
-	color: #333;
+	color: #615858;
 }
 
 .shop.checkout .single-widget .checkbox {
@@ -4019,7 +4019,7 @@ Version:1.0
 .shop.login .login-form h2 {
 	position: relative;
 	font-size: 35px;
-	color: #333;
+	color: #615858;
 	font-weight: 400;
 	line-height: 27px;
 	text-transform: uppercase;
@@ -4041,7 +4041,7 @@ Version:1.0
 
 .shop.login .login-form p {
 	font-size: 14px;
-	color: #333;
+	color: #615858;
 	font-weight: 400;
 	text-align: center;
 	margin-bottom: 50px;
@@ -4062,13 +4062,13 @@ Version:1.0
 	padding: 0 20px;
 	border-radius: 3px;
 	border-radius: 0px;
-	color: #333 !important;
+	color: #615858 !important;
 	border: none;
 	background: #F6F7FB;
 }
 
 .shop.login .form .form-group label {
-	color: #333;
+	color: #615858;
 	position: relative;
 }
 
@@ -4117,7 +4117,7 @@ Version:1.0
 .shop.login .login-form .checkbox label {
 	font-size: 14px;
 	font-weight: 400;
-	color: #333;
+	color: #615858;
 	position: relative;
 	padding-left: 20px;
 }
@@ -4169,7 +4169,7 @@ Version:1.0
 .shop.login .login-form .lost-pass {
 	display: inline-block;
 	margin-left: 25px;
-	color: #333;
+	color: #615858;
 	font-size: 14px;
 	font-weight: 400;
 }
@@ -4224,7 +4224,7 @@ Version:1.0
 }
 
 .shop-list .list-content .rating li.total {
-	color: #333;
+	color: #615858;
 	font-size: 12px;
 	margin-left: 3px;
 }
@@ -4235,7 +4235,7 @@ Version:1.0
 	margin-top: 22px;
 	height: 42px;
 	line-height: 15px;
-	color: #333;
+	color: #615858;
 	background: transparent;
 	border: 1px solid #cecece;
 	font-size: 13px;
@@ -4388,7 +4388,7 @@ Version:1.0
 }
 
 .cown-down .content .cdown span {
-	color: #333;
+	color: #615858;
 	font-size: 22px;
 	font-weight: 400;
 	text-transform: uppercase;
@@ -4427,7 +4427,7 @@ Version:1.0
 	width: 50px;
 	line-height: 50px;
 	text-align: center;
-	color: #333;
+	color: #615858;
 	background: transparent;
 	border-radius: 100%;
 	display: block;
@@ -4442,7 +4442,7 @@ Version:1.0
 	font-weight: 600;
 	text-transform: uppercase;
 	line-height: 22px;
-	color: #333;
+	color: #615858;
 }
 
 .shop-services .single-service p {
@@ -4467,7 +4467,7 @@ Version:1.0
 }
 
 .shop-newsletter .inner h4 {
-	color: #333;
+	color: #615858;
 	font-size: 17px;
 	font-weight: 600;
 	margin-bottom: 5px;
@@ -4528,7 +4528,7 @@ Version:1.0
 }
 
 .shop-newsletter .newsletter-inner .btn:hover {
-	background: #333;
+	background: #615858;
 	color: #fff;
 }
 
@@ -4598,7 +4598,7 @@ Version:1.0
 }
 
 .about-us .about-content .button .btn {
-	background: #333;
+	background: #615858;
 	color: #fff;
 	margin-right: 15px;
 }
@@ -4614,7 +4614,7 @@ Version:1.0
 }
 
 .about-us .about-content .button .btn.primary:hover {
-	background: #333;
+	background: #615858;
 	color: #fff;
 }
 
@@ -4723,7 +4723,7 @@ Version:1.0
 .team .single-team .info-box .name {
 	display: block;
 	font-size: 17px;
-	color: #333;
+	color: #615858;
 	font-weight: 500;
 	margin-bottom: 3px;
 	text-transform: capitalize;
@@ -4794,7 +4794,7 @@ Version:1.0
 .shop-blog .shop-single-blog .content .title {
 	font-size: 17px;
 	font-weight: 600;
-	color: #333;
+	color: #615858;
 }
 
 .shop-blog .shop-single-blog .content .title:hover {
@@ -4890,7 +4890,7 @@ Version:1.0
 	text-shadow: none;
 	font-size: 14px;
 	border: none;
-	color: #222;
+	color: #615858;
 	background: transparent;
 	padding: 0 70px 0 20px;
 	-webkit-transition: all 0.4s ease;
@@ -4913,7 +4913,7 @@ Version:1.0
 	border: none;
 	font-size: 14px;
 	color: #fff;
-	background: #333;
+	background: #615858;
 	-webkit-transition: all 0.4s ease;
 	-moz-transition: all 0.4s ease;
 	transition: all 0.4s ease;
@@ -4941,7 +4941,7 @@ Version:1.0
 
 .main-sidebar .categor-list li a {
 	display: inline-block;
-	color: #333;
+	color: #615858;
 	font-size: 14px;
 }
 
@@ -5049,7 +5049,7 @@ Version:1.0
 
 .main-sidebar .side-tags .tag li a {
 	background: #fff;
-	color: #333;
+	color: #615858;
 	padding: 8px 14px;
 	text-transform: capitalize;
 	border-radius: 0;
@@ -5117,7 +5117,7 @@ Version:1.0
 }
 
 .main-sidebar .newsletter .letter-inner .form-inner a:hover {
-	background: #333;
+	background: #615858;
 	color: #fff;
 }
 
@@ -5322,7 +5322,7 @@ Version:1.0
 .blog-single .single-comment .content {}
 
 .blog-single .single-comment .content h4 {
-	color: #333;
+	color: #615858;
 	font-size: 16px;
 	font-weight: 500;
 	margin-bottom: 10px;
@@ -5411,7 +5411,7 @@ Version:1.0
 	line-height: 50px;
 	padding: 0 20px;
 	border-radius: 0px;
-	color: #333 !important;
+	color: #615858 !important;
 	border: none;
 	border: 1px solid #eee;
 }
@@ -5422,13 +5422,13 @@ Version:1.0
 	line-height: 50px;
 	padding: 0 20px;
 	border-radius: 0px;
-	color: #333 !important;
+	color: #615858 !important;
 	border: none;
 	border: 1px solid #eee;
 }
 
 .blog-single .reply .form-group label {
-	color: #333;
+	color: #615858;
 	position: relative;
 }
 
@@ -5524,7 +5524,7 @@ Version:1.0
 .contact-us .single-info .title {
 	margin-bottom: 10px;
 	font-weight: 500;
-	color: #333;
+	color: #615858;
 	font-size: 18px;
 }
 
@@ -5539,7 +5539,7 @@ Version:1.0
 	width: 100%;
 	border: 1px solid #e6e2f5;
 	padding: 0px 20px;
-	color: #333;
+	color: #615858;
 	border-radius: 0px;
 	font-weight: 400;
 }
@@ -5549,14 +5549,14 @@ Version:1.0
 	width: 100%;
 	border: 1px solid #e6e2f5;
 	padding: 15px 20px;
-	color: #333;
+	color: #615858;
 	border-radius: 0px;
 	resize: none;
 	font-weight: 400;
 }
 
 .contact-us .form .form-group label {
-	color: #333;
+	color: #615858;
 	position: relative;
 }
 
@@ -5605,7 +5605,7 @@ Version:1.0
 
 .mail-success .mail-inner p {
 	font-size: 14;
-	color: #333;
+	color: #615858;
 	margin-bottom: 30px;
 	line-height: 22px;
 }
@@ -5670,14 +5670,14 @@ Version:1.0
 .error-page .button .btn {
 	margin-right: 15px;
 	border-radius: 30px;
-	background: #333;
+	background: #615858;
 	color: #fff;
 	font-weight: 600;
 	font-size: 14px;
 	font-weight: 500;
 	border: 1px solid #d7d7d7;
 	background: transparent;
-	color: #333;
+	color: #615858;
 	padding: 10px 28px;
 }
 
@@ -5695,7 +5695,7 @@ Version:1.0
 	20. Start Footer CSS
 ===============================*/
 .footer {
-	background: #222;
+	background: #615858;
 }
 
 .footer .about {

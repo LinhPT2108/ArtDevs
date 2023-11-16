@@ -82,8 +82,8 @@
                                     aria-hidden="true"></i></a>
                             <!-- Shopping Item -->
                             <div class="shopping-item p-0" style="right: 40px; max-width: 250px; overflow-y: auto">
-                                <ul class="list-group list-group-flush">
-                                    <div ng-if="true">
+                                <ul class="list-group list-group-flush" ng-init="userlogin=true">
+                                    <div ng-if="userlogin">
                                         <li class="list-group-item">
                                             <a href="/account/profile">Thông tin tài khoản</a>
                                         </li>
@@ -94,7 +94,7 @@
                                             <a href="#">Đổi mật khẩu</a>
                                         </li>
                                     </div>
-                                    <div ng-if="false">
+                                    <div ng-if="userlogin">
                                         <li class="list-group-item">
                                             <a href="/account/logout">Đăng xuất</a>
                                         </li>

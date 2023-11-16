@@ -8,6 +8,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @RequestMapping("/account")
 public class accountController {
+
+    @GetMapping(value = "/login")
+    public String getLogin(){
+        return "index";
+    }
+
+     @GetMapping(value = "/register")
+    public String getRegister(){
+        return "index";
+    }
+
     @GetMapping(value = "/profile")
     public String getProfile(Model model) {
         return "index";

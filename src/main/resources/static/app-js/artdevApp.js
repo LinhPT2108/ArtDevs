@@ -19,9 +19,17 @@ app.config(function ($routeProvider, $locationProvider) {
       templateUrl: "templates/user/views/account.html",
       controller: "changePasswordCtrl",
     })
-    .when("/account/change-password", {
+    .when("/account/forgot-password", {
       templateUrl: "templates/user/views/forgotPass.html",
       controller: "forgotPasswordCtrl",
+    })
+    .when("/account/login", {
+      templateUrl: "templates/user/views/login.html",
+      controller: "loginCtrl"
+    })
+    .when("/account/register", {
+      templateUrl: "templates/user/views/register.html",
+      controller: "registerCtrl"
     })
     .when("/cart", {
       templateUrl: "templates/user/views/cart.html",

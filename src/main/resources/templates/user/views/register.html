@@ -1,0 +1,104 @@
+<section class="section">
+    <div class="container">
+        <div class="wrap_background_aside page_login">
+            <div class="row">
+                <div
+                    class="col-lg-4 col-md-6 col-sm-12 col-xl-4 offset-0 offset-xl-4 offset-lg-4 offset-md-3 offset-xl-3 col-12">
+                    <div class="row px-3 py-5" style="box-shadow:  0px 1px 10px 10px   #f0eaea">
+                        <div class="page-login pagecustome clearfix w-100">
+                            <div class="wpx">
+                                <h1 class="title_heads text-center"><span>Đăng ký</span></h1>
+                                <span class="block d-flex justify-content-center dkm mt-2">Đã có tài khoản, <a
+                                        href="/account/login" class="btn-link-style btn-register">&nbsp; đăng nhập tại
+                                        đây</a></span>
+                                <div id="login" class="form-login mt-3">
+                                    <form method="post" action="/account/login" id="customer_login"
+                                        accept-charset="UTF-8"><input name="FormType" type="hidden"
+                                            value="customer_login"><input name="utf8" type="hidden" value="true">
+                                        <span class="form-signup" style="color:red;">
+
+                                        </span>
+                                        <div class="form-signup clearfix">
+                                            <fieldset class="form-group">
+                                                <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
+                                                    class="form-control form-control-lg" value="" name="email"
+                                                    id="customer_email" placeholder="Email" required="">
+                                            </fieldset>
+                                            <fieldset class="form-group">
+                                                <input type="text"
+                                                    class="form-control form-control-lg" value="" name="fullname"
+                                                    id="customer_fullname" placeholder="Họ tên" required="">
+                                            </fieldset>
+                                            <fieldset class="form-group">
+                                                <input type="password" class="form-control form-control-lg" value=""
+                                                    name="password" id="customer_password" placeholder="Mật khẩu"
+                                                    required="">
+                                            </fieldset>
+                                            <fieldset class="form-group">
+                                                <input type="password" class="form-control form-control-lg" value=""
+                                                    name="repassword" id="customer_repassword" placeholder="Xác nhận mật khẩu"
+                                                    required="">
+                                            </fieldset>
+                                            <fieldset class="form-group pl-4">
+                                                <input id="remember" name="remember" type="checkbox"
+                                                    class="form-check-input" value="" />
+                                                <label id="_label" class="form-check-label" for="remember">Chấp nhận điều khoản & chính sách</label>
+                                            </fieldset>
+                                            <div class="d-flex flex-column">
+                                                <input class="btn btn-style btn_50 text-white" type="submit"
+                                                    value="Đăng nhập"
+                                                    style="background-color:#2a2929; margin-bottom: 1rem;">
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+
+                                <div class="h_recover" style="display:none;">
+                                    <div id="recover-password" class="form-signup page-login">
+                                        <form method="post" action="/account/login" id="recover_customer_password"
+                                            accept-charset="UTF-8"><input name="FormType" type="hidden"
+                                                value="recover_customer_password"><input name="utf8" type="hidden"
+                                                value="true">
+                                            <div class="form-signup" style="color: red;">
+
+                                            </div>
+                                            <div class="form-signup clearfix">
+                                                <fieldset class="form-group">
+                                                    <input type="email"
+                                                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
+                                                        class="form-control form-control-lg" value="" name="Email"
+                                                        id="recover-email" placeholder="Email" required="">
+                                                </fieldset>
+                                            </div>
+                                            <div class="action_bottom">
+                                                <input class="btn btn-style btn_50" style="margin-top: 0px;"
+                                                    type="submit" value="Lấy lại mật khẩu">
+
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="block social-login--facebooks d-flex flex-column justify-content-center mt-3">
+                                    <p class="text-center mb-3">
+                                        Hoặc đăng nhập bằng
+                                    </p>
+                                    <a href="javascript:void(0)" class="social-login--google mx-auto"
+                                        onclick="loginGoogle()"><img width="129px" height="37px"
+                                            alt="google-login-button"
+                                            src="//bizweb.dktcdn.net/assets/admin/images/login/gp-btn.svg"></a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

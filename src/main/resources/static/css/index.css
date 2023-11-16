@@ -1,4 +1,5 @@
 @charset "UTF-8";
+
 .card-title {
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
@@ -6,11 +7,13 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-.lof-clock-detail{
+
+.lof-clock-detail {
 	border-radius: 20px;
 	font-weight: bold;
 }
-.view-all-collection{
+
+.view-all-collection {
 	border-radius: 20px;
 	padding: 8px;
 }
@@ -21,4 +24,36 @@
 
 .all-category:hover .main-category {
 	display: block;
+}
+
+.form-group input[type="email"],
+.form-group input[type="password"] 
+,.form-group input[type="text"]{
+	height: 45px;
+	padding: 0 20px;
+	color: #333;
+	line-height: 45px;
+	border-color: #ebebeb;
+	box-shadow: none;
+	background: #ebebeb;
+	margin-bottom: 15px;
+	width: 100%;
+	outline: none;
+	border: initial;
+}
+
+.btn-link-style {
+	color: #F7941D !important;
+}
+
+.btn-link-style:hover {
+	color: black !important;
+}
+
+.btn-forgotpass:hover {
+	color: #F7941D !important;
+}
+
+.btn-style:hover {
+	background-color: #F7941D !important;
 }
