@@ -1,5 +1,4 @@
-CREATE DATABASE art_devs;
-GO
+
 USE art_devs;
 GO 
 INSERT INTO dbo.role
@@ -14,16 +13,15 @@ VALUES  ( N'admin'  -- role_name - nvarchar(255)
 		( N'user'  -- role_name - nvarchar(255)
         ),
 		( N'shipper'  -- role_name - nvarchar(255)
-        );
+        ); 
 GO
 
 INSERT INTO dbo.account
-        ( del ,
+        ( status ,
           email ,
           fullname ,
           image ,
           password ,
-          role ,
           account_id
         )
 VALUES  ( 0 , -- is_del - bit
@@ -31,7 +29,6 @@ VALUES  ( 0 , -- is_del - bit
           N'Phan Tuấn Linh' , -- fullname - nvarchar(255)
           'linhptpc04737.png' , -- image - varchar(255)
           'pgPPTyq4xNL/lOXiLqlAA7/gWAA=' , -- password đã được mã hóa 
-          2 , -- role - varchar(255)
           'linhptpc04737'  -- user_id - varchar(255)
         ),
 		( 0 , -- is_del - bit
@@ -39,18 +36,48 @@ VALUES  ( 0 , -- is_del - bit
           N'Trần Chí Nguyễn' , -- fullname - nvarchar(255)
           'nguyentcpc04750.png' , -- image - varchar(255)
           'pgPPTyq4xNL/lOXiLqlAA7/gWAA=' , -- password đã được mã hóa 
-          1 , -- role - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
 		( 0 , -- is_del - bit
-          'nhintpc04729@fpt.edu.vn' , -- email - varchar(255)
-          N'Nguyễn Tấn Nhi' , -- fullname - nvarchar(255)
-          'nhintpc04729.png' , -- image - varchar(255)
+          'vinhtppc04838@fpt.edu.vn' , -- email - varchar(255)
+          N'Trần Phúc Vinh' , -- fullname - nvarchar(255)
+          'vinhtppc04838.png' , -- image - varchar(255)
           'pgPPTyq4xNL/lOXiLqlAA7/gWAA=' , -- password đã được mã hóa 
-          3 , -- role - varchar(255)
-          'nhintpc04729'  -- user_id - varchar(255)
+          'vinhtppc04838'  -- user_id - varchar(255)
+        ),
+		( 0 , -- is_del - bit
+          'nguyentc@fpt.edu.vn' , -- email - varchar(255)
+          N'Trần Chí Nguyễn' , -- fullname - nvarchar(255)
+          'nguyentc.png' , -- image - varchar(255)
+          'pgPPTyq4xNL/lOXiLqlAA7/gWAA=' , -- password đã được mã hóa 
+          'nguyentc'  -- user_id - varchar(255)
         );
 GO
+
+INSERT INTO dbo.account_role
+        ( role_id, user_id )
+VALUES  ( 1, -- role_id - int
+        'vinhtppc04838'  -- user_id - varchar(255)
+        ),
+		( 2, -- role_id - int
+        'vinhtppc04838'  -- user_id - varchar(255)
+        ),
+		( 1, -- role_id - int
+        'nguyentcpc04750'  -- user_id - varchar(255)
+        ),
+		( 2, -- role_id - int
+        'nguyentcpc04750'  -- user_id - varchar(255)
+        ),
+		( 3, -- role_id - int
+        'nguyentcpc04750'  -- user_id - varchar(255)
+        ),
+		( 2, -- role_id - int
+        'linhptpc04737'  -- user_id - varchar(255)
+        ),
+		( 3, -- role_id - int
+        'nguyentc'  -- user_id - varchar(255)
+        );
+GO 
 
 INSERT INTO dbo.infor_address
         ( address, phone_number, user_infor )
@@ -68,77 +95,188 @@ VALUES  ( N'An phú, Ninh Kiều, Cần Thơ', -- address - nvarchar(255)
         ),
 		( N'Cờ Đỏ, Cần Thơ', -- address - nvarchar(255)
         '0909888666', -- phone_number - varchar(255)
-        'nhintpc04729'  -- user_id - varchar(255)
+        'vinhtppc04838'  -- user_id - varchar(255)
         );
 GO
 
+INSERT INTO dbo.keyword_suggestions
+        ( date, keywords, user_id )
+VALUES  ( SYSDATETIME(), -- date - datetime2(6)
+          N'Ti vi Samsung', -- keywords - nvarchar(255)
+          'linhptpc04737'  -- user_id - varchar(255)
+          ),
+		  ( SYSDATETIME(), -- date - datetime2(6)
+          N'Máy lạnh', -- keywords - nvarchar(255)
+          'linhptpc04737'  -- user_id - varchar(255)
+          ),
+		  ( SYSDATETIME(), -- date - datetime2(6)
+          N'Nồi chiên', -- keywords - nvarchar(255)
+          'linhptpc04737'  -- user_id - varchar(255)
+          ),
+		  ( SYSDATETIME(), -- date - datetime2(6)
+          N'Tủ', -- keywords - nvarchar(255)
+          'linhptpc04737'  -- user_id - varchar(255)
+          ),
+		  ( SYSDATETIME(), -- date - datetime2(6)
+          N'Bếp gas', -- keywords - nvarchar(255)
+          'linhptpc04737'  -- user_id - varchar(255)
+          );
+GO
+
 INSERT INTO dbo.voucher
-        ( discount, user_voucher )
-VALUES  ( 99000, -- discount - float
-        'nguyentcpc04750'  -- user_id - varchar(255)
+        ( discount ,
+          maximum_number_of_uses ,
+          maximum_price_discount ,
+          number_of_uses ,
+          end_day ,
+          start_day ,
+          user_voucher
+        )
+VALUES  ( 99000 , -- discount - float
+          1000 , -- maximum_number_of_uses - int
+          149000 , -- maximum_price_discount - float
+          260 , -- number_of_uses - int
+          SYSDATETIME() ,   -- end_day - datetime2(6)
+          '2023-12-31 23:59:00' , -- start_day - datetime2(6)
+          'nguyentcpc04750'  -- user_voucher - varchar(255)
         ),
-		( 199000, -- discount - float
-        'nguyentcpc04750'  -- user_id - varchar(255)
+        ( 199000 , -- discount - float
+          900 , -- maximum_number_of_uses - int
+          249000 , -- maximum_price_discount - float
+          55 , -- number_of_uses - int
+          SYSDATETIME() ,   -- end_day - datetime2(6)
+          '2023-12-31 23:59:00' , -- start_day - datetime2(6)
+          'nguyentcpc04750'  -- user_voucher - varchar(255)
         ),
-		( 299000, -- discount - float
-        'nguyentcpc04750'  -- user_id - varchar(255)
+        ( 299000 , -- discount - float
+          800 , -- maximum_number_of_uses - int
+          349000 , -- maximum_price_discount - float
+          40 , -- number_of_uses - int
+          SYSDATETIME() ,   -- end_day - datetime2(6)
+          '2023-12-31 23:59:00' , -- start_day - datetime2(6)
+          'nguyentcpc04750'  -- user_voucher - varchar(255)
         ),
-		( 399000, -- discount - float
-        'nguyentcpc04750'  -- user_id - varchar(255)
+        ( 399000 , -- discount - float
+          700 , -- maximum_number_of_uses - int
+          449000 , -- maximum_price_discount - float
+          20 , -- number_of_uses - int
+          SYSDATETIME() ,   -- end_day - datetime2(6)
+          '2023-12-31 23:59:00' , -- start_day - datetime2(6)
+          'nguyentcpc04750'  -- user_voucher - varchar(255)
         ),
-		( 499000, -- discount - float
-        'nguyentcpc04750'  -- user_id - varchar(255)
+        ( 499000 , -- discount - float
+          600 , -- maximum_number_of_uses - int
+          549000 , -- maximum_price_discount - float
+          18 , -- number_of_uses - int
+          SYSDATETIME() ,   -- end_day - datetime2(6)
+          '2023-12-31 23:59:00' , -- start_day - datetime2(6)
+          'nguyentcpc04750'  -- user_voucher - varchar(255)
         ),
-		( 599000, -- discount - float
-        'nguyentcpc04750'  -- user_id - varchar(255)
+        ( 599000 , -- discount - float
+          500 , -- maximum_number_of_uses - int
+          649000 , -- maximum_price_discount - float
+          15 , -- number_of_uses - int
+          SYSDATETIME() ,   -- end_day - datetime2(6)
+          '2023-12-31 23:59:00' , -- start_day - datetime2(6)
+          'nguyentcpc04750'  -- user_voucher - varchar(255)
         ),
-		( 699000, -- discount - float
-        'nguyentcpc04750'  -- user_id - varchar(255)
+        ( 699000 , -- discount - float
+          400 , -- maximum_number_of_uses - int
+          749000 , -- maximum_price_discount - float
+          9 , -- number_of_uses - int
+          SYSDATETIME() ,   -- end_day - datetime2(6)
+          '2023-12-31 23:59:00' , -- start_day - datetime2(6)
+          'nguyentcpc04750'  -- user_voucher - varchar(255)
         ),
-		( 799000, -- discount - float
-        'nguyentcpc04750'  -- user_id - varchar(255)
+        ( 799000 , -- discount - float
+          300 , -- maximum_number_of_uses - int
+          849000 , -- maximum_price_discount - float
+          8 , -- number_of_uses - int
+          SYSDATETIME() ,   -- end_day - datetime2(6)
+          '2023-12-31 23:59:00' , -- start_day - datetime2(6)
+          'nguyentcpc04750'  -- user_voucher - varchar(255)
         ),
-		( 899000, -- discount - float
-        'nguyentcpc04750'  -- user_id - varchar(255)
+        ( 899000 , -- discount - float
+          200 , -- maximum_number_of_uses - int
+          949000 , -- maximum_price_discount - float
+          5 , -- number_of_uses - int
+          SYSDATETIME() ,   -- end_day - datetime2(6)
+          '2023-12-31 23:59:00' , -- start_day - datetime2(6)
+          'nguyentcpc04750'  -- user_voucher - varchar(255)
         ),
-		( 999000, -- discount - float
-        'nguyentcpc04750'  -- user_id - varchar(255)
-        ),
-		( 1190000, -- discount - float
-        'nguyentcpc04750'  -- user_id - varchar(255)
-        ),
-		( 1490000, -- discount - float
-        'nguyentcpc04750'  -- user_id - varchar(255)
+        ( 999000 , -- discount - float
+          100 , -- maximum_number_of_uses - int
+          1499000 , -- maximum_price_discount - float
+          2 , -- number_of_uses - int
+          SYSDATETIME() ,   -- end_day - datetime2(6)
+          '2023-12-31 23:59:00' , -- start_day - datetime2(6)
+          'nguyentcpc04750'  -- user_voucher - varchar(255)
         );
 GO
 
 INSERT INTO dbo.flash_sale
-        ( is_status ,
-          end_day ,
+        ( status ,
           start_day ,
+          end_day ,
           user_flash_sale
         )
 VALUES  ( 1 , -- is_status - bit
-          '2023-07-12' , -- end_day - datetime2(6)
-          '2023-06-12' , -- start_day - datetime2(6)
+          '2023-01-01 00:00:00' ,  -- start_day - datetime2(6)
+          '2023-02-01 23:59:00' ,  -- end_day - datetime2(6)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 1 , -- is_status - bit
-          '2023-10-12' , -- end_day - datetime2(6)
-          '2023-09-12' , -- start_day - datetime2(6)
+        ( 0 , -- is_status - bit
+          '2023-02-01 00:00:00' ,  -- start_day - datetime2(6)
+          '2023-03-01 23:59:00' ,  -- end_day - datetime2(6)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 0 , -- is_status - bit
-          '2023-11-12' , -- end_day - datetime2(6)
-          '2023-10-12' , -- start_day - datetime2(6)
+        ( 0 , -- is_status - bit
+          '2023-03-01 00:00:00' ,  -- start_day - datetime2(6)
+          '2023-04-01 23:59:00' ,  -- end_day - datetime2(6)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 1 , -- is_status - bit
-          '2023-12-12' , -- end_day - datetime2(6)
-          '2023-11-12' , -- start_day - datetime2(6)
+        ( 0 , -- is_status - bit
+          '2023-04-01 00:00:00' ,  -- start_day - datetime2(6)
+          '2023-05-01 23:59:00' ,-- end_day - datetime2(6)
+          'nguyentcpc04750'  -- user_id - varchar(255)
+        ),
+        ( 0 , -- is_status - bit
+          '2023-05-01 00:00:00' ,  -- start_day - datetime2(6)
+          '2023-06-01 23:59:00' ,-- end_day - datetime2(6)
+          'nguyentcpc04750'  -- user_id - varchar(255)
+        ),
+        ( 0 , -- is_status - bit
+          '2023-06-01 00:00:00' ,  -- start_day - datetime2(6)
+          '2023-07-01 23:59:00' ,-- end_day - datetime2(6)
+          'nguyentcpc04750'  -- user_id - varchar(255)
+        ),
+        ( 0 , -- is_status - bit
+          '2023-07-01 00:00:00' ,  -- start_day - datetime2(6)
+          '2023-08-01 23:59:00' ,-- end_day - datetime2(6)
+          'nguyentcpc04750'  -- user_id - varchar(255)
+        ),
+        ( 0 , -- is_status - bit
+          '2023-08-01 00:00:00' ,  -- start_day - datetime2(6)
+          '2023-09-01 23:59:00' ,-- end_day - datetime2(6)
+          'nguyentcpc04750'  -- user_id - varchar(255)
+        ),
+        ( 0 , -- is_status - bit
+          '2023-09-01 00:00:00' ,  -- start_day - datetime2(6)
+          '2023-10-01 23:59:00' ,-- end_day - datetime2(6)
+          'nguyentcpc04750'  -- user_id - varchar(255)
+        ),
+        ( 0 , -- is_status - bit
+          '2023-10-01 00:00:00' ,  -- start_day - datetime2(6)
+          '2023-11-01 23:59:00' ,-- end_day - datetime2(6)
+          'nguyentcpc04750'  -- user_id - varchar(255)
+        ),
+        ( 0 , -- is_status - bit
+          '2023-11-01 00:00:00' ,  -- start_day - datetime2(6)
+          '2023-12-01 23:59:00' ,  -- end_day - datetime2(6)
           'nguyentcpc04750'  -- user_id - varchar(255)
         );
 GO
+
 
 INSERT  INTO dbo.banner
         ( banner_name, user_banner )
@@ -153,20 +291,21 @@ VALUES  ( 'salemonth09.png', -- banner_name - varchar(255)
         );
 GO
 
+
 INSERT INTO dbo.manufacturer
         ( del ,
           manufacturer_name ,
           user_manufacturer
         )
-VALUES  ( 1 , -- is_del - bit
+VALUES  ( 0 , -- is_del - bit
           'Samsung' , -- manufacturer_name - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 1 , -- is_del - bit
+		( 0 , -- is_del - bit
           'LG' , -- manufacturer_name - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 1 , -- is_del - bit
+		( 0 , -- is_del - bit
           'Toshiba' , -- manufacturer_name - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
@@ -174,38 +313,38 @@ VALUES  ( 1 , -- is_del - bit
           'Asanyo' , -- manufacturer_name - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 1 , -- is_del - bit
+		( 0 , -- is_del - bit
           'Media' , -- manufacturer_name - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 1 , -- is_del - bit
+		( 0 , -- is_del - bit
           'VSP' , -- manufacturer_name - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 1 , -- is_del - bit
+		( 0 , -- is_del - bit
           'Sony' , -- manufacturer_name - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 1 , -- is_del - bit
+		( 0 , -- is_del - bit
           'TCL' , -- manufacturer_name - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 1 , -- is_del - bit
+		( 1 , -- available - bit
           'Sharp' , -- manufacturer_name - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 1 , -- is_del - bit
+		( 0 , -- is_del - bit
           'Aqua' , -- manufacturer_name - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 1 , -- is_del - bit
+		( 0 , -- is_del - bit
           'Xiaomi' , -- manufacturer_name - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         );
 GO
 
 INSERT INTO dbo.category
-        ( del, category_name, user_category )
+        ( status, category_name, user_category )
 VALUES  ( 1, -- is_del - bit
           N'Tivi', -- category_name - nvarchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
@@ -247,331 +386,268 @@ VALUES  ( 1, -- is_del - bit
           'nguyentcpc04750'  -- user_id - varchar(255)
         );
 GO
+
 INSERT INTO dbo.product
         ( category ,
-          del ,
+          available ,
           manufacturer , 
-          quantity_in_stock ,
-          price,
           product_id, 
           product_name ,
           user_product,
           created_date
         )
 VALUES  ( 1 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           1 , -- manufacturer_id - int
-          20 , -- quantity_in_stock - int
-          23000000 , -- price 
           'QA55Q65A' , -- product_id - varchar(255)
           N'Smart Tivi QLED 4K 55 inch Samsung QA55Q65A' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
         ( 1 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           2 , -- manufacturer_id - int
-          10 , -- quantity_in_stock - int
-          16000000 , -- price 
           '55NANO76SQA' , -- product_id - varchar(255)
           N'Smart Tivi NanoCell LG 4K 55 inch 55NANO76SQA' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
         ( 1 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           3 , -- manufacturer_id - int
-          5 , -- quantity_in_stock - int
-          9000000 , -- price 
           '32V35KP' , -- product_id - varchar(255)
           N'Android Tivi Toshiba 32 inch 32V35KP' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
         ( 1 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           1 , -- manufacturer_id - int
-          18 , -- quantity_in_stock - int
-          9990000 , -- price 
           'QA43Q65A' , -- product_id - varchar(255)
           N'Smart Tivi QLED 4K 43 inch Samsung QA43Q65A' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
 		( 1 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           1 , -- manufacturer_id - int
-          19 , -- quantity_in_stock - int
-          8250000 , -- price 
           'UA43BU8000' , -- product_id - varchar(255)
           N'Smart Tivi Samsung 4K Crystal UHD 43 inch UA43BU8000' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
 		    ( 1 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           1 , -- manufacturer_id - int
-          18 , -- quantity_in_stock - int
-          11090000 , -- price 
           'UA55AU8100' , -- product_id - varchar(255)
           N'Smart Tivi Samsung 4K Crystal UHD 55 inch UA55AU8100' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
 		    ( 1 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           1 , -- manufacturer_id - int
-          20 , -- quantity_in_stock - int
-          6890000 , -- price 
           'UA43AU7002' , -- product_id - varchar(255)
           N'Smart Tivi Samsung 4K 43 inch UA43AU7002' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
 		    ( 1 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           1 , -- manufacturer_id - int
-          25 , -- quantity_in_stock - int
-          12890000 , -- price 
           'UA65AU8100' , -- product_id - varchar(255)
           N'Smart Tivi Samsung 4K Crystal UHD 65 inch UA65AU8100' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
         ( 1 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           1 , -- manufacturer_id - int
-          15 , -- quantity_in_stock - int
-          15490000 , -- price 
           'QA65Q65A' , -- product_id - varchar(255)
           N'Smart Tivi QLED 4K 65 inch Samsung QA65Q65A' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
 		( 1 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           1 , -- manufacturer_id - int
-          10 , -- quantity_in_stock - int
-          10990000 , -- price 
           'QA50Q65A' , -- product_id - varchar(255)
           N'Smart Tivi QLED 4K 50 inch Samsung QA50Q65A' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
 		( 1 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           1 , -- manufacturer_id - int
-          8 , -- quantity_in_stock - int
-          10590000 , -- price 
           'UA55BU8000' , -- product_id - varchar(255)
           N'Smart Tivi Samsung 4K Crystal UHD 55 inch UA55BU8000' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
 		( 1 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           1 , -- manufacturer_id - int
-          30 , -- quantity_in_stock - int
-          14990000 , -- price 
           'QA65Q60B' , -- product_id - varchar(255)
           N'Smart Tivi QLED 4K 65 inch Samsung QA65Q60B' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
 		( 1 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           2 , -- manufacturer_id - int
-          5 , -- quantity_in_stock - int
-          10990000 , -- price 
           '55UQ8000PSC' , -- product_id - varchar(255)
           N'Smart Tivi LG 4K 55 inch 55UQ8000PSC' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
 		( 1 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           2 , -- manufacturer_id - int
-          10 , -- quantity_in_stock - int
-          14990000 , -- price 
           '65NANO76SQA' , -- product_id - varchar(255)
           N'Smart Tivi NanoCell LG 4K 65 inch 65NANO76SQA' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
         ( 1 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           2 , -- manufacturer_id - int
-          5 , -- quantity_in_stock - int
-          12990000 , -- price 
           '65UQ8000PSC' , -- product_id - varchar(255)
           N'Smart Tivi LG 4K 65 inch 65UQ8000PSC' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),( 1 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           2 , -- manufacturer_id - int
-          20 , -- quantity_in_stock - int
-          7990000 , -- price 
           '43UQ7550PSF' , -- product_id - varchar(255)
           N'Smart Tivi LG 4K 43 inch 43UQ7550PSF' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
         ( 1 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           2 , -- manufacturer_id - int
-          10 , -- quantity_in_stock - int
-          8390000 , -- price 
           '43UQ8000PSC' , -- product_id - varchar(255)
           N'Smart Tivi LG 4K 43 inch 43UQ8000PSC' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
         ( 1 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           2 , -- manufacturer_id - int
-          5 , -- quantity_in_stock - int
-          9990000 , -- price 
           '43NANO76SQA' , -- product_id - varchar(255)
           N'Smart Tivi NanoCell LG 4K 43 inch 43NANO76SQA' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
         ( 1 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           2 , -- manufacturer_id - int
-          10 , -- quantity_in_stock - int
-          9490000 , -- price 
           '50UQ7550PSF' , -- product_id - varchar(255)
           N'Smart Tivi LG 4K 50 inch 50UQ7550PSF' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
         ( 1 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           2 , -- manufacturer_id - int
-          5 , -- quantity_in_stock - int
-          9990000 , -- price 
           '50UQ8000PSC' , -- product_id - varchar(255)
           N'Smart Tivi LG 4K 50 inch 50UQ8000PSC' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
         ( 1 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           2 , -- manufacturer_id - int
-          5 , -- quantity_in_stock - int
-          10490000 , -- price 
           '55UQ7550PSF' , -- product_id - varchar(255)
           N'Smart Tivi LG 4K 55 inch 55UQ7550PSF' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
         ( 2 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           1 , -- manufacturer_id - int
-          35 , -- quantity_in_stock - int
-          19000000 , -- price 
           'RT25M4032BU' , -- product_id - varchar(255)
           N'Tủ lạnh Samsung Inverter 256 lít RT25M4032BU' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
         ( 2 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           2 , -- manufacturer_id - int
-          50 , -- quantity_in_stock - int
-          22000000 , -- price 
           'GR-B256JDS' , -- product_id - varchar(255)
           N'Tủ lạnh LG Inverter 519 lít Side By Side GR-B256JDS' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
         ( 2 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           3 , -- manufacturer_id - int
-          20 , -- quantity_in_stock - int
-          11500000 , -- price 
           'GR-RF610WE-PGV(22)-XK' , -- product_id - varchar(255)
           N'Tủ lạnh Toshiba Inverter 511 lít Multi Door GR-RF610WE-PGV(22)-XK' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
         ( 3 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           1 , -- manufacturer_id - int
-          35 , -- quantity_in_stock - int
-          11500000 , -- price 
           'WW80T3020WW' , -- product_id - varchar(255)
           N'Máy giặt Samsung Inverter 8kg WW80T3020WW' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
         ( 3 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           2 , -- manufacturer_id - int
-          50 , -- quantity_in_stock - int
-          15000000 , -- price 
           'T2351VSAB' , -- product_id - varchar(255)
           N'Máy giặt LG TurboDrum Inverter 11.5 kg T2351VSAB' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
         ( 3 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           3 , -- manufacturer_id - int
-          20 , -- quantity_in_stock - int
-          9500000 , -- price 
           'AW-L805AV' , -- product_id - varchar(255)
           N'Máy giặt Toshiba 7 Kg AW-L805AV (SG)' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
         ( 4 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           1 , -- manufacturer_id - int
-          35 , -- quantity_in_stock - int
-          14500000 , -- price 
           'AR13CYFAAWKNSV' , -- product_id - varchar(255)
           N'Máy lạnh Samsung Inverter 1.5 HP AR13CYFAAWKNSV' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
         ( 4 , -- category_id - int
-          0 , -- is_del - bit
-          2 , -- manufacturer_id - int
-          50 , -- quantity_in_stock - int
-          18500000 , -- price - decimal (18,2) - Giá sản phẩm
+          1 , -- available - bit
+          2 , -- manufacturer_id - intl (18,2) - Giá sản phẩm
          'ZTNQ18GPLA0' , -- product_id - varchar(255)
           N'Máy lạnh âm trần LG Inverter 2 HP ZTNQ18GPLA0' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
         ( 4 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           3 , -- manufacturer_id - int
-          20 , -- quantity_in_stock - int
-          8500000 , -- price 
           'RAS-H10Z1KCVG-V' , -- product_id - varchar(255)
           N'Máy lạnh Toshiba Inverter 1 HP RAS-H10Z1KCVG-V' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         ),
         ( 4 , -- category_id - int
-          0 , -- is_del - bit
+          1 , -- available - bit
           5 , -- manufacturer_id - int
-          50 , -- quantity_in_stock - int
-          12000000 , -- price 
           'MSAGA-10CRDN8' , -- product_id - varchar(255)
           N'Máy lạnh Midea Inverter 1 HP MSAGA-10CRDN8' , -- product_name - nvarchar(255)
           'nguyentcpc04750',  -- user_id - varchar(255)
-          GETDATE()
+          SYSDATETIME()
         );
 
 GO
 	
 INSERT INTO dbo.detail_description
-        ( description, product_id, tile )
+        ( description, product_id, title )
 VALUES  ( N'Smart Tivi QLED 4K 55 inch Samsung QA55Q65A với thiết kế với màn hình tràn viền 4 cạnh, 
 			cho người dùng trải nghiệm khung hình giải trí trên tivi chân thực như thực tế đang xảy ra trước mắt.
 			Tivi Samsung 55 inch có chân đế được thiết kế gọn gàng, vững chắc. Mang lại sự thanh lịch, 
@@ -1057,60 +1133,139 @@ VALUES  ( 'QA55Q65A_1.png', -- image - varchar(255)
         );
 GO 
 
+INSERT INTO dbo.product_detail
+        ( power ,
+          quantity_in_stock ,
+          weight ,
+          production_date ,
+          color ,
+          product_id ,
+          size 
+        )
+VALUES  ( 50 ,10 ,8 ,SYSDATETIME() ,'White' ,'QA55Q65A' ,'130cmx80cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'55NANO76SQA' ,'120cmx70cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'32V35KP' ,'150cmx65cmx8cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA43Q65A' ,'120cmx80cmx8cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'UA43BU8000' ,'130cmx80cmx8cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'UA55AU8100' ,'140cmx90cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'UA43AU7002' ,'130cmx100cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'UA65AU8100' ,'130cmx85cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA65Q65A' ,'130cmx83cmx8cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA50Q65A' ,'130cmx80cmx7cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'UA55BU8000' ,'130cmx80cmx9cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA65Q60B' ,'140cmx80cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'55UQ8000PSC' ,'133cmx80cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'65NANO76SQA' ,'135cmx60cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'65UQ8000PSC' ,'120cmx70cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'43UQ7550PSF' ,'135cmx80cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'43UQ8000PSC' ,'138cmx80cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'43NANO76SQA' ,'141cmx80cmx8cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'50UQ7550PSF' ,'150cmx80cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'50UQ8000PSC' ,'135cmx70cmx8cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'55UQ7550PSF' ,'130cmx60cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'RT25M4032BU' ,'160cmx80cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'GR-B256JDS' ,'140cmx80cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'GR-RF610WE-PGV(22)-XK' ,'130cmx90cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'WW80T3020WW' ,'130cmx85cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'T2351VSAB' ,'130cmx85cmx8cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'AW-L805AV' ,'130cmx88cmx10cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'AR13CYFAAWKNSV' ,'180cmx80cmx11cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'ZTNQ18GPLA0' ,'170cmx80cmx8cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'RAS-H10Z1KCVG-V' ,'140cmx80cmx8cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'MSAGA-10CRDN8' ,'130cmx80cmx9cm' );
+GO        
 
-INSERT INTO dbo.invoice
+INSERT INTO dbo.price
+        ( price ,
+          created_date ,
+          product_detail_id
+        )
+VALUES  ( 23000000,SYSDATETIME(), 1 ),
+        ( 16000000 ,SYSDATETIME(), 2 ),
+        ( 9000000 ,SYSDATETIME(), 3 ),
+        ( 9990000 ,SYSDATETIME(), 4 ),
+        ( 8250000 ,SYSDATETIME(), 5 ),
+        ( 11090000 ,SYSDATETIME(), 6 ),
+        ( 6890000 ,SYSDATETIME(), 7 ),
+        ( 12890000 ,SYSDATETIME(), 8 ),
+        ( 15490000 ,SYSDATETIME(), 9 ),
+        ( 10990000 ,SYSDATETIME(), 10 ),
+        ( 10590000 ,SYSDATETIME(), 11 ),
+        ( 14990000 ,SYSDATETIME(), 12 ),
+        ( 10990000 ,SYSDATETIME(), 13 ),
+        ( 14990000 ,SYSDATETIME(), 14 ),
+        ( 12990000 ,SYSDATETIME(), 15 ),
+        ( 7990000 ,SYSDATETIME(), 16 ),
+        ( 8390000 ,SYSDATETIME(), 17 ),
+        ( 9990000 ,SYSDATETIME(), 18 ),
+        ( 9490000 ,SYSDATETIME(), 19 ),
+        ( 9990000 ,SYSDATETIME(), 20 ),
+        ( 10490000 ,SYSDATETIME(), 21 ),
+        ( 19000000 ,SYSDATETIME(), 22 ),
+        ( 22000000 ,SYSDATETIME(), 23 ),
+        ( 11500000 ,SYSDATETIME(), 24 ),
+        ( 11500000 ,SYSDATETIME(), 25 ),
+        ( 15000000 ,SYSDATETIME(), 26 ),
+        ( 9500000 ,SYSDATETIME(), 27 ),
+        ( 14500000 ,SYSDATETIME(), 28 ),
+        ( 18500000 ,SYSDATETIME(), 29 ),
+        ( 8500000 ,SYSDATETIME(), 30 ),
+        ( 12000000 ,SYSDATETIME(), 31 );
+GO 
+
+INSERT INTO dbo.orders
         ( total_amount ,
-          invoice_date ,
-          note ,
-          user_invoice,
+          order_date ,
+          delivery_address ,
+          user_id,
 		  status
         )
 VALUES  ( 18000000 , -- total_amount - float
-          '2023-09-01' , -- invoice_date - datetime2(6)
+          '2023-09-01 13:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
 		  3
         ),
 		( 17980000 , -- total_amount - float
-          '2023-10-01' , -- invoice_date - datetime2(6)
+          '2023-10-01 13:30:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
 		  3
         ),
 		( 44650000 , -- total_amount - float
-          '2023-10-05' , -- invoice_date - datetime2(6)
+          '2023-10-05 13:15:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
 		  3
         ),
 		( 144950000 , -- total_amount - float
-          '2023-10-10' , -- invoice_date - datetime2(6)
+          '2023-10-10 13:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
 		  3
         ),
 		( 374800000 , -- total_amount - float
-          '2023-10-15' , -- invoice_date - datetime2(6)
+          '2023-10-15 15:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
 		  3
         ),
 		( 11090000 , -- total_amount - float
-          '2023-10-16' , -- invoice_date - datetime2(6)
+          '2023-10-16 19:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
 		  2
         ),
 		( 10590000 , -- total_amount - float
-          '2023-10-16' , -- invoice_date - datetime2(6)
+          '2023-10-16 21:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
 		  1
         );
 GO
 
-INSERT INTO dbo.invoice_detail
-        ( invoice_id ,
+INSERT INTO dbo.order_detail
+        ( order_id ,
           price ,
           quantity ,
           product_id
@@ -1233,127 +1388,148 @@ INSERT INTO dbo.comment
           star ,
           content ,
           product_id ,
-          user_comment
+          user_comment,
+		  order_detail_id
         )
-VALUES  ( '2023-10-02' , -- date - date
+VALUES  ( '2023-10-02 20:05:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
           '32V35KP' , -- product_id - varchar(255)
-          'linhptpc04737'  -- user_comment - varchar(255)
+          'linhptpc04737',  -- user_comment - varchar(255)
+		  1
         ),
-		( '2023-10-06' , -- date - date
+		( '2023-10-06 20:10:00' , -- date - date
           4 , -- star - int
           N'Giao hàng nhanh, nhân viên thân thiện !' , -- content - nvarchar(255)
           '43NANO76SQA' , -- product_id - varchar(255)
-          'linhptpc04737'  -- user_comment - varchar(255)
+          'linhptpc04737',  -- user_comment - varchar(255)
+		  2
         ),
-		( '2023-10-06' , -- date - date
+		( '2023-10-06 20:15:00' , -- date - date
           4 , -- star - int
           N'Giao hàng nhanh, nhân viên thân thiện !' , -- content - nvarchar(255)
           '43UQ7550PSF' , -- product_id - varchar(255)
-          'linhptpc04737'  -- user_comment - varchar(255)
+          'linhptpc04737',  -- user_comment - varchar(255)
+		  3
         ),
-		( '2023-10-06' , -- date - date
+		( '2023-10-06 20:20:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, nhân viên thân thiện, nhiệt tình !' , -- content - nvarchar(255)
           '43UQ8000PSC' , -- product_id - varchar(255)
-          'linhptpc04737'  -- user_comment - varchar(255)
+          'linhptpc04737',  -- user_comment - varchar(255)
+          4
         ),
-		( '2023-10-06' , -- date - date
+		( '2023-10-06 20:25:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, nhân viên thân thiện, nhiệt tình !' , -- content - nvarchar(255)
           '50UQ7550PSF' , -- product_id - varchar(255)
-          'linhptpc04737'  -- user_comment - varchar(255)
+          'linhptpc04737',  -- user_comment - varchar(255)
+          5
         ),
-		( '2023-10-06' , -- date - date
+		( '2023-10-06 20:30:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, nhân viên thân thiện, nhiệt tình !' , -- content - nvarchar(255)
           '50UQ8000PSC' , -- product_id - varchar(255)
-          'linhptpc04737'  -- user_comment - varchar(255)
+          'linhptpc04737',  -- user_comment - varchar(255)
+          6
         ),
-		( '2023-10-11' , -- date - date
+		( '2023-10-11 20:35:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
           '55NANO76SQA' , -- product_id - varchar(255)
-          'linhptpc04737'  -- user_comment - varchar(255)
+          'linhptpc04737',  -- user_comment - varchar(255)
+          7
         ),
-		( '2023-10-11' , -- date - date
+		( '2023-10-11 20:40:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
           '55UQ7550PSF' , -- product_id - varchar(255)
-          'linhptpc04737'  -- user_comment - varchar(255)
+          'linhptpc04737',  -- user_comment - varchar(255)
+          8
         ),
-		( '2023-10-11' , -- date - date
+		( '2023-10-11 20:45:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
           '55UQ8000PSC' , -- product_id - varchar(255)
-          'linhptpc04737'  -- user_comment - varchar(255)
+          'linhptpc04737',  -- user_comment - varchar(255)
+          9
         ),
-		( '2023-10-11' , -- date - date
+		( '2023-10-11 20:50:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
           '65NANO76SQA' , -- product_id - varchar(255)
-          'linhptpc04737'  -- user_comment - varchar(255)
+          'linhptpc04737',  -- user_comment - varchar(255)
+          10
         ),
-		( '2023-10-11' , -- date - date
+		( '2023-10-11 20:55:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
           '65UQ8000PSC' , -- product_id - varchar(255)
-          'linhptpc04737'  -- user_comment - varchar(255)
+          'linhptpc04737',  -- user_comment - varchar(255)
+          11
         ),
-		( '2023-10-11' , -- date - date
+		( '2023-10-11 21:00:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
           'AR13CYFAAWKNSV' , -- product_id - varchar(255)
-          'linhptpc04737'  -- user_comment - varchar(255)
+          'linhptpc04737',  -- user_comment - varchar(255)
+          12
         ),
-		( '2023-10-11' , -- date - date
+		( '2023-10-11 21:05:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
           'AW-L805AV' , -- product_id - varchar(255)
-          'linhptpc04737'  -- user_comment - varchar(255)
+          'linhptpc04737',  -- user_comment - varchar(255)
+          13
         ),
-		( '2023-10-11' , -- date - date
+		( '2023-10-11 21:10:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
           'GR-B256JDS' , -- product_id - varchar(255)
-          'linhptpc04737'  -- user_comment - varchar(255)
+          'linhptpc04737',  -- user_comment - varchar(255)
+          14
         ),
-		( '2023-10-11' , -- date - date
+		( '2023-10-11 21:15:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
           'GR-RF610WE-PGV(22)-XK' , -- product_id - varchar(255)
-          'linhptpc04737'  -- user_comment - varchar(255)
+          'linhptpc04737',  -- user_comment - varchar(255)
+          15
         ),
-		( '2023-10-11' , -- date - date
+		( '2023-10-11 21:20:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
           'MSAGA-10CRDN8' , -- product_id - varchar(255)
-          'linhptpc04737'  -- user_comment - varchar(255)
+          'linhptpc04737',  -- user_comment - varchar(255)
+          16
         ),
-		( '2023-10-11' , -- date - date
+		( '2023-10-11 21:25:00' , -- date - date
           3 , -- star - int
           N'Giao hàng nhanh, tuy nhiên sản phẩm bị cấn móp !' , -- content - nvarchar(255)
           'QA43Q65A' , -- product_id - varchar(255)
-          'linhptpc04737'  -- user_comment - varchar(255)
+          'linhptpc04737',  -- user_comment - varchar(255)
+          17
         ),
-		( '2023-10-16' , -- date - date
+		( '2023-10-16 21:30:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
           'QA50Q65A' , -- product_id - varchar(255)
-          'linhptpc04737'  -- user_comment - varchar(255)
+          'linhptpc04737',  -- user_comment - varchar(255)
+          18
         ),
-		( '2023-10-16' , -- date - date
+		( '2023-10-16 21:35:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
           'QA55Q65A' , -- product_id - varchar(255)
-          'linhptpc04737'  -- user_comment - varchar(255)
+          'linhptpc04737',  -- user_comment - varchar(255)
+          19
         ),
-		( '2023-10-16' , -- date - date
+		( '2023-10-16 21:40:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
           'QA65Q60B' , -- product_id - varchar(255)
-          'linhptpc04737'  -- user_comment - varchar(255)
+          'linhptpc04737',  -- user_comment - varchar(255)
+          20
         );
 GO 
 
@@ -1374,47 +1550,56 @@ INSERT INTO dbo.promotional_details
         ( discounted_price ,
           flash_sale_id ,
           status ,
-          product_id
+          product_id,
+		  discounted_quantity
         )
 VALUES  ( 2000000.0 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
-          '32V35KP'  -- product_id - varchar(255)
+          '32V35KP',  -- product_id - varchar(255)
+          50
         ),
 		( 8490000.0 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
-          '50UQ7550PSF'  -- product_id - varchar(255)
+          '50UQ7550PSF',  -- product_id - varchar(255)
+          50
         ),
 		( 12990000.0 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
-          '65NANO76SQA'  -- product_id - varchar(255)
+          '65NANO76SQA',  -- product_id - varchar(255)
+          50
         ),
 		( 13000000.0 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
-          'AR13CYFAAWKNSV'  -- product_id - varchar(255)
+          'AR13CYFAAWKNSV',  -- product_id - varchar(255)
+          50
         ),
 		( 20000000.0 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
-          'GR-B256JDS'  -- product_id - varchar(255)
+          'GR-B256JDS',  -- product_id - varchar(255)
+          50
         ),
 		( 10999000.0 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
-          'MSAGA-10CRDN8'  -- product_id - varchar(255)
+          'MSAGA-10CRDN8',  -- product_id - varchar(255)
+          50
         ),
 		( 7250000.0 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
-          'UA43BU8000'  -- product_id - varchar(255)
+          'UA43BU8000',  -- product_id - varchar(255)
+          50
         ),
 		( 17700000.0 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
-          'ZTNQ18GPLA0'  -- product_id - varchar(255)
+          'ZTNQ18GPLA0',  -- product_id - varchar(255)
+          50
         );
 GO
 

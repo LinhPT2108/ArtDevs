@@ -88,12 +88,12 @@ public class SessionService {
 			for (Cart cart : cartList) {
 				Boolean isSale = false;
 				for (PromotionalDetails p : pmt) {
-					if (cart.getProductDetail().get(0).getProduct().getProductId() == p.getProduct().getProductId()) {
+					if (cart.getProductCarts().get(0).getProductDetail().getProduct().getProductId() == p.getProduct().getProductId()) {
 						isSale = true;
 					}
 				}
 				if (isSale) {
-					totalPrice += cart.getProductDetail().get(0).getProduct().getProductPromotionalDetails().get(0).getDiscountedPrice()
+					totalPrice += cart.getProductCarts().get(0).getProductDetail().getProduct().getProductPromotionalDetails().get(0).getDiscountedPrice()
 							* cart.getQuantity();
 				} else { 
 					//lấy lại theo giá đang bán
