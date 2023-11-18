@@ -25,5 +25,5 @@ public interface CategoryDAO extends JpaRepository<Category, Integer> {
 //	List<WishList> findByUser(UserCustom user);
 //
 //	// Lấy tất cả các danh mục thông qua trạng thái
-	List<Category> findByDel(boolean isDel);
+	List<Category> findByStatus(boolean isDel);
 }

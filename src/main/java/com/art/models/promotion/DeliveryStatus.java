@@ -35,7 +35,7 @@ public class DeliveryStatus {
 	private boolean status;
 	
 	@ManyToOne
-	@JoinColumn(name = "invoiceStatus")
-	private Invoice invoiceStatus;
+	@JoinColumn(name = "orderStatus")
+	private Order orderStatus;
 	
 }

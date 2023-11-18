@@ -12,22 +12,22 @@ import com.art.models.user.Account;
 public interface CartDAO extends JpaRepository<Cart, Integer> {
 	
 	// Thêm hoặc cập nhật một giỏ hàng
-	@SuppressWarnings("unchecked")
-	Cart save(Cart cart);
-	
-	// Xóa một giỏ hàng theo ID
-	void deleteById(int cartId);
-	// Tìm giỏ hàng theo ID
-	Optional<Cart> findById(int cartId);
-	
-	// Lấy tất cả các giỏ hàng của một người dùng
+//	@SuppressWarnings("unchecked")
+//	Cart save(Cart cart);
+//	
+//	// Xóa một giỏ hàng theo ID
+//	void deleteById(int cartId);
+//	// Tìm giỏ hàng theo ID
+//	Optional<Cart> findById(int cartId);
+//	
+//	// Lấy tất cả các giỏ hàng của một người dùng
 	List<Cart> findByUser(Account user);
-	
-	// Lấy tất cả các giỏ hàng chứa một sản phẩm
-	List<Cart> findByProduct(Product product);
-	
-	Cart findByProductAndUser(Product product, Account user);
-	
-	void deleteByUser(Account user);
+//	
+//	// Lấy tất cả các giỏ hàng chứa một sản phẩm
+//	List<Cart> findByProduct(Product product);
+//	
+//	Cart findByProductAndUser(Product product, Account user);
+//	
+//	void deleteByUser(Account user);
 
 }

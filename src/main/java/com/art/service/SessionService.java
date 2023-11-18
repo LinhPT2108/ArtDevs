@@ -60,7 +60,7 @@ public class SessionService {
 
 	public void setCart(List<Cart> cart) {
 
-		FlashSale isFlashSale = fsDAO.findByIsStatus(false);
+		FlashSale isFlashSale = fsDAO.findByStatus(false);
 
 		if (isFlashSale != null) {
 			List<PromotionalDetails> pmt = pmtDAO.findByFlashSale_Id(isFlashSale.getId());
@@ -74,10 +74,10 @@ public class SessionService {
 		Double totalPrice = totalPriceCartByUserId(get("userLogin"));
 		session.setAttribute("totalPriceInCart", totalPrice);
 	}
-	
+	// cần update lại dòng 91, 96, 82
 	public double totalPriceCartByUserId(Account userId) {
 		
-		FlashSale isFlashSale = fsDAO.findByIsStatus(false);
+		FlashSale isFlashSale = fsDAO.findByStatus(false);
 
 		List<Cart> cartList = cartDAO.findByUser(userId);
 
@@ -88,15 +88,16 @@ public class SessionService {
 			for (Cart cart : cartList) {
 				Boolean isSale = false;
 				for (PromotionalDetails p : pmt) {
-					if (cart.getProduct().getProductId() == p.getProduct().getProductId()) {
+					if (cart.getProductDetail().get(0).getProduct().getProductId() == p.getProduct().getProductId()) {
 						isSale = true;
 					}
 				}
 				if (isSale) {
-					totalPrice += cart.getProduct().getProductPromotionalDetails().get(0).getDiscountedPrice()
+					totalPrice += cart.getProductDetail().get(0).getProduct().getProductPromotionalDetails().get(0).getDiscountedPrice()
 							* cart.getQuantity();
 				} else { 
-					BigDecimal bigDecimalValue = new BigDecimal(String.valueOf(cart.getProduct().getPrice())); 
+					//lấy lại theo giá đang bán
+					BigDecimal bigDecimalValue = new BigDecimal(String.valueOf(cart.getPrice())); 
 					int intValue = cart.getQuantity(); 
 
 					BigDecimal result = bigDecimalValue.multiply(new BigDecimal(intValue));
@@ -105,7 +106,8 @@ public class SessionService {
 			}
 		} else {
 			for (Cart cart : cartList) {
-				BigDecimal bigDecimalValue = new BigDecimal(String.valueOf(cart.getProduct().getPrice())); 
+				//lấy lại theo giá đang bán
+				BigDecimal bigDecimalValue = new BigDecimal(String.valueOf(cart.getPrice())); 
 				int intValue = cart.getQuantity(); 
 
 				BigDecimal result = bigDecimalValue.multiply(new BigDecimal(intValue));

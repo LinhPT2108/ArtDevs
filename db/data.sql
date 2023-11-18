@@ -1,7 +1,16 @@
+<<<<<<<<< Temporary merge branch 1
 --update 
 	-- flash sale, manufacterer, category: status ban đầu là 0 sẽ hiểu thị còn hiện tại update lại thành 1
 	-- 
+=========
+CREATE DATABASE art_devs;
+GO
+>>>>>>>>> Temporary merge branch 2
 USE art_devs;
+GO 
+INSERT INTO dbo.role
+        ( role_name )
+VALUES  ( 'admin'),( 'user'),( 'shipper');
 GO 
 
 INSERT INTO dbo.role
@@ -11,10 +20,6 @@ VALUES  ( N'admin'  -- role_name - nvarchar(255)
 		( N'user'  -- role_name - nvarchar(255)
         ),
 		( N'shipper'  -- role_name - nvarchar(255)
-        ),
-		( N'staff'  -- role_name - nvarchar(255)
-        ),
-		( N'management invoice'  -- role_name - nvarchar(255)
         );
 GO
 
@@ -24,6 +29,7 @@ INSERT INTO dbo.account
           fullname ,
           image ,
           password ,
+          role ,
           account_id
         )
 VALUES  ( 0 , -- is_del - bit
@@ -31,6 +37,7 @@ VALUES  ( 0 , -- is_del - bit
           N'Phan Tuấn Linh' , -- fullname - nvarchar(255)
           'linhptpc04737.png' , -- image - varchar(255)
           'pgPPTyq4xNL/lOXiLqlAA7/gWAA=' , -- password đã được mã hóa 
+          2 , -- role - varchar(255)
           'linhptpc04737'  -- user_id - varchar(255)
         ),
 		( 0 , -- is_del - bit
@@ -38,39 +45,16 @@ VALUES  ( 0 , -- is_del - bit
           N'Trần Chí Nguyễn' , -- fullname - nvarchar(255)
           'nguyentcpc04750.png' , -- image - varchar(255)
           'pgPPTyq4xNL/lOXiLqlAA7/gWAA=' , -- password đã được mã hóa 
+          1 , -- role - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
 		( 0 , -- is_del - bit
-          'vinhtppc04838@fpt.edu.vn' , -- email - varchar(255)
-          N'Trần Phúc Vinh' , -- fullname - nvarchar(255)
-          'vinhtppc04838.png' , -- image - varchar(255)
+          'nhintpc04729@fpt.edu.vn' , -- email - varchar(255)
+          N'Nguyễn Tấn Nhi' , -- fullname - nvarchar(255)
+          'nhintpc04729.png' , -- image - varchar(255)
           'pgPPTyq4xNL/lOXiLqlAA7/gWAA=' , -- password đã được mã hóa 
-          'vinhtppc04838'  -- user_id - varchar(255)
-        );
-GO
-
-INSERT INTO dbo.account_role
-        ( role_id, user_role )
-VALUES  ( 1, -- role_id - int
-        'linhptpc04737'  -- user_role - varchar(255)
-        ),
-		( 1, -- role_id - int
-        'nguyentcpc04750'  -- user_role - varchar(255)
-        ),
-		( 2, -- role_id - int
-        'nguyentcpc04750'  -- user_role - varchar(255)
-        ),
-		( 3, -- role_id - int
-        'nguyentcpc04750'  -- user_role - varchar(255)
-        ),
-		( 4, -- role_id - int
-        'nguyentcpc04750'  -- user_role - varchar(255)
-        ),
-		( 5, -- role_id - int
-        'nguyentcpc04750'  -- user_role - varchar(255)
-        ),
-		( 3, -- role_id - int
-        'vinhtppc04838'  -- user_role - varchar(255)
+          3 , -- role - varchar(255)
+          'nhintpc04729'  -- user_id - varchar(255)
         );
 GO
 
@@ -90,7 +74,7 @@ VALUES  ( N'An phú, Ninh Kiều, Cần Thơ', -- address - nvarchar(255)
         ),
 		( N'Cờ Đỏ, Cần Thơ', -- address - nvarchar(255)
         '0909888666', -- phone_number - varchar(255)
-        'vinhtppc04838'  -- user_id - varchar(255)
+        'nhintpc04729'  -- user_id - varchar(255)
         );
 GO
 
@@ -140,22 +124,22 @@ INSERT INTO dbo.flash_sale
           start_day ,
           user_flash_sale
         )
-VALUES  ( 0 , -- is_status - bit
+VALUES  ( 1 , -- is_status - bit
           '2023-07-12' , -- end_day - datetime2(6)
           '2023-06-12' , -- start_day - datetime2(6)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 0 , -- is_status - bit
+		( 1 , -- is_status - bit
           '2023-10-12' , -- end_day - datetime2(6)
           '2023-09-12' , -- start_day - datetime2(6)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 1 , -- is_status - bit
+		( 0 , -- is_status - bit
           '2023-11-12' , -- end_day - datetime2(6)
           '2023-10-12' , -- start_day - datetime2(6)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 0 , -- is_status - bit
+		( 1 , -- is_status - bit
           '2023-12-12' , -- end_day - datetime2(6)
           '2023-11-12' , -- start_day - datetime2(6)
           'nguyentcpc04750'  -- user_id - varchar(255)
@@ -180,15 +164,15 @@ INSERT INTO dbo.manufacturer
           manufacturer_name ,
           user_manufacturer
         )
-VALUES  ( 0 , -- is_del - bit
+VALUES  ( 1 , -- is_del - bit
           'Samsung' , -- manufacturer_name - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 0 , -- is_del - bit
+		( 1 , -- is_del - bit
           'LG' , -- manufacturer_name - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 0 , -- is_del - bit
+		( 1 , -- is_del - bit
           'Toshiba' , -- manufacturer_name - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
@@ -196,19 +180,19 @@ VALUES  ( 0 , -- is_del - bit
           'Asanyo' , -- manufacturer_name - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 0 , -- is_del - bit
+		( 1 , -- is_del - bit
           'Media' , -- manufacturer_name - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 0 , -- is_del - bit
+		( 1 , -- is_del - bit
           'VSP' , -- manufacturer_name - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 0 , -- is_del - bit
+		( 1 , -- is_del - bit
           'Sony' , -- manufacturer_name - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 0 , -- is_del - bit
+		( 1 , -- is_del - bit
           'TCL' , -- manufacturer_name - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
@@ -220,7 +204,7 @@ VALUES  ( 0 , -- is_del - bit
           'Aqua' , -- manufacturer_name - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 0 , -- is_del - bit
+		( 1 , -- is_del - bit
           'Xiaomi' , -- manufacturer_name - varchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         );
@@ -228,31 +212,31 @@ GO
 
 INSERT INTO dbo.category
         ( del, category_name, user_category )
-VALUES  ( 0, -- is_del - bit
+VALUES  ( 1, -- is_del - bit
           N'Tivi', -- category_name - nvarchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 0, -- is_del - bit
+		( 1, -- is_del - bit
           N'Tủ lạnh', -- category_name - nvarchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 0, -- is_del - bit
+		( 1, -- is_del - bit
          N'Máy giặt', -- category_name - nvarchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 0, -- is_del - bit
+		( 1, -- is_del - bit
           N'Máy điều hòa', -- category_name - nvarchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 0, -- is_del - bit
+		( 1, -- is_del - bit
           N'Bếp điện', -- category_name - nvarchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 1, -- is_del - bit
+		( 0, -- is_del - bit
           N'Bếp gas', -- category_name - nvarchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-		( 1, -- is_del - bit
+		( 0, -- is_del - bit
           N'Máy sấy', -- category_name - nvarchar(255)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),

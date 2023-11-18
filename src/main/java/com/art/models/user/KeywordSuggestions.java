@@ -38,6 +38,6 @@ public class KeywordSuggestions {
 	private String keywords;
 	
 	@ManyToOne
-	@JoinColumn(name = "userKeyword")
+	@JoinColumn(name = "userId")
 	private Account user;
 }

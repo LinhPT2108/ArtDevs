@@ -1,15 +1,13 @@
 package com.art.models.product;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 import org.hibernate.annotations.Nationalized;
 
-import com.art.models.activity.Cart;
 import com.art.models.activity.Comment;
 import com.art.models.activity.RecentlyViewed;
-import com.art.models.promotion.InvoiceDetail;
+import com.art.models.promotion.OrderDetail;
 import com.art.models.promotion.PromotionalDetails;
 import com.art.models.user.Account;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -28,9 +26,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -55,19 +50,19 @@ public class Product {
 	@NotBlank(message = "Vui lòng nhập tên sản phẩm")
 	private String productName;
 
-	@Column
-	@NotNull(message = "Vui lòng nhập số lượng trong kho")
-	@Min(value = 1, message = "Số lượng phải lớn 0")
-	@Digits(integer = 32, fraction = 0, message = "Số lượng phải là số nguyên")
-	private int quantityInStock;
+//	@Column
+//	@NotNull(message = "Vui lòng nhập số lượng trong kho")
+//	@Min(value = 1, message = "Số lượng phải lớn 0")
+//	@Digits(integer = 32, fraction = 0, message = "Số lượng phải là số nguyên")
+//	private int quantityInStock;
 
 	@Column
-	private boolean del = false;
+	private boolean available = true;
 
-	@Column
-	@NotNull(message = "Vui lòng nhập giá sản phẩm")
-	@DecimalMin(value = "1", message = "Giá sản phẩm phải lớn 0")
-	private BigDecimal price;
+//	@Column
+//	@NotNull(message = "Vui lòng nhập giá sản phẩm")
+//	@DecimalMin(value = "1", message = "Giá sản phẩm phải lớn 0")
+//	private BigDecimal price;
 
 	@Column
 	@Temporal(TemporalType.TIMESTAMP)
@@ -96,27 +91,23 @@ public class Product {
 
 	@OneToMany(mappedBy = "product")
 	@JsonIgnore
-	private List<Cart> productCart;
-
-	@OneToMany(mappedBy = "product")
-	@JsonIgnore
 	private List<RecentlyViewed> productRecentlyViewed;
 
 	@OneToMany(mappedBy = "product")
 	@JsonManagedReference
-	private List<DetailDescription> productDetailDescription;
-
+	private List<ProductDetail> productDetail;
+	
+	@OneToMany(mappedBy = "product")
+	@JsonManagedReference
+	private List<DetailDescription> productDescriptions;
+	
 	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
 	@JsonManagedReference
 	private List<Image> productImage;
 	
-	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
-	@JsonManagedReference
-	private List<Price> productPrice;
-	
 	@OneToMany(mappedBy = "product")
 	@JsonIgnore
-	private List<InvoiceDetail> productInvoiceDetail;
+	private List<OrderDetail> productOrderDetail;
 
 	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
 	@JsonManagedReference

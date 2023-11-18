@@ -13,7 +13,7 @@ import com.art.models.product.Category;
 import com.art.models.product.Manufacturer;
 import com.art.models.product.Product;
 import com.art.models.promotion.FlashSale;
-import com.art.models.promotion.Invoice;
+import com.art.models.promotion.Order;
 import com.art.models.promotion.Voucher;
 
 import jakarta.persistence.Column;
@@ -62,7 +62,7 @@ public class Account {
 	private String verifyCode;
 	
 	@Column
-	private boolean del;
+	private boolean status;
 	
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private List<InforAddress> userInfor;
@@ -98,7 +98,7 @@ public class Account {
 	private List<FlashSale> userFlashSale;
 
 	@OneToMany(mappedBy = "user")
-	private List<Invoice> userInvoice;
+	private List<Order> userOrder;
 
 	@OneToMany(mappedBy = "user")
 	private List<Voucher> userVoucher;
@@ -109,7 +109,7 @@ public class Account {
 	@Override
 	public String toString() {
 		return "UserCustom [userId=" + accountId + ", fullname=" + fullname + ", password=" + password + ", email=" + email
-				+ ", del=" + del + "]";
+				+ ", del=" + status + "]";
 	}
 
 	
