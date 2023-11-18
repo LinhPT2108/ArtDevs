@@ -30,7 +30,7 @@ public class Role {
 	@Nationalized
 	private String roleName;
 	
-	@OneToMany(mappedBy = "roleName")
-	private List<Account> role;
+	@OneToMany(mappedBy = "role")
+	private List<AccountRole> role_id;
 	
 }

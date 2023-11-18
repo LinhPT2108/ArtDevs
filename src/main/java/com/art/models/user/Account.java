@@ -13,15 +13,13 @@ import com.art.models.product.Category;
 import com.art.models.product.Manufacturer;
 import com.art.models.product.Product;
 import com.art.models.promotion.FlashSale;
-import com.art.models.promotion.Invoice;
+import com.art.models.promotion.Order;
 import com.art.models.promotion.Voucher;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -40,10 +38,6 @@ public class Account {
 
 	@Id
 	private String accountId;
-
-	@ManyToOne
-	@JoinColumn(name = "role")
-	private Role roleName;
 	
 	@Column
 	@Nationalized
@@ -68,10 +62,13 @@ public class Account {
 	private String verifyCode;
 	
 	@Column
-	private boolean del;
+	private boolean status;
 	
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private List<InforAddress> userInfor;
+	
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+	private List<AccountRole> userRole;
 	
 	@OneToMany(mappedBy = "user")
 	private List<Banner> userBanner;
@@ -101,7 +98,7 @@ public class Account {
 	private List<FlashSale> userFlashSale;
 
 	@OneToMany(mappedBy = "user")
-	private List<Invoice> userInvoice;
+	private List<Order> userOrder;
 
 	@OneToMany(mappedBy = "user")
 	private List<Voucher> userVoucher;
@@ -112,7 +109,7 @@ public class Account {
 	@Override
 	public String toString() {
 		return "UserCustom [userId=" + accountId + ", fullname=" + fullname + ", password=" + password + ", email=" + email
-				+ ", del=" + del + "]";
+				+ ", del=" + status + "]";
 	}
 
 	

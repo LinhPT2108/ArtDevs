@@ -38,7 +38,7 @@ public class FlashSale {
 	private Date endDay;
 
 	@Column
-	private boolean isStatus;
+	private boolean status = true;
 
 	@OneToMany(mappedBy = "flashSale", cascade = CascadeType.ALL)
 	private List<PromotionalDetails> promotionalDetailsList;

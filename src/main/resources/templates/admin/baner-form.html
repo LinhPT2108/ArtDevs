@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	<h1>BANNER</h1>
+
+	<form action="/admin/banner" method="post" enctype="multipart/form-data">
+		<!-- add banner -->
+		<div class="input-group mb-3">
+			<span class="input-group-text">Add Banner</span>
+			<input type="file" name="banner" class="form-control" aria-label="Amount (to the nearest dollar)">
+			<button type="submit" class="btn btn-primary">Save</button>
+		</div>
+	</form>
+
+	<div class="table-responsive">
+		<table id="statisticalTable" class="table table-hover" style="vertical-align: middle !important;">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Ảnh banner</th>
+					<th>Thao tác</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="item : ${banners}">
+					<td th:text="${item.id}"></td>
+					<td><img alt="" th:src="@{/images/banner/{bannerName}(bannerName=${item.bannerName})}" height="100"
+							width="200"></td>
+					<td><a th:href="@{/admin/banner/delete/{id}(id=${item.id})}">Delete</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+</body>
+
+</html>

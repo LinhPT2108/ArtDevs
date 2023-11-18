@@ -1,9 +1,6 @@
 package com.art.dao.user;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import com.art.models.user.Account;
 
@@ -23,17 +20,17 @@ public interface UserCustomDAO extends JpaRepository<Account, String> {
 //	UserCustom findByFullname(String fullname);
 //
 	// Tìm kiếm người dùng dựa trên trạng thái is_del
-	List<Account> findByDel(boolean _del);
+//	List<Account> findByDel(boolean _del);
 //
 //	// Tìm kiếm người dùng dựa trên vai trò
 //	List<UserCustom> findByRole(Role role);
 //
 	// Tìm kiếm người dùng dựa trên email
-	List<Account> findByEmail(String email);
-
-	@Query("SELECT u.accountId, u.fullname, u.email, COUNT(i.id) " + "FROM Account u " + "LEFT JOIN u.userInvoice i "
-			+ "GROUP BY u.accountId, u.fullname, u.email")
-	List<Object[]> getUsersWithInvoiceCount();
+//	List<Account> findByEmail(String email);
+//
+//	@Query("SELECT u.accountId, u.fullname, u.email, COUNT(i.id) " + "FROM Account u " + "LEFT JOIN u.userInvoice i "
+//			+ "GROUP BY u.accountId, u.fullname, u.email")
+//	List<Object[]> getUsersWithInvoiceCount();
 //
 //	// Tìm kiếm người dùng dựa trên họ tên chứa một từ khóa
 //	List<UserCustom> findByFullnameContainingIgnoreCase(String keyword);

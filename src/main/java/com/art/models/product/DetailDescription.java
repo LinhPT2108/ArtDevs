@@ -27,7 +27,7 @@ public class DetailDescription {
 	
 	@Column
 	@Nationalized
-	private String tile;
+	private String title;
 
 	@Column(columnDefinition = "nvarchar(MAX)")
 	@Nationalized

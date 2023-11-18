@@ -46,6 +46,9 @@ public class Voucher {
 	@Column
 	private int maximumNumberOfUses;
 	
+	@Column
+	private double maximumPriceDiscount;
+	
 	@ManyToOne
 	@JoinColumn(name="userVoucher")
 	private Account user;

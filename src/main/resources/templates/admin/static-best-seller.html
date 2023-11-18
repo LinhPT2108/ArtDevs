@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	<div class="table-responsive">
+		<table id="statisticalTable" class="table table-hover">
+			<thead>
+				<tr>
+					<th>STT</th>
+					<th>Mã sản phẩm</th>
+					<th>Hãng sản xuất</th>
+					<th>Loại sản phẩm</th>
+					<th>Tên sản phẩm</th>
+					<th>Số lượt bán</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="bestSeller, loop : ${bestSellers}">
+					<td th:text="${loop.index}"></td>
+					<td th:text="${bestSeller[0].productId}"></td>
+					<td th:text="${bestSeller[0].manufacturerProduct.manufacturerName}"></td>
+					<td th:text="${bestSeller[0].categoryProduct.categoryName}"></td>
+					<td th:text="${bestSeller[1]}"></td>
+					<td th:text="${bestSeller[2]}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+</body>
+
+</html>
