@@ -6,6 +6,7 @@ import java.util.Objects;
 import org.hibernate.annotations.Nationalized;
 
 import com.art.models.user.Account;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,10 +41,12 @@ public class Category {
 	@Column
 	private boolean status = true;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "userCategory")
 	private Account user;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "categoryProduct")
 	private List<Product> category;
 

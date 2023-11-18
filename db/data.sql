@@ -80,22 +80,40 @@ VALUES  ( 1, -- role_id - int
 GO 
 
 INSERT INTO dbo.infor_address
-        ( address, phone_number, user_infor )
-VALUES  ( N'An phú, Ninh Kiều, Cần Thơ', -- address - nvarchar(255)
-        '0948922927', -- phone_number - varchar(255)
-        'linhptpc04737'  -- user_id - varchar(255)
+        ( city ,
+          district ,
+          phone_number ,
+          specific ,
+          user_infor ,
+          ward
+        )
+VALUES  ( N'Cần Thơ' , -- city - nvarchar(255)
+          N'Ninh Kiều', -- district - nvarchar(255)
+          '0948922927' , -- phone_number - varchar(255)
+          N'Đường Trần Hưng Đạo' , -- specific - nvarchar(255)
+          'linhptpc04737' , -- user_infor - varchar(255)
+          N'An phú'  -- ward - nvarchar(255)
         ),
-		( N'Thới Hưng, Cờ Đỏ, Cần Thơ', -- address - nvarchar(255)
-        '0909123123', -- phone_number - varchar(255)
-        'linhptpc04737'  -- user_id - varchar(255)
+		( N'Cần Thơ' , -- city - nvarchar(255) 
+          N'Cờ Đỏ', -- district - nvarchar(255)
+          '0909123123' , -- phone_number - varchar(255)
+          N'' , -- specific - nvarchar(255)
+          'linhptpc04737' , -- user_infor - varchar(255)
+          N'Thới Hưng'  -- ward - nvarchar(255)
         ),
-		( N'Ngã Năm, Sóc Trăng', -- address - nvarchar(255)
-        '0909666999', -- phone_number - varchar(255)
-        'nguyentcpc04750'  -- user_id - varchar(255)
+		( N'Sóc Trăng' , -- city - nvarchar(255)
+          N'Mỹ Tú', -- district - nvarchar(255)
+          '0911726601' , -- phone_number - varchar(255)
+          N'' , -- specific - nvarchar(255)
+          'nguyentcpc04750' , -- user_infor - varchar(255)
+          N'Hưng Phú'  -- ward - nvarchar(255)
         ),
-		( N'Cờ Đỏ, Cần Thơ', -- address - nvarchar(255)
-        '0909888666', -- phone_number - varchar(255)
-        'vinhtppc04838'  -- user_id - varchar(255)
+		( N'Cần Thơ' , -- city - nvarchar(255)
+          N'Cờ Đỏ', -- district - nvarchar(255)
+          '0909888666' , -- phone_number - varchar(255)
+          N'' , -- specific - nvarchar(255)
+          'vinhtppc04838' , -- user_infor - varchar(255)
+          N'Thới Hưng'  -- ward - nvarchar(255)
         );
 GO
 

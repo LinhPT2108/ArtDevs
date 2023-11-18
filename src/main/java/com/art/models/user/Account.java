@@ -104,7 +104,7 @@ public class Account {
 	private List<Voucher> userVoucher;
 
 	@OneToMany(mappedBy = "user")
-	private List<Voucher> userKeyword;
+	private List<KeywordSuggestions> userKeyword;
 	
 	@Override
 	public String toString() {

@@ -31,8 +31,23 @@ public class InforAddress {
 
 	@Column
 	@Nationalized
-	@NotBlank(message = "Vui lòng chọn địa chỉ")
-	private String address;
+	@NotBlank
+	private String city;
+
+	@Column
+	@Nationalized
+	@NotBlank
+	private String district;
+
+	@Column
+	@Nationalized
+	@NotBlank
+	private String ward;
+
+	@Column
+	@Nationalized
+	@NotBlank
+	private String specific;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)

@@ -1,4 +1,5 @@
 var app = angular.module("artdevApp", ["ngRoute"]);
+const api = "http://localhost:8080"
 app.config(function ($routeProvider, $locationProvider) {
   $routeProvider
     .when("/", {
@@ -25,11 +26,11 @@ app.config(function ($routeProvider, $locationProvider) {
     })
     .when("/account/login", {
       templateUrl: "templates/user/views/login.html",
-      controller: "loginCtrl"
+      controller: "loginCtrl",
     })
     .when("/account/register", {
       templateUrl: "templates/user/views/register.html",
-      controller: "registerCtrl"
+      controller: "registerCtrl",
     })
     .when("/cart", {
       templateUrl: "templates/user/views/cart.html",
@@ -62,10 +63,30 @@ app.service("ApiService", function ($http) {
   };
 });
 
-app.controller("headerCtrl", function ($scope) {
+// Service trong AngularJS để gọi API từ backend
+app.service("DataService", function ($http) {
+  this.getCategories = function () {
+    return $http.get(api+"/rest/category");
+  };
+
+  // this.getBrands = function() {
+  //     return $http.get('/api/brands');
+  // };
+});
+
+app.controller("headerCtrl", function ($scope, DataService) {
   $(".top-search a").on("click", function () {
     $(".search-top").toggleClass("active");
   });
+
+  DataService.getCategories().then(function (response) {
+    $scope.categories = response.data;
+  });
+  console.log($scope.categories);
+
+  // DataService.getBrands().then(function (response) {
+  //   $scope.brands = response.data;
+  // });
 });
 
 app.controller("mainCtrl", function ($scope, $timeout) {
