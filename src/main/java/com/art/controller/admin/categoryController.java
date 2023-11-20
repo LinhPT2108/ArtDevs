@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.art.dao.product.CategoryDAO;
-import com.art.dao.user.UserCustomDAO;
+import com.art.dao.user.AccountDAO;
 import com.art.models.product.Category;
 import com.art.models.user.Account;
 import com.art.service.SessionService;
@@ -25,7 +25,7 @@ public class categoryController {
 	@Autowired
 	CategoryDAO caDao;
 	@Autowired
-	UserCustomDAO ucDao;
+	AccountDAO ucDao;
 	@Autowired
 	CategoryDAO categoryReponsitory;
 	@Autowired

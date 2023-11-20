@@ -1,10 +1,12 @@
 package com.art.dao.user;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.art.models.user.Account;
 
-public interface UserCustomDAO extends JpaRepository<Account, String> {
+public interface AccountDAO extends JpaRepository<Account, String> {
 
 //	// Thêm hoặc cập nhật một người dùng
 //	@SuppressWarnings("unchecked")
@@ -20,7 +22,7 @@ public interface UserCustomDAO extends JpaRepository<Account, String> {
 //	UserCustom findByFullname(String fullname);
 //
 	// Tìm kiếm người dùng dựa trên trạng thái is_del
-//	List<Account> findByDel(boolean _del);
+	List<Account> findByStatus(boolean del);
 //
 //	// Tìm kiếm người dùng dựa trên vai trò
 //	List<UserCustom> findByRole(Role role);

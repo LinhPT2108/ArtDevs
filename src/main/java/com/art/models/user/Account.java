@@ -15,6 +15,7 @@ import com.art.models.product.Product;
 import com.art.models.promotion.FlashSale;
 import com.art.models.promotion.Order;
 import com.art.models.promotion.Voucher;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,14 +27,16 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Data
+@Getter
+@Setter
 public class Account {
 
 	@Id
@@ -64,45 +67,59 @@ public class Account {
 	@Column
 	private boolean status;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private List<InforAddress> userInfor;
-	
+
+	@JsonIgnore
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private List<AccountRole> userRole;
-	
+
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Banner> userBanner;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Cart> userCart;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Comment> userComment;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<RecentlyViewed> userRecentlyViewed;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<WishList> userWishList;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Category> userCategory;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Manufacturer> userManufacturer;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Product> userProduct;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<FlashSale> userFlashSale;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Order> userOrder;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Voucher> userVoucher;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<KeywordSuggestions> userKeyword;
 	

@@ -1,12 +1,10 @@
 package com.art.dao.activity;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.art.models.activity.Cart;
-import com.art.models.product.Product;
 import com.art.models.user.Account;
 
 public interface CartDAO extends JpaRepository<Cart, Integer> {

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.art.dao.product.CategoryDAO;
 import com.art.models.product.Category;
+import com.art.utils.Path;
 
 import java.util.List;
 
@@ -15,14 +16,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping(value = "/rest")
+@RequestMapping(value = Path.BASE_PATH)
 public class categoryRestController {
     @Autowired
     CategoryDAO caDAO;
  
     @GetMapping(value="/category")
     public ResponseEntity<List<Category>> getMethodName() {
-        List<Category> listCategories = caDAO.findByStatus(false);
+        List<Category> listCategories = caDAO.findByStatus(true);
         return ResponseEntity.ok(listCategories);
     }
     

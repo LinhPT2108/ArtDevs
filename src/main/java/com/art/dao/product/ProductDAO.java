@@ -52,8 +52,7 @@ public interface ProductDAO extends JpaRepository<Product, String> {
 ////    // Tìm Product theo số lượng trong kho
 ////    List<Product> findByQuantityInStock(int quantityInStock);
 ////
-////    // Tìm Product theo trạng thái is_del
-//	List<Product> findByDel(boolean isDel);
+    // Tìm Product theo trạng thái is_del
 //
 //	@Query("SELECT COUNT(c) FROM Comment c WHERE c.product.id = :productId")
 //	Long countCommentsByProduct(String productId);
