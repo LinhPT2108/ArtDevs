@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
@@ -19,9 +20,12 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -50,15 +54,15 @@ public class ProductDetail {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date productionDate;
 	
-	@JsonBackReference("productDetailReference")
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
 	
 	@OneToMany(mappedBy = "productDetail")
+	@JsonIgnore
 	private List<ProductCart> productCarts;
 	
 	@OneToMany(mappedBy = "productDetail", fetch = FetchType.EAGER)
-	@JsonManagedReference
 	private List<Price> productPrice;
 }

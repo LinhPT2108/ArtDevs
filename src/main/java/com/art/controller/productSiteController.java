@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 
 @Controller
-@RequestMapping(value = "/product")
+@RequestMapping(value = "/products")
 public class productSiteController {
     @GetMapping(value="")
     public String getProductSite() {

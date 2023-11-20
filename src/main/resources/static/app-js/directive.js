@@ -102,8 +102,7 @@ app.directive("customFlashsale", function ($timeout) {
     },
   };
 });
-
-app.directive("niceSelect", function () {
+app.directive("niceSelect", function ($timeout) {
   return {
     restrict: "A",
     link: function (scope, element) {
@@ -148,6 +147,46 @@ app.directive("quantityControl", function () {
         if (currentValue < min) {
           updateValue(min);
         }
+      });
+    },
+  };
+});
+
+app.directive("stopPropagation", function (ApiService, $timeout, $rootScope) {
+  return {
+    restrict: "A",
+    link: function (scope, element) {
+      scope.showLoading = function(){
+        
+      }
+      scope.removeActiveClassFromLinks = function () {
+        var anchorElements = document.querySelectorAll(".nav-link-select");
+        anchorElements.forEach(function (a) {
+          a.classList.remove("active");
+        });
+      };
+
+      scope.setActiveClass = function (element) {
+        element.classList.add("active");
+      };
+
+      element.bind("click", function (e) {
+        //add class and remove class "active"
+        scope.removeActiveClassFromLinks();
+        scope.setActiveClass(e.currentTarget);
+
+        //get api list product by category id
+        var hrefValue = e.currentTarget.getAttribute("href");
+        console.log("Href value:", hrefValue);
+        ApiService.callApi("GET", "/rest/category/" + hrefValue)
+          .then(function (resp) {
+            console.log(resp);
+            $rootScope.listProductsbyCategory = resp;
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+        return false;
       });
     },
   };

@@ -1,9 +1,9 @@
 var app = angular.module("artdevApp", ["ngRoute"]);
-const api = "http://localhost:8080"
+const api = "http://localhost:8080";
 app.config(function ($routeProvider, $locationProvider) {
   $routeProvider
     .when("/", {
-      templateUrl: "templates/user/views/main.html",
+      redirectTo: "/ArtDevs",
     })
     .when("/ArtDevs", {
       templateUrl: "templates/user/views/main.html",
@@ -36,12 +36,15 @@ app.config(function ($routeProvider, $locationProvider) {
       templateUrl: "templates/user/views/cart.html",
       controller: "cartCtrl",
     })
-    .when("/product", {
+    .when("/products", {
       templateUrl: "templates/user/views/shop-grid.html",
       controller: "productsiteCtrl",
     })
+    .when("/about-us", {
+      templateUrl: "templates/user/views/about-us.html",
+    })
     .otherwise({
-      redirectTo: "/",
+      redirectTo: "/ArtDevs",
     });
 
   $locationProvider.html5Mode(true);
@@ -51,7 +54,7 @@ app.service("ApiService", function ($http) {
   this.callApi = function (method, url, data) {
     return $http({
       method: method,
-      url: url,
+      url: api + url,
       data: data,
     })
       .then(function successCallback(response) {
@@ -66,31 +69,50 @@ app.service("ApiService", function ($http) {
 // Service trong AngularJS để gọi API từ backend
 app.service("DataService", function ($http) {
   this.getCategories = function () {
-    return $http.get(api+"/rest/category");
+    return $http.get(api + "/rest/category");
   };
 
-  // this.getBrands = function() {
-  //     return $http.get('/api/brands');
-  // };
+  this.getBrands = function () {
+    return $http.get(api + "/rest/manufacturer");
+  };
 });
 
-app.controller("headerCtrl", function ($scope, DataService) {
-  $(".top-search a").on("click", function () {
+app.run(function ($rootScope, DataService) {
+  DataService.getCategories().then(function (response) {
+    $rootScope.categories = response.data;
+    console.log($rootScope.categories);
+  });
+
+  DataService.getBrands().then(function (response) {
+    $rootScope.brands = response.data;
+    console.log($rootScope.brands);
+  });
+});
+
+app.controller("headerCtrl", function ($scope, DataService, $location) {
+  $scope.isActive = function (...viewLocations) {
+    return viewLocations.some((location) =>
+      $location.path().includes(location)
+    );
+  };
+
+  $(".top-search a").on("click", function (event) {
+    event.preventDefault();
     $(".search-top").toggleClass("active");
   });
 
-  DataService.getCategories().then(function (response) {
-    $scope.categories = response.data;
-  });
-  console.log($scope.categories);
+  // DataService.getCategories().then(function (response) {
+  //   $scope.categories = response.data;
+  //   console.log($scope.categories);
+  // });
 
   // DataService.getBrands().then(function (response) {
   //   $scope.brands = response.data;
+  //   console.log($scope.brands);
   // });
 });
 
 app.controller("mainCtrl", function ($scope, $timeout) {
-  console.log(123);
   $scope.quickViews = function () {
     $(".quickview-slider-active").owlCarousel({
       items: 1,
@@ -108,8 +130,17 @@ app.controller("mainCtrl", function ($scope, $timeout) {
       ],
     });
   };
-
+  console.log("mainCtrl");
+  $timeout(function () {
+    
+  }, 0);
   $timeout(function () {
     $scope.quickViews();
+    var firstAnchor = document.querySelectorAll(".nav-link-select");
+    if (firstAnchor) {
+      angular.element(firstAnchor).triggerHandler("click");
+    }
   });
+
+  
 });
