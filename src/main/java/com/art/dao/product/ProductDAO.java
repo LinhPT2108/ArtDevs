@@ -1,6 +1,7 @@
 package com.art.dao.product;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,21 +14,7 @@ import com.art.models.product.Product;
 public interface ProductDAO extends JpaRepository<Product, String> {
 
 //	// Thêm Product
-//    @SuppressWarnings("unchecked")
-//	Product save(Product product);
-//
-//    // Cập nhật Product
-//    @SuppressWarnings("unchecked")
-//	Product saveAndFlush(Product product);
-//
-//    // Xóa Product theo ID
-//    void deleteById(String productId);
-//
-//    // Kiểm tra sự tồn tại của Product theo ID
-//    boolean existsById(String productId);
-//
-//    // Tìm Product theo ID
-//	Product findByProductId(String product_id);
+	Optional<Product> findById(String product_id);
 //
 ////
 ////    // Tìm tất cả Product
@@ -52,7 +39,7 @@ public interface ProductDAO extends JpaRepository<Product, String> {
 ////    // Tìm Product theo số lượng trong kho
 ////    List<Product> findByQuantityInStock(int quantityInStock);
 ////
-    // Tìm Product theo trạng thái is_del
+	// Tìm Product theo trạng thái is_del
 //
 //	@Query("SELECT COUNT(c) FROM Comment c WHERE c.product.id = :productId")
 //	Long countCommentsByProduct(String productId);

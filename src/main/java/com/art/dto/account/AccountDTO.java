@@ -2,6 +2,8 @@ package com.art.dto.account;
 
 import java.util.List;
 
+import com.art.models.user.InforAddress;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +22,7 @@ public class AccountDTO {
 	private String verifyCode;
 	private boolean status;
 	private List<String> roles;
+	private List<InforAddress> inforAddresses;
 	private List<KeywordSuggestionsDTO> keywordSuggestions;
 
 }

@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,10 +18,12 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -54,11 +56,27 @@ public class ProductDetail {
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
-	
+
+	@JsonIgnore
 	@OneToMany(mappedBy = "productDetail")
 	private List<ProductCart> productCarts;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "productDetail", fetch = FetchType.EAGER)
-	@JsonManagedReference
 	private List<Price> productPrice;
+
+	public ProductDetail(int id, int quantityInStock, String size, String color, double weight, double power,
+			Date productionDate, List<Price> productPrice) {
+		super();
+		this.id = id;
+		this.quantityInStock = quantityInStock;
+		this.size = size;
+		this.color = color;
+		this.weight = weight;
+		this.power = power;
+		this.productionDate = productionDate;
+		this.productPrice = productPrice;
+	}
+
+
 }

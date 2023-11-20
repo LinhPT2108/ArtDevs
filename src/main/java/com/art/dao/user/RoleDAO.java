@@ -17,7 +17,7 @@ public interface RoleDAO extends JpaRepository<Role, Integer> {
     // boolean existsById(String roleName);
     //
     // // Tìm kiếm vai trò dựa trên tên vai trò
-    // Role findByRoleName(String roleName);
+     Role findByRoleName(String roleName);
     //
     // // Tìm kiếm vai trò dựa trên tên vai trò chứa một từ khóa
     // List<Role> findByRoleNameContainingIgnoreCase(String keyword);

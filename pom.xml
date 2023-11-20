@@ -20,10 +20,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 		<dependency>
@@ -98,10 +94,11 @@
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 		<dependency>
-	        <groupId>org.modelmapper</groupId>
-	        <artifactId>modelmapper</artifactId>
-	        <version>2.4.4</version> <!-- Điều chỉnh version phù hợp với dự án của bạn -->
-	    </dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>2.4.4</version> <!-- Điều chỉnh version phù hợp với dự án
+			của bạn -->
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -119,6 +116,13 @@
 					<image>
 						<builder>paketobuildpacks/builder-jammy-base:latest</builder>
 					</image>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<outputDirectory>docs</outputDirectory>
 				</configuration>
 			</plugin>
 		</plugins>

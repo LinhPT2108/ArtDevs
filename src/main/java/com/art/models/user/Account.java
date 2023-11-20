@@ -17,6 +17,7 @@ import com.art.models.promotion.Order;
 import com.art.models.promotion.Voucher;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -72,7 +73,7 @@ public class Account {
 	private List<InforAddress> userInfor;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<AccountRole> userRole;
 
 	@JsonIgnore
