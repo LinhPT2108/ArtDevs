@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.art.dao.product.CategoryDAO;
 import com.art.dao.product.ProductDAO;
 import com.art.models.product.Category;
-import com.art.models.product.Product;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping(value = "/rest")
+@RequestMapping(value = Path.BASE_PATH)
 public class categoryRestController {
     @Autowired
     CategoryDAO caDAO;

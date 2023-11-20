@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.art.dao.promotion.OrderDAO;
 import com.art.dao.promotion.OrderDetailDAO;
-import com.art.dao.user.UserCustomDAO;
+import com.art.dao.user.AccountDAO;
 import com.art.models.product.Product;
 import com.art.models.promotion.Order;
 
@@ -33,7 +33,7 @@ public class StatisticalController {
 	OrderDetailDAO idDAO;
 	
 	@Autowired
-	UserCustomDAO uDAO;
+	AccountDAO uDAO;
 	
 	 @GetMapping("/statistical-revenue/daily-revenue")
 	    public ResponseEntity<?> getDailyRevenue() {

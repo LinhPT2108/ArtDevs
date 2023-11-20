@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.art.dao.product.ManufacturerDAO;
-import com.art.dao.user.UserCustomDAO;
+import com.art.dao.user.AccountDAO;
 import com.art.models.product.Manufacturer;
 import com.art.models.user.Account;
 import com.art.service.SessionService;
@@ -23,7 +23,7 @@ public class manufacturerController {
 	@Autowired
 	ManufacturerDAO mnDAO;
 	@Autowired
-	UserCustomDAO usDAO;
+	AccountDAO usDAO;
 	@Autowired
 	ManufacturerDAO manufacturerReponsitory;
 	@Autowired

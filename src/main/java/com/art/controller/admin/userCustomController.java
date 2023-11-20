@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import com.art.dao.user.RoleDAO;
-import com.art.dao.user.UserCustomDAO;
+import com.art.dao.user.AccountDAO;
 import com.art.models.user.Account;
 import com.art.models.user.Role;
 import com.art.service.ParamService;
@@ -30,7 +30,7 @@ public class userCustomController {
 	@Autowired
 	RoleDAO roleDAO;
 	@Autowired
-	UserCustomDAO userCustomDAO;
+	AccountDAO userCustomDAO;
 	@Autowired
 	HttpServletResponse response;
 	@Autowired
