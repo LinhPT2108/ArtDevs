@@ -23,7 +23,7 @@ public class AccountRole {
 	private int id;
 
 	@ManyToOne
-	@JoinColumn(name = "userId")
+	@JoinColumn(name = "accountId")
 	private Account user;
 
 	@ManyToOne

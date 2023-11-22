@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.art.models.user.Account;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -45,6 +46,7 @@ public class FlashSale {
 	@OneToMany(mappedBy = "flashSale", cascade = CascadeType.ALL)
 	private List<PromotionalDetails> promotionalDetailsList;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="userFlashSale")
 	private Account user;

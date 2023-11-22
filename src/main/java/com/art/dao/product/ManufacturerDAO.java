@@ -16,7 +16,7 @@ public interface ManufacturerDAO extends JpaRepository<Manufacturer, Integer>{
 //	void deleteById(int manufacturerId);
 //	
 //	// Tìm nhà sản xuất theo ID
-//	Optional<Manufacturer> findById(int manufacturerId);
+	Manufacturer findById(int manufacturerId);
 //	
 //	// Lấy tất cả nhà sản xuất theo tên nhà sản xuất
 //	List<Manufacturer> findByManufacturerName(String manufacturerName);

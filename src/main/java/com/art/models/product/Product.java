@@ -7,6 +7,7 @@ import org.hibernate.annotations.Nationalized;
 
 import com.art.models.activity.Comment;
 import com.art.models.activity.RecentlyViewed;
+import com.art.models.activity.WishList;
 import com.art.models.promotion.OrderDetail;
 import com.art.models.promotion.PromotionalDetails;
 import com.art.models.user.Account;
@@ -74,6 +75,7 @@ public class Product {
 	@NotNull(message = "Vui lòng chọn thương hiệu")
 	private Manufacturer manufacturerProduct;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "product")
 	@JsonIgnore
 	private List<Comment> productComment;
@@ -81,21 +83,29 @@ public class Product {
 	@OneToMany(mappedBy = "product")
 	@JsonIgnore
 	private List<RecentlyViewed> productRecentlyViewed;
-
+	
+	@OneToMany(mappedBy = "product")
+	@JsonIgnore
+	private List<WishList> productWishList;
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "product")
 	private List<ProductDetail> productDetail;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "product")
 	@JsonIgnore
 	private List<DetailDescription> productDescriptions;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
 	private List<Image> productImage;
-	
+
 	@OneToMany(mappedBy = "product")
 	@JsonIgnore
 	private List<OrderDetail> productOrderDetail;
-
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
 	@JsonIgnore
 	private List<PromotionalDetails> productPromotionalDetails;

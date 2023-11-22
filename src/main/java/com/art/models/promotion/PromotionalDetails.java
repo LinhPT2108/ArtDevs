@@ -22,8 +22,7 @@ public class PromotionalDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-
-	@JsonBackReference
+	
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
