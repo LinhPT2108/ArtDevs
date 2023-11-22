@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.art.dao.product.CategoryDAO;
 import com.art.dao.product.ProductDAO;
+import com.art.dao.promotion.FlashSaleDAO;
+import com.art.dao.promotion.PromotionalDetailsDAO;
 import com.art.dto.product.ProductDTO;
 import com.art.mapper.ProductMapper;
 import com.art.models.product.Category;
@@ -30,6 +32,10 @@ public class categoryRestController {
     CategoryDAO caDAO;
     @Autowired
     ProductDAO pdDAO;
+    @Autowired
+    PromotionalDetailsDAO promDao;
+    @Autowired
+    FlashSaleDAO fDAO;
 
     @GetMapping(value = "/category")
     public ResponseEntity<List<Category>> getMethodName() {
@@ -45,7 +51,8 @@ public class categoryRestController {
 
         List<Product> randomProducts = products.stream().limit(8).collect(Collectors.toList());
 
-        List<ProductDTO> productDTOs = randomProducts.stream().limit(8).map(ProductMapper::convertToDto)
+        List<ProductDTO> productDTOs = randomProducts.stream().limit(8)
+                .map(product -> ProductMapper.convertToDto(product, promDao, fDAO))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(productDTOs);

@@ -28,12 +28,6 @@ public class FlashSaleRestController {
         List<FlashSale> flashSales = flashSaleDAO.findAll();
         return ResponseEntity.ok(flashSales);
     }
-
-     @GetMapping("/flash-sale-active")
-    public ResponseEntity<FlashSale> getFlashSalesActive() {
-        FlashSale flashSales = flashSaleDAO.findByStatus(true);
-        return ResponseEntity.ok(flashSales);
-    }
     
     @GetMapping("/flash-sale/{id}")
     public ResponseEntity<FlashSale> getFlashSale(@PathVariable("id") int id) {

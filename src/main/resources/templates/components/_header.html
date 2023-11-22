@@ -121,6 +121,7 @@
                             <div class="shopping-item">
                                 <div class="dropdown-cart-header">
                                     <span>2 Items</span>
+                                    <a href="/cart">View Cart</a>
                                 </div>
                                 <ul class="shopping-list">
                                     <li>
@@ -145,7 +146,7 @@
                                         <span>Total</span>
                                         <span class="total-amount">$134.00</span>
                                     </div>
-                                    <a href="/cart" class="btn animate">Xem giỏ hàng</a>
+                                    <a href="checkout.html" class="btn animate">Checkout</a>
                                 </div>
                             </div>
                             <!--/ End Shopping Item -->
@@ -169,9 +170,9 @@
                                     <a href="{{ category.categoryId }}">{{ category.categoryName }}</a>
                                     <i class="bi bi-chevron-right text-dark mr-2 "></i>
                                     <ul class="sub-category">
-                                        <li ng-repeat="brand in brands"><a
-                                                href="/product?c={{category.categoryId }}&b={{brand.id}}">
-                                                {{brand.manufacturerName}}</a></li>
+                                        <li ng-repeat="brands in brands"><a
+                                                href="/product?c={{category.categoryId }}&b={{brands.id}}">
+                                                {{brands.manufacturerName}}</a></li>
                                     </ul>
                                 </li>
                             </ul>

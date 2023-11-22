@@ -101,7 +101,8 @@ public class ProductRestController {
 
 		List<Product> randomProducts = products.stream().limit(24).collect(Collectors.toList());
 
-		List<ProductDTO> productDTOs = randomProducts.stream().map(ProductMapper::convertToDto)
+		List<ProductDTO> productDTOs = randomProducts.stream()
+				.map(product -> ProductMapper.convertToDto(product, promDao, fDAO))
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(productDTOs);
 	}
@@ -316,15 +317,16 @@ public class ProductRestController {
 	/*
 	 * Lấy sản phẩm theo mã sản phẩm
 	 */
-//	@GetMapping("/product/detail/{id}")
-//	public ResponseEntity<ProductDTO> getProductDetail(@PathVariable("id") String key) {
-//		if (!proDAO.existsById(key)) {
-//			return ResponseEntity.notFound().build();
-//		}
-//		Product product = proDAO.findById(key).get();
-//		ProductDTO productDTO = ProductMapper.convertToDto(product);
-//
-//		return ResponseEntity.ok(productDTO);
-//	}
+	// @GetMapping("/product/detail/{id}")
+	// public ResponseEntity<ProductDTO> getProductDetail(@PathVariable("id") String
+	// key) {
+	// if (!proDAO.existsById(key)) {
+	// return ResponseEntity.notFound().build();
+	// }
+	// Product product = proDAO.findById(key).get();
+	// ProductDTO productDTO = ProductMapper.convertToDto(product);
+	//
+	// return ResponseEntity.ok(productDTO);
+	// }
 
 }
