@@ -55,10 +55,10 @@ public class ProductMapper {
 				.collect(Collectors.toList());
 	}
 
-	public static Product convertToProduct(ManufacturerDAO manuDAO,CategoryDAO cateDAO,ProductDTO productDTO) {
+	public static Product convertToProduct(ManufacturerDAO manuDAO, CategoryDAO cateDAO, ProductDTO productDTO) {
 		Product product = modelMapper.map(productDTO, Product.class);
-		product.setManufacturerProduct(getManufacturer(manuDAO,productDTO));
-		product.setCategoryProduct(getCategory(cateDAO,productDTO));
+		product.setManufacturerProduct(getManufacturer(manuDAO, productDTO));
+		product.setCategoryProduct(getCategory(cateDAO, productDTO));
 		return product;
 	}
 
@@ -68,7 +68,7 @@ public class ProductMapper {
 	}
 
 	private static Manufacturer getManufacturer(ManufacturerDAO manuDAO, ProductDTO productDTO) {
-		System.out.println("id: "+productDTO.getManufacturer().getId());
+		System.out.println("id: " + productDTO.getManufacturer().getId());
 		Manufacturer manu = manuDAO.findById(productDTO.getManufacturer().getId());
 		return manu;
 	}
@@ -83,7 +83,8 @@ public class ProductMapper {
 
 	private static List<Price> getPrice(ProductDetailDTO productDetailDTO) {
 		List<Price> prices = productDetailDTO.getPrices().stream()
-				.map(pr -> new Price(pr.getId(),pr.getPrice(),pr.getCreatedDate(), convertoProductDetail(productDetailDTO)))
+				.map(pr -> new Price(pr.getId(), pr.getPrice(), pr.getCreatedDate(),
+						convertoProductDetail(productDetailDTO)))
 				.collect(Collectors.toList());
 		return prices;
 	}
@@ -92,7 +93,7 @@ public class ProductMapper {
 		ProductDetail pd = modelMapper.map(productDetailDTO, ProductDetail.class);
 		return pd;
 	}
-	
+
 	public static List<String> getImages(ProductDTO productDTO) {
 		return productDTO.getImages();
 	}

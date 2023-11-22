@@ -50,7 +50,7 @@ app.directive("customFlashsale", function ($timeout) {
       console.log("listCarousel");
       scope.slickFlashsale = function () {
         element.find(".listCarousel").owlCarousel({
-          items: 6,
+          items: 4,
           autoplay: true,
           autoplayTimeout: 5000,
           smartSpeed: 400,
@@ -78,10 +78,7 @@ app.directive("customFlashsale", function ($timeout) {
             },
             1170: {
               items: 4,
-            },
-            1440: {
-              items: 5,
-            },
+            }
           },
         });
       };
@@ -235,12 +232,12 @@ app.directive("quickViewModal", function (ApiService, $rootScope, $timeout) {
           var firstElement = document.querySelectorAll(".btn-type");
           if (firstElement) {
             angular.element(firstElement).triggerHandler("click");
-            console.log("click");
           }
         };
         $timeout(function () {
           scope.clickFirstElement();
         }, 200);
+       
       });
     },
   };
@@ -287,11 +284,12 @@ app.directive("owlCarousel", function () {
   };
 });
 
-app.directive("modalHidden", function () {
+app.directive("modalHidden", function ($rootScope) {
   return {
     restrict: "A",
     link: function (scope, element) {
       element.on("hidden.bs.modal", function (e) {
+        $rootScope.qvpd = null;
         $(".quickview-slider-active")
           .trigger("destroy.owl.carousel")
           .removeClass("owl-carousel owl-loaded");
