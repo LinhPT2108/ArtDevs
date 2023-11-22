@@ -22,7 +22,7 @@ public class ManufacturerRestController {
  
     @GetMapping(value="/manufacturer")
     public ResponseEntity<List<Manufacturer>> getMethodName() {
-        List<Manufacturer> manufacturers = maDAO.findByDel(false);
+        List<Manufacturer> manufacturers = maDAO.findByDel(true);
         return ResponseEntity.ok(manufacturers);
     }
     
