@@ -1,6 +1,39 @@
 
 USE art_devs;
 GO 
+UPDATE dbo.category SET category.status = 1 WHERE category.category_id = 1
+SELECT *FROM dbo.category
+SELECT *FROM dbo.product_detail WHERE product_detail.product_id = '32V35KP'
+SELECT *FROM dbo.price WHERE price.product_detail_id = 3
+INSERT INTO dbo.product_detail
+        ( 
+          power ,
+          quantity_in_stock ,
+          weight ,
+          production_date ,
+          color ,
+          product_id ,
+          size
+        )
+VALUES  ( 
+          50 , -- power - float
+          10 , -- quantity_in_stock - int
+          8.0 , -- weight - float
+          SYSDATETIME() , -- production_date - datetime2(6)
+          'Black' , -- color - varchar(255)
+          '32V35KP' , -- product_id - varchar(255)
+          '160cmx75cmx8cm'  -- size - varchar(255)
+        )
+
+		INSERT INTO dbo.price
+		        ( price ,
+		          product_detail_id ,
+		          created_date
+		        )
+		VALUES  ( 9500000.0 , -- price - float
+		          32 , -- product_detail_id - int
+		          SYSDATETIME()  -- created_date - datetime2(6)
+		        )
 INSERT INTO dbo.role
         ( role_name )
 VALUES  ( 'admin'),( 'user'),( 'shipper');

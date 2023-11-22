@@ -1,4 +1,5 @@
 var app = angular.module("artdevApp", ["ngRoute"]);
+
 const api = "http://localhost:8080";
 app.config(function ($routeProvider, $locationProvider) {
   $routeProvider
@@ -7,6 +8,7 @@ app.config(function ($routeProvider, $locationProvider) {
     })
     .when("/ArtDevs", {
       templateUrl: "templates/user/views/main.html",
+      controller: "mainCtrl",
     })
     .when("/account/profile", {
       templateUrl: "templates/user/views/account.html",
@@ -87,6 +89,18 @@ app.run(function ($rootScope, DataService) {
     $rootScope.brands = response.data;
     console.log($rootScope.brands);
   });
+
+  $rootScope.getLatestPrice = function (prices) {
+    if (!prices || prices.length === 0) {
+      return null;
+    }
+
+    prices.sort(function (a, b) {
+      return new Date(b.createdDate) - new Date(a.createdDate);
+    });
+
+    return prices[0];
+  };
 });
 
 app.controller("headerCtrl", function ($scope, DataService, $location) {
@@ -100,47 +114,49 @@ app.controller("headerCtrl", function ($scope, DataService, $location) {
     event.preventDefault();
     $(".search-top").toggleClass("active");
   });
-
-  // DataService.getCategories().then(function (response) {
-  //   $scope.categories = response.data;
-  //   console.log($scope.categories);
-  // });
-
-  // DataService.getBrands().then(function (response) {
-  //   $scope.brands = response.data;
-  //   console.log($scope.brands);
-  // });
 });
 
-app.controller("mainCtrl", function ($scope, $timeout) {
-  $scope.quickViews = function () {
-    $(".quickview-slider-active").owlCarousel({
-      items: 1,
-      autoplay: true,
-      autoplayTimeout: 5000,
-      smartSpeed: 400,
-      autoplayHoverPause: true,
-      nav: true,
-      loop: true,
-      merge: true,
-      dots: false,
-      navText: [
-        '<i class=" ti-arrow-left"></i>',
-        '<i class=" ti-arrow-right"></i>',
-      ],
-    });
-  };
+app.controller("mainCtrl", function ($scope, $timeout, $rootScope, ApiService) {
+  $scope.quantity = 1;
   console.log("mainCtrl");
+
   $timeout(function () {
-    
-  }, 0);
-  $timeout(function () {
-    $scope.quickViews();
     var firstAnchor = document.querySelectorAll(".nav-link-select");
     if (firstAnchor) {
       angular.element(firstAnchor).triggerHandler("click");
     }
-  });
+  }, 100);
 
-  
+  $scope.choiceProduct = function (productDetailId, $event) {
+    $scope.quantity = 1;
+    var elements = document.querySelectorAll(".btn-type");
+    elements.forEach(function (element) {
+      element.classList.remove("type-active");
+    });
+
+    var targetElement = $event.target;
+    targetElement.classList.add("type-active");
+
+    ApiService.callApi("GET", "/rest/product-detail/" + productDetailId)
+      .then(function (resp) {
+        $scope.pdt = resp;
+        console.log($scope.pdt);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  };
+  $scope.limit = 12; 
+  ApiService.callApi("GET", "/rest/product-today")
+    .then(function (resp) {
+      $scope.listProductsToday = resp;
+      console.log($scope.listProductsToday);
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+
+  $scope.showMore = function () {
+    $scope.limit += 12;
+  };
 });

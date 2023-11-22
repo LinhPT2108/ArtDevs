@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="section-title">
-                    <h2>Trending Item</h2>
+                    <h2>SẢN PHẨM THEO DANH MỤC</h2>
                 </div>
             </div>
         </div>
@@ -44,32 +44,38 @@
                                         <div class="single-product">
                                             <div class="product-img">
                                                 <a href="/product/{{pd.productId}}">
-                                                    <img class="default-img" src="../images/products/{{pd.productImage[0].image}}"
-                                                        alt="#">
-                                                    <img class="hover-img" src="../images/products/{{pd.productImage[1].image}}"
-                                                        alt="#">
+                                                    <img class="default-img" src="../images/products/{{pd.images[0]}}"
+                                                        alt="anh 1">
+                                                    <img class="hover-img" src="../images/products/{{pd.images[1]}}"
+                                                        alt="anh 2">
+                                                    <span class="out-of-stock" ng-if="false">
+                                                        Giảm
+                                                    </span>
                                                 </a>
+
                                                 <div class="button-head">
                                                     <div class="product-action">
                                                         <a data-toggle="modal" data-target="#exampleModal"
-                                                            title="Quick View" href="#"><i
-                                                                class=" ti-eye"></i><span>Quick Shop</span></a>
-                                                        <a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add
-                                                                to
-                                                                Wishlist</span></a>
-                                                        <a title="Compare" href="#"><i
-                                                                class="ti-bar-chart-alt"></i><span>Add to
-                                                                Compare</span></a>
+                                                            title="Quick View" class="quickViews" href="#"
+                                                            data-product-id="{{pd.productId}}" quick-view-modal><i
+                                                                class=" ti-eye"></i><span>Xem
+                                                                nhanh</span></a>
+                                                        <a title="Wishlist" href="#">
+                                                            <i class=" ti-heart "></i><span>Thêm vào yêu thích</span>
+                                                        </a>
                                                     </div>
                                                     <div class="product-action-2">
-                                                        <a title="Add to cart" href="#">Add to cart</a>
+                                                        <a title="Add to cart" href="#">Thêm vào giỏ hàng</a>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="product-content">
                                                 <h3><a href="/product/{{pd.productId}}">{{pd.productName}}</a></h3>
-                                                <div class="product-price">
-                                                    <span>$29.00</span>
+                                                <div class="product-price" ng-if="pd.productDetails.length > 0">
+                                                    <span class="font-weight-bold"
+                                                        ng-init="latestPrice = getLatestPrice(pd.productDetails[0].prices)">
+                                                        {{ latestPrice.price | number:0 }}
+                                                        &#8363;</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -80,6 +86,83 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <a href="" class="btn text-white mt-3 btnViewAll">Xem tất cả</a>
+        </div>
+    </div>
+</div>
+<!-- End Product Area -->
+
+
+<!-- Start Product Area -->
+<div class="product-area section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title">
+                    <h2>GỢI Ý HÔM NAY</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="product-info">
+                    <div class="tab-content-main position-relative" id="tab">
+                        <div class="tab-pane">
+                            <div class="tab-single">
+                                <div class="row">
+                                    <div class="col-xl-3 col-lg-4 col-md-4 col-12"
+                                        ng-repeat="pd in listProductsToday track by $index" ng-if="$index < limit">
+                                        <div class="single-product">
+                                            <div class="product-img">
+                                                <a href="/product/{{pd.productId}}">
+                                                    <img class="default-img" src="../images/products/{{pd.images[0]}}"
+                                                        alt="anh 1">
+                                                    <img class="hover-img" src="../images/products/{{pd.images[1]}}"
+                                                        alt="anh 2">
+                                                    <span class="out-of-stock" ng-if="false">
+                                                        Giảm
+                                                    </span>
+                                                </a>
+
+                                                <div class="button-head">
+                                                    <div class="product-action">
+                                                        <a data-toggle="modal" data-target="#exampleModal"
+                                                            title="Quick View" class="quickViews" href="#"
+                                                            data-product-id="{{pd.productId}}" quick-view-modal><i
+                                                                class=" ti-eye"></i><span>Xem
+                                                                nhanh</span></a>
+                                                        <a title="Wishlist" href="#">
+                                                            <i class=" ti-heart "></i><span>Thêm vào yêu thích</span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-action-2">
+                                                        <a title="Add to cart" href="#">Thêm vào giỏ hàng</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="product-content">
+                                                <h3><a href="/product/{{pd.productId}}">{{pd.productName}}</a></h3>
+                                                <div class="product-price" ng-if="pd.productDetails.length > 0">
+                                                    <span class="font-weight-bold"
+                                                        ng-init="latestPrice = getLatestPrice(pd.productDetails[0].prices)">
+                                                        {{ latestPrice.price | number:0 }}
+                                                        &#8363;</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center" ng-show="limit < listProductsToday.length"
+            ng-click="showMore()">
+            <a href="" class="btn text-white mt-3 btnSeeMore">Xem thêm</a>
         </div>
     </div>
 </div>
@@ -498,7 +581,7 @@
 <!-- End Shop Services Area -->
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" ng-controller="mainCtrl">
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" modal-hidden>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -510,66 +593,52 @@
                     <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                         <!-- Product Slider -->
                         <div class="product-gallery">
-                            <div class="quickview-slider-active">
-                                <div class="single-slider">
-                                    <img src="https://via.placeholder.com/569x528" alt="#">
-                                </div>
-                                <div class="single-slider">
-                                    <img src="https://via.placeholder.com/569x528" alt="#">
-                                </div>
-                                <div class="single-slider">
-                                    <img src="https://via.placeholder.com/569x528" alt="#">
-                                </div>
-                                <div class="single-slider">
-                                    <img src="https://via.placeholder.com/569x528" alt="#">
+                            <div class="quickview-slider-active" owl-carousel>
+                                <div class="single-slider" ng-repeat="img in qvpd.images" on-finish-render>
+                                    <img src="../images/products/{{img}}" alt="{{img}}">
                                 </div>
                             </div>
                         </div>
+
                         <!-- End Product slider -->
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                         <div class="quickview-content">
-                            <h2>Flared Shift Dress</h2>
+                            <h2>{{qvpd.productName}}</h2>
                             <div class="quickview-ratting-review">
                                 <div class="quickview-ratting-wrap">
-                                    <div class="quickview-ratting">
+                                    <!-- <div class="quickview-ratting">
                                         <i class="yellow fa fa-star"></i>
                                         <i class="yellow fa fa-star"></i>
                                         <i class="yellow fa fa-star"></i>
                                         <i class="yellow fa fa-star"></i>
                                         <i class="fa fa-star"></i>
-                                    </div>
-                                    <a href="#"> (1 customer review)</a>
+                                    </div> -->
+                                    <!-- <a href="#"> (1 customer review)</a> -->
                                 </div>
                                 <div class="quickview-stock">
-                                    <span><i class="fa fa-check-circle-o"></i> in stock</span>
+                                    <span ng-if="pdt.quantityInStock > 0">
+                                        <i class="fa fa-check-circle-o"></i> Số lượng trong kho:
+                                        {{pdt.quantityInStock}}
+                                    </span>
+                                    <span ng-if="pdt.quantityInStock == 0" class="text-danger">
+                                        <i class="fa fa-times-circle text-danger" aria-hidden="true"></i> Hết hàng
+                                    </span>
                                 </div>
                             </div>
-                            <h3>$29.00</h3>
+                            <h3 class="font-weight-bold">
+                                {{ getLatestPrice(pdt.prices).price | number:0 }}
+                                &#8363;</h3>
                             <div class="quickview-peragraph">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia iste laborum
-                                    ad impedit pariatur esse optio tempora sint ullam autem deleniti nam in quos qui
-                                    nemo ipsum numquam.</p>
+                                <p><strong>{{qvpd.descriptions[0].title}}:</strong></p>
+                                <p>{{qvpd.descriptions[0].description}}</p>
                             </div>
                             <div class="size">
-                                <div class="row">
-                                    <div class="col-lg-6 col-12">
-                                        <h5 class="title">Size</h5>
-                                        <select nice-select>
-                                            <option selected="selected">s</option>
-                                            <option>m</option>
-                                            <option>l</option>
-                                            <option>xl</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6 col-12">
-                                        <h5 class="title">Color</h5>
-                                        <select nice-select>
-                                            <option selected="selected">orange</option>
-                                            <option>purple</option>
-                                            <option>black</option>
-                                            <option>pink</option>
-                                        </select>
+                                <div class="d-flex">
+                                    <div ng-repeat="p in qvpd.productDetails">
+                                        <a href="#" class="btn-type p-2 border rounded border-secondary mr-3"
+                                            ng-click="choiceProduct(p.id, $event)">{{p.size}}
+                                            - {{p.color}}</a>
                                     </div>
                                 </div>
                             </div>
@@ -578,15 +647,16 @@
                                 <div class="input-group">
                                     <div class="button minus">
                                         <button type="button" class="btn btn-primary btn-number" data-type="minus"
-                                            data-field="quant[1]">
+                                            data-field="quant[1]" ng-class="{disabled:pdt.quantityInStock == 0}">
                                             <i class="ti-minus"></i>
                                         </button>
                                     </div>
-                                    <input type="text" name="quant[1]" class="input-number" data-min="1" data-max="1000"
-                                        value="1">
+                                    <input type="text" name="quant[1]" class="input-number" data-min="1"
+                                        ng-disabled="{disabled:pdt.quantityInStock == 0}"
+                                        data-max="{{pdt.quantityInStock}}" value="1" ng-model="quantity" numbers-only>
                                     <div class="button plus">
                                         <button type="button" class="btn btn-primary btn-number" data-type="plus"
-                                            data-field="quant[1]">
+                                            data-field="quant[1]" ng-class="{disabled:pdt.quantityInStock == 0}">
                                             <i class="ti-plus"></i>
                                         </button>
                                     </div>
@@ -594,11 +664,11 @@
                                 <!--/ End Input Order -->
                             </div>
                             <div class="add-to-cart">
-                                <a href="#" class="btn">Add to cart</a>
+                                <a href="#" class="btn" ng-class="{disabled:pdt.quantityInStock == 0}">Thêm vào giỏ
+                                    hàng</a>
                                 <a href="#" class="btn min"><i class="ti-heart"></i></a>
-                                <a href="#" class="btn min"><i class="fa fa-compress"></i></a>
                             </div>
-                            <div class="default-social">
+                            <!-- <div class="default-social">
                                 <h4 class="share-now">Share:</h4>
                                 <ul>
                                     <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
@@ -606,7 +676,7 @@
                                     <li><a class="youtube" href="#"><i class="fa fa-pinterest-p"></i></a></li>
                                     <li><a class="dribbble" href="#"><i class="fa fa-google-plus"></i></a></li>
                                 </ul>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

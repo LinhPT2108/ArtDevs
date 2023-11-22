@@ -1,5 +1,6 @@
 package com.art.controller.rest;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +29,18 @@ public class ProductRestController {
 	public ResponseEntity<List<ProductDTO>> getProducts() {
 		List<Product> products = proDAO.findAll();
 		List<ProductDTO> productDTOs = products.stream().map(ProductMapper::convertToDto).collect(Collectors.toList());
+		return ResponseEntity.ok(productDTOs);
+	}
+
+	@GetMapping("/product-today")
+	public ResponseEntity<List<ProductDTO>> getProductsToday() {
+		List<Product> products = proDAO.findByAvailable(true);
+		Collections.shuffle(products);
+
+		List<Product> randomProducts = products.stream().limit(24).collect(Collectors.toList());
+
+		List<ProductDTO> productDTOs = randomProducts.stream().map(ProductMapper::convertToDto)
+				.collect(Collectors.toList());
 		return ResponseEntity.ok(productDTOs);
 	}
 

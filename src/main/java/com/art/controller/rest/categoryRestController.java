@@ -5,9 +5,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.art.dao.product.CategoryDAO;
 import com.art.dao.product.ProductDAO;
+import com.art.dto.product.ProductDTO;
+import com.art.mapper.ProductMapper;
 import com.art.models.product.Category;
+import com.art.models.product.Product;
+import com.art.utils.Path;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,11 +37,18 @@ public class categoryRestController {
         return ResponseEntity.ok(listCategories);
     }
 
-    @GetMapping(value = "/category/{id}")
-    public ResponseEntity<List<Product>> getMethodName(@PathVariable("id") int id) {
+    @GetMapping(value = "/product-by-category/{id}")
+    public ResponseEntity<List<ProductDTO>> getMethodName(@PathVariable("id") int id) {
         List<Product> products = pdDAO.findProductByCategoryId(id);
-        System.out.println(id);
-        return ResponseEntity.ok(products);
+
+        Collections.shuffle(products);
+
+        List<Product> randomProducts = products.stream().limit(8).collect(Collectors.toList());
+
+        List<ProductDTO> productDTOs = randomProducts.stream().limit(8).map(ProductMapper::convertToDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(productDTOs);
     }
 
 }
