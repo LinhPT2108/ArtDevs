@@ -75,7 +75,6 @@ public class Product {
 	@NotNull(message = "Vui lòng chọn thương hiệu")
 	private Manufacturer manufacturerProduct;
 
-	@JsonIgnore
 	@OneToMany(mappedBy = "product")
 	@JsonIgnore
 	private List<Comment> productComment;
@@ -92,7 +91,6 @@ public class Product {
 	@OneToMany(mappedBy = "product")
 	private List<ProductDetail> productDetail;
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "product")
 	@JsonIgnore
 	private List<DetailDescription> productDescriptions;
@@ -105,7 +103,6 @@ public class Product {
 	@JsonIgnore
 	private List<OrderDetail> productOrderDetail;
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
 	@JsonIgnore
 	private List<PromotionalDetails> productPromotionalDetails;

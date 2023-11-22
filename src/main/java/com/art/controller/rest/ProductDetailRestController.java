@@ -7,11 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.art.dao.product.ProductDetailDAO;
-import com.art.dto.product.ProductDTO;
 import com.art.dto.product.ProductDetailDTO;
 import com.art.mapper.ProductDetailsMapper;
-import com.art.mapper.ProductMapper;
-import com.art.models.product.Product;
 import com.art.models.product.ProductDetail;
 import com.art.utils.Path;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -94,7 +94,7 @@ public class ProductRestController {
 		return ResponseEntity.ok(productDTOs);
 	}
 
-	@GetMapping("/product-today")
+	@GetMapping("/product-today") 
 	public ResponseEntity<List<ProductDTO>> getProductsToday() {
 		List<Product> products = proDAO.findByAvailable(true);
 		Collections.shuffle(products);

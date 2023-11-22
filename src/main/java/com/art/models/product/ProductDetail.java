@@ -64,4 +64,18 @@ public class ProductDetail {
 	
 	@OneToMany(mappedBy = "productDetail", fetch = FetchType.EAGER)
 	private List<Price> productPrice;
+
+	public ProductDetail(int id, int quantityInStock, String size, String color, double weight, double power,
+			Date productionDate, List<Price> productPrice) {
+		this.id = id;
+		this.quantityInStock = quantityInStock;
+		this.size = size;
+		this.color = color;
+		this.weight = weight;
+		this.power = power;
+		this.productionDate = productionDate;
+		this.productPrice = productPrice;
+	}
+
+	
 }

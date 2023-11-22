@@ -43,8 +43,9 @@ public class categoryRestController {
         return ResponseEntity.ok(listCategories);
     }
 
-    @GetMapping(value = "/product-by-category/{id}")
+    @GetMapping(value = "/product-by-category/{id}") 
     public ResponseEntity<List<ProductDTO>> getMethodName(@PathVariable("id") int id) {
+        System.out.println(id);
         List<Product> products = pdDAO.findProductByCategoryId(id);
 
         Collections.shuffle(products);

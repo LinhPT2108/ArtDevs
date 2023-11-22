@@ -32,7 +32,7 @@ public class ProductMapper {
 		productDTO.setImages(getImagesDTO(product));
 		productDTO.setComments(getCommentDTO(product));
 		productDTO.setSale(getProductSale(proDAO, fDAO,product));
-		productDTO.setProductDetails(getProductDetailsDTO( product));
+		productDTO.setProductDetails(getProductDetailsDTO(product));
 		return productDTO;
 	}
 
@@ -101,14 +101,9 @@ public class ProductMapper {
 	}
 
 	private static List<Price> getPrice(ProductDetailDTO productDetailDTO) {
-<<<<<<< HEAD
 		List<Price> prices = productDetailDTO.getPrices().stream().map(pr -> new Price(pr.getId(), pr.getPrice(),
 				pr.getCreatedDate(), convertoProductDetail(productDetailDTO))).collect(Collectors.toList());
-=======
-		List<Price> prices = productDetailDTO.getPrices().stream()
-				.map(pr -> new Price(pr.getId(),pr.getPrice(),pr.getCreatedDate(), convertoProductDetail(productDetailDTO)))
-				.collect(Collectors.toList());
->>>>>>> parent of 78e26a6 (something new)
+	
 		return prices;
 	}
 
