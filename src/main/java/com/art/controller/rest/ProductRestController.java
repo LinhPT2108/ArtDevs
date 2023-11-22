@@ -28,6 +28,7 @@ import com.art.dao.product.PriceDAO;
 import com.art.dao.product.ProductCartDAO;
 import com.art.dao.product.ProductDAO;
 import com.art.dao.product.ProductDetailDAO;
+import com.art.dao.promotion.FlashSaleDAO;
 import com.art.dao.promotion.OrderDetailDAO;
 import com.art.dao.promotion.PromotionalDetailsDAO;
 import com.art.dto.product.ProductDTO;
@@ -79,13 +80,17 @@ public class ProductRestController {
 	@Autowired
 	WishListDAO wishListDAO;
 
+	@Autowired
+	FlashSaleDAO fDAO;
+
 	/*
 	 * lấy danh sách sản phẩm
 	 */
 	@GetMapping("/product")
 	public ResponseEntity<List<ProductDTO>> getProducts() {
 		List<Product> products = proDAO.findAll();
-		List<ProductDTO> productDTOs = products.stream().map(ProductMapper::convertToDto).collect(Collectors.toList());
+		List<ProductDTO> productDTOs = products.stream()
+				.map(product -> ProductMapper.convertToDto(product, promDao, fDAO)).collect(Collectors.toList());
 		return ResponseEntity.ok(productDTOs);
 	}
 
@@ -110,7 +115,7 @@ public class ProductRestController {
 			return ResponseEntity.notFound().build();
 		}
 		Product product = proDAO.findById(key).get();
-		ProductDTO productDTO = ProductMapper.convertToDto(product);
+		ProductDTO productDTO = ProductMapper.convertToDto(product, promDao, fDAO);
 
 		return ResponseEntity.ok(productDTO);
 	}
@@ -251,7 +256,6 @@ public class ProductRestController {
 		}
 	}
 
-
 	/*
 	 * Xóa sản phẩm khuyến mãi
 	 */
@@ -276,7 +280,6 @@ public class ProductRestController {
 		}
 	}
 
-
 	/*
 	 * Xóa sản phẩm trong danh sách yêu thích
 	 */
@@ -289,7 +292,6 @@ public class ProductRestController {
 		}
 	}
 
-
 	/*
 	 * Xóa sản phẩm xem gần đây
 	 */
@@ -301,4 +303,28 @@ public class ProductRestController {
 			}
 		}
 	}
+
+	/*
+	 * lấy danh sách sản phẩm tìm kiếm
+	 */
+	@GetMapping("/search?categoryId=?&manufacturer=?")
+	public ResponseEntity<List<ProductDetail>> getProductDetails() {
+		List<ProductDetail> productDetails = pdDAO.findAll();
+		return ResponseEntity.ok(productDetails);
+	}
+
+	/*
+	 * Lấy sản phẩm theo mã sản phẩm
+	 */
+//	@GetMapping("/product/detail/{id}")
+//	public ResponseEntity<ProductDTO> getProductDetail(@PathVariable("id") String key) {
+//		if (!proDAO.existsById(key)) {
+//			return ResponseEntity.notFound().build();
+//		}
+//		Product product = proDAO.findById(key).get();
+//		ProductDTO productDTO = ProductMapper.convertToDto(product);
+//
+//		return ResponseEntity.ok(productDTO);
+//	}
+
 }
