@@ -12,6 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.art.service.user.CustomUserDetailService;
+import com.art.utils.Path;
 
 @Configuration
 @EnableWebSecurity
@@ -19,12 +20,10 @@ public class SecurityConfiger {
 
 	@Autowired
 	private CustomUserDetailService customUserDetailService;
-	
-//	@Bean
-//	BCryptPasswordEncoder getBCryptPasswordEncoder() {
-//		return new BCryptPasswordEncoder();
-//	}
-	
+
+	/*
+	 * Mã hóa mật khẩu
+	 */
 	@Autowired
 	public void config(AuthenticationManagerBuilder auth) throws Exception {
 	        auth.userDetailsService(customUserDetailService)
@@ -37,28 +36,101 @@ public class SecurityConfiger {
 
 	}
 	
+	/*
+	 * config đường dẫn và giao thức đăng nhập, đăng xuất,
+	 * BASE_PATH = "/rest"
+	 * ADMIN_PATH = "/admin"
+	 * đăng nhập với Email và Password
+	 * Pass word : 123123a -> đã được mã hóa thành "$2a$10$kpnU5NRvBiGYfLoH.GuQ5uUFHx6M37QuihnsfN1z60VqCzX24HFZK"
+	 * Cập nhật password đã được mã hóa vào csdl
+	 */
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	    http.csrf(csrf -> csrf.disable())
 	        .authorizeHttpRequests((authz) -> authz
-	        		.requestMatchers(AntPathRequestMatcher.antMatcher("/*")).permitAll()
-	        		.requestMatchers(AntPathRequestMatcher.antMatcher("/admin/**")).hasAnyAuthority("admin")
+	        		.requestMatchers(
+	        				AntPathRequestMatcher.antMatcher("/*"),
+	        				AntPathRequestMatcher.antMatcher("/account/login"),
+	        				AntPathRequestMatcher.antMatcher("/product"),
+	        				AntPathRequestMatcher.antMatcher("/product/**")
+	        				).permitAll()
+	        		.requestMatchers(
+							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/cart"),
+							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/cart/**")
+	        				).hasAnyAuthority("user")
+	        		.requestMatchers(
+							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/account"),
+							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/account/**"),
+							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/account"),
+							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/account/**")
+	        				).hasAnyAuthority("admin", "staff", "shipper","user")
+	        		.requestMatchers(
+							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/order"),
+							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/order/**"),
+							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/order"),
+							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/order/**")
+	        				).hasAnyAuthority("admin", "staff", "shipper")
+	        		.requestMatchers(
+	        				AntPathRequestMatcher.antMatcher("/admin/dashboard"),
+							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/manufacturer"),
+							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/manufacturer/**"),
+							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/category"),
+							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/category/**"),
+							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/product"),
+							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/product/**"),
+							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/banner"),
+							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/banner/**"),
+							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/manufacturer"),
+							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/manufacturer/**"),
+							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/category"),
+							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/category/**"),
+							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/product"),
+							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/product/**"),
+							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/banner"),
+							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/banner/**"),
+							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/flashSale"),
+							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/flashSale/**"),
+	        				AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/voucher"),
+	        				AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/voucher/**"),
+	        				AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/update-status")
+	        				).hasAnyAuthority("admin", "staff")
+	        		.requestMatchers(
+	        				AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/userCustom"),
+	        				AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/userCustom/**"),
+	        				AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/statistical-revenue"),
+	        				AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/statistical-revenue/**"),
+	        				AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/statistical-order"),
+	        				AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/statistical-wishlist"),
+	        				AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/statistical-orders-by-user"),
+	        				AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/statistical-best-seller"),
+	        				AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/userCustom"),
+	        				AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/userCustom/**"),
+	        				AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/statistical-revenue"),
+	        				AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/statistical-revenue/**"),
+	        				AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/statistical-order"),
+	        				AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/statistical-wishlist"),
+	        				AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/statistical-orders-by-user"),
+	        				AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/statistical-best-seller")
+	        				).hasAnyAuthority("admin")
 	                .anyRequest().permitAll()
 	        		)
 	        .formLogin(login -> login
-	                .loginPage("/login")
-	                .loginProcessingUrl("/login")
+	                .loginPage("/account/login")
+	                .loginProcessingUrl("/account/login")
 	                .usernameParameter("email")
 	                .passwordParameter("password")
-	                .defaultSuccessUrl("/admin/dashboard", true))
+	                .defaultSuccessUrl("/", true))
 	        .logout(logout -> logout
-	                .logoutUrl("/logout")
-	                .logoutSuccessUrl("/login")
+	                .logoutUrl("/account/logout")
+	                .logoutSuccessUrl("/account/login")
 	                .invalidateHttpSession(true)
 	                .deleteCookies("JSESSIONID"));	
 	    return http.build();
 	}
 	
+	/*
+	 * Config cho phép truy cập vào tất cả các file trong pattern của antMatcher
+	 */
 	@Bean
 	WebSecurityCustomizer webSecurityCustomizer() {
 		return web -> web.ignoring().requestMatchers(AntPathRequestMatcher.antMatcher("/static/**"));
