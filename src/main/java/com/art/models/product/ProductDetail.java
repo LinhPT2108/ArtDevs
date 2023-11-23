@@ -3,7 +3,6 @@ package com.art.models.product;
 import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -52,7 +51,7 @@ public class ProductDetail {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date productionDate;
 	
-	@JsonBackReference("productDetailReference")
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;

@@ -55,7 +55,7 @@ VALUES  ( 0 , -- is_del - bit
 GO
 
 INSERT INTO dbo.account_role
-        ( role_id, user_id )
+        ( role_id, account_id )
 VALUES  ( 1, -- role_id - int
         'vinhtppc04838'  -- user_id - varchar(255)
         ),

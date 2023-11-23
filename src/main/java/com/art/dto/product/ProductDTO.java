@@ -23,5 +23,6 @@ public class ProductDTO {
 	private List<ProductDetailDTO> productDetails;
 	private List<DetailDescriptionDTO> descriptions;
 	private List<CommentDTO> comments;
+	private boolean isSale = false;
 	
 }
