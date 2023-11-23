@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.art.dao.promotion.FlashSaleDAO;
 import com.art.models.promotion.FlashSale;
-import com.art.models.user.Account;
 import com.art.service.ParamService;
-import com.art.service.SessionService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -33,8 +31,7 @@ public class flashSaleController {
 	HttpServletResponse response;
 	@Autowired
 	ParamService paramService;
-	@Autowired
-	SessionService sessionService;
+	
 	@GetMapping("/flashSale")
 	public String FlashSale(@ModelAttribute("flashSale") FlashSale flashSale,Model model) {	
 		model.addAttribute("views", "flashSale-form");
@@ -108,14 +105,14 @@ public class flashSaleController {
 					flashSale.setStartDay(dateFormat.parse(startDayStr));
 					flashSale.setEndDay(dateFormat.parse(endDayStr));
 					List<FlashSale> createFS=flashSaleDAO.findAll();
-					Account userCus=sessionService.get("userLogin");
-					for (FlashSale f: createFS) {
-						if(!f.isStatus()) {
-						f.setStatus(true);
-						flashSaleDAO.save(f);
-						}
-					}
-					flashSale.setUser(userCus);
+//					Account userCus=sessionService.get("userLogin");
+//					for (FlashSale f: createFS) {
+//						if(!f.isStatus()) {
+//						f.setStatus(true);
+//						flashSaleDAO.save(f);
+//						}
+//					}
+//					flashSale.setUser(userCus);
 					flashSaleDAO.save(flashSale);
 					return "redirect:/admin/flashSale";
 				} catch (ParseException e) {
@@ -210,14 +207,14 @@ public class flashSaleController {
 					flashSale.setStartDay(dateFormat.parse(startDayStr));
 					flashSale.setEndDay(dateFormat.parse(endDayStr));
 					List<FlashSale> createFS=flashSaleDAO.findAll();
-					Account userCus=sessionService.get("userLogin");
-					for (FlashSale f: createFS) {
-						if(!f.isStatus()) {
-						f.setStatus(true);
-						flashSaleDAO.save(f);
-						}
-					}
-					flashSale.setUser(userCus);
+//					Account userCus=sessionService.get("userLogin");
+//					for (FlashSale f: createFS) {
+//						if(!f.isStatus()) {
+//						f.setStatus(true);
+//						flashSaleDAO.save(f);
+//						}
+//					}
+//					flashSale.setUser(userCus);
 					flashSaleDAO.save(flashSale);
 					return "redirect:/admin/flashSale";
 				} catch (ParseException e) {
@@ -285,10 +282,10 @@ public class flashSaleController {
 				return "admin/index";
 			}else {				
 				try {
-					Account userCus=sessionService.get("userLogin");
+//					Account userCus=sessionService.get("userLogin");
 					flashSale.setStartDay(dateFormat.parse(startDayStr));
 					flashSale.setEndDay(dateFormat.parse(endDayStr));
-					flashSale.setUser(userCus);
+//					flashSale.setUser(userCus);
 					flashSale.setStatus(true);
 					flashSaleDAO.save(flashSale);
 					return "redirect:/admin/flashSale";

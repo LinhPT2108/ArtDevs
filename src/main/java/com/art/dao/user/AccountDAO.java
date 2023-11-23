@@ -1,6 +1,7 @@
 package com.art.dao.user;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -19,7 +20,7 @@ public interface AccountDAO extends JpaRepository<Account, String> {
 //	boolean existsById(String userId);
 //
 //	// Tìm kiếm người dùng dựa trên họ tên
-//	UserCustom findByFullname(String fullname);
+//	Account findByFullname(String fullname);
 //
 	// Tìm kiếm người dùng dựa trên trạng thái is_del
 	List<Account> findByStatus(boolean del);
@@ -36,5 +37,7 @@ public interface AccountDAO extends JpaRepository<Account, String> {
 //
 //	// Tìm kiếm người dùng dựa trên họ tên chứa một từ khóa
 //	List<UserCustom> findByFullnameContainingIgnoreCase(String keyword);
-
+	
+	Account findByEmail(String email);
+	
 }
