@@ -1,61 +1,67 @@
 <!DOCTYPE html>
 <html xmlns="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
 </head>
+
 <body>
 	<div class="site-category">
-    <form:form cssClass="row g-3 needs-validation" action="/admin/category"
-                modelAttribute="ct" method="POST">
-        <div class="col-xs-12 col-md-7">
-            <div class="row">
-                <form:hidden path="categoryId" value="" />
-                <div class="col-12 mb-3">
-                    <form:label path="categoryName" cssClass="form-label">Loại sản phẩm</form:label>
-                    <form:input type="text" cssClass="form-control" path="categoryName"
-                                autocomplete="none" placeholder="Vui lòng nhập loại sản phẩm"></form:input>
-                </div>
-            </div>
-            <div class="col-12">
-                <button formaction="/admin/category/create" class="btn btn-primary">Create</button>
-                <button formaction="/admin/category/update" class="btn btn-warning">Update</button>
-                <button formaction="/admin/category/delete" class="btn btn-danger">Delete</button>
-                <a href="/admin/category" class="btn btn-info">Reset</a>
-            </div>
-        </div>
-    </form:form>
-    <hr>
-    <div class="table-responsive">
-        <table id="statisticalTableCategory" class="table table-hover">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Loại sản phẩm</th>
-                    <th>Trạng thái</th>
-                    <th>Người tạo</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="category : ${cts}">
-                    <td th:text="${category.categoryId}"></td>
-                    <td th:text="${category.categoryName}"></td>
-                    <td th:text="${category.del ? 'Hoạt động' : 'Ngừng kinh doanh'}"></td>
-                    <td th:text="${category.user.accountId}"></td>
-                    <td><a th:href="@{/admin/category/edit/{categoryId}(categoryId=${category.categoryId})}">Edit</a></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+		<form class="row g-3 needs-validation" th:action="@{/admin/category}" th:object="${ct}" method="POST">
+			<div class="col-xs-12 col-md-7">
+				<div class="row">
+					<input type="hidden" th:field="*{categoryId}" />
+					<div class="col-12 mb-3">
+						<label class="form-label" for="categoryName">Loại sản phẩm</label>
+						<input type="text" class="form-control" th:field="*{categoryName}" autocomplete="none"
+							placeholder="Vui lòng nhập loại sản phẩm" />
+					</div>
+				</div>
+				<div class="col-12">
+					<button type="submit" class="btn btn-primary"
+						th:formaction="@{/admin/category/create}">Create</button>
+					<button type="submit" class="btn btn-warning"
+						th:formaction="@{/admin/category/update}">Update</button>
+					<button type="submit" class="btn btn-danger"
+						th:formaction="@{/admin/category/delete}">Delete</button>
+					<a href="/admin/category" class="btn btn-info">Reset</a>
+				</div>
+			</div>
+		</form>
+		<hr>
+		<div class="table-responsive">
+			<table id="statisticalTableCategory" class="table table-hover">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Loại sản phẩm</th>
+						<th>Trạng thái</th>
+						<th>Người tạo</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="category : ${cts}">
+						<td th:text="${category.categoryId}"></td>
+						<td th:text="${category.categoryName}"></td>
+						<td th:text="${category.status ? 'Hoạt động' : 'Ngừng kinh doanh'}"></td>
+						<td th:text="${category.user.accountId}"></td>
+						<td><a
+								th:href="@{/admin/category/edit/{categoryId}(categoryId=${category.categoryId})}">Edit</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 
-<script type="text/javascript" th:inline="javascript">
-    $(document).ready(function() {
-        var table = $('#statisticalTableCategory').DataTable();
+	<script type="text/javascript" th:inline="javascript">
+		$(document).ready(function () {
+			var table = $('#statisticalTableCategory').DataTable();
 
-        // Tạo radio buttons
-        var radioHtml = `
+			// Tạo radio buttons
+			var radioHtml = `
             <div class="mb-3">
                 <label>
                     <input type="radio" name="statusFilter" value="" checked> Tất cả
@@ -68,19 +74,20 @@
                 </label>
             </div>
         `;
-        
-        // Thêm radio buttons vào phần tử có class "table-responsive"
-        $('.table-responsive').prepend(radioHtml);
-        
-        // Xử lý sự kiện khi radio buttons được chọn
-        $('input[name="statusFilter"]').on('change', function() {
-            var selectedValue = $(this).val();
-            
-            // Lọc dữ liệu trong cột "Trạng thái" của DataTable
-            table.column(2).search(selectedValue).draw();
-        });
-    });
-</script>
+
+			// Thêm radio buttons vào phần tử có class "table-responsive"
+			$('.table-responsive').prepend(radioHtml);
+
+			// Xử lý sự kiện khi radio buttons được chọn
+			$('input[name="statusFilter"]').on('change', function () {
+				var selectedValue = $(this).val();
+
+				// Lọc dữ liệu trong cột "Trạng thái" của DataTable
+				table.column(2).search(selectedValue).draw();
+			});
+		});
+	</script>
 
 </body>
+
 </html>

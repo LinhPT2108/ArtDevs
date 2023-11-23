@@ -20,6 +20,8 @@ public class adminController {
 	@Autowired
 	OrderDetailDAO idDAO;
 	
+	
+	
 	@GetMapping("/dashboard")
 	public String dashboard(Model model) {
 		model.addAttribute("views", "dashboard");
@@ -34,7 +36,10 @@ public class adminController {
 	public void getRateYear(Model model) {
 		List<Integer> labels = revenueService.getYearLabelsRevenue();
 		List<Double> values = revenueService.getTotalAmountByYear();
-
+		
+//		NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.forLanguageTag("vi-VN"));
+//		String formattedNumber = numberFormat.format(nowYear);
+		
 		if (labels.size() == 1) {
 			model.addAttribute("nowYear", values.get(0));
 			model.addAttribute("lastYear", 0);

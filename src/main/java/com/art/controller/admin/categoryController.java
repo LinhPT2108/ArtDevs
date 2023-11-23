@@ -36,9 +36,9 @@ public class categoryController {
 
 	@GetMapping("/category")
 	public String category(@ModelAttribute("ct") Category ct, Model model) {
-		model.addAttribute("views", "category-form");
+//		model.addAttribute("views", "category-form");
 		model.addAttribute("title", "Phân loại sản phẩm");
-		return "admin/category-form";
+		return "/admin/category-form";
 	}
 
 	@ModelAttribute("cts")
@@ -55,7 +55,7 @@ public class categoryController {
 		model.addAttribute("ct", ct);
 		List<Category> cts = caDao.findAll();
 		model.addAttribute("cts", cts);
-		return "admin/index";
+		return "/admin/category-form";
 	}
 
 	@PostMapping("/category/create")

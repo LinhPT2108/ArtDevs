@@ -80,7 +80,7 @@ public class StatisticalController {
 
 //		model.addAttribute("views", "order-form");
 		model.addAttribute("title", "Thống kê đơn hàng");
-//		model.addAttribute("invoice", revenueService.findAllByOrderByInvoiceDateDesc());
+		model.addAttribute("invoice", revenueService.findAllByOrderByOrderDateDesc());
 		return "admin/statisticaloder-form";
 	}
 
@@ -129,7 +129,7 @@ public class StatisticalController {
 
 		model.addAttribute("views", "orders-by-user-form");
 		model.addAttribute("title", "Thống kê đơn hàng theo tài khoản");
-//		model.addAttribute("ordersByUser", uDAO.getUsersWithInvoiceCount());
+		model.addAttribute("ordersByUser", uDAO.getUsersWithOrdersCount());
 		
 		return "admin/orders-by-user-form";
 	}

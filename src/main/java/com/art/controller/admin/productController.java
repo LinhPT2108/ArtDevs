@@ -84,8 +84,8 @@ public class productController {
 		model.addAttribute("views", "product-form");
 		model.addAttribute("title", "Quản lí sản phẩm");
 		model.addAttribute("typeButton", false);
-		model.addAttribute("products",pdDAO.findByAvailable(false));
-
+		model.addAttribute("products",pdDAO.findByAvailable(true));
+		System.out.println("product" + pdDAO.findByAvailable(true) );
 		return "admin/product-form";
 	}
 

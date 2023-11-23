@@ -55,7 +55,7 @@ public class manufacturerController {
 		model.addAttribute("mn", mn);
 		List<Manufacturer> mns = mnDAO.findAll();
 		model.addAttribute("mns", mns);
-		return "admin/index";
+		return "admin/manufacturer-form";
 	}
 	
 	@PostMapping("/manufacturer/create")

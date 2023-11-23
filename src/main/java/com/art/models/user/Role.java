@@ -32,7 +32,7 @@ public class Role {
 	
 	@Column
 	@Nationalized
-	private String roleName;
+	public String roleName;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "role", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

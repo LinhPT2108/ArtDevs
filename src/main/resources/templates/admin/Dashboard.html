@@ -30,8 +30,105 @@
 				</div>
 			</div>
 		</div>
+		<div class="col-lg-4">
+			<div class="row">
+				<div class="col-lg-12">
+					<!-- Yearly Breakup -->
+					<div class="card overflow-hidden">
+						<div class="card-body p-4">
+							<h5 class="card-title mb-9 fw-semibold">Doanh thu theo năm</h5>
+							<div class="row align-items-center">
+								<div class="col-8">
+									<h4 class="fw-semibold mb-3">
+										<!--	<span th:text="${#strings.format('%1$.2f', rateYear)}"></span> -->
+										<span th:text="${#numbers.formatDecimal(nowYear, 2, 1)}"></span>
 
+									</h4>
+									<div class="d-flex align-items-center mb-3">
+										<span th:if="${nowYear >= lastYear}"
+											class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
+											<i class="ti ti-arrow-up-left text-success"></i>
+										</span>
+										<p class="text-dark me-1 fs-3 mb-0" th:if="${nowYear >= lastYear}">
+											+<span th:text="${rateYear}"></span>%
+										</p>
+										<p class="fs-3 mb-0" th:if="${nowYear >= lastYear}">năm trước</p>
+
+										<span th:if="${nowYear < lastYear}"
+											class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
+											<i class="ti ti-arrow-down-right text-danger"></i>
+										</span>
+										<p class="text-dark me-1 fs-3 mb-0" th:if="${nowYear < lastYear}">
+											-<span th:text="${rateYear}"></span>%
+										</p>
+										<p class="fs-3 mb-0" th:if="${nowYear < lastYear}">năm trước</p>
+									</div>
+									<div class="d-flex align-items-center">
+										<div class="me-4">
+											<span class="round-8 bg-primary rounded-circle me-2 d-inline-block"></span>
+											<span class="fs-2">2023</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-4">
+									<div class="d-flex justify-content-center">
+										<div id="breakup"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-12">
+					<!-- Monthly Earnings -->
+					<div class="card">
+						<div class="card-body">
+							<div class="row alig n-items-start">
+								<div class="col-8">
+									<h5 class="card-title mb-9 fw-semibold">Doanh thu theo tháng trong năm</h5>
+									<h4 class="fw-semibold mb-3">
+										<!--	<span th:text="${#numbers.formatCurrency(nowMonth, 'VND', 0, 0)}"></span> -->
+										<span th:text="${#numbers.formatDecimal(nowMonth, 2, 1)}"></span>
+									</h4>
+									<div class="d-flex align-items-center pb-1">
+										<span th:if="${nowMonth < lastMonth}"
+											class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
+											<i class="ti ti-arrow-down-right text-danger"></i>
+										</span>
+										<p class="text-dark me-1 fs-3 mb-0" th:if="${nowMonth < lastMonth}">
+											<span th:text="${#numbers.formatDecimal(rateMonth, 2, 1)}"></span>
+										</p>
+										<p class="fs-3 mb-0" th:if="${nowMonth < lastMonth}">tháng trước</p>
+
+										<span th:if="${nowMonth >= lastMonth}"
+											class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
+											<i class="ti ti-arrow-up-left text-success"></i>
+										</span>
+										<p class="text-dark me-1 fs-3 mb-0" th:if="${nowMonth >= lastMonth}">
+											+<span th:text="${#numbers.formatDecimal(rateMonth, 2, 1)}"></span>%
+										</p>
+										<p class="fs-3 mb-0" th:if="${nowMonth >= lastMonth}">tháng trước</p>
+									</div>
+								</div>
+								<div class="col-4">
+									<div class="d-flex justify-content-end">
+										<div
+											class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
+											<i class="ti ti-currency-dollar fs-6"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="earning"></div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
+
+
+
 
 </body>
 

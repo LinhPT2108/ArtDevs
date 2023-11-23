@@ -23,14 +23,9 @@
 				<tr th:each="item : ${invoice}">
 					<td th:text="${item.id}"></td>
 					<td th:text="${item.user.fullname}"></td>
+					<td th:text="${#dates.format(item.orderDate, 'dd/MM/yyyy')}"></td>
 					<td>
-						<fmt:formatDate value="${item.invoiceDate}" pattern="dd/MM/yyyy"
-							th:text="${item.invoiceDate}" />
-					</td>
-					<td>
-						<fmt:setLocale value="vi_VN" />
-						<fmt:formatNumber value="${item.totalAmount}" type="currency" currencyCode="VND"
-							maxFractionDigits="0" minFractionDigits="0" th:text="${item.totalAmount}" />
+						 <span th:text="${#numbers.formatDecimal(item.totalAmount, 0, 0)} + '&#8363;' "></span>
 					</td>
 					<td>
 						<select class="form-select statusSelect" th:disabled="${item.status==3}"

@@ -42,11 +42,11 @@
 						</div>
 						<div class="col-12 mb-3">
 							<label for="del" class="form-label">Trạng thái:</label>
-							<input type="radio" th:field="*{del}" value="false" id="del1" />
+							<input type="radio" th:field="*{status}" value="false" id="del1" />
 							<label for="del1">Đang hoạt động</label>
-							<input type="radio" th:field="*{del}" value="true" id="del2" />
+							<input type="radio" th:field="*{status}" value="true" id="del2" />
 							<label for="del2">Đã bị khóa</label>
-							<div class="text-danger" th:errors="*{del}"></div>
+							<div class="text-danger" th:errors="*{status}"></div>
 						</div>
 					</div>
 					<div class="col-12">
@@ -89,10 +89,10 @@
 					<tr th:each="userCustom : ${userCustoms}">
 						<td th:text="${userCustom.email}"></td>
 						<td th:text="${userCustom.fullname}"></td>
-						<td th:text="${userCustom.roleName.roleName}"></td>
+						<td th:text="${userCustom.userRole.role}"></td>
 						<td th:text="${userCustom.image}"></td>
 						<td>
-							<span th:utext="${userCustom.del == true ? 'Đã bị khóa' : 'Đang hoạt động'}"></span>
+							<span th:utext="${userCustom.status == true ? 'Đã bị khóa' : 'Đang hoạt động'}"></span>
 						</td>
 						<td><a
 								th:href="@{/admin/userCustom/edit/{accountId}(accountId=${userCustom.accountId})}">Edit</a>

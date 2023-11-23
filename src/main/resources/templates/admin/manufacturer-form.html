@@ -8,24 +8,28 @@
 
 <body>
 	<div class="site-manufacturer">
-		<form:form cssClass="row g-3 needs-validation" action="/admin/manufacturer" modelAttribute="mn" method="POST">
+		<form class="row g-3 needs-validation" th:action="@{/admin/manufacturer}" th:object="${mn}" method="POST">
 			<div class="col-xs-12 col-md-7">
 				<div class="row">
-					<form:hidden path="id" value="" />
+					<input type="hidden" th:field="*{id}" />
 					<div class="col-12 mb-3">
-						<form:label path="manufacturerName" cssClass="form-label">Tên Thương Hiệu</form:label>
-						<form:input type="text" cssClass="form-control" path="manufacturerName" autocomplete="none"
-							placeholder="Vui lòng nhập tên thương hiệu"></form:input>
+						<label class="form-label" for="manufacturerName">Tên Thương Hiệu</label>
+						<input type="text" class="form-control" th:field="*{manufacturerName}" autocomplete="none"
+							placeholder="Vui lòng nhập tên thương hiệu" />
 					</div>
 				</div>
 				<div class="col-12">
-					<button formaction="/admin/manufacturer/create" class="btn btn-primary">Create</button>
-					<button formaction="/admin/manufacturer/update" class="btn btn-warning">Update</button>
-					<button formaction="/admin/manufacturer/delete" class="btn btn-danger">Delete</button>
+					<button type="submit" class="btn btn-primary"
+						th:formaction="@{/admin/manufacturer/create}">Create</button>
+					<button type="submit" class="btn btn-warning"
+						th:formaction="@{/admin/manufacturer/update}">Update</button>
+					<button type="submit" class="btn btn-danger"
+						th:formaction="@{/admin/manufacturer/delete}">Delete</button>
 					<a href="/admin/manufacturer" class="btn btn-info">Reset</a>
 				</div>
 			</div>
-		</form:form>
+		</form>
+
 		<hr>
 
 		<div class="table-responsive">

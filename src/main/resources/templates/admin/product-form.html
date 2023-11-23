@@ -38,7 +38,7 @@
 						</select>
 						<small class="text-danger fst-italic" id="manufacturerProductError"></small>
 					</div>
-					<div class="col-md-6 mb-3">
+					<!--<div class="col-md-6 mb-3">
 						<label for="price" class="form-label">Giá bán</label>
 						<input type="number" th:field="*{price}" class="form-control" autocomplete="none" />
 						<small class="text-danger fst-italic" id="priceError"></small>
@@ -47,7 +47,7 @@
 						<label for="quantityInStock" class="form-label">Số lượng trong kho</label>
 						<input type="number" th:field="*{quantityInStock}" class="form-control" autocomplete="none" />
 						<small class="text-danger fst-italic" id="quantityInStockError"></small>
-					</div>
+					</div> -->
 					<div class="col-12 mb-3">
 						<label class="form-label mb-3">Thông tin chi tiết:</label>
 						<small class="text-danger fst-italic" id="detailDecriptionError"></small>
@@ -121,7 +121,7 @@
 				<tr th:each="product : ${products}">
 					<td th:text="${product.productId}"></td>
 					<td th:text="${product.productName}"></td>
-					<td th:text="${product.quantityInStock}"></td>
+					<td th:text="${product.productDetail}"></td>
 					<td>
 						<fmt:setLocale value="vi_VN" />
 						<fmt:formatNumber value="${product.price}" type="currency" currencyCode="VND"
