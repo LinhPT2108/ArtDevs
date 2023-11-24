@@ -26,5 +26,6 @@ public class ProductDTO {
 	private double star = 0;
 	private int countSold = 0;
 	private boolean isSale = false;
+	private double discountPrice;
 	
 }

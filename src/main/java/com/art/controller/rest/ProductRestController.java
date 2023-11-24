@@ -1,5 +1,6 @@
 package com.art.controller.rest;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -87,9 +88,31 @@ public class ProductRestController {
 	 */
 	@GetMapping("/product")
 	public ResponseEntity<List<ProductDTO>> getProducts() {
+		System.out.println("product123");
 		List<Product> products = proDAO.findAll();
 		List<ProductDTO> productDTOs = products.stream()
 				.map(product -> ProductMapper.convertToDto(product, promDao, fDAO, proDAO))
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(productDTOs);
+	}
+
+	// @GetMapping("/product")
+	// public ResponseEntity<List<Product>> getProducts() {
+	// 	System.out.println("product123");
+	// 	List<Product> products = proDAO.findAll();
+	// 	return ResponseEntity.ok(products);
+	// }
+
+	@GetMapping("/product-today")
+	public ResponseEntity<List<ProductDTO>> getProductsToday() {
+		System.out.println("product today");
+		List<Product> products = proDAO.findByAvailable(true);
+		Collections.shuffle(products);
+
+		List<Product> randomProducts = products.stream().limit(24).collect(Collectors.toList());
+
+		List<ProductDTO> productDTOs = randomProducts.stream()
+				.map(product -> ProductMapper.convertToDto(product, promDao, fDAO))
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(productDTOs);
 	}
@@ -304,15 +327,16 @@ public class ProductRestController {
 	/*
 	 * Lấy sản phẩm theo mã sản phẩm
 	 */
-//	@GetMapping("/product/detail/{id}")
-//	public ResponseEntity<ProductDTO> getProductDetail(@PathVariable("id") String key) {
-//		if (!proDAO.existsById(key)) {
-//			return ResponseEntity.notFound().build();
-//		}
-//		Product product = proDAO.findById(key).get();
-//		ProductDTO productDTO = ProductMapper.convertToDto(product);
-//
-//		return ResponseEntity.ok(productDTO);
-//	}
+	// @GetMapping("/product/detail/{id}")
+	// public ResponseEntity<ProductDTO> getProductDetail(@PathVariable("id") String
+	// key) {
+	// if (!proDAO.existsById(key)) {
+	// return ResponseEntity.notFound().build();
+	// }
+	// Product product = proDAO.findById(key).get();
+	// ProductDTO productDTO = ProductMapper.convertToDto(product);
+	//
+	// return ResponseEntity.ok(productDTO);
+	// }
 
 }

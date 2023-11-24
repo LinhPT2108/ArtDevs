@@ -4889,7 +4889,7 @@ tbody.collapse.show {
     -ms-flex-align: center;
     align-items: center;
     -ms-flex-pack: center;
-    justify-content: center;
+    justify-content: left;
     color: #fff;
     background-color: #007bff
 }
@@ -8638,6 +8638,8 @@ a.text-dark:hover {
 .invisible {
     visibility: hidden!important
 }
-
+.text-decoration-line-through{
+    text-decoration: line-through;
+}
 
 /*# sourceMappingURL=bootstrap.min.css.map */

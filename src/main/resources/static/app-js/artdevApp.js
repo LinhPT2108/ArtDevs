@@ -1,12 +1,14 @@
 var app = angular.module("artdevApp", ["ngRoute"]);
-const api = "http://localhost:8080"
+
+const api = "http://localhost:8080";
 app.config(function ($routeProvider, $locationProvider) {
   $routeProvider
     .when("/", {
-      templateUrl: "templates/user/views/main.html",
+      redirectTo: "/ArtDevs",
     })
     .when("/ArtDevs", {
       templateUrl: "templates/user/views/main.html",
+      controller: "mainCtrl",
     })
     .when("/account/profile", {
       templateUrl: "templates/user/views/account.html",
@@ -36,12 +38,15 @@ app.config(function ($routeProvider, $locationProvider) {
       templateUrl: "templates/user/views/cart.html",
       controller: "cartCtrl",
     })
-    .when("/product", {
+    .when("/products", {
       templateUrl: "templates/user/views/shop-grid.html",
       controller: "productsiteCtrl",
     })
+    .when("/about-us", {
+      templateUrl: "templates/user/views/about-us.html",
+    })
     .otherwise({
-      redirectTo: "/",
+      redirectTo: "/ArtDevs",
     });
 
   $locationProvider.html5Mode(true);
@@ -51,7 +56,7 @@ app.service("ApiService", function ($http) {
   this.callApi = function (method, url, data) {
     return $http({
       method: method,
-      url: url,
+      url: api + url,
       data: data,
     })
       .then(function successCallback(response) {
@@ -66,50 +71,95 @@ app.service("ApiService", function ($http) {
 // Service trong AngularJS để gọi API từ backend
 app.service("DataService", function ($http) {
   this.getCategories = function () {
-    return $http.get(api+"/rest/category");
+    return $http.get(api + "/rest/category");
   };
 
-  // this.getBrands = function() {
-  //     return $http.get('/api/brands');
-  // };
+  this.getBrands = function () {
+    return $http.get(api + "/rest/manufacturer");
+  };
 });
 
-app.controller("headerCtrl", function ($scope, DataService) {
-  $(".top-search a").on("click", function () {
+app.run(function ($rootScope, DataService) {
+  DataService.getCategories().then(function (response) {
+    $rootScope.categories = response.data;
+    console.log($rootScope.categories);
+  });
+
+  DataService.getBrands().then(function (response) {
+    $rootScope.brands = response.data;
+    console.log($rootScope.brands);
+  });
+
+  $rootScope.getLatestPrice = function (prices) {
+    if (!prices || prices.length === 0) {
+      return null;
+    }
+
+    prices.sort(function (a, b) {
+      return new Date(b.createdDate) - new Date(a.createdDate);
+    });
+
+    return prices[0];
+  };
+});
+
+app.controller("headerCtrl", function ($scope, DataService, $location) {
+  $scope.isActive = function (...viewLocations) {
+    return viewLocations.some((location) =>
+      $location.path().includes(location)
+    );
+  };
+
+  $(".top-search a").on("click", function (event) {
+    event.preventDefault();
     $(".search-top").toggleClass("active");
   });
-
-  DataService.getCategories().then(function (response) {
-    $scope.categories = response.data;
-  });
-  console.log($scope.categories);
-
-  // DataService.getBrands().then(function (response) {
-  //   $scope.brands = response.data;
-  // });
 });
 
-app.controller("mainCtrl", function ($scope, $timeout) {
-  console.log(123);
-  $scope.quickViews = function () {
-    $(".quickview-slider-active").owlCarousel({
-      items: 1,
-      autoplay: true,
-      autoplayTimeout: 5000,
-      smartSpeed: 400,
-      autoplayHoverPause: true,
-      nav: true,
-      loop: true,
-      merge: true,
-      dots: false,
-      navText: [
-        '<i class=" ti-arrow-left"></i>',
-        '<i class=" ti-arrow-right"></i>',
-      ],
-    });
-  };
+app.controller("mainCtrl", function ($scope, $timeout, $rootScope, ApiService) {
+  $scope.quantity = 1;
+  console.log("mainCtrl");
 
   $timeout(function () {
-    $scope.quickViews();
-  });
+    var firstAnchor = document.querySelectorAll(".nav-link-select");
+    if (firstAnchor) {
+      angular.element(firstAnchor).triggerHandler("click");
+    }
+  }, 100);
+
+  $scope.choiceProduct = function (productDetailId, $event, discountPrice, isSale) {
+    console.log(isSale, discountPrice)
+    $scope.isSale = isSale;
+    $scope.discountPrice = discountPrice;
+    $scope.quantity = 1;
+    var elements = document.querySelectorAll(".btn-type");
+    elements.forEach(function (element) {
+      element.classList.remove("type-active");
+    });
+
+    var targetElement = $event.target;
+    targetElement.classList.add("type-active");
+
+    ApiService.callApi("GET", "/rest/product-detail/" + productDetailId)
+      .then(function (resp) {
+        $scope.pdt = resp;
+        console.log($scope.pdt);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  };
+  $scope.limit = 12; 
+  ApiService.callApi("GET", "/rest/product-today")
+    .then(function (resp) {
+      $scope.listProductsToday = resp;
+      console.log($scope.listProductsToday);
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+
+  $scope.showMore = function () {
+    $scope.limit += 12;
+  };
 });

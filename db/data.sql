@@ -1,6 +1,39 @@
 
 USE art_devs;
 GO 
+UPDATE dbo.category SET category.status = 1 WHERE category.category_id = 1
+SELECT *FROM dbo.category
+SELECT *FROM dbo.product_detail WHERE product_detail.product_id = '32V35KP'
+SELECT *FROM dbo.price WHERE price.product_detail_id = 3
+INSERT INTO dbo.product_detail
+        ( 
+          power ,
+          quantity_in_stock ,
+          weight ,
+          production_date ,
+          color ,
+          product_id ,
+          size
+        )
+VALUES  ( 
+          50 , -- power - float
+          10 , -- quantity_in_stock - int
+          8.0 , -- weight - float
+          SYSDATETIME() , -- production_date - datetime2(6)
+          'Black' , -- color - varchar(255)
+          '32V35KP' , -- product_id - varchar(255)
+          '160cmx75cmx8cm'  -- size - varchar(255)
+        )
+
+		INSERT INTO dbo.price
+		        ( price ,
+		          product_detail_id ,
+		          created_date
+		        )
+		VALUES  ( 9500000.0 , -- price - float
+		          32 , -- product_detail_id - int
+		          SYSDATETIME()  -- created_date - datetime2(6)
+		        )
 INSERT INTO dbo.role
         ( role_name )
 VALUES  ( 'admin'),( 'user'),( 'shipper');
@@ -55,7 +88,7 @@ VALUES  ( 0 , -- is_del - bit
 GO
 
 INSERT INTO dbo.account_role
-        ( role_id, account_id )
+        ( role_id, user_id )
 VALUES  ( 1, -- role_id - int
         'vinhtppc04838'  -- user_id - varchar(255)
         ),
@@ -140,7 +173,6 @@ VALUES  ( SYSDATETIME(), -- date - datetime2(6)
           'linhptpc04737'  -- user_id - varchar(255)
           );
 GO
-
 INSERT INTO dbo.voucher
         ( discount ,
           maximum_number_of_uses ,
@@ -1531,7 +1563,6 @@ VALUES  ( 10, -- comment_id - int
           '65NANO76SQA_3.png'  -- image - varchar(255)
           );
 GO 
-
 INSERT INTO dbo.promotional_details
         ( discounted_price ,
           flash_sale_id ,
@@ -1587,7 +1618,6 @@ VALUES  ( 0.15 , -- discounted_price - float
           'ZTNQ18GPLA0',  -- product_id - varchar(255)
           50
         );
-GO
 
 
 --SELECT * FROM dbo.invoice_detail

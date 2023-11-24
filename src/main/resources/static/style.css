@@ -814,13 +814,10 @@ Version:1.0
 
 .header.shop .search-bar form {
 	display: inline-block;
-	float: left;
-	width: 260px;
+	width: 100%;
 }
 
 .header.shop .search-bar input {
-	left: 150px;
-    position: absolute;
 	height: 48px;
 	background: transparent;
 	color: #666;
@@ -829,7 +826,15 @@ Version:1.0
 	font-size: 14px;
 	font-weight: 400;
 	padding: 0 25px 0 20px;
-	width: 328px;
+	width: 100%;
+}
+
+.header.shop .search-bar input:focus {
+	outline: none;
+}
+
+.search-top .search-form input:focus {
+	outline: none;
 }
 
 .header.shop .search-bar .btnn {
@@ -840,7 +845,6 @@ Version:1.0
 	font-size: 18px;
 	color: #fff;
 	background: #615858;
-	position: absolute;
 	right: -2px;
 	top: -1px;
 	border: none;
@@ -2059,9 +2063,12 @@ Version:1.0
 }
 
 .single-product .product-img {
+	height: 230px;
 	position: relative;
 	overflow: hidden;
 	cursor: pointer;
+	display: flex;
+	align-items: center;
 }
 
 .single-product .product-img a {
@@ -3808,8 +3815,9 @@ Version:1.0
 .shop.checkout .nice-select {
 	width: 100%;
 	line-height: 50px;
-/*	margin-bottom: 25px;
-*/	background: #F6F7FB;
+	/*	margin-bottom: 25px;
+*/
+	background: #F6F7FB;
 	border-radius: 0px;
 	border: none;
 }
@@ -5825,7 +5833,8 @@ Version:1.0
 	End Footer CSS
 ===============================*/
 
-#categoryIdSort .nice-select,#categoryIdSort .list{
+#categoryIdSort .nice-select,
+#categoryIdSort .list {
 	width: 160px;
-	
+
 }

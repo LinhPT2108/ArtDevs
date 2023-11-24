@@ -70,7 +70,7 @@ Version:1.0
 	padding: 8px 20px;
 }
 .header.shop .search-bar {
-	height: 45px;
+	/* height: 45px; */
 }
 .header.shop .nice-select {
 	height: 44px;
@@ -90,8 +90,8 @@ Version:1.0
 }
 .header.shop .search-bar input {
 	padding: 0 52px 0 20px;
-	width: 264px;
-	height: 100%;
+	/* width: 264px;
+	height: 100%; */
 	font-size: 13px;
 }
 .header.shop .all-category {

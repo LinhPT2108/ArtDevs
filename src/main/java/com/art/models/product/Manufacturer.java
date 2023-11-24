@@ -6,6 +6,7 @@ import java.util.Objects;
 import org.hibernate.annotations.Nationalized;
 
 import com.art.models.user.Account;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,7 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter 
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -40,10 +41,12 @@ public class Manufacturer {
 	@Column
 	private boolean del;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "userManufacturer")
 	private Account user;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "manufacturerProduct")
 	private List<Product> manufacturer;
 
@@ -64,5 +67,4 @@ public class Manufacturer {
 		return id == other.id;
 	}
 
-	
 }

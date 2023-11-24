@@ -21,5 +21,4 @@ public class ProductDetailDTO {
 	private double power;
 	private Date productionDate;
 	private List<PriceDTO> prices;
-	private double discountPrice;
 }
