@@ -1,5 +1,6 @@
 package com.art.controller.rest;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -7,6 +8,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.art.dao.product.ProductDAO;
+import com.art.dao.promotion.FlashSaleDAO;
+import com.art.dao.promotion.PromotionalDetailsDAO;
 import com.art.dao.user.AccountDAO;
 import com.art.dao.user.AccountRoleDAO;
 import com.art.dao.user.InforAddressDAO;
@@ -45,6 +52,26 @@ public class AccountRestController {
 	@Autowired
 	InforAddressDAO inforAddressDAO;
 
+	@Autowired
+	FlashSaleDAO fDAO;
+
+	@Autowired
+	PromotionalDetailsDAO promotionDAO;
+
+	@Autowired
+	ProductDAO pdDAO;
+
+	@GetMapping(value = "/userLogin")
+	public ResponseEntity<AccountDTO> getArtDev(Model model) {
+		// Lấy thông tin người dùng từ SecurityContextHolder
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null) {
+			AccountDTO accountDTO = AccountMapper.convertToDto(aDAO.findByEmail(authentication.getName()), promotionDAO,
+					fDAO,pdDAO);
+			return ResponseEntity.ok(accountDTO);
+		}
+		return ResponseEntity.notFound().build();
+	}
 
 	/*
 	 * Lấy tất cả tài khoản
@@ -52,10 +79,17 @@ public class AccountRestController {
 	@GetMapping("/account")
 	public ResponseEntity<List<AccountDTO>> getAccounts() {
 		List<Account> accounts = aDAO.findAll();
-		List<AccountDTO> accountDTOs = accounts.stream().map(AccountMapper::convertToDto).collect(Collectors.toList());
+		List<AccountDTO> accountDTOs = accounts.stream()
+				.map(account -> AccountMapper.convertToDto(account, promotionDAO, fDAO, pdDAO))
+				.collect(Collectors.toList());
 		return ResponseEntity.ok(accountDTOs);
 	}
 
+	@GetMapping(value = "/account/user")
+	public Principal getLogin(Principal principal) {
+		System.out.println("co gì hoong : " + principal.toString());
+		return principal;
+	}
 //	@GetMapping("/account")
 //	public ResponseEntity<List<Account>> getAccounts() {
 //		List<Account> accounts = aDAO.findAll();
@@ -72,7 +106,7 @@ public class AccountRestController {
 			return ResponseEntity.notFound().build();
 		}
 		Account accounts = aDAO.findById(key).get();
-		AccountDTO accountDTOs = AccountMapper.convertToDto(accounts);
+		AccountDTO accountDTOs = AccountMapper.convertToDto(accounts, promotionDAO, fDAO, pdDAO);
 		return ResponseEntity.ok(accountDTOs);
 	}
 
@@ -134,7 +168,6 @@ public class AccountRestController {
 		aDAO.save(account);
 		return ResponseEntity.ok(account);
 	}
-
 
 	/*
 	 * Xóa người dùng

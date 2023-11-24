@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.art.models.product.Category;
 import com.art.models.product.Manufacturer;
@@ -39,9 +40,14 @@ public interface ProductDAO extends JpaRepository<Product, String> {
 //
 	@Query("SELECT p FROM Product p WHERE p.categoryProduct.categoryId = :categoryId")
 	List<Product> findProductByCategoryId(int categoryId);
-////
-////    // Tìm Product theo số lượng trong kho
-////    List<Product> findByQuantityInStock(int quantityInStock);
+
+	@Query("SELECT k.keywords FROM KeywordSuggestions k WHERE k.user.email = :email")
+	List<String> findKeywordByUser(String email);
+	
+	@Query("SELECT p FROM Product p WHERE LOWER(p.productName) LIKE LOWER(CONCAT('N%', :keyword, '%'))")
+    List<Product> findByProductNameAlls(@Param("keyword") String keyword);
+    // Tìm Product theo số lượng trong kho
+//    List<Product> findByQuantityInStock(int quantityInStock);
 ////
 	// Tìm Product theo trạng thái is_del
 //
