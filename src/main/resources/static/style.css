@@ -829,12 +829,14 @@ Version:1.0
 	width: 100%;
 }
 
-.header.shop .search-bar input:focus{
+.header.shop .search-bar input:focus {
 	outline: none;
 }
-.search-top .search-form input:focus{
+
+.search-top .search-form input:focus {
 	outline: none;
 }
+
 .header.shop .search-bar .btnn {
 	height: 50px;
 	line-height: 53px;
@@ -2061,9 +2063,12 @@ Version:1.0
 }
 
 .single-product .product-img {
+	height: 230px;
 	position: relative;
 	overflow: hidden;
 	cursor: pointer;
+	display: flex;
+	align-items: center;
 }
 
 .single-product .product-img a {
@@ -3810,8 +3815,9 @@ Version:1.0
 .shop.checkout .nice-select {
 	width: 100%;
 	line-height: 50px;
-/*	margin-bottom: 25px;
-*/	background: #F6F7FB;
+	/*	margin-bottom: 25px;
+*/
+	background: #F6F7FB;
 	border-radius: 0px;
 	border: none;
 }
@@ -5827,7 +5833,8 @@ Version:1.0
 	End Footer CSS
 ===============================*/
 
-#categoryIdSort .nice-select,#categoryIdSort .list{
+#categoryIdSort .nice-select,
+#categoryIdSort .list {
 	width: 160px;
-	
+
 }

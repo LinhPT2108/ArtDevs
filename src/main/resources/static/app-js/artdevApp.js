@@ -127,7 +127,10 @@ app.controller("mainCtrl", function ($scope, $timeout, $rootScope, ApiService) {
     }
   }, 100);
 
-  $scope.choiceProduct = function (productDetailId, $event) {
+  $scope.choiceProduct = function (productDetailId, $event, discountPrice, isSale) {
+    console.log(isSale, discountPrice)
+    $scope.isSale = isSale;
+    $scope.discountPrice = discountPrice;
     $scope.quantity = 1;
     var elements = document.querySelectorAll(".btn-type");
     elements.forEach(function (element) {

@@ -88,14 +88,23 @@ public class ProductRestController {
 	 */
 	@GetMapping("/product")
 	public ResponseEntity<List<ProductDTO>> getProducts() {
+		System.out.println("product123");
 		List<Product> products = proDAO.findAll();
 		List<ProductDTO> productDTOs = products.stream()
 				.map(product -> ProductMapper.convertToDto(product, promDao, fDAO)).collect(Collectors.toList());
 		return ResponseEntity.ok(productDTOs);
 	}
 
-	@GetMapping("/product-today") 
+	// @GetMapping("/product")
+	// public ResponseEntity<List<Product>> getProducts() {
+	// 	System.out.println("product123");
+	// 	List<Product> products = proDAO.findAll();
+	// 	return ResponseEntity.ok(products);
+	// }
+
+	@GetMapping("/product-today")
 	public ResponseEntity<List<ProductDTO>> getProductsToday() {
+		System.out.println("product today");
 		List<Product> products = proDAO.findByAvailable(true);
 		Collections.shuffle(products);
 

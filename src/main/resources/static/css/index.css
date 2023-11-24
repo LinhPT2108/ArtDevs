@@ -6,6 +6,7 @@
 	-webkit-line-clamp: 2;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	height: 50px;
 }
 
 .lof-clock-detail {
@@ -119,4 +120,52 @@
 .type-active {
 	border-color: #F7941D !important;
 	color: #F7941D !important;
+}
+
+.progress-bar-custom {
+	width: 100%;
+	background-color: #c2c2c0;
+	height: 25px;
+	border-radius: 5px;
+}
+
+.progress-custom {
+	height: 100%;
+	background-color: #f7c913;
+	border-radius: 5px;
+	position: relative !important;
+}
+
+.text-sold {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: inherit;
+	width: inherit;
+	color: #fff;
+	font-size: 1rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	z-index: 3;
+	text-shadow: 0 0 8px rgba(0, 0, 0, .12);
+}
+
+.sold-out{ 
+	z-index: 9;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.sold-out .content{
+	display: flex;
+    height: 90px;
+    width: 90px;
+    border-radius: 50%;
+    background-color: rgba(0,0,0,.65);
+    align-items: center;
+	justify-content: center;
 }

@@ -1,7 +1,6 @@
 <!-- Slider Area -->
 <custom-banner></custom-banner>
 <!--/ End Slider Area -->
-
 <custom-flashsale></custom-flashsale>
 
 <!-- Start Product Area -->
@@ -48,8 +47,8 @@
                                                         alt="anh 1">
                                                     <img class="hover-img" src="../images/products/{{pd.images[1]}}"
                                                         alt="anh 2">
-                                                    <span class="out-of-stock" ng-if="false">
-                                                        Giảm
+                                                    <span class="out-of-stock font-weight-bold" ng-show="pd.sale">
+                                                        - {{pd.discountPrice*100}}%
                                                     </span>
                                                 </a>
 
@@ -70,12 +69,23 @@
                                                 </div>
                                             </div>
                                             <div class="product-content">
-                                                <h3><a href="/product/{{pd.productId}}">{{pd.productName}}</a></h3>
-                                                <div class="product-price" ng-if="pd.productDetails.length > 0">
+                                                <h3 class="card-title"><a
+                                                        href="/product/{{pd.productId}}">{{pd.productName}}</a></h3>
+                                                <div class="product-price d-flex flex-column"
+                                                    ng-if="pd.productDetails.length > 0">
                                                     <span class="font-weight-bold"
                                                         ng-init="latestPrice = getLatestPrice(pd.productDetails[0].prices)">
-                                                        {{ latestPrice.price | number:0 }}
-                                                        &#8363;</span>
+                                                        <span ng-if="pd.sale" class="text-decoration-line-through">{{
+                                                            latestPrice.price | number:0 }} &#8363;</span>
+                                                        <span ng-if="!pd.sale" class="text-danger font-weight-bold">{{
+                                                            latestPrice.price
+                                                            | number:0 }} &#8363;</span>
+                                                    </span>
+
+                                                    <span class="font-weight-bold text-danger" ng-show="pd.sale">
+                                                        {{ latestPrice.price - (latestPrice.price *
+                                                        pd.discountPrice) | number:0 }} &#8363;
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -121,8 +131,8 @@
                                                         alt="anh 1">
                                                     <img class="hover-img" src="../images/products/{{pd.images[1]}}"
                                                         alt="anh 2">
-                                                    <span class="out-of-stock" ng-if="false">
-                                                        Giảm
+                                                    <span class="out-of-stock font-weight-bold" ng-show="pd.sale">
+                                                        - {{pd.discountPrice*100}}%
                                                     </span>
                                                 </a>
 
@@ -144,11 +154,21 @@
                                             </div>
                                             <div class="product-content">
                                                 <h3><a href="/product/{{pd.productId}}">{{pd.productName}}</a></h3>
-                                                <div class="product-price" ng-if="pd.productDetails.length > 0">
+                                                <div class="product-price  d-flex flex-column"
+                                                    ng-if="pd.productDetails.length > 0">
                                                     <span class="font-weight-bold"
                                                         ng-init="latestPrice = getLatestPrice(pd.productDetails[0].prices)">
-                                                        {{ latestPrice.price | number:0 }}
-                                                        &#8363;</span>
+                                                        <span ng-if="pd.sale" class="text-decoration-line-through">{{
+                                                            latestPrice.price | number:0 }} &#8363;</span>
+                                                        <span ng-if="!pd.sale" class="text-danger">{{ latestPrice.price
+                                                            | number:0 }} &#8363;</span>
+                                                    </span>
+
+                                                    <span class="font-weight-bold text-danger" ng-show="pd.sale">
+                                                        {{ latestPrice.price - (latestPrice.price *
+                                                        pd.discountPrice) | number:0 }} &#8363;
+                                                    </span>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -590,7 +610,9 @@
             </div>
             <div class="modal-body">
                 <div class="row no-gutters">
-                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12" style="
+                    margin-top: auto;
+                    margin-bottom: auto;">
                         <!-- Product Slider -->
                         <div class="product-gallery">
                             <div class="quickview-slider-active" owl-carousel>
@@ -626,9 +648,26 @@
                                     </span>
                                 </div>
                             </div>
-                            <h3 class="font-weight-bold">
+                            <div ng-show="isSale" class="d-flex align-items-center">
+                                <h3 class="font-weight-bold text-decoration-line-through mr-3">
+                                    {{ getLatestPrice(pdt.prices).price | number:0 }}
+                                    &#8363;
+                                </h3>
+
+                                <h3 class="font-weight-bold text-danger mr-3">
+                                    {{ getLatestPrice(pdt.prices).price - (getLatestPrice(pdt.prices).price *
+                                    discountPrice) | number:0 }}
+                                    &#8363;
+                                </h3>
+
+                                <div class="bg-danger text-white p-2 font-weight-bold rounded">
+                                    Giảm {{discountPrice*100}}%
+                                </div>
+                            </div>
+                            <h3 class="font-weight-bold text-danger" ng-show="!isSale">
                                 {{ getLatestPrice(pdt.prices).price | number:0 }}
-                                &#8363;</h3>
+                                &#8363;
+                            </h3>
                             <div class="quickview-peragraph">
                                 <p><strong>{{qvpd.descriptions[0].title}}:</strong></p>
                                 <p>{{qvpd.descriptions[0].description}}</p>
@@ -637,7 +676,7 @@
                                 <div class="d-flex">
                                     <div ng-repeat="p in qvpd.productDetails">
                                         <a href="#" class="btn-type p-2 border rounded border-secondary mr-3"
-                                            ng-click="choiceProduct(p.id, $event)">{{p.size}}
+                                            ng-click="choiceProduct(p.id, $event, qvpd.discountPrice, qvpd.sale)">{{p.size}}
                                             - {{p.color}}</a>
                                     </div>
                                 </div>

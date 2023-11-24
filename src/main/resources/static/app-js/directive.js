@@ -16,8 +16,15 @@ app.directive("customBanner", function () {
   return {
     restrict: "E",
     templateUrl: "../templates/components/banner.html",
-    controller: function ($scope, $timeout) {
-      $scope.listBanner = ["banner1", "banner2", "banner3", "banner4"];
+    controller: function ($scope, $timeout, ApiService) {
+      ApiService.callApi("GET", "/rest/banner")
+        .then(function (resp) {
+          $scope.listBanner = resp;
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+
       $scope.slickBanner = function () {
         $(".home-slider-4").owlCarousel({
           items: 1,
@@ -38,19 +45,34 @@ app.directive("customBanner", function () {
 
       $timeout(function () {
         $scope.slickBanner();
-      });
+      }, 500);
     },
   };
 });
-app.directive("customFlashsale", function ($timeout) {
+app.directive("customFlashsale", function ($timeout, ApiService) {
   return {
     restrict: "E",
     templateUrl: "../templates/components/slick-flash-sale.html",
     link: function (scope, element) {
       console.log("listCarousel");
+      ApiService.callApi("GET", "/rest/flash-sale-active")
+        .then(function (resp) {
+          scope.flashSaleActive = resp;
+          scope.flashSaleActive.endDay = new Date(scope.flashSaleActive.endDay);
+
+          var endDayMoment = moment(scope.flashSaleActive.endDay);
+          scope.formattedEndDay = endDayMoment.format("YYYY/MM/DD HH:mm:ss");
+
+          console.log(scope.flashSaleActive);
+          console.log(scope.formattedEndDay);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+
       scope.slickFlashsale = function () {
         element.find(".listCarousel").owlCarousel({
-          items: 6,
+          items: 4,
           autoplay: true,
           autoplayTimeout: 5000,
           smartSpeed: 400,
@@ -79,9 +101,6 @@ app.directive("customFlashsale", function ($timeout) {
             1170: {
               items: 4,
             },
-            1440: {
-              items: 5,
-            },
           },
         });
       };
@@ -95,10 +114,16 @@ app.directive("customFlashsale", function ($timeout) {
           });
         });
       };
+
+      scope.getProgressWidth = function (quantitySold, discountedQuantity) {
+        var percentSold = (quantitySold / discountedQuantity) * 100;
+        return percentSold + "%";
+      };
+
       $timeout(function () {
         scope.slickFlashsale();
         scope.countdown();
-      });
+      }, 500);
     },
   };
 });
@@ -199,7 +224,7 @@ app.directive("stopPropagation", function (ApiService, $timeout, $rootScope) {
 
         //get api list product by category id
         var hrefValue = e.currentTarget.getAttribute("href");
-        $(".btnViewAll").attr("href", "/product/category/"+hrefValue);
+        $(".btnViewAll").attr("href", "/product/category/" + hrefValue);
         console.log("Href value:", hrefValue);
         ApiService.callApi("GET", "/rest/product-by-category/" + hrefValue)
           .then(function (resp) {
@@ -221,7 +246,7 @@ app.directive("quickViewModal", function (ApiService, $rootScope, $timeout) {
     link: function (scope, element) {
       element.on("click", function () {
         var productId = element.attr("data-product-id");
-        $('.input-number').val(1);
+        $(".input-number").val(1);
         ApiService.callApi("GET", "/rest/product/" + productId)
           .then(function (resp) {
             $rootScope.qvpd = resp;
@@ -235,12 +260,11 @@ app.directive("quickViewModal", function (ApiService, $rootScope, $timeout) {
           var firstElement = document.querySelectorAll(".btn-type");
           if (firstElement) {
             angular.element(firstElement).triggerHandler("click");
-            console.log("click");
           }
         };
         $timeout(function () {
           scope.clickFirstElement();
-        }, 200);
+        }, 400);
       });
     },
   };
@@ -287,15 +311,19 @@ app.directive("owlCarousel", function () {
   };
 });
 
-app.directive("modalHidden", function () {
+app.directive("modalHidden", function ($rootScope) {
   return {
     restrict: "A",
     link: function (scope, element) {
       element.on("hidden.bs.modal", function (e) {
+        $rootScope.qvpd = null;
         $(".quickview-slider-active")
           .trigger("destroy.owl.carousel")
           .removeClass("owl-carousel owl-loaded");
-        $(".quickview-slider-active").find(".owl-stage-outer").children().unwrap();
+        $(".quickview-slider-active")
+          .find(".owl-stage-outer")
+          .children()
+          .unwrap();
       });
     },
   };
