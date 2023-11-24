@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 
 import com.art.dao.product.CategoryDAO;
 import com.art.dao.product.ManufacturerDAO;
+import com.art.dao.product.ProductDAO;
 import com.art.dao.promotion.FlashSaleDAO;
 import com.art.dao.promotion.PromotionalDetailsDAO;
 import com.art.dto.product.CommentDTO;
@@ -27,12 +28,17 @@ public class ProductMapper {
 	private static final ModelMapper modelMapper = new ModelMapper();
 	private static double discountPrice;
 
-	public static ProductDTO convertToDto(Product product, PromotionalDetailsDAO proDAO, FlashSaleDAO fDAO) {
+	public static ProductDTO convertToDto(Product product, PromotionalDetailsDAO proDAO, FlashSaleDAO fDAO,
+			ProductDAO productDAO) {
 		ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
 		productDTO.setImages(getImagesDTO(product));
 		productDTO.setComments(getCommentDTO(product));
-		productDTO.setSale(getProductSale(proDAO, fDAO,product));
-		productDTO.setProductDetails(getProductDetailsDTO( product));
+		productDTO.setSale(getProductSale(proDAO, fDAO, product));
+		productDTO.setProductDetails(getProductDetailsDTO(product));
+		double star = productDAO.calculateAverageRating(product.getProductId()) == null ? 0
+				: productDAO.calculateAverageRating(product.getProductId());
+		productDTO.setStar(star);
+		productDTO.setCountSold(productDAO.countProuctSold(product.getProductId()));
 		return productDTO;
 	}
 
@@ -63,7 +69,7 @@ public class ProductMapper {
 	private static List<ProductDetailDTO> getProductDetailsDTO(Product product) {
 		List<ProductDetailDTO> prDetailDTOs = product.getProductDetail().stream()
 				.map(pd -> new ProductDetailDTO(pd.getId(), pd.getQuantityInStock(), pd.getSize(), pd.getColor(),
-						pd.getWeight(), pd.getPower(), pd.getProductionDate(), getPriceDTO(pd),discountPrice))
+						pd.getWeight(), pd.getPower(), pd.getProductionDate(), getPriceDTO(pd), discountPrice))
 				.collect(Collectors.toList());
 		return prDetailDTOs;
 	}

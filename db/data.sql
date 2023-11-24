@@ -150,82 +150,50 @@ INSERT INTO dbo.voucher
           start_day ,
           user_voucher
         )
-VALUES  ( 99000 , -- discount - float
+VALUES  ( 0.3 , -- discount - float
           1000 , -- maximum_number_of_uses - int
-          149000 , -- maximum_price_discount - float
+          99000 , -- maximum_price_discount - float
           260 , -- number_of_uses - int
           SYSDATETIME() ,   -- end_day - datetime2(6)
           '2023-12-31 23:59:00' , -- start_day - datetime2(6)
           'nguyentcpc04750'  -- user_voucher - varchar(255)
         ),
-        ( 199000 , -- discount - float
+        ( 0.25 , -- discount - float
           900 , -- maximum_number_of_uses - int
-          249000 , -- maximum_price_discount - float
+          199000 , -- maximum_price_discount - float
           55 , -- number_of_uses - int
           SYSDATETIME() ,   -- end_day - datetime2(6)
           '2023-12-31 23:59:00' , -- start_day - datetime2(6)
           'nguyentcpc04750'  -- user_voucher - varchar(255)
         ),
-        ( 299000 , -- discount - float
+        ( 0.2 , -- discount - float
           800 , -- maximum_number_of_uses - int
-          349000 , -- maximum_price_discount - float
+          299000 , -- maximum_price_discount - float
           40 , -- number_of_uses - int
           SYSDATETIME() ,   -- end_day - datetime2(6)
           '2023-12-31 23:59:00' , -- start_day - datetime2(6)
           'nguyentcpc04750'  -- user_voucher - varchar(255)
         ),
-        ( 399000 , -- discount - float
+        ( 0.15 , -- discount - float
           700 , -- maximum_number_of_uses - int
-          449000 , -- maximum_price_discount - float
+          399000 , -- maximum_price_discount - float
           20 , -- number_of_uses - int
           SYSDATETIME() ,   -- end_day - datetime2(6)
           '2023-12-31 23:59:00' , -- start_day - datetime2(6)
           'nguyentcpc04750'  -- user_voucher - varchar(255)
         ),
-        ( 499000 , -- discount - float
+        ( 0.1 , -- discount - float
           600 , -- maximum_number_of_uses - int
-          549000 , -- maximum_price_discount - float
+          499000 , -- maximum_price_discount - float
           18 , -- number_of_uses - int
           SYSDATETIME() ,   -- end_day - datetime2(6)
           '2023-12-31 23:59:00' , -- start_day - datetime2(6)
           'nguyentcpc04750'  -- user_voucher - varchar(255)
         ),
-        ( 599000 , -- discount - float
+        ( 0.5 , -- discount - float
           500 , -- maximum_number_of_uses - int
-          649000 , -- maximum_price_discount - float
+          999000 , -- maximum_price_discount - float
           15 , -- number_of_uses - int
-          SYSDATETIME() ,   -- end_day - datetime2(6)
-          '2023-12-31 23:59:00' , -- start_day - datetime2(6)
-          'nguyentcpc04750'  -- user_voucher - varchar(255)
-        ),
-        ( 699000 , -- discount - float
-          400 , -- maximum_number_of_uses - int
-          749000 , -- maximum_price_discount - float
-          9 , -- number_of_uses - int
-          SYSDATETIME() ,   -- end_day - datetime2(6)
-          '2023-12-31 23:59:00' , -- start_day - datetime2(6)
-          'nguyentcpc04750'  -- user_voucher - varchar(255)
-        ),
-        ( 799000 , -- discount - float
-          300 , -- maximum_number_of_uses - int
-          849000 , -- maximum_price_discount - float
-          8 , -- number_of_uses - int
-          SYSDATETIME() ,   -- end_day - datetime2(6)
-          '2023-12-31 23:59:00' , -- start_day - datetime2(6)
-          'nguyentcpc04750'  -- user_voucher - varchar(255)
-        ),
-        ( 899000 , -- discount - float
-          200 , -- maximum_number_of_uses - int
-          949000 , -- maximum_price_discount - float
-          5 , -- number_of_uses - int
-          SYSDATETIME() ,   -- end_day - datetime2(6)
-          '2023-12-31 23:59:00' , -- start_day - datetime2(6)
-          'nguyentcpc04750'  -- user_voucher - varchar(255)
-        ),
-        ( 999000 , -- discount - float
-          100 , -- maximum_number_of_uses - int
-          1499000 , -- maximum_price_discount - float
-          2 , -- number_of_uses - int
           SYSDATETIME() ,   -- end_day - datetime2(6)
           '2023-12-31 23:59:00' , -- start_day - datetime2(6)
           'nguyentcpc04750'  -- user_voucher - varchar(255)
@@ -1571,49 +1539,49 @@ INSERT INTO dbo.promotional_details
           product_id,
 		  discounted_quantity
         )
-VALUES  ( 2000000.0 , -- discounted_price - float
+VALUES  ( 0.15 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
           '32V35KP',  -- product_id - varchar(255)
           50
         ),
-		( 8490000.0 , -- discounted_price - float
+		( 0.1 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
           '50UQ7550PSF',  -- product_id - varchar(255)
           50
         ),
-		( 12990000.0 , -- discounted_price - float
+		( 0.5 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
           '65NANO76SQA',  -- product_id - varchar(255)
           50
         ),
-		( 13000000.0 , -- discounted_price - float
+		( 0.1 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
           'AR13CYFAAWKNSV',  -- product_id - varchar(255)
           50
         ),
-		( 20000000.0 , -- discounted_price - float
+		( 0.2 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
           'GR-B256JDS',  -- product_id - varchar(255)
           50
         ),
-		( 10999000.0 , -- discounted_price - float
+		( 0.3 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
           'MSAGA-10CRDN8',  -- product_id - varchar(255)
           50
         ),
-		( 7250000.0 , -- discounted_price - float
+		( 0.25 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
           'UA43BU8000',  -- product_id - varchar(255)
           50
         ),
-		( 17700000.0 , -- discounted_price - float
+		( 0.15 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
           'ZTNQ18GPLA0',  -- product_id - varchar(255)
