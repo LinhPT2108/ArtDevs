@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.art.dao.activity.BannerDAO;
 import com.art.models.activity.Banner;
 import com.art.service.ParamService;
-import com.art.service.SessionService;
 
 @Controller
 @RequestMapping("/admin")
@@ -23,8 +22,6 @@ public class BannerController {
 
 	@Autowired
 	private ParamService paramService;
-	@Autowired
-	private SessionService sessionService;
 	@Autowired
 	private BannerDAO bannerDao;
 
@@ -44,7 +41,7 @@ public class BannerController {
 		model.addAttribute("title", "banner");
 		Banner banner = new Banner();
 		banner.setBannerName(paramService.save(file, "images/banner").getName());
-		banner.setUser(sessionService.get("userLogin"));
+//		banner.setUser(sessionService.get("userLogin"));
         bannerDao.save(banner);
 		return "redirect:/admin/banner";
 	}

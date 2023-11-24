@@ -60,10 +60,10 @@ public class ParamService {
 	 * @param defaultValue giá trị mặc định
 	 * @return giá trị tham số hoặc giá trị mặc định nếu không tồn tại
 	 */
-	public boolean getBoolean(String name, boolean defaultValue) {
-		String value = getString(name, String.valueOf(defaultValue));
-		return Boolean.parseBoolean(value);
-	}
+//	public boolean getBoolean(String name, boolean defaultValue) {
+//		String value = getString(name, String.valueOf(defaultValue));
+//		return Boolean.parseBoolean(value);
+//	}
 
 	/**
 	 * Đọc giá trị thời gian của tham số

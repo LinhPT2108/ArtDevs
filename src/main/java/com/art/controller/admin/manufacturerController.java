@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.art.dao.product.ManufacturerDAO;
 import com.art.dao.user.AccountDAO;
 import com.art.models.product.Manufacturer;
-import com.art.models.user.Account;
-import com.art.service.SessionService;
 
 @Controller
 @RequestMapping("admin")
@@ -28,8 +26,7 @@ public class manufacturerController {
 	ManufacturerDAO manufacturerReponsitory;
 	@Autowired
 	ManufacturerDAO mnreps;
-	@Autowired
-	SessionService sessionService;
+	
 
 	@ModelAttribute("mns")
 	public List<Manufacturer> getUsercustoms() {
@@ -60,18 +57,18 @@ public class manufacturerController {
 	
 	@PostMapping("/manufacturer/create")
 	public String createManufacturer(@ModelAttribute("mn") Manufacturer mn) {
-		Account user = sessionService.get("userLogin");
-		mn.setUser(user);
-		mn.setDel(true);
+//		Account user = sessionService.get("userLogin");
+//		mn.setUser(user);
+//		mn.setDel(true);
 		mnDAO.save(mn);
 		return "redirect:/admin/manufacturer";
 	}
 
 	@RequestMapping("/manufacturer/update")
 	public String updateManufacturer(@ModelAttribute("mn") Manufacturer mn) {
-		Account user = sessionService.get("userLogin");
-		mn.setUser(user);
-		mn.setDel(true);
+//		Account user = sessionService.get("userLogin");
+//		mn.setUser(user);
+//		mn.setDel(true);
 		mnDAO.save(mn);
 		return "redirect:/admin/manufacturer";
 	}
@@ -79,9 +76,9 @@ public class manufacturerController {
 	@RequestMapping("/manufacturer/delete")
 	public String delete(@ModelAttribute("mn") Manufacturer mn) {
 
-		Account user = sessionService.get("userLogin");
-		mn.setUser(user);
-		mn.setDel(false);
+//		Account user = sessionService.get("userLogin");
+//		mn.setUser(user);
+//		mn.setDel(false);
 		mnreps.save(mn);
 		return "redirect:/admin/manufacturer";
 	}

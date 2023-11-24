@@ -2,6 +2,7 @@ package com.art.models.product;
 
 import java.util.Date;
 import java.util.List;
+import java.lang.*;
 
 import org.hibernate.annotations.Nationalized;
 
