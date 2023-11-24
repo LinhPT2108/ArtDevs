@@ -98,9 +98,9 @@ public class ProductRestController {
 
 	// @GetMapping("/product")
 	// public ResponseEntity<List<Product>> getProducts() {
-	// 	System.out.println("product123");
-	// 	List<Product> products = proDAO.findAll();
-	// 	return ResponseEntity.ok(products);
+	// System.out.println("product123");
+	// List<Product> products = proDAO.findAll();
+	// return ResponseEntity.ok(products);
 	// }
 
 	@GetMapping("/product-today")
@@ -112,8 +112,7 @@ public class ProductRestController {
 		List<Product> randomProducts = products.stream().limit(24).collect(Collectors.toList());
 
 		List<ProductDTO> productDTOs = randomProducts.stream()
-				.map(product -> ProductMapper.convertToDto(product, promDao, fDAO))
-				.collect(Collectors.toList());
+				.map(product -> ProductMapper.convertToDto(product, promDao, fDAO, proDAO)).collect(Collectors.toList());
 		return ResponseEntity.ok(productDTOs);
 	}
 

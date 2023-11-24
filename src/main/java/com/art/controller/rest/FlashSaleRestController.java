@@ -1,7 +1,6 @@
 package com.art.controller.rest;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.art.dao.product.ProductDAO;
 import com.art.dao.promotion.FlashSaleDAO;
 import com.art.dao.promotion.PromotionalDetailsDAO;
-import com.art.dto.product.ProductDTO;
 import com.art.dto.promotion.FlashSaleDTO;
 import com.art.mapper.FlashSaleMapper;
-import com.art.mapper.ProductMapper;
 import com.art.models.promotion.FlashSale;
 import com.art.utils.Path;
 
@@ -47,7 +44,7 @@ public class FlashSaleRestController {
     public ResponseEntity<FlashSaleDTO> getFlashSalesActive() { 
         FlashSale flashSales = flashSaleDAO.findByStatus(true);
 
-        FlashSaleDTO flashSaleDTOs = FlashSaleMapper.convertToDto(flashSales,promDao,fDAO);
+        FlashSaleDTO flashSaleDTOs = FlashSaleMapper.convertToDto(flashSales,promDao,fDAO, pdDAO);
             
         return ResponseEntity.ok(flashSaleDTOs);
     }

@@ -37,8 +37,8 @@ public interface ProductDAO extends JpaRepository<Product, String> {
 	@Query("SELECT count(o.id) FROM OrderDetail o WHERE o.product.id = :productId")
 	int countProuctSold(String productId);
 //
-//	@Query("SELECT p FROM Product p WHERE p.categoryProduct.categoryId = :categoryId")
-//	List<Product> findProductByCategoryId(int categoryId);
+	@Query("SELECT p FROM Product p WHERE p.categoryProduct.categoryId = :categoryId")
+	List<Product> findProductByCategoryId(int categoryId);
 ////
 ////    // Tìm Product theo số lượng trong kho
 ////    List<Product> findByQuantityInStock(int quantityInStock);
