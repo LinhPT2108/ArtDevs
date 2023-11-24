@@ -15,7 +15,6 @@ import com.art.dao.product.CategoryDAO;
 import com.art.dao.user.AccountDAO;
 import com.art.models.product.Category;
 import com.art.models.user.Account;
-import com.art.service.SessionService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -31,8 +30,6 @@ public class categoryController {
 	@Autowired
 	HttpServletResponse response;
 
-	@Autowired
-	SessionService sessionService;
 
 	@GetMapping("/category")
 	public String category(@ModelAttribute("ct") Category ct, Model model) {
@@ -60,9 +57,9 @@ public class categoryController {
 
 	@PostMapping("/category/create")
 	public String create(@ModelAttribute("ct") Category ct) {
-		Account user = sessionService.get("userLogin");
-		ct.setUser(user);
-		ct.setStatus(true);
+//		Account user = sessionService.get("userLogin");
+//		ct.setUser(user);
+//		ct.setStatus(true);
 		categoryReponsitory.save(ct);
 		return "redirect:/admin/category";
 	}
@@ -70,9 +67,9 @@ public class categoryController {
 	@RequestMapping("/category/update")
 	public String update(@ModelAttribute("ct") Category ct) {
 
-		Account user = sessionService.get("userLogin");
-		ct.setUser(user);
-		ct.setStatus(true);
+//		Account user = sessionService.get("userLogin");
+//		ct.setUser(user);
+//		ct.setStatus(true);
 		categoryReponsitory.save(ct);
 		return "redirect:/admin/category";
 	}
@@ -80,9 +77,9 @@ public class categoryController {
 	@RequestMapping("/category/delete")
 	public String delete(@ModelAttribute("ct") Category ct) {
 
-		Account user = sessionService.get("userLogin");
-		ct.setUser(user);
-		ct.setStatus(false);
+//		Account user = sessionService.get("userLogin");
+//		ct.setUser(user);
+//		ct.setStatus(false);
 		categoryReponsitory.save(ct);
 		return "redirect:/admin/category";
 	}
