@@ -63,12 +63,12 @@ app.service("ApiService", function ($http) {
         return response.data;
       })
       .catch(function errorCallback(response) {
+        console.log(response)
         throw new Error(response.statusText);
       });
   };
 });
 
-// Service trong AngularJS để gọi API từ backend
 app.service("DataService", function ($http) {
   this.getCategories = function () {
     return $http.get(api + "/rest/category");
@@ -82,12 +82,10 @@ app.service("DataService", function ($http) {
 app.run(function ($rootScope, DataService, ApiService) {
   DataService.getCategories().then(function (response) {
     $rootScope.categories = response.data;
-    console.log($rootScope.categories);
   });
 
   DataService.getBrands().then(function (response) {
     $rootScope.brands = response.data;
-    console.log($rootScope.brands);
   });
 
   $rootScope.getLatestPrice = function (prices) {
@@ -103,10 +101,11 @@ app.run(function ($rootScope, DataService, ApiService) {
   };
   ApiService.callApi("GET", "/rest/userLogin")
     .then(function (response) {
-      console.log(response);
+      $rootScope.userLogin = response==''?null:response;
+      console.log( $rootScope.userLogin );
     })
     .catch(function (error) {
-      console.log(error);
+      console.log('Lỗi' + error);
     });
 });
 

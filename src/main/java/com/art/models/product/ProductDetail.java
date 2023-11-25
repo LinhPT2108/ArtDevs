@@ -52,7 +52,7 @@ public class ProductDetail {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date productionDate;
 	
-	@JsonIgnore
+	@JsonIgnore 
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;

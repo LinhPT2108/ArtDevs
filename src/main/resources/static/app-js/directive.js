@@ -59,12 +59,32 @@ app.directive("customFlashsale", function ($timeout, ApiService) {
         .then(function (resp) {
           scope.flashSaleActive = resp;
           scope.flashSaleActive.endDay = new Date(scope.flashSaleActive.endDay);
+          scope.flashSaleActive.startDay = new Date(
+            scope.flashSaleActive.startDay
+          );
+          var startDay = scope.flashSaleActive.startDay;
+          var endDay = scope.flashSaleActive.endDay;
+          var nowDay = new Date();
+          scope.isFlashSaleStart = false;
+          scope.isFlashSaleEnd = false;
+          var startDayMoment = moment(startDay);
+          scope.formattedStartDay = startDayMoment.format(
+            "YYYY/MM/DD HH:mm:ss"
+          );
 
-          var endDayMoment = moment(scope.flashSaleActive.endDay);
+          console.log(scope.flashSaleActive.startDay < new Date());
+          var endDayMoment = moment(endDay);
           scope.formattedEndDay = endDayMoment.format("YYYY/MM/DD HH:mm:ss");
 
-          console.log(scope.flashSaleActive);
+          console.log(startDay);
+          console.log(endDay);
+          console.log(scope.isFlashSaleStart);
+          console.log(scope.isFlashSaleEnd);
+
+          console.log(scope.formattedStartDay);
           console.log(scope.formattedEndDay);
+
+          console.log(scope.flashSaleActive);
         })
         .catch(function (err) {
           console.log(err);
@@ -324,6 +344,27 @@ app.directive("modalHidden", function ($rootScope) {
           .find(".owl-stage-outer")
           .children()
           .unwrap();
+      });
+    },
+  };
+});
+
+app.directive("logoutCtrl", function ($rootScope, ApiService, $location) {
+  return {
+    restrict: "A",
+    link: function (scope, element) {
+      element.on("click", function () {
+        console.log("logoutCtrl");
+        ApiService.callApi("GET", "/account/logout")
+          .then(function (response) {
+            console.log(true);
+            $rootScope.userLogin = null;
+            console.log($rootScope.userLogin);
+            window.location.href = "/account/login";
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       });
     },
   };

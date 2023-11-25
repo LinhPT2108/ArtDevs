@@ -8,16 +8,18 @@
                     </a>
                 </h2>
             </div>
-            <div ng-if="true" class="d-flex justify-content-around">
+            <div ng-if="flashSaleActive.status" class="d-flex justify-content-around">
                 <div class="styleCountdown d-flex align-items-center mr-3 mt-0">
-                    <span class="lof-clock-detail bg-warning text-dark rounded-3 p-2 fw-bold" id="your-countdown"
+                    <span ng-show="{{!formattedEndDay < nowDay}}" class="lof-clock-detail bg-warning text-dark rounded-3 p-2 fw-bold" id="your-countdown"
                         data-countdown="{{formattedEndDay}}">
                     </span>
-
+                    <span ng-hide="{{formattedEndDay < nowDay}}" class="lof-clock-detail bg-warning text-dark rounded-3 p-2 fw-bold">
+                        Chờ đến khung giờ khuyến mãi tiếp theo
+                    </span>
                 </div>
-                <a href="/product/flash-sale" class="view-all-collection ml-auto bg-dark text-white">Xem tất cả</a>
+                <a href="/product/flash-sale" ng-show="{{!formattedEndDay < nowDay}}" class="view-all-collection ml-auto bg-dark text-white">Xem tất cả</a>
             </div>
-            <div ng-if="false">
+            <div ng-if="!flashSaleActive.status">
                 <div class="styleCountdown d-flex align-items-center mt-0">
                     <span class="lof-clock-detail d-flex bg-warning text-dark rounded-3 p-2 fw-bold" id="not-now">Hết
                         thời gian

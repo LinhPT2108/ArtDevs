@@ -1,6 +1,7 @@
 
 USE art_devs;
 GO 
+
 INSERT INTO dbo.role
         ( role_name )
 VALUES  ( 'admin'),( 'user'),( 'shipper');
@@ -1595,6 +1596,7 @@ VALUES  ( 0.15 , -- discounted_price - float
 		  40
         );
 
+		          
 INSERT INTO dbo.cart
         ( product, quantity, user_id )
 VALUES  ( 1, -- product - int
@@ -1610,6 +1612,6 @@ VALUES  ( 1, -- product - int
           'linhptpc04737'  -- user_id - varchar(255)
           )
 
---SELECT * FROM dbo.order_detail
+--SELECT * FROM dbo.cart
 --SELECT * FROM dbo.user_custom
 --SELECT invoice_id, SUM(c.price*c.quantity) FROM dbo.invoice_detail c INNER JOIN dbo.invoice ON invoice.id = c.invoice_id GROUP BY invoice_id

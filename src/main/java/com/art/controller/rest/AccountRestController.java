@@ -65,12 +65,22 @@ public class AccountRestController {
 	public ResponseEntity<AccountDTO> getArtDev(Model model) {
 		// Lấy thông tin người dùng từ SecurityContextHolder
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication != null) {
-			AccountDTO accountDTO = AccountMapper.convertToDto(aDAO.findByEmail(authentication.getName()), promotionDAO,
-					fDAO,pdDAO);
-			return ResponseEntity.ok(accountDTO);
+		System.out.println("authentication: " + authentication);
+		try {
+			if (authentication != null) {
+				AccountDTO accountDTO = AccountMapper.convertToDto(
+						aDAO.findByEmail(authentication.getName()),
+						promotionDAO,
+						fDAO, pdDAO);
+				return ResponseEntity.ok(accountDTO);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e);
+			return ResponseEntity.ok(null);
 		}
-		return ResponseEntity.notFound().build();
+
+		return ResponseEntity.ok(null);
 	}
 
 	/*
@@ -90,12 +100,13 @@ public class AccountRestController {
 		System.out.println("co gì hoong : " + principal.toString());
 		return principal;
 	}
-//	@GetMapping("/account")
-//	public ResponseEntity<List<Account>> getAccounts() {
-//		List<Account> accounts = aDAO.findAll();
-////		List<AccountDTO> accountDTOs = accounts.stream().map(AccountMapper::convertToDto).collect(Collectors.toList());
-//		return ResponseEntity.ok(accounts);
-//	}
+	// @GetMapping("/account")
+	// public ResponseEntity<List<Account>> getAccounts() {
+	// List<Account> accounts = aDAO.findAll();
+	//// List<AccountDTO> accountDTOs =
+	// accounts.stream().map(AccountMapper::convertToDto).collect(Collectors.toList());
+	// return ResponseEntity.ok(accounts);
+	// }
 
 	/*
 	 * Lấy tất cả tài khoản theo id
