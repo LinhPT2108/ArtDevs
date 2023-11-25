@@ -86,10 +86,17 @@ public class StatisticalController {
 
     @PostMapping("/update-status")
     @ResponseBody
-    public ResponseEntity<String> updateStatus(@RequestParam int itemId, @RequestParam Integer status) {
+    public ResponseEntity<Boolean> updateStatus(@RequestParam int itemId, @RequestParam Integer status) {
         // Gọi phương thức service để cập nhật trạng thái hóa đơn
-    	updateStatusOrder(itemId, status);
-        return ResponseEntity.ok("Cập nhật trạng thái thành công");
+    	try {
+    		updateStatusOrder(itemId, status);
+        	System.out.println("123qwe");
+        	  return ResponseEntity.ok(true);
+		} catch (Exception e) {
+			// TODO: handle exception
+			return ResponseEntity.ok(false);
+		}
+      
     }
     
     public void updateStatusOrder(int itemId, Integer status) {

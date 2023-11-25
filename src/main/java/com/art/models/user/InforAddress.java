@@ -1,5 +1,7 @@
 package com.art.models.user;
 
+import java.io.Serializable;
+
 import org.hibernate.annotations.Nationalized;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,7 +26,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class InforAddress {
+public class InforAddress implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@NotBlank(message = "Vui lòng nhập số điện thoại")

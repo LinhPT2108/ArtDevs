@@ -3,6 +3,8 @@ package com.art.controller.admin;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.art.dao.product.ManufacturerDAO;
 import com.art.dao.user.AccountDAO;
 import com.art.models.product.Manufacturer;
+import com.art.models.user.Account;
 
 @Controller
 @RequestMapping("admin")
@@ -60,6 +63,10 @@ public class manufacturerController {
 //		Account user = sessionService.get("userLogin");
 //		mn.setUser(user);
 //		mn.setDel(true);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Account user2 = usDAO.findByEmail(authentication.getName());
+		mn.setUser(user2);
+		mn.setDel(true);
 		mnDAO.save(mn);
 		return "redirect:/admin/manufacturer";
 	}
@@ -69,6 +76,11 @@ public class manufacturerController {
 //		Account user = sessionService.get("userLogin");
 //		mn.setUser(user);
 //		mn.setDel(true);
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Account user2 = usDAO.findByEmail(authentication.getName());
+		mn.setUser(user2);
+		mn.setDel(true);
 		mnDAO.save(mn);
 		return "redirect:/admin/manufacturer";
 	}
@@ -79,6 +91,10 @@ public class manufacturerController {
 //		Account user = sessionService.get("userLogin");
 //		mn.setUser(user);
 //		mn.setDel(false);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Account user2 = usDAO.findByEmail(authentication.getName());
+		mn.setUser(user2);
+		mn.setDel(false);
 		mnreps.save(mn);
 		return "redirect:/admin/manufacturer";
 	}

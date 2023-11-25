@@ -20,7 +20,6 @@ import com.art.dao.promotion.PromotionalDetailsDAO;
 import com.art.models.product.Product;
 import com.art.models.promotion.PromotionalDetails;
 import com.art.service.ParamService;
-import com.art.service.SessionService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -35,8 +34,7 @@ public class promotionalDetailController {
 	HttpServletResponse response;
 	@Autowired
 	ParamService paramService;
-	@Autowired
-	SessionService sessionService;
+	
 	@Autowired
 	FlashSaleDAO flashSaleDAO;
 	@ModelAttribute("productList")

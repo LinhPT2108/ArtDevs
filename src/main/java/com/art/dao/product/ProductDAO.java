@@ -31,8 +31,11 @@ public interface ProductDAO extends JpaRepository<Product, String> {
 //	@Query("SELECT p FROM Product p WHERE p.productName LIKE %:keyword% AND p.categoryProduct = :category")
 //	List<Product> searchProductByNameAndCategory(String keyword, Category category);
 //
-//	@Query("SELECT AVG(c.star) FROM Comment c WHERE c.product.id = :productId")
-//	Double calculateAverageRating(String productId);
+	@Query("SELECT AVG(c.star) FROM Comment c WHERE c.product.id = :productId")
+	Double calculateAverageRating(String productId);
+	
+	@Query("SELECT count(o.id) FROM OrderDetail o WHERE o.product.id = :productId")
+	int countProuctSold(String productId);
 //
 //	@Query("SELECT p FROM Product p WHERE p.categoryProduct.categoryId = :categoryId")
 //	List<Product> findProductByCategoryId(int categoryId);

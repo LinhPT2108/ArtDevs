@@ -89,7 +89,8 @@ public class ProductRestController {
 	public ResponseEntity<List<ProductDTO>> getProducts() {
 		List<Product> products = proDAO.findAll();
 		List<ProductDTO> productDTOs = products.stream()
-				.map(product -> ProductMapper.convertToDto(product, promDao, fDAO)).collect(Collectors.toList());
+				.map(product -> ProductMapper.convertToDto(product, promDao, fDAO, proDAO))
+				.collect(Collectors.toList());
 		return ResponseEntity.ok(productDTOs);
 	}
 
@@ -102,7 +103,7 @@ public class ProductRestController {
 			return ResponseEntity.notFound().build();
 		}
 		Product product = proDAO.findById(key).get();
-		ProductDTO productDTO = ProductMapper.convertToDto(product, promDao, fDAO);
+		ProductDTO productDTO = ProductMapper.convertToDto(product, promDao, fDAO, proDAO);
 
 		return ResponseEntity.ok(productDTO);
 	}

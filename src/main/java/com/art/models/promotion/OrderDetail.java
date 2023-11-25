@@ -38,7 +38,7 @@ public class OrderDetail {
 	private int quantity;
 
 	@Column
-	private BigDecimal price;
+	private Long price;
 
 	@OneToOne(mappedBy = "orderDetail")
 	private Comment comment;

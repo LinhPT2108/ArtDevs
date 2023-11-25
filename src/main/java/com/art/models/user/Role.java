@@ -1,5 +1,6 @@
 package com.art.models.user;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.annotations.Nationalized;
@@ -24,18 +25,28 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Role {
-	
+public class Role implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	@Column
 	@Nationalized
-	public String roleName;
+
+
 	
+
+	private String roleName;
+
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "role", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<AccountRole> roleId;
-	
+
 }

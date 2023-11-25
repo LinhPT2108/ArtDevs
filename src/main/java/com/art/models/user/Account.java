@@ -1,5 +1,6 @@
 package com.art.models.user;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.annotations.Nationalized;
@@ -38,7 +39,12 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Account {
+public class Account implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	private String accountId;

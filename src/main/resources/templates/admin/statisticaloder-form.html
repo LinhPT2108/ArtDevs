@@ -25,7 +25,7 @@
 					<td th:text="${item.user.fullname}"></td>
 					<td th:text="${#dates.format(item.orderDate, 'dd/MM/yyyy')}"></td>
 					<td>
-						 <span th:text="${#numbers.formatDecimal(item.totalAmount, 0, 0)} + '&#8363;' "></span>
+						<span th:text="${#numbers.formatDecimal(item.totalAmount, 0, 0)} + '&#8363;' "></span>
 					</td>
 					<td>
 						<select class="form-select statusSelect" th:disabled="${item.status==3}"
@@ -47,9 +47,10 @@
 				var selectedValue = $(this).val();
 				var itemId = $(this).data("item-id");
 
+				console.log(itemId);
 				// Gửi yêu cầu Ajax
 				$.ajax({
-					url: "/admin/update-status", // Thay đổi đường dẫn tới endpoint cập nhật trạng thái
+					url: "http://localhost:8080/admin/update-status", // Thay đổi đường dẫn tới endpoint cập nhật trạng thái
 					type: "POST",
 					data: {
 						itemId: itemId,
@@ -57,6 +58,40 @@
 					},
 					success: function (response) {
 						// Xử lý phản hồi từ máy chủ (nếu cần)
+						if (response) {
+							Swal.fire({
+								icon: 'success',
+								title: 'Dữ liệu đang được cập nhật vào hệ thông!',
+								html: 'sẽ làm mới trang trong <b></b> mili giây.',
+								timer: 1500,
+								allowOutsideClick: false,
+								timerProgressBar: true,
+								didOpen: () => {
+									Swal.showLoading()
+									const b = Swal.getHtmlContainer().querySelector('b')
+									timerInterval = setInterval(() => {
+										b.textContent = Swal.getTimerLeft()
+									}, 100)
+								},
+								willClose: () => {
+									clearInterval(timerInterval)
+								}
+							}).then((result) => {
+								/* Read more about handling dismissals below */
+								if (result.dismiss === Swal.DismissReason.timer) {
+									console.log('I was closed by the timer')
+									location.reload();
+								}
+							})
+
+						} else {
+							Swal.fire({
+								icon: 'warning',
+								title: 'Có lỗi xảy ra',
+								text: "Vui lòng tải lại trang và thử lại !",
+								showConfirmButton: true
+							});
+						}
 					},
 					error: function (xhr) {
 						// Xử lý lỗi (nếu cần)
