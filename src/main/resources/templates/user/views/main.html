@@ -75,8 +75,8 @@
                                                     ng-if="pd.productDetails.length > 0">
                                                     <span class="font-weight-bold"
                                                         ng-init="latestPrice = getLatestPrice(pd.productDetails[0].prices)">
-                                                        <span ng-if="pd.sale" class="text-decoration-line-through">{{
-                                                            latestPrice.price | number:0 }} &#8363;</span>
+                                                        <span ng-if="pd.sale" class="text-decoration-line-through">
+                                                            {{latestPrice.price | number:0 }} &#8363;</span>
                                                         <span ng-if="!pd.sale" class="text-danger font-weight-bold">{{
                                                             latestPrice.price
                                                             | number:0 }} &#8363;</span>

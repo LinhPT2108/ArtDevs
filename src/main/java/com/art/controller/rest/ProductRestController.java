@@ -112,7 +112,7 @@ public class ProductRestController {
 		List<Product> randomProducts = products.stream().limit(24).collect(Collectors.toList());
 
 		List<ProductDTO> productDTOs = randomProducts.stream()
-				.map(product -> ProductMapper.convertToDto(product, promDao, fDAO))
+				.map(product -> ProductMapper.convertToDto(product, promDao, fDAO, proDAO))
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(productDTOs);
 	}

@@ -47,7 +47,7 @@ public class FlashSaleRestController {
     public ResponseEntity<FlashSaleDTO> getFlashSalesActive() { 
         FlashSale flashSales = flashSaleDAO.findByStatus(true);
 
-        FlashSaleDTO flashSaleDTOs = FlashSaleMapper.convertToDto(flashSales,promDao,fDAO);
+        FlashSaleDTO flashSaleDTOs = FlashSaleMapper.convertToDto(flashSales,promDao,fDAO,pdDAO);
             
         return ResponseEntity.ok(flashSaleDTOs);
     }

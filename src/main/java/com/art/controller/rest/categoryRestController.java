@@ -22,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -36,6 +35,8 @@ public class categoryRestController {
     PromotionalDetailsDAO promDao;
     @Autowired
     FlashSaleDAO fDAO;
+    @Autowired
+    ProductDAO proDAO;
 
     @GetMapping(value = "/category")
     public ResponseEntity<List<Category>> getMethodName() {
@@ -53,7 +54,7 @@ public class categoryRestController {
         List<Product> randomProducts = products.stream().limit(8).collect(Collectors.toList());
 
         List<ProductDTO> productDTOs = randomProducts.stream().limit(8)
-                .map(product -> ProductMapper.convertToDto(product, promDao, fDAO))
+                .map(product -> ProductMapper.convertToDto(product, promDao, fDAO, proDAO))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(productDTOs);

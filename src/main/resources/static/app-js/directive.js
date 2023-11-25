@@ -45,7 +45,7 @@ app.directive("customBanner", function () {
 
       $timeout(function () {
         $scope.slickBanner();
-      }, 500);
+      }, 1000);
     },
   };
 });
@@ -123,7 +123,7 @@ app.directive("customFlashsale", function ($timeout, ApiService) {
       $timeout(function () {
         scope.slickFlashsale();
         scope.countdown();
-      }, 500);
+      }, 1000);
     },
   };
 });
