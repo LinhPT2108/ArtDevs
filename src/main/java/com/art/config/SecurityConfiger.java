@@ -59,6 +59,7 @@ public class SecurityConfiger {
 							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/cart/**")
 	        				).hasAnyAuthority("user")
 	        		.requestMatchers(
+							AntPathRequestMatcher.antMatcher("/account/**"),
 							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/account"),
 							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/account/**"),
 							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/account"),
@@ -114,11 +115,11 @@ public class SecurityConfiger {
 	        		)
 	        .formLogin(login -> login
 	                .loginPage("/account/login")
-	                .loginProcessingUrl("/account/login")
+	                .loginProcessingUrl(Path.BASE_PATH+"/account/user")
 	                .usernameParameter("email")
 	                .passwordParameter("password")
-	                .defaultSuccessUrl("/", false))
-					
+//	                .defaultSuccessUrl("/", false)
+	                )
 	        .logout(logout -> logout
 	                .logoutUrl("/account/logout")
 	                .logoutSuccessUrl("/account/login")

@@ -79,7 +79,7 @@ app.service("DataService", function ($http) {
   };
 });
 
-app.run(function ($rootScope, DataService) {
+app.run(function ($rootScope, DataService, ApiService) {
   DataService.getCategories().then(function (response) {
     $rootScope.categories = response.data;
     console.log($rootScope.categories);
@@ -101,6 +101,13 @@ app.run(function ($rootScope, DataService) {
 
     return prices[0];
   };
+  ApiService.callApi("GET", "/rest/userLogin")
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 });
 
 app.controller("headerCtrl", function ($scope, DataService, $location) {
@@ -127,8 +134,13 @@ app.controller("mainCtrl", function ($scope, $timeout, $rootScope, ApiService) {
     }
   }, 100);
 
-  $scope.choiceProduct = function (productDetailId, $event, discountPrice, isSale) {
-    console.log(isSale, discountPrice)
+  $scope.choiceProduct = function (
+    productDetailId,
+    $event,
+    discountPrice,
+    isSale
+  ) {
+    console.log(isSale, discountPrice);
     $scope.isSale = isSale;
     $scope.discountPrice = discountPrice;
     $scope.quantity = 1;
@@ -149,7 +161,7 @@ app.controller("mainCtrl", function ($scope, $timeout, $rootScope, ApiService) {
         console.log(err);
       });
   };
-  $scope.limit = 12; 
+  $scope.limit = 12;
   ApiService.callApi("GET", "/rest/product-today")
     .then(function (resp) {
       $scope.listProductsToday = resp;

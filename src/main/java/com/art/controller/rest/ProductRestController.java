@@ -1,11 +1,14 @@
 package com.art.controller.rest;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +28,6 @@ import com.art.dao.product.DetailDescriptionDAO;
 import com.art.dao.product.ImageDAO;
 import com.art.dao.product.ManufacturerDAO;
 import com.art.dao.product.PriceDAO;
-import com.art.dao.product.ProductCartDAO;
 import com.art.dao.product.ProductDAO;
 import com.art.dao.product.ProductDetailDAO;
 import com.art.dao.promotion.FlashSaleDAO;
@@ -39,9 +41,7 @@ import com.art.models.activity.RecentlyViewed;
 import com.art.models.activity.WishList;
 import com.art.models.product.DetailDescription;
 import com.art.models.product.Image;
-import com.art.models.product.Price;
 import com.art.models.product.Product;
-import com.art.models.product.ProductCart;
 import com.art.models.product.ProductDetail;
 import com.art.models.promotion.OrderDetail;
 import com.art.models.promotion.PromotionalDetails;
@@ -70,8 +70,6 @@ public class ProductRestController {
 	@Autowired
 	PriceDAO priceDAO;
 	@Autowired
-	ProductCartDAO productCartDAO;
-	@Autowired
 	PromotionalDetailsDAO promDao;
 	@Autowired
 	OrderDetailDAO orderDetailDAO;
@@ -98,9 +96,9 @@ public class ProductRestController {
 
 	// @GetMapping("/product")
 	// public ResponseEntity<List<Product>> getProducts() {
-	// 	System.out.println("product123");
-	// 	List<Product> products = proDAO.findAll();
-	// 	return ResponseEntity.ok(products);
+	// System.out.println("product123");
+	// List<Product> products = proDAO.findAll();
+	// return ResponseEntity.ok(products);
 	// }
 
 	@GetMapping("/product-today")
@@ -192,7 +190,7 @@ public class ProductRestController {
 		}
 		Product product = proDAO.findById(key).get();
 		deleteImagesProduct(product);
-		deleteProductDetail(product);
+//		deleteProductDetail(product);
 		deleteProductDescription(product);
 		deleteComment(product);
 		deletePromotionDetail(product);
@@ -218,26 +216,26 @@ public class ProductRestController {
 	/*
 	 * Xóa chi tiết sản phẩm
 	 */
-	private void deleteProductDetail(Product product) {
-		List<ProductDetail> productDetails = product.getProductDetail();
-		if (productDetails != null) {
-			for (ProductDetail productDetail : productDetails) {
-				List<Price> prices = productDetail.getProductPrice();
-				if (prices != null) {
-					for (Price price : prices) {
-						priceDAO.deleteById(price.getId());
-					}
-				}
-				List<ProductCart> productCarts = productDetail.getProductCarts();
-				if (productCarts != null) {
-					for (ProductCart productCart : productCarts) {
-						productCartDAO.deleteById(productCart.getId());
-					}
-				}
-				pdDAO.deleteById(productDetail.getId());
-			}
-		}
-	}
+//	private void deleteProductDetail(Product product) {
+//		List<ProductDetail> productDetails = product.getProductDetail();
+//		if (productDetails != null) {
+//			for (ProductDetail productDetail : productDetails) {
+//				List<Price> prices = productDetail.getProductPrice();
+//				if (prices != null) {
+//					for (Price price : prices) {
+//						priceDAO.deleteById(price.getId());
+//					}
+//				}
+//				List<ProductCart> productCarts = productDetail.getProductCarts();
+//				if (productCarts != null) {
+//					for (ProductCart productCart : productCarts) {
+//						productCartDAO.deleteById(productCart.getId());
+//					}
+//				}
+//				pdDAO.deleteById(productDetail.getId());
+//			}
+//		}
+//	}
 
 	/*
 	 * Xóa mô tả sản phẩm
@@ -322,6 +320,31 @@ public class ProductRestController {
 	public ResponseEntity<List<ProductDetail>> getProductDetails() {
 		List<ProductDetail> productDetails = pdDAO.findAll();
 		return ResponseEntity.ok(productDetails);
+	}
+
+	@GetMapping("/recent-keyword")
+	public ResponseEntity<List<ProductDTO>> getProductByKeyword() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		List<Product> products = new ArrayList<>();
+		List<Product> productKeywords = new ArrayList<>();
+		if (authentication != null) {
+			List<String> keywords = proDAO.findKeywordByUser(authentication.getName());
+			for (String string : keywords) {
+				productKeywords = proDAO.findByProductNameAlls(string);
+				if (productKeywords != null) {
+					for (Product product : productKeywords) {
+						products.add(product);
+					}
+				}
+			}
+			List<ProductDTO> productDTOs = products.stream().limit(24)
+					.map(product -> ProductMapper.convertToDto(product, promDao, fDAO, proDAO))
+					.collect(Collectors.toList());
+			return ResponseEntity.ok(productDTOs);
+		}
+		return ResponseEntity.ok(proDAO.findByAvailable(true).stream().limit(24)
+				.map(product -> ProductMapper.convertToDto(product, promDao, fDAO, proDAO))
+				.collect(Collectors.toList()));
 	}
 
 	/*

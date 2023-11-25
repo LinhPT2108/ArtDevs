@@ -14,27 +14,25 @@ import com.art.dto.promotion.PromotionalDetailsListDTO;
 import com.art.models.promotion.FlashSale;
 
 public class FlashSaleMapper {
-    private static final ModelMapper modelMapper = new ModelMapper();
+	private static final ModelMapper modelMapper = new ModelMapper();
 
-    @Autowired
-    PromotionalDetailsDAO proDao;
-    @Autowired
-    FlashSaleDAO fDAO;
-    @Autowired
-    ProductDAO pdDAO;
+	@Autowired
+	PromotionalDetailsDAO proDao;
+	@Autowired
+	FlashSaleDAO fDAO;
 
-    public static FlashSaleDTO convertToDto(FlashSale flashSale, PromotionalDetailsDAO proDao, FlashSaleDAO fDAO, ProductDAO pdDAO) {
-        FlashSaleDTO flashSaleDTO = modelMapper.map(flashSale, FlashSaleDTO.class);
-        flashSaleDTO.setPromotionalDetailsList(getPromotionalDetailsListDTO(flashSale, proDao, fDAO, pdDAO));
-        return flashSaleDTO;
-    }
+	public static FlashSaleDTO convertToDto(FlashSale flashSale, PromotionalDetailsDAO proDao, FlashSaleDAO fDAO, ProductDAO productDAO) {
+		FlashSaleDTO flashSaleDTO = modelMapper.map(flashSale, FlashSaleDTO.class);
+		flashSaleDTO.setPromotionalDetailsList(getPromotionalDetailsListDTO(flashSale, proDao, fDAO, productDAO));
+		return flashSaleDTO;
+	}
 
-    private static List<PromotionalDetailsListDTO> getPromotionalDetailsListDTO(FlashSale flashSale,
-            PromotionalDetailsDAO proDao, FlashSaleDAO fDAO, ProductDAO pdDAO) {
-        return flashSale
-                .getPromotionalDetailsList().stream().map(pmt -> new PromotionalDetailsListDTO(
-                        pmt.getId(), ProductMapper.convertToDto(pmt.getProduct(), proDao, fDAO, pdDAO),
-                        pmt.getDiscountedPrice(), pmt.getDiscountedQuantity(), pmt.getQuantitySold(), pmt.isStatus()))
-                .collect(Collectors.toList()); 
-    }
+	private static List<PromotionalDetailsListDTO> getPromotionalDetailsListDTO(FlashSale flashSale,
+			PromotionalDetailsDAO proDao, FlashSaleDAO fDAO, ProductDAO productDAO) {
+		return flashSale.getPromotionalDetailsList().stream()
+				.map(pmt -> new PromotionalDetailsListDTO(pmt.getId(),
+						ProductMapper.convertToDto(pmt.getProduct(), proDao, fDAO, productDAO),
+						pmt.getDiscountedPrice(), pmt.getDiscountedQuantity(), pmt.getQuantitySold(), pmt.isStatus()))
+				.collect(Collectors.toList());
+	}
 }

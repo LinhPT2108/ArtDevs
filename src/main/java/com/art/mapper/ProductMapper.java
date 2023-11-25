@@ -28,19 +28,18 @@ public class ProductMapper {
 	private static final ModelMapper modelMapper = new ModelMapper();
 	private static double discountPrice;
 
-	public static ProductDTO convertToDto(Product product, PromotionalDetailsDAO proDAO, FlashSaleDAO fDAO,
-			ProductDAO productDAO) {
+	public static ProductDTO convertToDto(Product product, PromotionalDetailsDAO proDAO, FlashSaleDAO fDAO, ProductDAO productDAO) {
 		ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
 		discountPrice = 0;
 		productDTO.setImages(getImagesDTO(product));
 		productDTO.setComments(getCommentDTO(product));
 		productDTO.setSale(getProductSale(proDAO, fDAO, product));
 		productDTO.setProductDetails(getProductDetailsDTO(product));
-		productDTO.setDiscountPrice(discountPrice);
 		double star = productDAO.calculateAverageRating(product.getProductId()) == null ? 0
 				: productDAO.calculateAverageRating(product.getProductId());
 		productDTO.setStar(star);
 		productDTO.setCountSold(productDAO.countProuctSold(product.getProductId()));
+		productDTO.setDiscountPrice(discountPrice);
 		return productDTO;
 	}
 
