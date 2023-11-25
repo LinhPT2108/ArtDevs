@@ -28,28 +28,28 @@ VALUES  ( 0 , -- is_del - bit
           'linhptpc04737@fpt.edu.vn' , -- email - varchar(255)
           N'Phan Tuấn Linh' , -- fullname - nvarchar(255)
           'linhptpc04737.png' , -- image - varchar(255)
-          'pgPPTyq4xNL/lOXiLqlAA7/gWAA=' , -- password đã được mã hóa 
+          '$2a$10$kpnU5NRvBiGYfLoH.GuQ5uUFHx6M37QuihnsfN1z60VqCzX24HFZK' , -- password đã được mã hóa 
           'linhptpc04737'  -- user_id - varchar(255)
         ),
 		( 0 , -- is_del - bit
           'nguyentcpc04750@fpt.edu.vn' , -- email - varchar(255)
           N'Trần Chí Nguyễn' , -- fullname - nvarchar(255)
           'nguyentcpc04750.png' , -- image - varchar(255)
-          'pgPPTyq4xNL/lOXiLqlAA7/gWAA=' , -- password đã được mã hóa 
+          '$2a$10$kpnU5NRvBiGYfLoH.GuQ5uUFHx6M37QuihnsfN1z60VqCzX24HFZK' , -- password đã được mã hóa 
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
 		( 0 , -- is_del - bit
           'vinhtppc04838@fpt.edu.vn' , -- email - varchar(255)
           N'Trần Phúc Vinh' , -- fullname - nvarchar(255)
           'vinhtppc04838.png' , -- image - varchar(255)
-          'pgPPTyq4xNL/lOXiLqlAA7/gWAA=' , -- password đã được mã hóa 
+          '$2a$10$kpnU5NRvBiGYfLoH.GuQ5uUFHx6M37QuihnsfN1z60VqCzX24HFZK' , -- password đã được mã hóa 
           'vinhtppc04838'  -- user_id - varchar(255)
         ),
 		( 0 , -- is_del - bit
           'nguyentc@fpt.edu.vn' , -- email - varchar(255)
           N'Trần Chí Nguyễn' , -- fullname - nvarchar(255)
           'nguyentc.png' , -- image - varchar(255)
-          'pgPPTyq4xNL/lOXiLqlAA7/gWAA=' , -- password đã được mã hóa 
+          '$2a$10$kpnU5NRvBiGYfLoH.GuQ5uUFHx6M37QuihnsfN1z60VqCzX24HFZK' , -- password đã được mã hóa 
           'nguyentc'  -- user_id - varchar(255)
         );
 GO
@@ -140,7 +140,6 @@ VALUES  ( SYSDATETIME(), -- date - datetime2(6)
           'linhptpc04737'  -- user_id - varchar(255)
           );
 GO
-
 INSERT INTO dbo.voucher
         ( discount ,
           maximum_number_of_uses ,
@@ -1531,65 +1530,86 @@ VALUES  ( 10, -- comment_id - int
           '65NANO76SQA_3.png'  -- image - varchar(255)
           );
 GO 
-
 INSERT INTO dbo.promotional_details
         ( discounted_price ,
           flash_sale_id ,
           status ,
           product_id,
-		  discounted_quantity
+		  discounted_quantity,
+		  quantity_sold
         )
 VALUES  ( 0.15 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
           '32V35KP',  -- product_id - varchar(255)
-          50
+          50,
+		  20
         ),
 		( 0.1 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
           '50UQ7550PSF',  -- product_id - varchar(255)
-          50
+          50,
+		  50
         ),
 		( 0.5 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
           '65NANO76SQA',  -- product_id - varchar(255)
-          50
+          50,
+		  0
         ),
 		( 0.1 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
           'AR13CYFAAWKNSV',  -- product_id - varchar(255)
-          50
+          50,
+		  0
         ),
 		( 0.2 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
           'GR-B256JDS',  -- product_id - varchar(255)
-          50
+          50,
+		  0
         ),
 		( 0.3 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
           'MSAGA-10CRDN8',  -- product_id - varchar(255)
-          50
+          50,
+		  0
         ),
 		( 0.25 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
           'UA43BU8000',  -- product_id - varchar(255)
-          50
-        ),
+          50,
+		  50
+        ), 
 		( 0.15 , -- discounted_price - float
           3 , -- flash_sale_id - int
           0 , -- status - bit
           'ZTNQ18GPLA0',  -- product_id - varchar(255)
-          50
+          50,
+		  40
         );
-GO
 
+INSERT INTO dbo.cart
+        ( product, quantity, user_id )
+VALUES  ( 1, -- product - int
+          1, -- quantity - int
+          'linhptpc04737'  -- user_id - varchar(255)
+          ),
+		  ( 2, -- product - int
+          1, -- quantity - int
+          'linhptpc04737'  -- user_id - varchar(255)
+          ),
+		  ( 3, -- product - int
+          1, -- quantity - int
+          'linhptpc04737'  -- user_id - varchar(255)
+          )
 
---SELECT * FROM dbo.invoice_detail
+--SELECT * FROM dbo.order_detail
 --SELECT * FROM dbo.user_custom
 --SELECT invoice_id, SUM(c.price*c.quantity) FROM dbo.invoice_detail c INNER JOIN dbo.invoice ON invoice.id = c.invoice_id GROUP BY invoice_id

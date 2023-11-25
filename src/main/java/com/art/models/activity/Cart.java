@@ -1,8 +1,6 @@
 package com.art.models.activity;
 
-import java.util.List;
-
-import com.art.models.product.ProductCart;
+import com.art.models.product.ProductDetail;
 import com.art.models.user.Account;
 
 import jakarta.persistence.Column;
@@ -12,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,15 +29,18 @@ public class Cart {
 	@JoinColumn(name = "userId")
 	private Account user;
 
-	@OneToMany(mappedBy = "cart")
-	private List<ProductCart> productCarts;
+	@ManyToOne
+	@JoinColumn(name="product")
+	private ProductDetail productDetail;
 
 	@Column
 	private int quantity;
-	
-	@Column
-	private double price;
-	
-	
 
+
+	public Cart(int cartId, int quantity, Account account) {
+		super();
+		this.cartId = cartId;
+		this.quantity = quantity;
+		this.user = account;
+	}
 }

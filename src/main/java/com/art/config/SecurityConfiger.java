@@ -59,6 +59,7 @@ public class SecurityConfiger {
 							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/cart/**")
 	        				).hasAnyAuthority("user")
 	        		.requestMatchers(
+							AntPathRequestMatcher.antMatcher("/account/**"),
 							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/account"),
 							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/account/**"),
 							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/account"),
@@ -72,14 +73,8 @@ public class SecurityConfiger {
 	        				).hasAnyAuthority("admin", "staff", "shipper")
 	        		.requestMatchers(
 	        				AntPathRequestMatcher.antMatcher("/admin/dashboard"),
-							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/manufacturer"),
-							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/manufacturer/**"),
-							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/category"),
-							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/category/**"),
 							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/product"),
 							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/product/**"),
-							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/banner"),
-							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/banner/**"),
 							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/flashSale"),
 							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/flashSale/**"),
 	        				AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/voucher"),
@@ -120,10 +115,15 @@ public class SecurityConfiger {
 	        		)
 	        .formLogin(login -> login
 	                .loginPage("/account/login")
-	                .loginProcessingUrl("/account/login")
+	                .loginProcessingUrl(Path.BASE_PATH+"/account/user")
 	                .usernameParameter("email")
 	                .passwordParameter("password")
+
 	                .defaultSuccessUrl("/", false))
+
+//	                .defaultSuccessUrl("/", false)
+	                
+
 	        .logout(logout -> logout
 	                .logoutUrl("/account/logout")
 	                .logoutSuccessUrl("/account/login")

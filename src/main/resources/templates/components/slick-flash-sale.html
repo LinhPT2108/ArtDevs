@@ -1,6 +1,6 @@
 <!-- Start Small Banner  -->
 <section class="small-banner section flash-sale-site mt-3 rounded">
-    <div class="container-fluid">
+    <div class="container">
         <div class="section-heading text-center d-flex align-items-center mb-3 p-3">
             <div class="title-flashsale mr-3">
                 <h2 class="hTitle">
@@ -11,328 +11,93 @@
             <div ng-if="true" class="d-flex justify-content-around">
                 <div class="styleCountdown d-flex align-items-center mr-3 mt-0">
                     <span class="lof-clock-detail bg-warning text-dark rounded-3 p-2 fw-bold" id="your-countdown"
-                        data-countdown="2023/12/30">
+                        data-countdown="{{formattedEndDay}}">
                     </span>
 
                 </div>
                 <a href="/product/flash-sale" class="view-all-collection ml-auto bg-dark text-white">Xem tất cả</a>
             </div>
             <div ng-if="false">
-                <div class="styleCountdown d-flex align-items-center mt-0"> 
-                    <span class="lof-clock-detail d-flex bg-warning text-dark rounded-3 p-2 fw-bold" id="not-now">Hết thời gian
+                <div class="styleCountdown d-flex align-items-center mt-0">
+                    <span class="lof-clock-detail d-flex bg-warning text-dark rounded-3 p-2 fw-bold" id="not-now">Hết
+                        thời gian
                         khuyến mãi </span>
                 </div>
             </div>
         </div>
         <div class="section-flashsale listCarousel cardProduct-flashsale">
-            <div class="mb-3 ">
-                <div class="card h-100 mx-3">
-                    <input type="hidden" name="productId" value="${p.productId}">
-                    <a href=""><img src="https://via.placeholder.com/550x750" class="card-img-top" alt=""
-                            style="height: 280px !important;"></a>
-                    <div class="card-body d-flex flex-column">
-                        <span class="text-muted">${p.manufacturerProduct.manufacturerName
-                            }</span>
-                        <a class="card-title fs-6 font-weight-bold text-black text-decoration-none" href=""
-                            style="min-height: 48px">${p.productName }</a>
-                        <div class="price-product mb-3">
-                            <span class="text-decoration-line-through" style="text-decoration: line-through;">
-                                1,000,000
-                                đ
-                            </span>
-                            <span class="text-danger font-weight-bold">
-                                300,000đ
-                            </span>
-                            <div class="position-absolute" style="top: 0; left: 0">
-                                <div>
-                                    <span class="p-1 bg-danger text-white">
-                                        -15%
-                                    </span>
-                                    <c:if test="${p.quantityInStock==0 }">
-                                        <span class="p-1  bg-dark text-white ms-3">Tạm
-                                            hết hàng</span>
-                                    </c:if>
-                                </div>
-                            </div>
-                            </c:forEach>
-                        </div>
-                        <div class="siteAction d-flex justify-content-between">
-                            <button type="button" class="btn-outline-primary p-2 addToCart" data-product-id=""
-                                data-user-id="">Thêm vào
-                                giỏ</button>
+            <div class="mb-3" ng-repeat="p in flashSaleActive.promotionalDetailsList">
+                <div class="card h-100 mx-3 position-relative">
+                    <div class="sold-out position-absolute" ng-show="p.discountedQuantity - p.quantitySold ==0">
+                        <div class="content">
+                            <span class="display-6 text-white">Bán hết</span>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="mb-3 ">
-                <div class="card h-100 mx-3">
-                    <input type="hidden" name="productId" value="${p.productId}">
-                    <a href=""><img src="https://via.placeholder.com/550x750" class="card-img-top" alt=""
-                            style="height: 280px !important;"></a>
+                    <a href="/product/{{p.product.productId}}" style="height: 280px !important;"
+                        class="d-flex align-items-center">
+                        <img src="images/products/{{p.product.images[0]}}" class="card-img-top"
+                            alt="{{p.product.images[0]}}">
+                    </a>
                     <div class="card-body d-flex flex-column">
-                        <span class="text-muted">${p.manufacturerProduct.manufacturerName
-                            }</span>
+                        <span class="text-muted">{{p.product.manufacturer.manufacturerName}}</span>
                         <a class="card-title fs-6 font-weight-bold text-black text-decoration-none" href=""
-                            style="min-height: 48px">${p.productName }</a>
-                        <div class="price-product mb-3">
-                            <span class="text-decoration-line-through" style="text-decoration: line-through;">
-                                1,000,000
-                                đ
-                            </span>
-                            <span class="text-danger font-weight-bold">
-                                300,000đ
-                            </span>
+                            style="min-height: 48px">{{p.product.productName }}</a>
+                        <div class="price-product row">
+                            <div class="col-6 d-flex flex-column">
+                                <span class="font-weight-bold"
+                                    ng-init="latestPrice = getLatestPrice(p.product.productDetails[0].prices)">
+                                    <span ng-if="p.product.sale" class="text-decoration-line-through">{{
+                                        latestPrice.price | number:0 }} &#8363;</span>
+                                    <span ng-if="!p.product.sale" class="text-danger">{{ latestPrice.price
+                                        | number:0 }} &#8363;</span>
+                                </span>
+
+                                <span class="font-weight-bold text-danger" ng-show="p.product.sale">
+                                    {{ latestPrice.price - (latestPrice.price * p.product.discountPrice) | number:0 }} &#8363;
+                                </span>
+                            </div>
+                            <div class="col-6 d-flex align-items-center justify-content-center mb-3">
+                                <a href="/product/{{p.product.productId}}"
+                                    class="btn-danger text-white font-weight-bold rounded p-2 my-auto"
+                                    ng-show="p.discountedQuantity - p.quantitySold >0">Mua ngay</a>
+                            </div>
+                            <div class="col-12 site-progress position-relative">
+                                <div class="progress-bar-custom">
+                                    <div class="progress-custom position-absolute top-0 left-0" id="progress"
+                                        ng-style="{'width': getProgressWidth(p.quantitySold, p.discountedQuantity)}">
+                                    </div>
+                                    <div class="text-white position-absolute d-flex align-items-center text-sold"
+                                        ng-show="p.quantitySold == 0">
+                                        Vừa mở bán
+                                    </div>
+                                    <div class="text-white position-absolute d-flex align-items-center text-sold"
+                                        ng-show="p.discountedQuantity - p.quantitySold > 10 && p.quantitySold > 0">Đã
+                                        bán
+                                        {{p.quantitySold}}</div>
+                                    <div class="text-white position-absolute d-flex align-items-center text-sold"
+                                        ng-show="p.discountedQuantity - p.quantitySold <= 10 && p.discountedQuantity - p.quantitySold > 0">
+                                        <i class="bi bi-fire text-danger display-6"></i>
+                                        Chỉ còn
+                                        {{p.discountedQuantity - p.quantitySold}}
+                                    </div>
+                                    <div class="text-white position-absolute d-flex align-items-center text-sold"
+                                        ng-show="p.discountedQuantity - p.quantitySold ==0">
+                                        Bán hết
+                                    </div>
+                                </div>
+                            </div>
                             <div class="position-absolute" style="top: 0; left: 0">
                                 <div>
                                     <span class="p-1 bg-danger text-white">
-                                        -15%
+                                        -{{p.discountedPrice*100}}%
                                     </span>
-                                    <c:if test="${p.quantityInStock==0 }">
+                                    <span ng-show="p.quantityInStock==0">
                                         <span class="p-1  bg-dark text-white ms-3">Tạm
                                             hết hàng</span>
-                                    </c:if>
+                                    </span>
                                 </div>
                             </div>
                             </c:forEach>
-                        </div>
-                        <div class="siteAction d-flex justify-content-between">
-                            <button type="button" class="btn-outline-primary p-2 addToCart" data-product-id=""
-                                data-user-id="">Thêm vào
-                                giỏ</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="mb-3 ">
-                <div class="card h-100 mx-3">
-                    <input type="hidden" name="productId" value="${p.productId}">
-                    <a href=""><img src="https://via.placeholder.com/550x750" class="card-img-top" alt=""
-                            style="height: 280px !important;"></a>
-                    <div class="card-body d-flex flex-column">
-                        <span class="text-muted">${p.manufacturerProduct.manufacturerName
-                            }</span>
-                        <a class="card-title fs-6 font-weight-bold text-black text-decoration-none" href=""
-                            style="min-height: 48px">${p.productName }</a>
-                        <div class="price-product mb-3">
-                            <span class="text-decoration-line-through" style="text-decoration: line-through;">
-                                1,000,000
-                                đ
-                            </span>
-                            <span class="text-danger font-weight-bold">
-                                300,000đ
-                            </span>
-                            <div class="position-absolute" style="top: 0; left: 0">
-                                <div>
-                                    <span class="p-1 bg-danger text-white">
-                                        -15%
-                                    </span>
-                                    <c:if test="${p.quantityInStock==0 }">
-                                        <span class="p-1  bg-dark text-white ms-3">Tạm
-                                            hết hàng</span>
-                                    </c:if>
-                                </div>
-                            </div>
-                            </c:forEach>
-                        </div>
-                        <div class="siteAction d-flex justify-content-between">
-                            <button type="button" class="btn-outline-primary p-2 addToCart" data-product-id=""
-                                data-user-id="">Thêm vào
-                                giỏ</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="mb-3 ">
-                <div class="card h-100 mx-3">
-                    <input type="hidden" name="productId" value="${p.productId}">
-                    <a href=""><img src="https://via.placeholder.com/550x750" class="card-img-top" alt=""
-                            style="height: 280px !important;"></a>
-                    <div class="card-body d-flex flex-column">
-                        <span class="text-muted">${p.manufacturerProduct.manufacturerName
-                            }</span>
-                        <a class="card-title fs-6 font-weight-bold text-black text-decoration-none" href=""
-                            style="min-height: 48px">${p.productName }</a>
-                        <div class="price-product mb-3">
-                            <span class="text-decoration-line-through" style="text-decoration: line-through;">
-                                1,000,000
-                                đ
-                            </span>
-                            <span class="text-danger font-weight-bold">
-                                300,000đ
-                            </span>
-                            <div class="position-absolute" style="top: 0; left: 0">
-                                <div>
-                                    <span class="p-1 bg-danger text-white">
-                                        -15%
-                                    </span>
-                                    <c:if test="${p.quantityInStock==0 }">
-                                        <span class="p-1  bg-dark text-white ms-3">Tạm
-                                            hết hàng</span>
-                                    </c:if>
-                                </div>
-                            </div>
-                            </c:forEach>
-                        </div>
-                        <div class="siteAction d-flex justify-content-between">
-                            <button type="button" class="btn-outline-primary p-2 addToCart" data-product-id=""
-                                data-user-id="">Thêm vào
-                                giỏ</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="mb-3 ">
-                <div class="card h-100 mx-3">
-                    <input type="hidden" name="productId" value="${p.productId}">
-                    <a href=""><img src="https://via.placeholder.com/550x750" class="card-img-top" alt=""
-                            style="height: 280px !important;"></a>
-                    <div class="card-body d-flex flex-column">
-                        <span class="text-muted">${p.manufacturerProduct.manufacturerName
-                            }</span>
-                        <a class="card-title fs-6 font-weight-bold text-black text-decoration-none" href=""
-                            style="min-height: 48px">${p.productName }</a>
-                        <div class="price-product mb-3">
-                            <span class="text-decoration-line-through" style="text-decoration: line-through;">
-                                1,000,000
-                                đ
-                            </span>
-                            <span class="text-danger font-weight-bold">
-                                300,000đ
-                            </span>
-                            <div class="position-absolute" style="top: 0; left: 0">
-                                <div>
-                                    <span class="p-1 bg-danger text-white">
-                                        -15%
-                                    </span>
-                                    <c:if test="${p.quantityInStock==0 }">
-                                        <span class="p-1  bg-dark text-white ms-3">Tạm
-                                            hết hàng</span>
-                                    </c:if>
-                                </div>
-                            </div>
-                            </c:forEach>
-                        </div>
-                        <div class="siteAction d-flex justify-content-between">
-                            <button type="button" class="btn-outline-primary p-2 addToCart" data-product-id=""
-                                data-user-id="">Thêm vào
-                                giỏ</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="mb-3 ">
-                <div class="card h-100 mx-3">
-                    <input type="hidden" name="productId" value="${p.productId}">
-                    <a href=""><img src="https://via.placeholder.com/550x750" class="card-img-top" alt=""
-                            style="height: 280px !important;"></a>
-                    <div class="card-body d-flex flex-column">
-                        <span class="text-muted">${p.manufacturerProduct.manufacturerName
-                            }</span>
-                        <a class="card-title fs-6 font-weight-bold text-black text-decoration-none" href=""
-                            style="min-height: 48px">${p.productName }</a>
-                        <div class="price-product mb-3">
-                            <span class="text-decoration-line-through" style="text-decoration: line-through;">
-                                1,000,000
-                                đ
-                            </span>
-                            <span class="text-danger font-weight-bold">
-                                300,000đ
-                            </span>
-                            <div class="position-absolute" style="top: 0; left: 0">
-                                <div>
-                                    <span class="p-1 bg-danger text-white">
-                                        -15%
-                                    </span>
-                                    <c:if test="${p.quantityInStock==0 }">
-                                        <span class="p-1  bg-dark text-white ms-3">Tạm
-                                            hết hàng</span>
-                                    </c:if>
-                                </div>
-                            </div>
-                            </c:forEach>
-                        </div>
-                        <div class="siteAction d-flex justify-content-between">
-                            <button type="button" class="btn-outline-primary p-2 addToCart" data-product-id=""
-                                data-user-id="">Thêm vào
-                                giỏ</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="mb-3 ">
-                <div class="card h-100 mx-3">
-                    <input type="hidden" name="productId" value="${p.productId}">
-                    <a href=""><img src="https://via.placeholder.com/550x750" class="card-img-top" alt=""
-                            style="height: 280px !important;"></a>
-                    <div class="card-body d-flex flex-column">
-                        <span class="text-muted">${p.manufacturerProduct.manufacturerName
-                            }</span>
-                        <a class="card-title fs-6 font-weight-bold text-black text-decoration-none" href=""
-                            style="min-height: 48px">${p.productName }</a>
-                        <div class="price-product mb-3">
-                            <span class="text-decoration-line-through" style="text-decoration: line-through;">
-                                1,000,000
-                                đ
-                            </span>
-                            <span class="text-danger font-weight-bold">
-                                300,000đ
-                            </span>
-                            <div class="position-absolute" style="top: 0; left: 0">
-                                <div>
-                                    <span class="p-1 bg-danger text-white">
-                                        -15%
-                                    </span>
-                                    <c:if test="${p.quantityInStock==0 }">
-                                        <span class="p-1  bg-dark text-white ms-3">Tạm
-                                            hết hàng</span>
-                                    </c:if>
-                                </div>
-                            </div>
-                            </c:forEach>
-                        </div>
-                        <div class="siteAction d-flex justify-content-between">
-                            <button type="button" class="btn-outline-primary p-2 addToCart" data-product-id=""
-                                data-user-id="">Thêm vào
-                                giỏ</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="mb-3 ">
-                <div class="card h-100 mx-3">
-                    <input type="hidden" name="productId" value="${p.productId}">
-                    <a href=""><img src="https://via.placeholder.com/550x750" class="card-img-top" alt=""
-                            style="height: 280px !important;"></a>
-                    <div class="card-body d-flex flex-column">
-                        <span class="text-muted">${p.manufacturerProduct.manufacturerName
-                            }</span>
-                        <a class="card-title fs-6 font-weight-bold text-black text-decoration-none" href=""
-                            style="min-height: 48px">${p.productName }</a>
-                        <div class="price-product mb-3">
-                            <span class="text-decoration-line-through" style="text-decoration: line-through;">
-                                1,000,000
-                                đ
-                            </span>
-                            <span class="text-danger font-weight-bold">
-                                300,000đ
-                            </span>
-                            <div class="position-absolute" style="top: 0; left: 0">
-                                <div>
-                                    <span class="p-1 bg-danger text-white">
-                                        -15%
-                                    </span>
-                                    <c:if test="${p.quantityInStock==0 }">
-                                        <span class="p-1  bg-dark text-white ms-3">Tạm
-                                            hết hàng</span>
-                                    </c:if>
-                                </div>
-                            </div>
-                            </c:forEach>
-                        </div>
-                        <div class="siteAction d-flex justify-content-between">
-                            <button type="button" class="btn-outline-primary p-2 addToCart" data-product-id=""
-                                data-user-id="">Thêm vào
-                                giỏ</button>
                         </div>
                     </div>
                 </div>

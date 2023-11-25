@@ -24,5 +24,8 @@ public class AccountDTO {
 	private List<String> roles;
 	private List<InforAddress> inforAddresses;
 	private List<KeywordSuggestionsDTO> keywordSuggestions;
+	private List<CartDTO> carts; 
+//	private List<WishList> wishLists;
+	
 
 }

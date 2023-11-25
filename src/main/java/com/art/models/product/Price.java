@@ -2,6 +2,8 @@ package com.art.models.product;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,7 +35,8 @@ public class Price {
 	@Column
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;
-	
+
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "product_detail_id")
 	private ProductDetail productDetail;

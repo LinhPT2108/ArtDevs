@@ -3,6 +3,7 @@ package com.art.models.product;
 import java.util.Date;
 import java.util.List;
 
+import com.art.models.activity.Cart;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -21,8 +22,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -55,18 +56,16 @@ public class ProductDetail {
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "productDetail")
-	private List<ProductCart> productCarts;
 	
+	@OneToMany(mappedBy = "productDetail")
 	@JsonIgnore
+	private List<Cart> productCarts;
+	
 	@OneToMany(mappedBy = "productDetail", fetch = FetchType.EAGER)
 	private List<Price> productPrice;
 
 	public ProductDetail(int id, int quantityInStock, String size, String color, double weight, double power,
 			Date productionDate, List<Price> productPrice) {
-		super();
 		this.id = id;
 		this.quantityInStock = quantityInStock;
 		this.size = size;
@@ -77,5 +76,5 @@ public class ProductDetail {
 		this.productPrice = productPrice;
 	}
 
-
+	
 }

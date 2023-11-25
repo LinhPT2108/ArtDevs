@@ -11,6 +11,7 @@ public class accountController {
 
     @GetMapping(value = "/login")
     public String getLogin(){
+    	
         return "index";
     }
 

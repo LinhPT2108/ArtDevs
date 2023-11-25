@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.art.models.product.Product;
 import com.art.models.user.Account;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,6 +34,7 @@ public class RecentlyViewed {
 	@JoinColumn(name = "userRecentlyViewed")
 	private Account user;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;

@@ -1,7 +1,5 @@
 package com.art.models.promotion;
 
-import java.math.BigDecimal;
-
 import com.art.models.activity.Comment;
 import com.art.models.product.Product;
 
