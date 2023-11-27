@@ -62,7 +62,7 @@
 						<th>Trạng thái</th>
 						<th>Số lượng sản phẩm</th>
 						<th></th>
-						 
+
 					</tr>
 				</thead>
 				<tbody>
@@ -75,11 +75,12 @@
 							<span th:if="${flashSale.status == true}">Ngưng hoạt động</span>
 						</td>
 						<td th:text="${flashSale.promotionalDetailsList.size()}">
-							<a th:href="@{/admin/promotionalDetail/{id}(id=${flashSale.id})}">
-								Xem Chi Tiết
-							</a>
 						</td>
-						<td><a th:href="@{/admin/flashSale/edit/{id}(id=${flashSale.id})}">Edit</a></td>
+						<td><a th:href="@{/admin/promotionalDetail/{id}(id=${flashSale.id})}">
+								Xem Chi Tiết ||
+							</a>
+							<a th:href="@{/admin/flashSale/edit/{id}(id=${flashSale.id})}">Edit</a></td>
+						
 					</tr>
 				</tbody>
 			</table>

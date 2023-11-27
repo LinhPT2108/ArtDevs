@@ -62,7 +62,7 @@ public class promotionalDetailController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "admin/index";
+		return "admin/promotion-form";
 	}
 	@PostMapping("/promotionalDetail/create")
 	public String createpromotionalDetail(@ModelAttribute("promotionalDetail") PromotionalDetails promotionalDetail

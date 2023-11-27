@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	<div class="site-product">
+
+		<form th:action="@{/admin/promotionalDetail}" th:object="${promotionalDetail}" th:method="POST"
+			class="row g-3 needs-validation" id="formpromotionalDetail">
+
+			<div class="row">
+				<div class="col-xs-12 col-md-7">
+					<div class="row">
+						<div class="col-12 mb-3">
+							<input type="hidden" th:name="idflashSale" id="idflashSale" th:value="${idflashSale}"
+								class="form-control" />
+						</div>
+						<div class="col-12 mb-3">
+							<input type="hidden" th:name="id" id="id" class="form-control" />
+						</div>
+						<div class="col-12 mb-3">
+							<label>Sản phẩm:</label> <br>
+							<select class="form-select" th:field="*{product}">
+								<option value="" label="Chọn..."></option>
+								<option th:each="product : ${productList}" th:value="${product}"
+									th:text="${product.productName}"></option>
+							</select>
+						</div>
+						<div class="col-12 mb-3">
+							<label th:for="discountedPrice" class="form-label">Giá khuyến mãi:</label>
+							<input type="currency" class="form-control" th:field="*{discountedPrice}" />
+						</div>
+					</div>
+					<div class="col-12">
+						<button class="btn btn-success" th:formaction="@{/admin/promotionalDetail/create}"
+							th:text="${typeButton}"></button>
+						<button class="btn btn-warning"
+							th:formaction="@{/admin/promotionalDetail/{idflashSale}/update(idflashSale=${idflashSale})}"
+							th:text="${updateButton}"></button>
+						<button class="btn btn-danger"
+							th:formaction="@{/admin/promotionalDetail/{idflashSale}/delete/{promotionalDetail.id}(idflashSale=${idflashSale}, promotionalDetail=${promotionalDetail.id})}"
+							th:text="${deleteButton}"></button>
+						<a href="@{/admin/promotionalDetail/{idflashSale}(idflashSale=${idflashSale})}"
+							class="btn btn-primary">Reset</a>
+					</div>
+				</div>
+			</div>
+		</form>
+
+		<hr>
+		<br>
+
+		<div class="table-responsive">
+			<table id="statisticalTable" class="table table-hover" style="vertical-align:middle;">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Tên sản phẩm</th>
+						<th>SL tồn kho</th>
+						<th>Giá gốc</th>
+						<th>Giá khuyến mãi</th>
+						<th>Trạng thái</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="promotionalDetail : ${promotionalDetails}">
+						<td th:text="${promotionalDetail.id}"></td>
+						<td th:text="${promotionalDetail.product.productName}"></td>
+						<!--<td th:text="${promotionalDetail.product.productDetail.quantityInStock}"></td>-->
+						<td>
+							<span
+								th:utext="${#numbers.formatCurrency(promotionalDetail.product.price, 'VND', 0, 0)}"></span>
+						</td>
+						<td>
+							<span
+								th:utext="${#numbers.formatCurrency(promotionalDetail.discountedPrice, 'VND', 0, 0)}"></span>
+						</td>
+						<td>
+							<span th:if="${promotionalDetail.status == false}">Đang hoạt động</span>
+							<span th:unless="${promotionalDetail.status == false}">Ngưng hoạt động</span>
+						</td>
+						<td>
+							<a class="btn btn-warning"
+								th:href="@{/admin/promotionalDetail/{idflashSale}/edit/{promotionalDetail.id}(idflashSale=${idflashSale}, promotionalDetail=${promotionalDetail.id})}">Chỉnh
+								sửa</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+</body>
+
+</html>
