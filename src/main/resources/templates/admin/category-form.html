@@ -47,9 +47,16 @@
 						<td th:text="${category.categoryName}"></td>
 						<td th:text="${category.status ? 'Hoạt động' : 'Ngừng kinh doanh'}"></td>
 						<td th:text="${category.user.fullname}"></td>
-						<td><a
-								th:href="@{/admin/category/edit/{categoryId}(categoryId=${category.categoryId})}">Edit</a>
+						<td>
+							<a type="button" class="btn btn-warning"
+								th:href="@{/admin/category/edit/{categoryId}(categoryId=${category.categoryId})}">
+								Edit
+							</a>
 						</td>
+
+						<!--<td><a
+								th:href="@{/admin/category/edit/{categoryId}(categoryId=${category.categoryId})}">Edit</a>
+						</td>-->
 					</tr>
 				</tbody>
 			</table>

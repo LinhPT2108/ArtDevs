@@ -76,11 +76,23 @@
 						</td>
 						<td th:text="${flashSale.promotionalDetailsList.size()}">
 						</td>
-						<td><a th:href="@{/admin/promotionalDetail/{id}(id=${flashSale.id})}">
+						<td>
+							<div class="btn-group">
+								<a type="button" class="btn btn-primary"
+									th:href="@{/admin/promotionalDetail/{id}(id=${flashSale.id})}">
+									Xem Chi Tiết
+								</a>
+								<a type="button" class="btn btn-warning"
+									th:href="@{/admin/flashSale/edit/{id}(id=${flashSale.id})}">
+									Edit
+								</a>
+							</div>
+						</td>
+						<!--<td><a th:href="@{/admin/promotionalDetail/{id}(id=${flashSale.id})}">
 								Xem Chi Tiết ||
 							</a>
-							<a th:href="@{/admin/flashSale/edit/{id}(id=${flashSale.id})}">Edit</a></td>
-						
+							<a th:href="@{/admin/flashSale/edit/{id}(id=${flashSale.id})}">Edit</a></td>-->
+
 					</tr>
 				</tbody>
 			</table>

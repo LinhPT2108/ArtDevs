@@ -49,7 +49,14 @@
 						<td th:text="${manufacturer.manufacturerName}"></td>
 						<td th:text="${manufacturer.del ? 'Hoạt động' : 'Ngừng hợp tác'}"></td>
 						<td th:text="${manufacturer.user.accountId}"></td>
-						<td><a th:href="@{/admin/manufacturer/edit/{id}(id=${manufacturer.id})}">Edit</a></td>
+						<td>
+							<a type="button" class="btn btn-warning"
+								th:href="@{/admin/manufacturer/edit/{id}(id=${manufacturer.id})}">
+								Edit
+							</a>
+						</td>
+
+						<!--<td><a th:href="@{/admin/manufacturer/edit/{id}(id=${manufacturer.id})}">Edit</a></td>-->
 					</tr>
 				</tbody>
 			</table>

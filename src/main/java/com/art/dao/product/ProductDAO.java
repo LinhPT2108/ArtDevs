@@ -79,5 +79,6 @@ public interface ProductDAO extends JpaRepository<Product, String> {
 
 	List<Product> findByAvailable(boolean b);
 	
+	Product findByProductId(String pro);
 	
 }

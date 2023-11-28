@@ -56,7 +56,7 @@ public class promotionalDetailController {
 			model.addAttribute("deleteButton", "Xóa");
 			List<Product> products=productDAO.findAll();
 			List<PromotionalDetails> promotionalDetails=promotionDetailDAO.findByFlashSale_Id(id);
-			model.addAttribute("products",products);
+			model.addAttribute("productList",products);
 			model.addAttribute("promotionalDetails",promotionalDetails);
 			model.addAttribute("idflashSale",id);
 		} catch (Exception e) {
@@ -72,13 +72,18 @@ public class promotionalDetailController {
 		model.addAttribute("typeButton", "Thêm");
 		model.addAttribute("updateButton", "Cập nhật"); 
 		model.addAttribute("deleteButton", "Xóa");
-		String productIdString=paramService.getString("product","");
-		promotionalDetail.setProduct(productDAO.getById(productIdString));
+//		String productIdString=paramService.getString("product","");
+		int flashSaleIdString=paramService.getInt("idflashSale", -1);
+		PromotionalDetails promotionalDetailbyid=promotionDetailDAO.findById(flashSaleIdString).get();
+		String productIdString = promotionalDetailbyid.getProduct().getProductName();
+		System.out.println("productIdString" + productIdString );
+		promotionalDetail.setProduct(promotionalDetailbyid.getProduct());
 		List<PromotionalDetails> promotionalDetails=promotionDetailDAO.findAll();
 		model.addAttribute("promotionalDetails",promotionalDetails);
-		int flashSaleIdString=paramService.getInt("idflashSale", -1);
+		
 		System.out.println(flashSaleIdString);
 		promotionalDetail.setFlashSale(flashSaleDAO.getById(flashSaleIdString));
+		promotionalDetail.setStatus(false);
 		promotionDetailDAO.save(promotionalDetail);
 		
 		return "redirect:/admin/promotionalDetail/" +flashSaleIdString;
@@ -91,11 +96,13 @@ public class promotionalDetailController {
 		model.addAttribute("typeButton", "Thêm");
 		model.addAttribute("updateButton", "Cập nhật"); 
 		model.addAttribute("deleteButton", "Xóa");
-		String productIdString=paramService.getString("product","");
-		promotionalDetail.setProduct(productDAO.getById(productIdString));
+		int flashSaleIdString=paramService.getInt("idflashSale", -1);
+		PromotionalDetails promotionalDetailbyid=promotionDetailDAO.findById(flashSaleIdString).get();
+		String productIdString = promotionalDetailbyid.getProduct().getProductName();
+		System.out.println("productIdString" + productIdString );
+		promotionalDetail.setProduct(promotionalDetailbyid.getProduct());
 		List<PromotionalDetails> promotionalDetails=promotionDetailDAO.findByFlashSale_Id(idflashSale);
 		model.addAttribute("promotionalDetails",promotionalDetails);
-		int flashSaleIdString=paramService.getInt("idflashSale", -1);
 		System.out.println(flashSaleIdString);
 		promotionalDetail.setFlashSale(flashSaleDAO.getById(flashSaleIdString));
 		promotionDetailDAO.save(promotionalDetail);
@@ -113,13 +120,14 @@ public class promotionalDetailController {
 			model.addAttribute("deleteButton", "Xóa");
 			List<PromotionalDetails> promotionalDetails=promotionDetailDAO.findByFlashSale_Id(idflashSale);
 			PromotionalDetails promotionalDetailbyid=promotionDetailDAO.findById(id).get();
+			model.addAttribute("productList",promotionalDetailbyid.getProduct());
 			model.addAttribute("promotionalDetail",promotionalDetailbyid);
 			model.addAttribute("promotionalDetails",promotionalDetails);
 			model.addAttribute("idflashSale",idflashSale);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "admin/index";
+		return "admin/promotion-form";
 	}
 	@RequestMapping("/promotionalDetail/{idflashSale}/delete/{id}")
 	public String deletepromotionalDetail(@PathVariable("id") Integer id,
@@ -134,6 +142,10 @@ public class promotionalDetailController {
 		model.addAttribute("promotionalDetails",promotionalDetails);
 		int flashSaleIdString=paramService.getInt("idflashSale", -1);
 		System.out.println(flashSaleIdString);
+		PromotionalDetails promotionalDetailbyid=promotionDetailDAO.findById(flashSaleIdString).get();
+		String productIdString = promotionalDetailbyid.getProduct().getProductName();
+		System.out.println("productIdString" + productIdString );
+		promotionalDetail.setProduct(promotionalDetailbyid.getProduct());
 		promotionalDetail.setFlashSale(flashSaleDAO.getById(flashSaleIdString)); 
 		promotionalDetail.setStatus(true);
 		model.addAttribute("idflashSale",idflashSale);
