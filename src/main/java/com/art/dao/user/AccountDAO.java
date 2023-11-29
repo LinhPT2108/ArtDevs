@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.art.models.user.Account;
+import com.art.models.user.AccountRole;
+import com.art.models.user.Role;
 
 public interface AccountDAO extends JpaRepository<Account, String> {
 
@@ -38,6 +41,11 @@ public interface AccountDAO extends JpaRepository<Account, String> {
 //	// Tìm kiếm người dùng dựa trên họ tên chứa một từ khóa
 //	List<UserCustom> findByFullnameContainingIgnoreCase(String keyword);
 	
-	Account findByEmail(String email);
+	Optional<Account> findByEmail(String email);
 	
+//	@Query("SELECT a.userRole.role From Account a WHERE a.email =:email")
+//	List<Role> getRoles(String email);
+	
+	@Query("SELECT a.userRole From Account a WHERE a.email =:email")
+	List<AccountRole> getAccountRoles(String email);
 }

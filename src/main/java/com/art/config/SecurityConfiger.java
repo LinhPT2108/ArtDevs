@@ -1,41 +1,28 @@
 package com.art.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.art.service.user.CustomUserDetailService;
+import com.art.config.auth.JwtAuthenticationFilter;
 import com.art.utils.Path;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfiger {
 
-	@Autowired
-	private CustomUserDetailService customUserDetailService;
+	private final AuthenticationProvider authenticationProvider;
 
-	/*
-	 * Mã hóa mật khẩu
-	 */
-	@Autowired
-	public void config(AuthenticationManagerBuilder auth) throws Exception {
-	        auth.userDetailsService(customUserDetailService)
-	                .passwordEncoder(new BCryptPasswordEncoder());
-
-		// set cứng data
-//		auth.inMemoryAuthentication().withUser("admin").password(new BCryptPasswordEncoder().encode("123456"))
-//				// .roles("ADMIN") // ROLE_ADMIN
-//				.authorities("admin").and().passwordEncoder(new BCryptPasswordEncoder());
-
-	}
-	
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 	/*
 	 * config đường dẫn và giao thức đăng nhập, đăng xuất,
 	 * BASE_PATH = "/rest"
@@ -52,7 +39,8 @@ public class SecurityConfiger {
 	        				AntPathRequestMatcher.antMatcher("/*"),
 	        				AntPathRequestMatcher.antMatcher("/account/login"),
 	        				AntPathRequestMatcher.antMatcher("/product"),
-	        				AntPathRequestMatcher.antMatcher("/product/**")
+	        				AntPathRequestMatcher.antMatcher("/product/**"),
+	        				AntPathRequestMatcher.antMatcher("/api/login")
 	        				).permitAll()
 	        		.requestMatchers(
 							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/cart"),
@@ -111,20 +99,24 @@ public class SecurityConfiger {
 	        				AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/statistical-orders-by-user"),
 	        				AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/statistical-best-seller")
 	        				).hasAnyAuthority("admin")
+	        		.requestMatchers(AntPathRequestMatcher.antMatcher("/demo/access")).hasAnyAuthority( "shipper","admin","user","staff")
 	                .anyRequest().permitAll()
 	        		)
+	        
 	        .formLogin(login -> login
 	                .loginPage("/account/login")
-	                .loginProcessingUrl(Path.BASE_PATH+"/account/user")
-	                .usernameParameter("email")
-	                .passwordParameter("password")
-//	                .defaultSuccessUrl("/", false)
+	                .defaultSuccessUrl("/", false)
+	                .permitAll()
 	                )
 	        .logout(logout -> logout
 	                .logoutUrl("/account/logout")
 	                .logoutSuccessUrl("/account/login")
 	                .invalidateHttpSession(true)
-	                .deleteCookies("JSESSIONID"));	
+	                .deleteCookies("JSESSIONID")
+	                )
+	        
+	        .authenticationProvider(authenticationProvider)
+	        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);	
 	    return http.build();
 	}
 	
@@ -133,6 +125,8 @@ public class SecurityConfiger {
 	 */
 	@Bean
 	WebSecurityCustomizer webSecurityCustomizer() {
-		return web -> web.ignoring().requestMatchers(AntPathRequestMatcher.antMatcher("/static/**"));
+		return web -> web.ignoring().requestMatchers(
+				AntPathRequestMatcher.antMatcher("/static/**"),
+				AntPathRequestMatcher.antMatcher("/templates/**"));
 	}
 }

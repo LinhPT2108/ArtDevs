@@ -44,4 +44,10 @@ public class Role implements Serializable {
 	@OneToMany(mappedBy = "role", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<AccountRole> roleId;
 
+	public Role(String roleName) {
+		super();
+		this.roleName = roleName;
+	}
+
+	
 }

@@ -61,17 +61,17 @@ public class AccountRestController {
 	@Autowired
 	ProductDAO pdDAO;
 
-	@GetMapping(value = "/userLogin")
-	public ResponseEntity<AccountDTO> getArtDev(Model model) {
-		// Lấy thông tin người dùng từ SecurityContextHolder
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication != null) {
-			AccountDTO accountDTO = AccountMapper.convertToDto(aDAO.findByEmail(authentication.getName()), promotionDAO,
-					fDAO,pdDAO);
-			return ResponseEntity.ok(accountDTO);
-		}
-		return ResponseEntity.notFound().build();
-	}
+//	@GetMapping(value = "/userLogin")
+//	public ResponseEntity<AccountDTO> getArtDev(Model model) {
+//		// Lấy thông tin người dùng từ SecurityContextHolder
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		if (authentication != null) {
+//			AccountDTO accountDTO = AccountMapper.convertToDto(aDAO.findByEmail(authentication.getName()).orElseThrow(), promotionDAO,
+//					fDAO,pdDAO);
+//			return ResponseEntity.ok(accountDTO);
+//		}
+//		return ResponseEntity.notFound().build();
+//	}
 
 	/*
 	 * Lấy tất cả tài khoản

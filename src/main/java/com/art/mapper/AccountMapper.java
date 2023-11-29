@@ -11,11 +11,6 @@ import com.art.dao.promotion.PromotionalDetailsDAO;
 import com.art.dto.account.AccountDTO;
 import com.art.dto.account.CartDTO;
 import com.art.dto.account.KeywordSuggestionsDTO;
-import com.art.dto.product.ProductDetailDTO;
-import com.art.models.activity.Cart;
-import com.art.models.product.Product;
-import com.art.models.promotion.FlashSale;
-import com.art.models.promotion.PromotionalDetails;
 import com.art.models.user.Account;
 import com.art.models.user.InforAddress;
 

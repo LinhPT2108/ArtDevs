@@ -174,4 +174,25 @@ app.controller("mainCtrl", function ($scope, $timeout, $rootScope, ApiService) {
   $scope.showMore = function () {
     $scope.limit += 12;
   };
+  // Service trong AngularJS
+app.service('AuthService', function($http) {
+    this.login = function(credentials) {
+        return $http.post('/api/login', credentials);
+    };
+});
+
+// Controller trong AngularJS
+app.controller('LoginController', function($scope, AuthService) {
+    $scope.login = function(credentials) {
+        AuthService.login(credentials).then(function(response) {
+            // Xử lý sau khi đăng nhập thành công
+            // Chuyển hướng đến "/ArtDevs"
+            window.location.href = '/ArtDevs';
+        }).catch(function(error) {
+            // Xử lý khi có lỗi đăng nhập
+            console.error('Error logging in:', error);
+        });
+    };
+});
+
 });
