@@ -1,4 +1,7 @@
-var app = angular.module("artdevApp", ["ngRoute"]);
+var app = angular.module("artdevApp", [
+  "ngRoute",
+  "angularUtils.directives.dirPagination",
+]);
 
 const api = "http://localhost:8080";
 app.config(function ($routeProvider, $locationProvider) {
@@ -63,7 +66,7 @@ app.service("ApiService", function ($http) {
         return response.data;
       })
       .catch(function errorCallback(response) {
-        console.log(response)
+        console.log(response);
         throw new Error(response.statusText);
       });
   };
@@ -99,28 +102,122 @@ app.run(function ($rootScope, DataService, ApiService) {
 
     return prices[0];
   };
+
   ApiService.callApi("GET", "/rest/userLogin")
     .then(function (response) {
-      $rootScope.userLogin = response==''?null:response;
-      console.log( $rootScope.userLogin );
+      $rootScope.userLogin = response == "" ? null : response;
+      console.log($rootScope.userLogin);
     })
     .catch(function (error) {
-      console.log('Lỗi' + error);
+      console.log("Lỗi" + error);
     });
 });
 
-app.controller("headerCtrl", function ($scope, DataService, $location) {
-  $scope.isActive = function (...viewLocations) {
-    return viewLocations.some((location) =>
-      $location.path().includes(location)
-    );
-  };
+app.controller(
+  "headerCtrl",
+  function ($scope, DataService, $location, $rootScope, $timeout, ApiService) {
+    $scope.isActive = function (...viewLocations) {
+      return viewLocations.some((location) =>
+        $location.path().includes(location)
+      );
+    };
 
-  $(".top-search a").on("click", function (event) {
-    event.preventDefault();
-    $(".search-top").toggleClass("active");
-  });
-});
+    $(".top-search a").on("click", function (event) {
+      event.preventDefault();
+      $(".search-top").toggleClass("active");
+    });
+
+    $scope.calculateTotalAmount = function () {
+      $scope.totalAmount = 0;
+      if ($scope.userLogin != null) {
+        $timeout(function () {
+          for (var i = 0; i < $scope.userLogin.carts.length; i++) {
+            var cartItem = $scope.userLogin.carts[i];
+            var price = 0;
+
+            if (cartItem.productDTO.sale) {
+              price =
+                $rootScope.getLatestPrice(
+                  cartItem.productDTO.productDetails[0].prices
+                ).price -
+                $rootScope.getLatestPrice(
+                  cartItem.productDTO.productDetails[0].prices
+                ).price *
+                  cartItem.productDTO.discountPrice;
+            } else {
+              price = $rootScope.getLatestPrice(
+                cartItem.productDTO.productDetails[0].prices
+              ).price;
+            }
+
+            $scope.totalAmount += price * cartItem.quantityInCart;
+          }
+        }, 300);
+      }
+    };
+    $timeout(function () {
+      $scope.$watch(
+        "userLogin.carts",
+        function () {
+          $scope.calculateTotalAmount();
+        },
+        true
+      );
+    }, 300);
+
+    $scope.removeToCart = function (event, cartId, index) {
+      event.preventDefault();
+      console.log(cartId + "index: " + index);
+      ApiService.callApi("DELETE", "/rest/cart/" + cartId)
+        .then(function (resp) {
+          console.log(resp);
+          if (resp == 200) {
+            $scope.userLogin.carts.splice(index, 1);
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 2000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              },
+            });
+            Toast.fire({
+              icon: "success",
+              title: "Xóa khỏi giỏ hàng thành công",
+            });
+          } else {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              },
+            });
+            Toast.fire({
+              icon: "warning",
+              title: "Có lỗi xảy ra, vui lòng thử lại !",
+            });
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+          Swal.fire({
+            icon: "warning",
+            title: "Có lỗi xảy ra",
+            text: "Vui  lòng thử lại !",
+            showConfirmButton: true,
+          });
+        });
+    };
+  }
+);
 
 app.controller("mainCtrl", function ($scope, $timeout, $rootScope, ApiService) {
   $scope.quantity = 1;
@@ -154,6 +251,7 @@ app.controller("mainCtrl", function ($scope, $timeout, $rootScope, ApiService) {
     ApiService.callApi("GET", "/rest/product-detail/" + productDetailId)
       .then(function (resp) {
         $scope.pdt = resp;
+        $rootScope.choiceProductDetailId = productDetailId;
         console.log($scope.pdt);
       })
       .catch(function (err) {

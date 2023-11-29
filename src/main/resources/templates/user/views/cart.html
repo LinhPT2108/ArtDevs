@@ -7,16 +7,22 @@
 				<table class="table shopping-summery">
 					<thead>
 						<tr class="main-hading">
-							<th>PRODUCT</th>
-							<th>NAME</th>
-							<th class="text-center">UNIT PRICE</th>
-							<th class="text-center">QUANTITY</th>
-							<th class="text-center">TOTAL</th>
-							<th class="text-center"><i class="ti-trash remove-icon"></i></th>
+							<th>
+								<input type="checkbox" ng-model="checkProduct" value="true">
+							</th>
+							<th>ẢNH</th>
+							<th>SẢN PHẨM</th>
+							<th class="text-center">GIÁ</th>
+							<th class="text-center">SỐ LƯỢNG</th>
+							<th class="text-center">SỐ TIỀN</th>
+							<th class="text-center">THAO TÁC</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
+							<td>
+								<input type="checkbox" name="check" id="" selected="true">
+							</td>
 							<td class="image" data-title="No"><img src="https://via.placeholder.com/100x100" alt="#">
 							</td>
 							<td class="product-des" data-title="Description">

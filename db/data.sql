@@ -1540,56 +1540,56 @@ INSERT INTO dbo.promotional_details
 		  quantity_sold
         )
 VALUES  ( 0.15 , -- discounted_price - float
-          3 , -- flash_sale_id - int
+          11 , -- flash_sale_id - int
           0 , -- status - bit
           '32V35KP',  -- product_id - varchar(255)
           50,
 		  20
         ),
 		( 0.1 , -- discounted_price - float
-          3 , -- flash_sale_id - int
+          11 , -- flash_sale_id - int
           0 , -- status - bit
           '50UQ7550PSF',  -- product_id - varchar(255)
           50,
 		  50
         ),
 		( 0.5 , -- discounted_price - float
-          3 , -- flash_sale_id - int
+          11 , -- flash_sale_id - int
           0 , -- status - bit
           '65NANO76SQA',  -- product_id - varchar(255)
           50,
 		  0
         ),
 		( 0.1 , -- discounted_price - float
-          3 , -- flash_sale_id - int
+          11 , -- flash_sale_id - int
           0 , -- status - bit
           'AR13CYFAAWKNSV',  -- product_id - varchar(255)
           50,
 		  0
         ),
 		( 0.2 , -- discounted_price - float
-          3 , -- flash_sale_id - int
+          11 , -- flash_sale_id - int
           0 , -- status - bit
           'GR-B256JDS',  -- product_id - varchar(255)
           50,
 		  0
         ),
 		( 0.3 , -- discounted_price - float
-          3 , -- flash_sale_id - int
+          11 , -- flash_sale_id - int
           0 , -- status - bit
           'MSAGA-10CRDN8',  -- product_id - varchar(255)
           50,
 		  0
         ),
 		( 0.25 , -- discounted_price - float
-          3 , -- flash_sale_id - int
+          11 , -- flash_sale_id - int
           0 , -- status - bit
           'UA43BU8000',  -- product_id - varchar(255)
           50,
 		  50
         ), 
 		( 0.15 , -- discounted_price - float
-          3 , -- flash_sale_id - int
+          11 , -- flash_sale_id - int
           0 , -- status - bit
           'ZTNQ18GPLA0',  -- product_id - varchar(255)
           50,

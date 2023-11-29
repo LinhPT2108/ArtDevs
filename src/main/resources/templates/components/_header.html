@@ -95,8 +95,10 @@
                 <div class="col-lg-2 col-md-3 col-12 d-md-flex justify-content-center align-items-center">
                     <div class="right-bar">
                         <!-- Search Form -->
-                        <div class="sinlge-bar">
-                            <a href="#" class="single-icon"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                        <div class="sinlge-bar" data-toggle="tooltip" data-placement="top" title="Sản phẩm yêu thích">
+                            <a href="#" class="single-icon">
+                                <i class="fa fa-heart-o" aria-hidden="true"></i>
+                            </a>
                         </div>
                         <div class="sinlge-bar shopping">
                             <a href="/account/profile" class="single-icon"><i class="fa fa-user-circle-o"
@@ -104,7 +106,7 @@
                             <!-- Shopping Item -->
                             <div class="shopping-item p-0" style="right: 40px; max-width: 250px; overflow-y: auto">
                                 <ul class="list-group list-group-flush" ng-init="userlogin=true">
-                                    <div ng-if="userlogin">
+                                    <div ng-show="userLogin!=null">
                                         <li class="list-group-item">
                                             <a href="/account/profile">Thông tin tài khoản</a>
                                         </li>
@@ -114,11 +116,11 @@
                                         <li class="list-group-item">
                                             <a href="#">Đổi mật khẩu</a>
                                         </li>
-                                    </div>
-                                    <div ng-if="userlogin">
                                         <li class="list-group-item">
                                             <a href="#" logout-ctrl>Đăng xuất</a>
                                         </li>
+                                    </div>
+                                    <div ng-show="userLogin==null">
                                         <li class="list-group-item">
                                             <a href="/account/login">Đăng nhập</a>
                                         </li>
@@ -135,38 +137,77 @@
                             <!--/ End Shopping Item -->
                         </div>
                         <div class="sinlge-bar shopping">
-                            <a href="#" class="single-icon"><i class="ti-bag"></i> <span
-                                    class="total-count">2</span></a>
+                            <a href="#" class="single-icon"><i class="ti-bag"></i>
+                                <span class="total-count" ng-show="userLogin !=null">
+                                    {{userLogin.carts.length}}
+                                </span>
+                            </a>
                             <!-- Shopping Item -->
-                            <div class="shopping-item">
+                            <div class="shopping-item" ng-show="userLogin != null">
                                 <div class="dropdown-cart-header">
-                                    <span>2 Items</span>
-                                    <a href="/cart">View Cart</a>
+                                    <span>{{userLogin.carts.length}} sản phẩm</span>
+                                    <!-- <a href="/cart">Xem giỏ hàng</a> -->
                                 </div>
-                                <ul class="shopping-list">
+                                <ul class="shopping-list" ng-show="userLogin.carts.length>0"
+                                    ng-repeat="c in userLogin.carts">
                                     <li>
-                                        <a href="#" class="remove" title="Remove this item"><i
+                                        <a class="cart-img" href="#">
+                                            <img ng-src="../images/products/{{c.productDTO.images[0]}}"
+                                                alt="{{c.productDTO.productName}}">
+                                        </a>
+                                        <h4 class="card-title" style="height: 40px !important;">
+                                            <a
+                                                href="/product/{{c.productDTO.productId}}">{{c.productDTO.productName}} qeqeq nadjandqưen qưe qưeqư qsd á dqưe  </a>
+                                        </h4>
+                                        <p class="category" ng-repeat="pdt in c.productDTO.productDetails">
+                                            <span ng-if="pdt.id == c.productDetailId" style="font-size: 14px;">
+                                                {{pdt.size}} - {{pdt.color}}
+                                            </span>
+                                        </p>
+                                        <p class="quantity" ng-repeat="pdt in c.productDTO.productDetails">
+                                            {{c.quantityInCart}} x -
+                                            <span class="amount"
+                                                ng-if="c.productDTO.sale && pdt.id == c.productDetailId">
+                                                {{ getLatestPrice(pdt.prices).price -
+                                                (getLatestPrice(pdt.prices).price *
+                                                c.productDTO.discountPrice)
+                                                | number:0 }}
+                                                &#8363;
+                                            </span>
+                                            <span class="amount"
+                                                ng-if="!c.productDTO.sale && pdt.id == c.productDetailId">
+                                                {{getLatestPrice(pdt.prices).price|number:0}}
+                                                &#8363;
+
+                                            </span>
+                                        </p>
+
+                                        <a href="#" class="remove p-2 display-6" title="Xóa khỏi giỏ hàng"
+                                            ng-click="removeToCart($event,c.cartId, $index)"><i
                                                 class="fa fa-remove"></i></a>
-                                        <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70"
-                                                alt="#"></a>
-                                        <h4><a href="#">Woman Ring</a></h4>
-                                        <p class="quantity">1x - <span class="amount">$99.00</span></p>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="remove" title="Remove this item"><i
-                                                class="fa fa-remove"></i></a>
-                                        <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70"
-                                                alt="#"></a>
-                                        <h4><a href="#">Woman Necklace</a></h4>
-                                        <p class="quantity">1x - <span class="amount">$35.00</span></p>
                                     </li>
                                 </ul>
-                                <div class="bottom">
+                                <ul class="shopping-list d-flex align-items-center justify-content-center flex-column  my-3"
+                                    ng-show="userLogin.carts.length==0">
+                                    <i class="bi bi-cart-x display-4"></i>
+                                    <span class="text-danger">Bạn chưa có sản phẩm trong giỏ hàng</span>
+                                </ul>
+                                <div class="bottom" ng-show="userLogin.carts.length>0">
                                     <div class="total">
-                                        <span>Total</span>
-                                        <span class="total-amount">$134.00</span>
+                                        <span>Tổng tiền: </span>
+                                        <span class="total-amount">
+                                            {{ totalAmount | number: 0 }} &#8363;
+                                        </span>
                                     </div>
-                                    <a href="checkout.html" class="btn animate">Checkout</a>
+                                    <a href="/cart" class="btn animate">Xem giỏ hàng</a>
+                                </div>
+                            </div>
+                            <div class="shopping-item" ng-show="userLogin == null">
+                                <div class="d-flex">
+                                    <span class="text-danger mx-auto">
+                                        Vui lòng <a href="/account/login"><u>đăng
+                                                nhập</u></a>
+                                    </span>
                                 </div>
                             </div>
                             <!--/ End Shopping Item -->

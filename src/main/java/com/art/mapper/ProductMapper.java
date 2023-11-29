@@ -28,7 +28,8 @@ public class ProductMapper {
 	private static final ModelMapper modelMapper = new ModelMapper();
 	private static double discountPrice;
 
-	public static ProductDTO convertToDto(Product product, PromotionalDetailsDAO proDAO, FlashSaleDAO fDAO, ProductDAO productDAO) {
+	public static ProductDTO convertToDto(Product product, PromotionalDetailsDAO proDAO, FlashSaleDAO fDAO,
+			ProductDAO productDAO) {
 		ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
 		discountPrice = 0;
 		productDTO.setImages(getImagesDTO(product));
@@ -49,8 +50,10 @@ public class ProductMapper {
 		List<PromotionalDetails> promotionalDetails = flashSale.getPromotionalDetailsList();
 		for (PromotionalDetails pro : promotionalDetails) {
 			if (product.getProductId().equals(pro.getProduct().getProductId())) {
-				discountPrice = pro.getDiscountedPrice();
-				return true;
+				if (pro.getDiscountedQuantity() != pro.getQuantitySold()) {
+					discountPrice = pro.getDiscountedPrice();
+					return true;
+				}
 			}
 		}
 		return false;
