@@ -53,7 +53,7 @@
 		<hr>
 		<br>
 		<div class="table-responsive">
-			<table id="statisticalTable" class="table table-hover">
+			<table id="statisticalTableFlashsale" class="table table-hover">
 				<thead>
 					<tr>
 						<th>Id</th>
@@ -70,10 +70,8 @@
 						<td th:text="${flashSale.id}"></td>
 						<td th:text="${#dates.format(flashSale.startDay, 'HH:mm dd/MM/yyyy')}"></td>
 						<td th:text="${#dates.format(flashSale.endDay, 'HH:mm dd/MM/yyyy')}"></td>
-						<td>
-							<span th:if="${flashSale.status == false}">Đang hoạt động</span>
-							<span th:if="${flashSale.status == true}">Ngưng hoạt động</span>
-						</td>
+							<td th:text="${flashSale.status ? 'Ngưng hoạt động' : 'Đang hoạt động'}"></td>
+						
 						<td th:text="${flashSale.promotionalDetailsList.size()}">
 						</td>
 						<td>
@@ -98,7 +96,37 @@
 			</table>
 		</div>
 	</div>
+	<script type="text/javascript" th:inline="javascript">
+		$(document).ready(function () {
+			var table = $('#statisticalTableFlashsale').DataTable();
 
+			// Tạo radio buttons
+			var radioHtml = `
+            <div class="mb-3">
+                <label>
+                    <input type="radio" name="statusFilter" value="" checked> Tất cả
+                </label>
+                <label class="mx-2">
+                    <input type="radio" name="statusFilter" value="Đang hoạt động"> Đang hoạt động
+                </label>
+                <label>
+                    <input type="radio" name="statusFilter" value="Ngưng hoạt động"> Ngưng hoạt động
+                </label>
+            </div>
+        `;
+
+			// Thêm radio buttons vào phần tử có class "table-responsive"
+			$('.table-responsive').prepend(radioHtml);
+
+			// Xử lý sự kiện khi radio buttons được chọn
+			$('input[name="statusFilter"]').on('change', function () {
+				var selectedValue = $(this).val();
+
+				// Lọc dữ liệu trong cột "Trạng thái" của DataTable
+				table.column(3).search(selectedValue).draw();
+			});
+		});
+	</script>
 </body>
 
 </html>
