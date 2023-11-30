@@ -78,16 +78,17 @@
                 <div class="col-lg-8 col-md-7 col-12 d-md-flex justify-content-center align-items-center">
                     <div class="search-bar-top">
                         <div class="search-bar">
-                            <form class="d-flex">
-                                <select class="custom-select" style="height: 50px;">
-                                    <option class="option " value="0">Danh mục</option>
+                            <form class="d-flex" ng-submit="submitSearch()">
+                                <select class="custom-select" style="height: 50px;" ng-model="selectedCategory">
+                                    <option class="option" value="" selected>Danh mục</option>
                                     <option ng-repeat="c in categories" class="option p-3" value="{{c.categoryId}}">
                                         {{c.categoryName}}
                                     </option>
                                 </select>
 
-                                <input name="search" placeholder="Search Products Here....." type="search">
-                                <button class="btnn"><i class="ti-search"></i></button>
+                                <input name="search" placeholder="Nhập tên sản phẩm cần tìm....." type="search"
+                                    ng-model="keyword">
+                                <button class="btnn"><i class="ti-search" type="submit"></i></button>
                             </form>
                         </div>
                     </div>
@@ -157,7 +158,7 @@
                                         </a>
                                         <h4 class="card-title" style="height: 40px !important;">
                                             <a
-                                                href="/product/{{c.productDTO.productId}}">{{c.productDTO.productName}} qeqeq nadjandqưen qưe qưeqư qsd á dqưe  </a>
+                                                href="/product/{{c.productDTO.productId}}">{{c.productDTO.productName}}</a>
                                         </h4>
                                         <p class="category" ng-repeat="pdt in c.productDTO.productDetails">
                                             <span ng-if="pdt.id == c.productDetailId" style="font-size: 14px;">
@@ -228,11 +229,11 @@
                             <ul class="main-category">
                                 <li ng-repeat="category in categories"
                                     class="d-flex align-items-center justify-content-between">
-                                    <a href="{{ category.categoryId }}">{{ category.categoryName }}</a>
+                                    <a href="/products?c={{ category.categoryId }}">{{ category.categoryName }}</a>
                                     <i class="bi bi-chevron-right text-dark mr-2 "></i>
                                     <ul class="sub-category">
                                         <li ng-repeat="brands in brands"><a
-                                                href="/product?c={{category.categoryId }}&b={{brands.id}}">
+                                                href="/products?c={{category.categoryId }}&b={{brands.id}}">
                                                 {{brands.manufacturerName}}</a></li>
                                     </ul>
                                 </li>

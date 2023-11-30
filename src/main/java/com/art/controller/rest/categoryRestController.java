@@ -14,6 +14,7 @@ import com.art.models.product.Product;
 import com.art.utils.Path;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,19 +45,19 @@ public class categoryRestController {
         return ResponseEntity.ok(listCategories);
     }
 
-    @GetMapping(value = "/product-by-category/{id}") 
+    @GetMapping(value = "/product-by-category/{id}")
     public ResponseEntity<List<ProductDTO>> getMethodName(@PathVariable("id") int id) {
         System.out.println(id);
         List<Product> products = pdDAO.findProductByCategoryId(id);
 
-        Collections.shuffle(products);
+        // Collections.shuffle(products);
+        // List<Product> randomProducts =
+        // products.stream().limit(8).collect(Collectors.toList());
 
-        List<Product> randomProducts = products.stream().limit(8).collect(Collectors.toList());
-
-        List<ProductDTO> productDTOs = randomProducts.stream().limit(8)
+        List<ProductDTO> productDTOs = products.stream().limit(8)
                 .map(product -> ProductMapper.convertToDto(product, promDao, fDAO, proDAO))
                 .collect(Collectors.toList());
-
+        productDTOs.sort(Comparator.comparing(ProductDTO::getCountSold).reversed());
         return ResponseEntity.ok(productDTOs);
     }
 

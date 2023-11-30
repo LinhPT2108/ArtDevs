@@ -56,11 +56,12 @@ app.config(function ($routeProvider, $locationProvider) {
 });
 
 app.service("ApiService", function ($http) {
-  this.callApi = function (method, url, data) {
+  this.callApi = function (method, url, data, params) {
     return $http({
       method: method,
       url: api + url,
       data: data,
+      params: params,
     })
       .then(function successCallback(response) {
         return response.data;
@@ -116,6 +117,16 @@ app.run(function ($rootScope, DataService, ApiService) {
 app.controller(
   "headerCtrl",
   function ($scope, DataService, $location, $rootScope, $timeout, ApiService) {
+    console.log($scope.selectedCategory);
+    $scope.submitSearch = function () {
+      $location.path("/products").search({
+        c: $scope.selectedCategory,
+        keyword: $scope.keyword,
+      });
+      console.log($scope.selectedCategory);
+      console.log($scope.keyword);
+    };
+
     $scope.isActive = function (...viewLocations) {
       return viewLocations.some((location) =>
         $location.path().includes(location)

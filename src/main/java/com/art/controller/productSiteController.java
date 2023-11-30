@@ -12,5 +12,9 @@ public class productSiteController {
     public String getProductSite() {
         return "index";
     }
+    @GetMapping(value="/search")
+    public String getProductSiteSearch() {
+        return "index";
+    }
     
 }
