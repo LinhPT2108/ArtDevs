@@ -1,7 +1,10 @@
 package com.art.dao.user;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.art.models.user.Account;
 import com.art.models.user.AccountRole;
 
 public interface AccountRoleDAO extends JpaRepository<AccountRole, Integer> {
@@ -34,5 +37,7 @@ public interface AccountRoleDAO extends JpaRepository<AccountRole, Integer> {
 //
 //	// Tìm kiếm người dùng dựa trên họ tên chứa một từ khóa
 //	List<UserCustom> findByFullnameContainingIgnoreCase(String keyword);
+	
+    List<AccountRole> findByUser(Account user);
 
 }

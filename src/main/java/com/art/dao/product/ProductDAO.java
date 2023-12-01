@@ -56,7 +56,11 @@ public interface ProductDAO extends JpaRepository<Product, String> {
 //
 //	@Query("SELECT COUNT(i) FROM InvoiceDetail i WHERE i.product.id = :productId")
 //	Long countTotalProducts(String productId);
-
+//	@Query("SELECT u.product.productId, u.product.productName, u.quantityInStock, u.productPrice, u.product.CreatedDate " +
+//		       "FROM ProductDetail u " +
+//		       "INNER JOIN  u.product  i" +
+//		       "INNER JOIN  u.productPrice c")
+//	List<Object[]> fillProductDetailinTable();
 //
 //    // Tìm Product theo giá
 //    List<Product> findByPrice(BigDecimal price);
@@ -74,4 +78,7 @@ public interface ProductDAO extends JpaRepository<Product, String> {
 	List<Product> findByManufacturerProduct(Manufacturer manufacturerProduct);
 
 	List<Product> findByAvailable(boolean b);
+	
+	Product findByProductId(String pro);
+	
 }

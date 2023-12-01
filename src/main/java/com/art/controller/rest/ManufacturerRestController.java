@@ -16,7 +16,7 @@ import com.art.utils.Path;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = Path.BASE_PATH)
-public class ManufacturerRestController {
+public class manufacturerRestController {
     @Autowired
     ManufacturerDAO maDAO;
  

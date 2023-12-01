@@ -99,7 +99,7 @@ public class flashSaleController {
 				model.addAttribute("end_dayError", "Ngày không hợp lệ");
 			}
 			if(check) {
-				return "admin/index";
+				return "admin/flashsale-form";
 			}else {				
 				try {
 					flashSale.setStartDay(dateFormat.parse(startDayStr));
@@ -124,7 +124,7 @@ public class flashSaleController {
 			
 		}
 		
-		return "admin/index";
+		return "admin/flashsale-form";
 	}
 	@RequestMapping("/flashSale/edit/{id}")
 	public String editflashSale(@ModelAttribute("flashSale") FlashSale flashSale,Model model,@PathVariable("id") Integer id) {
@@ -142,7 +142,7 @@ public class flashSaleController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "admin/index";
+		return "admin/flashsale-form";
 	}
 	@RequestMapping("/flashSale/update")
 	public String updateflashSale(@ModelAttribute("flashSale") FlashSale flashSale,BindingResult bd,Model model) {
@@ -201,7 +201,7 @@ public class flashSaleController {
 				model.addAttribute("end_dayError", "Ngày không hợp lệ");
 			}
 			if(check) {
-				return "admin/index";
+				return "admin/flashsale-form";
 			}else {				
 				try {
 					flashSale.setStartDay(dateFormat.parse(startDayStr));
@@ -279,7 +279,7 @@ public class flashSaleController {
 				model.addAttribute("end_dayError", "Ngày không hợp lệ");
 			}
 			if(check) {
-				return "admin/index";
+				return "admin/flashsale-form";
 			}else {				
 				try {
 //					Account userCus=sessionService.get("userLogin");

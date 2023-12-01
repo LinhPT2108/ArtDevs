@@ -122,7 +122,7 @@ public class Account implements UserDetails{
 	@OneToMany(mappedBy = "user")
 	private List<FlashSale> userFlashSale;
 
-	@JsonIgnore
+
 	@OneToMany(mappedBy = "user")
 	private List<Order> userOrder;
 
