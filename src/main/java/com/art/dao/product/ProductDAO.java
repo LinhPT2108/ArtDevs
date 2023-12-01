@@ -69,6 +69,7 @@ public interface ProductDAO extends JpaRepository<Product, String> {
 	// // Tìm Product theo ID của UserCustom
 	// List<Product> findByUser_UserId(int userId);
 	//
+	Page<Product> findByCategoryProduct(Category categoryProduct, Pageable pageable);
 	// // Tìm Product theo ID của Category
 	List<Product> findByCategoryProduct(Category categoryProduct);
 
