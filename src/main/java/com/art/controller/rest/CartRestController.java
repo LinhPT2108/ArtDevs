@@ -22,6 +22,7 @@ import com.art.models.activity.Cart;
 import com.art.utils.Path;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -72,6 +73,21 @@ public class CartRestController {
         } catch (Exception e) {
             return ResponseEntity.ok(400);
         }
+    }
+
+    @PutMapping("/update-cart/{userId}")
+    public ResponseEntity<?> putCartUser(@RequestBody CartDTO cartDTO,
+            @PathVariable("userId") String userId) {
+        try {
+            List<Cart> saveCart = cartDAO.findByUserAndProductDetail(accountDAO.findById(userId).get(),
+                    pdtDAO.findById(cartDTO.getProductDetailId()).get());
+            Cart svCart = saveCart.get(0);
+            svCart.setQuantity(cartDTO.getQuantityInCart());
+            cartDAO.save(svCart);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return ResponseEntity.ok().build();
     }
 
 }

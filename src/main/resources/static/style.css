@@ -3534,7 +3534,7 @@ Version:1.0
 .shopping-cart .table td {
 	vertical-align: middle;
 	border-top: 1px solid #eee;
-	padding: 30px;
+	padding: 10px;
 }
 
 .shopping-summery tbody .price {
@@ -3544,7 +3544,7 @@ Version:1.0
 .shopping-summery tbody .price span {}
 
 .shopping-cart tbody .qty .input-group {
-	width: 175px;
+	width: 120px;
 	display: inline-block;
 }
 
