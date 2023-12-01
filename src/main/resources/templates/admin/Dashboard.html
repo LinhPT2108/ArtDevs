@@ -176,26 +176,26 @@
 						<table class="table text-nowrap mb-0 align-middle">
 							<thead class="text-dark fs-4">
 								<tr>
-									<th class="border-bottom-0">
+									<th class="border-bottom-0 text-center">
 										<h6 class="fw-semibold mb-0">STT</h6>
 									</th>
-									<th class="border-bottom-0">
+									<th class="border-bottom-0 text-center">
 										<h6 class="fw-semibold mb-0">Hãng/Loại</h6>
 									</th>
 									<th class="border-bottom-0">
 										<h6 class="fw-semibold mb-0">Tên sản phẩm</h6>
 									</th>
-									<th class="border-bottom-0">
+									<th class="border-bottom-0 text-center">
 										<h6 class="fw-semibold mb-0">Số lượng đã bán</h6>
 									</th>
 								</tr>
 							</thead>
 							<tbody th:each="bestSeller, loop : ${bestSellers}" th:if="${loop.index < 5}">
 								<tr>
-									<td class="border-bottom-0">
+									<td class="border-bottom-0 text-center">
 										<h6 class="fw-semibold mb-0" th:text="${loop.index + 1}"></h6>
 									</td>
-									<td class="border-bottom-0">
+									<td class="border-bottom-0 text-center">
 										<h6 class="fw-semibold mb-1 text-primary"
 											th:text="${bestSeller[0].manufacturerProduct.manufacturerName}"></h6>
 										<span class="fw-normal"
@@ -204,7 +204,7 @@
 									<td class="border-bottom-0">
 										<p class="mb-0 fw-normal" th:text="${bestSeller[1]}"></p>
 									</td>
-									<td class="border-bottom-0">
+									<td class="border-bottom-0 text-center">
 										<h6 class="fw-semibold mb-0 fs-4 text-danger"
 											 th:text="${bestSeller[2]}">
 										</h6>
