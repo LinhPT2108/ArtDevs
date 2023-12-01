@@ -47,7 +47,7 @@
 					<tr th:each="manufacturer : ${mns}">
 						<td th:text="${manufacturer.id}"></td>
 						<td th:text="${manufacturer.manufacturerName}"></td>
-						<td th:text="${manufacturer.del ? 'Hoạt động' : 'Ngừng hợp tác'}"></td>
+						<td th:text="${manufacturer.del ? 'Ngừng hợp tác': 'Hoạt động'}"></td>
 						<td th:text="${manufacturer.user.accountId}"></td>
 						<td>
 							<a type="button" class="btn btn-warning"
