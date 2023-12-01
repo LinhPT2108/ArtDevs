@@ -31,7 +31,7 @@ public interface AccountDAO extends JpaRepository<Account, String> {
 	// Tìm kiếm người dùng dựa trên email
 //	List<Account> findByEmail(String email);
 //
-	@Query("SELECT u.accountId, u.fullname, u.email, COUNT(i.id) " + "FROM Account u LEFT JOIN u.userOrder i "
+	@Query("SELECT u.accountId, u.fullname, u.email, COUNT(i.id), SUM(i.totalAmount) " + "FROM Account u LEFT JOIN u.userOrder i "
 			+ "GROUP BY u.accountId, u.fullname, u.email")
 	List<Object[]> getUsersWithOrdersCount();
 //

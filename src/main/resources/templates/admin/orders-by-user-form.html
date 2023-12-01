@@ -15,6 +15,7 @@
 					<th>Họ tên</th>
 					<th>Email</th>
 					<th>Số hóa đơn</th>
+					<th>Số tiền đã mua</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -23,6 +24,8 @@
 					<td th:text="${orderByUser[1]}"></td>
 					<td th:text="${orderByUser[2]}"></td>
 					<td th:text="${orderByUser[3]}"></td>
+					<td th:text="${#numbers.formatDecimal(orderByUser[4]==null?0:orderByUser[4],0,'COMMA',0,'POINT')}+' đ'">
+					</td>
 				</tr>
 			</tbody>
 		</table>
