@@ -1,4 +1,4 @@
-var app = angular.module("artdevApp", ["ngRoute"]);
+var app = angular.module("artdevApp", ["ngRoute","angular-jwt"]);
 
 const api = "http://localhost:8080";
 app.config(function ($routeProvider, $locationProvider) {

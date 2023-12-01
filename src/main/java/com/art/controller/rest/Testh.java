@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,10 +41,16 @@ public class Testh {
 	private final AuthenticationManager authenticationManager;
 	private final JwtTokenProvider jwtTokenUtil;
 
+//	@PostMapping("/api/login")
+//	public ResponseEntity<AuthenticationResponse> login(@RequestParam("email") String email,
+//			@RequestParam("password") String password) {
+//		System.out.println("Email" + email);
+//		AuthenticationRequest request = new AuthenticationRequest(email, password);
+//		return ResponseEntity.ok(authenticationService.authenticate(request));
+//	}
+	
 	@PostMapping("/api/login")
-	public ResponseEntity<AuthenticationResponse> login(@RequestParam("email") String email,
-			@RequestParam("password") String password) {
-		AuthenticationRequest request = new AuthenticationRequest(email, password);
+	public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
 		return ResponseEntity.ok(authenticationService.authenticate(request));
 	}
 
@@ -54,7 +61,7 @@ public class Testh {
 	}
 
 //	@PostMapping(value = "/api/login", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-//	public ResponseEntity<String> login(
+//	public String login(
 //	        @RequestParam("email") String email,
 //	        @RequestParam("password") String password,
 //	        RedirectAttributes redirectAttributes
@@ -86,7 +93,9 @@ public class Testh {
 //	    headers.add(HttpHeaders.AUTHORIZATION, token);
 //	    headers.add(HttpHeaders.LOCATION, redirectUrl);
 //
-//	    return new ResponseEntity<>(headers, HttpStatus.FOUND);
+//	    return "redirect:/";
+//	    		
+//	    //return new ResponseEntity<>(headers, HttpStatus.FOUND);
 //	}
 
 }

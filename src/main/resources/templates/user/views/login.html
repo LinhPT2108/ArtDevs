@@ -12,16 +12,16 @@
                                         href="/account/register" class="btn-link-style btn-register"> &nbsp;đăng ký tại
                                         đây</a></span>
                                 <div id="login" class="form-login mt-3">
-                                    <form method="post" action="/api/login" id="customer_login"
+                                    <form method="post" ng-submit="sumitForm()" id="customer_login"
                                         accept-charset="UTF-8">
                                         <div class="form-signup clearfix">
                                             <fieldset class="form-group">
                                                 <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
-                                                    class="form-control form-control-lg" value="linhptpc04737@fpt.edu.vn" name="email"
+                                                    class="form-control form-control-lg" value="linhptpc04737@fpt.edu.vn" name="email" ng-model="auth.email"
                                                     id="customer_email" placeholder="Email" required="" autocomplete="none">
                                             </fieldset>
                                             <fieldset class="form-group">
-                                                <input type="password" class="form-control form-control-lg" value="123123a"
+                                                <input type="password" class="form-control form-control-lg" value="123123a" ng-model="auth.password"
                                                     name="password" id="customer_password" placeholder="Mật khẩu"
                                                     required="">
                                             </fieldset>
@@ -41,33 +41,6 @@
                                         </div>
 
                                     </form>
-                                </div>
-
-                                <div class="h_recover" style="display:none;">
-                                    <div id="recover-password" class="form-signup page-login">
-                                        <form method="post" action="/account/login" id="recover_customer_password"
-                                            accept-charset="UTF-8"><input name="FormType" type="hidden"
-                                                value="recover_customer_password"><input name="utf8" type="hidden"
-                                                value="true">
-                                            <div class="form-signup" style="color: red;">
-
-                                            </div>
-                                            <div class="form-signup clearfix">
-                                                <fieldset class="form-group">
-                                                    <input type="email"
-                                                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
-                                                        class="form-control form-control-lg" value="" name="Email"
-                                                        id="recover-email" placeholder="Email" required="">
-                                                </fieldset>
-                                            </div>
-                                            <div class="action_bottom">
-                                                <input class="btn btn-style btn_50" style="margin-top: 0px;"
-                                                    type="submit" value="Lấy lại mật khẩu">
-
-                                            </div>
-
-                                        </form>
-                                    </div>
                                 </div>
 
                                 <div
