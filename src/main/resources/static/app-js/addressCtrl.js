@@ -164,7 +164,7 @@ app.controller(
         isValid = true;
       }
 
-      if (isValid) {
+      if (isValid&&data.phoneNumber != "") {
         ApiService.callApi(typeApi, url, data)
           .then(function (response) {
             if (typeApi == "POST") {

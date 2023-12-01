@@ -41,6 +41,10 @@ app.config(function ($routeProvider, $locationProvider) {
       templateUrl: "templates/user/views/cart.html",
       controller: "cartCtrl",
     })
+    .when("/checkout", {
+      templateUrl: "templates/user/views/checkout.html",
+      controller: "checkoutCtrl",
+    })
     .when("/products", {
       templateUrl: "templates/user/views/shop-grid.html",
       controller: "productsiteCtrl",
@@ -108,6 +112,13 @@ app.run(function ($rootScope, DataService, ApiService) {
     .then(function (response) {
       $rootScope.userLogin = response == "" ? null : response;
       console.log($rootScope.userLogin);
+      if ($rootScope.userLogin && $rootScope.userLogin.carts) {
+        $rootScope.userLogin.carts = $rootScope.userLogin.carts.filter(
+          function (cart) {
+            return cart.productDTO.available === true;
+          }
+        );
+      }
     })
     .catch(function (error) {
       console.log("Lỗi" + error);
@@ -144,24 +155,25 @@ app.controller(
         $timeout(function () {
           for (var i = 0; i < $scope.userLogin.carts.length; i++) {
             var cartItem = $scope.userLogin.carts[i];
-            var price = 0;
+            if (cartItem.productDTO.available) {
+              var price = 0;
 
-            if (cartItem.productDTO.sale) {
-              price =
-                $rootScope.getLatestPrice(
+              if (cartItem.productDTO.sale) {
+                price =
+                  $rootScope.getLatestPrice(
+                    cartItem.productDTO.productDetails[0].prices
+                  ).price -
+                  $rootScope.getLatestPrice(
+                    cartItem.productDTO.productDetails[0].prices
+                  ).price *
+                    cartItem.productDTO.discountPrice;
+              } else {
+                price = $rootScope.getLatestPrice(
                   cartItem.productDTO.productDetails[0].prices
-                ).price -
-                $rootScope.getLatestPrice(
-                  cartItem.productDTO.productDetails[0].prices
-                ).price *
-                  cartItem.productDTO.discountPrice;
-            } else {
-              price = $rootScope.getLatestPrice(
-                cartItem.productDTO.productDetails[0].prices
-              ).price;
+                ).price;
+              }
+              $scope.totalAmount += price * cartItem.quantityInCart;
             }
-
-            $scope.totalAmount += price * cartItem.quantityInCart;
           }
         }, 300);
       }
@@ -176,7 +188,7 @@ app.controller(
       );
     }, 300);
 
-    $scope.removeToCart = function (event, cartId, index) {
+    $rootScope.removeToCart = function (event, cartId, index) {
       event.preventDefault();
       console.log(cartId + "index: " + index);
       ApiService.callApi("DELETE", "/rest/cart/" + cartId)

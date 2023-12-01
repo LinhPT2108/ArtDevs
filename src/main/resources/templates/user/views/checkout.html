@@ -1,0 +1,147 @@
+<section class="shop checkout section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-12">
+                <div class="checkout-form">
+                    <h2>THANH TOÁN ĐƠN HÀNG CỦA BẠN TẠI ĐÂY</h2>
+                    <p>Vui lòng kiểm tra thông tin giao hàng</p>
+                    <!-- Form -->
+                    <form class="form" method="post" action="#" modelAttribute="iv">
+                        <div class="row">
+                            <div class=" col-12">
+                                <div class="form-group">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text font-weight-bold" for="address">Địa chỉ</label>
+                                    </div>
+                                    <a class="btn text-white" href="/account/address"
+                                        ng-show="userLogin.inforAddresses.length==0">Thêm
+                                        địa chỉ</a>
+
+                                    <select class="custom-select custom-select-lg" id="address" style="height: 50px;"
+                                        ng-show="userLogin.inforAddresses.length > 0" ng-model="selectedAddress"
+                                        ng-change="calculateShippingFee(selectedAddress)">
+                                        <option value="" class="display-6 mb-2 font-weight-bold">Chọn địa chỉ...
+                                        </option>
+                                        <option class="font-weight-bold display-6 mb-2"
+                                            ng-repeat="a in userLogin.inforAddresses" value="{{a}}">
+                                            SĐT: {{a.phoneNumber }}; ĐC: {{a.city }}, {{a.district}}, {{a.ward}},
+                                            {{a.specific}}
+                                        </option>
+                                    </select>
+
+                                    <small class="text-danger" id="addressError"></small>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!--/ End Form -->
+                </div>
+                <div class="listProductCheckout">
+                    <ul class="shopping-list" ng-show="getCheckedProducts.length>0" ng-repeat="c in getCheckedProducts">
+                        <li class="row border rounded p-2 mb-2">
+                            <a class="cart-img col-2" href="#">
+                                <img ng-src="../images/products/{{c.productDTO.images[0]}}"
+                                    alt="{{c.productDTO.productName}}" class="my-auto">
+                            </a>
+                            <div class="col-7">
+                                <h4 class="card-title" style="height: 50px !important;">
+                                    <a href="#">{{c.productDTO.productName}}</a>
+                                </h4>
+                                <p class="category" ng-repeat="pdt in c.productDTO.productDetails">
+                                    <span ng-if="pdt.id == c.productDetailId" style="font-size: 14px;">
+                                        {{pdt.size}} - {{pdt.color}}
+                                    </span>
+                                </p>
+                            </div>
+                            <p class="quantity col-3 my-auto mr-auto" ng-repeat="pdt in c.productDTO.productDetails">
+                                {{c.quantityInCart}} x -
+                                <span class="amount" ng-if="c.productDTO.sale && pdt.id == c.productDetailId">
+                                    {{ getLatestPrice(pdt.prices).price -
+                                    (getLatestPrice(pdt.prices).price *
+                                    c.productDTO.discountPrice)
+                                    | number:0 }}
+                                    &#8363;
+                                </span>
+                                <span class="amount" ng-if="!c.productDTO.sale && pdt.id == c.productDetailId">
+                                    {{getLatestPrice(pdt.prices).price|number:0}}
+                                    &#8363;
+
+                                </span>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4 col-12">
+                <div class="order-details">
+                    <!-- Order Widget -->
+                    <div class="single-widget">
+                        <h2>THÔNG TIN THANH TOÁN</h2>
+                        <div class="content">
+                            <ul>
+                                <li>Tổng tiền
+                                    <span id="totalCart">
+                                        {{ getTotalPrice()|number:0}} ₫
+                                    </span>
+                                </li>
+                                <li>(+) Vận chuyển
+                                    <span>
+                                        {{totalFeeShip|number:0}}
+                                    </span>
+                                </li>
+                                <li class="last">Tổng cộng:
+                                    <span id="totalPriceAmount">
+                                        {{totalPay|number:0}}₫
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!--/ End Order Widget -->
+                    <!-- Order Widget -->
+                    <div class="single-widget">
+                        <h2>THANH TOÁN</h2>
+                        <div class="content mt-3">
+                            <div class="form-check ml-5">
+                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
+                                    value="option1" checked> <label class="form-check-label" for="exampleRadios1">Thanh
+                                    toán khi nhận hàng</label>
+                            </div>
+                            <div class="form-check ml-5">
+                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
+                                    value="option2">
+                                <label class="form-check-label" for="exampleRadios2">
+                                    Ví ArtPay</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/ End Order Widget -->
+                    <!-- Payment Method Widget -->
+                    <div class="single-widget payement">
+                        <div class="content">
+                            <img src="images/payment-method.png" alt="#">
+                        </div>
+                    </div>
+                    <!--/ End Payment Method Widget -->
+                    <!-- Button Widget -->
+                    <div class="single-widget get-button">
+                        <div class="content">
+                            <div class="alert alert-danger" role="alert" ng-show="selectedAddress==null">
+                                Bạn chưa chọn
+                            </div>
+                            <div class="button" ng-show="userLogin.inforAddresses.length>0 ">
+                                <a href="/checkout" class="btn" id="postCheckout">ĐẶT
+                                    HÀNG</a>
+                            </div>
+                            <div ng-show="userLogin.inforAddresses.length==0">
+                                Vui lòng thêm địa chỉ mới
+                            </div>
+                        </div>
+                    </div>
+                    <!--/ End Button Widget -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/ End Checkout -->
