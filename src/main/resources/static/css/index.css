@@ -169,3 +169,11 @@
     align-items: center;
 	justify-content: center;
 }
+
+.container{
+	max-width: 1560px !important;
+}
+
+.card-title__cart {
+    -webkit-line-clamp: 1;
+}
