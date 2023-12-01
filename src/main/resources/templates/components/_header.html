@@ -7,9 +7,8 @@
                     <!-- Top Left -->
                     <div class="top-left">
                         <ul class="list-main">
-                            <li><i class="ti-headphone-alt"></i> 0911726601</li>
+                            <li><i class="ti-headphone-alt"></i> 0911726601 </li>
                             <li><i class="ti-email"></i> artdevk18@gmail.com</li>
-                            
                         </ul>
                     </div>
                     <!--/ End Top Left -->
@@ -18,10 +17,30 @@
                     <!-- Top Right -->
                     <div class="right-content">
                         <ul class="list-main">
-                            <li><i class="ti-location-pin"></i> Store location</li>
-                            <li><i class="ti-alarm-clock"></i> <a href="#">Daily deal</a></li>
-                            <li><i class="ti-user"></i> <a href="#">My account</a></li>
-                            <li><i class="ti-power-off"></i> <a href="/account/login"> Login</a></li>
+                            <li>
+                                <i class="ti-location-pin"></i>
+                                <a href="https://maps.app.goo.gl/npdKKMSeD48m2dAa8" target="_blank">Địa chỉ</a>
+                            </li>
+                            <li>
+                                <i class="ti-alarm-clock"></i>
+                                <a href="/product/flash-sale">Khuyến mãi</a>
+                            </li>
+                            <li ng-show="userLogin!=null">
+                                <i class="ti-user"></i>
+                                <a href="/account/profile">Tài khoản</a>
+                            </li>
+                            <li ng-show="userLogin!=null">
+                                <i class="ti-power-off"></i>
+                                <a href="/account/logout" logout-ctrl>Đăng xuất</a>
+                            </li>
+                            <li ng-show="userLogin==null">
+                                <i class="ti-user"></i>
+                                <a href="/account/login">Đăng nhập</a>
+                            </li>
+                            <li ng-show="userLogin==null">
+                                <i class="ti-power-off"></i>
+                                <a href="/account/register">Đăng ký</a>
+                            </li>
                         </ul>
                     </div>
                     <!-- End Top Right -->
@@ -59,15 +78,17 @@
                 <div class="col-lg-8 col-md-7 col-12 d-md-flex justify-content-center align-items-center">
                     <div class="search-bar-top">
                         <div class="search-bar">
-                            <select nice-select>
-                                <option selected="selected">All Category</option>
-                                <option>watch</option>
-                                <option>mobile</option>
-                                <option>kid’s item</option>
-                            </select>
-                            <form>
-                                <input name="search" placeholder="Search Products Here....." type="search">
-                                <button class="btnn"><i class="ti-search"></i></button>
+                            <form class="d-flex" ng-submit="submitSearch()">
+                                <select class="custom-select" style="height: 50px;" ng-model="selectedCategory">
+                                    <option class="option" value="" selected>Danh mục</option>
+                                    <option ng-repeat="c in categories" class="option p-3" value="{{c.categoryId}}">
+                                        {{c.categoryName}}
+                                    </option>
+                                </select>
+
+                                <input name="search" placeholder="Nhập tên sản phẩm cần tìm....." type="search"
+                                    ng-model="keyword">
+                                <button class="btnn"><i class="ti-search" type="submit"></i></button>
                             </form>
                         </div>
                     </div>
@@ -75,8 +96,10 @@
                 <div class="col-lg-2 col-md-3 col-12 d-md-flex justify-content-center align-items-center">
                     <div class="right-bar">
                         <!-- Search Form -->
-                        <div class="sinlge-bar">
-                            <a href="#" class="single-icon"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                        <div class="sinlge-bar" data-toggle="tooltip" data-placement="top" title="Sản phẩm yêu thích">
+                            <a href="#" class="single-icon">
+                                <i class="fa fa-heart-o" aria-hidden="true"></i>
+                            </a>
                         </div>
                         <div class="sinlge-bar shopping">
                             <a href="/account/profile" class="single-icon"><i class="fa fa-user-circle-o"
@@ -84,7 +107,7 @@
                             <!-- Shopping Item -->
                             <div class="shopping-item p-0" style="right: 40px; max-width: 250px; overflow-y: auto">
                                 <ul class="list-group list-group-flush" ng-init="userlogin=true">
-                                    <div ng-if="userlogin">
+                                    <div ng-show="userLogin!=null">
                                         <li class="list-group-item">
                                             <a href="/account/profile">Thông tin tài khoản</a>
                                         </li>
@@ -94,11 +117,11 @@
                                         <li class="list-group-item">
                                             <a href="#">Đổi mật khẩu</a>
                                         </li>
-                                    </div>
-                                    <div ng-if="userlogin">
                                         <li class="list-group-item">
-                                            <a href="/account/logout">Đăng xuất</a>
+                                            <a href="#" logout-ctrl>Đăng xuất</a>
                                         </li>
+                                    </div>
+                                    <div ng-show="userLogin==null">
                                         <li class="list-group-item">
                                             <a href="/account/login">Đăng nhập</a>
                                         </li>
@@ -115,38 +138,77 @@
                             <!--/ End Shopping Item -->
                         </div>
                         <div class="sinlge-bar shopping">
-                            <a href="#" class="single-icon"><i class="ti-bag"></i> <span
-                                    class="total-count">2</span></a>
+                            <a href="#" class="single-icon"><i class="ti-bag"></i>
+                                <span class="total-count" ng-show="userLogin !=null">
+                                    {{userLogin.carts.length}}
+                                </span>
+                            </a>
                             <!-- Shopping Item -->
-                            <div class="shopping-item">
+                            <div class="shopping-item" ng-show="userLogin != null">
                                 <div class="dropdown-cart-header">
-                                    <span>2 Items</span>
-                                    <a href="/cart">View Cart</a>
+                                    <span>{{userLogin.carts.length}} sản phẩm</span>
+                                    <!-- <a href="/cart">Xem giỏ hàng</a> -->
                                 </div>
-                                <ul class="shopping-list">
+                                <ul class="shopping-list" ng-show="userLogin.carts.length>0"
+                                    ng-repeat="c in userLogin.carts">
                                     <li>
-                                        <a href="#" class="remove" title="Remove this item"><i
+                                        <a class="cart-img" href="#">
+                                            <img ng-src="../images/products/{{c.productDTO.images[0]}}"
+                                                alt="{{c.productDTO.productName}}">
+                                        </a>
+                                        <h4 class="card-title card-title__cart" style="height: 20px !important;">
+                                            <a
+                                                href="/product/{{c.productDTO.productId}}">{{c.productDTO.productName}}</a>
+                                        </h4>
+                                        <p class="category" ng-repeat="pdt in c.productDTO.productDetails">
+                                            <span ng-if="pdt.id == c.productDetailId" style="font-size: 14px;">
+                                                {{pdt.size}} - {{pdt.color}}
+                                            </span>
+                                        </p>
+                                        <p class="quantity" ng-repeat="pdt in c.productDTO.productDetails">
+                                            {{c.quantityInCart}} x -
+                                            <span class="amount"
+                                                ng-if="c.productDTO.sale && pdt.id == c.productDetailId">
+                                                {{ getLatestPrice(pdt.prices).price -
+                                                (getLatestPrice(pdt.prices).price *
+                                                c.productDTO.discountPrice)
+                                                | number:0 }}
+                                                &#8363;
+                                            </span>
+                                            <span class="amount"
+                                                ng-if="!c.productDTO.sale && pdt.id == c.productDetailId">
+                                                {{getLatestPrice(pdt.prices).price|number:0}}
+                                                &#8363;
+
+                                            </span>
+                                        </p>
+
+                                        <a href="#" class="remove p-2 display-6" title="Xóa khỏi giỏ hàng"
+                                            ng-click="removeToCart($event,c.cartId, $index)"><i
                                                 class="fa fa-remove"></i></a>
-                                        <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70"
-                                                alt="#"></a>
-                                        <h4><a href="#">Woman Ring</a></h4>
-                                        <p class="quantity">1x - <span class="amount">$99.00</span></p>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="remove" title="Remove this item"><i
-                                                class="fa fa-remove"></i></a>
-                                        <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70"
-                                                alt="#"></a>
-                                        <h4><a href="#">Woman Necklace</a></h4>
-                                        <p class="quantity">1x - <span class="amount">$35.00</span></p>
                                     </li>
                                 </ul>
-                                <div class="bottom">
+                                <ul class="shopping-list d-flex align-items-center justify-content-center flex-column  my-3"
+                                    ng-show="userLogin.carts.length==0">
+                                    <i class="bi bi-cart-x display-4"></i>
+                                    <span class="text-danger">Bạn chưa có sản phẩm trong giỏ hàng</span>
+                                </ul>
+                                <div class="bottom" ng-show="userLogin.carts.length>0">
                                     <div class="total">
-                                        <span>Total</span>
-                                        <span class="total-amount">$134.00</span>
+                                        <span>Tổng tiền: </span>
+                                        <span class="total-amount">
+                                            {{ totalAmount | number: 0 }} &#8363;
+                                        </span>
                                     </div>
-                                    <a href="checkout.html" class="btn animate">Checkout</a>
+                                    <a href="/cart" class="btn animate">Xem giỏ hàng</a>
+                                </div>
+                            </div>
+                            <div class="shopping-item" ng-show="userLogin == null">
+                                <div class="d-flex">
+                                    <span class="text-danger mx-auto">
+                                        Vui lòng <a href="/account/login"><u>đăng
+                                                nhập</u></a>
+                                    </span>
                                 </div>
                             </div>
                             <!--/ End Shopping Item -->
@@ -163,70 +225,18 @@
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="all-category">
-                            <h3 class="cat-heading"><i class="fa fa-bars" aria-hidden="true"></i>CATEGORIES</h3>
+                            <h3 class="cat-heading"><i class="fa fa-bars" aria-hidden="true"></i>DANH MỤC</h3>
                             <ul class="main-category">
-                                <li><a href="#">New Arrivals <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                                <li ng-repeat="category in categories"
+                                    class="d-flex align-items-center justify-content-between">
+                                    <a href="/products?c={{ category.categoryId }}">{{ category.categoryName }}</a>
+                                    <i class="bi bi-chevron-right text-dark mr-2 "></i>
                                     <ul class="sub-category">
-                                        <li><a href="#">accessories</a></li>
-                                        <li><a href="#">best selling</a></li>
-                                        <li><a href="#">top 100 offer</a></li>
-                                        <li><a href="#">sunglass</a></li>
-                                        <li><a href="#">watch</a></li>
-                                        <li><a href="#">man’s product</a></li>
-                                        <li><a href="#">ladies</a></li>
-                                        <li><a href="#">westrn dress</a></li>
-                                        <li><a href="#">denim </a></li>
+                                        <li ng-repeat="brands in brands"><a
+                                                href="/products?c={{category.categoryId }}&b={{brands.id}}">
+                                                {{brands.manufacturerName}}</a></li>
                                     </ul>
                                 </li>
-                                <li class="main-mega"><a href="#">best selling <i class="fa fa-angle-right"
-                                            aria-hidden="true"></i></a>
-                                    <ul class="mega-menu">
-                                        <li class="single-menu">
-                                            <a href="#" class="title-link">Shop Kid's</a>
-                                            <div class="image">
-                                                <img src="https://via.placeholder.com/225x155" alt="#">
-                                            </div>
-                                            <div class="inner-link">
-                                                <a href="#">Kids Toys</a>
-                                                <a href="#">Kids Travel Car</a>
-                                                <a href="#">Kids Color Shape</a>
-                                                <a href="#">Kids Tent</a>
-                                            </div>
-                                        </li>
-                                        <li class="single-menu">
-                                            <a href="#" class="title-link">Shop Men's</a>
-                                            <div class="image">
-                                                <img src="https://via.placeholder.com/225x155" alt="#">
-                                            </div>
-                                            <div class="inner-link">
-                                                <a href="#">Watch</a>
-                                                <a href="#">T-shirt</a>
-                                                <a href="#">Hoodies</a>
-                                                <a href="#">Formal Pant</a>
-                                            </div>
-                                        </li>
-                                        <li class="single-menu">
-                                            <a href="#" class="title-link">Shop Women's</a>
-                                            <div class="image">
-                                                <img src="https://via.placeholder.com/225x155" alt="#">
-                                            </div>
-                                            <div class="inner-link">
-                                                <a href="#">Ladies Shirt</a>
-                                                <a href="#">Ladies Frog</a>
-                                                <a href="#">Ladies Sun Glass</a>
-                                                <a href="#">Ladies Watch</a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">accessories</a></li>
-                                <li><a href="#">top 100 offer</a></li>
-                                <li><a href="#">sunglass</a></li>
-                                <li><a href="#">watch</a></li>
-                                <li><a href="#">man’s product</a></li>
-                                <li><a href="#">ladies</a></li>
-                                <li><a href="#">westrn dress</a></li>
-                                <li><a href="#">denim </a></li>
                             </ul>
                         </div>
                     </div>
@@ -237,24 +247,23 @@
                                 <div class="navbar-collapse">
                                     <div class="nav-inner">
                                         <ul class="nav main-menu menu navbar-nav">
-                                            <li class="active"><a href="#">Home</a></li>
-                                            <li><a href="#">Product</a></li>
-                                            <li><a href="#">Service</a></li>
-                                            <li><a href="#">Shop<i class="ti-angle-down"></i><span
+                                            <li ng-class="{ active: isActive('/ArtDevs') }"><a href="/ArtDevs">TRANG
+                                                    CHỦ</a></li>
+                                            <li ng-class="{ active: isActive('/products') }"><a href="/products">SẢN
+                                                    PHẨM</a></li>
+                                            <!-- <li><a href="#">Service</a></li> -->
+                                            <!-- <li><a href="#">Shop<i class="ti-angle-down"></i><span
                                                         class="new">New</span></a>
                                                 <ul class="dropdown">
                                                     <li><a href="/product">Shop Grid</a></li>
                                                     <li><a href="cart.html">Cart</a></li>
                                                     <li><a href="checkout.html">Checkout</a></li>
                                                 </ul>
-                                            </li>
-                                            <li><a href="#">Pages</a></li>
-                                            <li><a href="#">Blog<i class="ti-angle-down"></i></a>
-                                                <ul class="dropdown">
-                                                    <li><a href="blog-single-sidebar.html">Blog Single Sidebar</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="contact.html">Contact Us</a></li>
+                                            </li> -->
+                                            <li ng-class="{ active: isActive('/contact') }"><a href="/contact">LIÊN
+                                                    HỆ</a></li>
+                                            <li ng-class="{ active: isActive('/about-us') }"><a href="/about-us">GIỚI
+                                                    THIỆU</a></li>
                                         </ul>
                                     </div>
                                 </div>

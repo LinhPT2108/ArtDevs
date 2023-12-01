@@ -1,7 +1,6 @@
 package com.art.controller.rest;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -44,7 +43,7 @@ public class FlashSaleRestController {
     public ResponseEntity<FlashSaleDTO> getFlashSalesActive() { 
         FlashSale flashSales = flashSaleDAO.findByStatus(true);
 
-        FlashSaleDTO flashSaleDTOs = FlashSaleMapper.convertToDto(flashSales,promDao,fDAO, pdDAO);
+        FlashSaleDTO flashSaleDTOs = FlashSaleMapper.convertToDto(flashSales,promDao,fDAO,pdDAO);
             
         return ResponseEntity.ok(flashSaleDTOs);
     }

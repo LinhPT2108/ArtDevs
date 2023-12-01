@@ -45,7 +45,7 @@ app.directive("customBanner", function () {
 
       $timeout(function () {
         $scope.slickBanner();
-      }, 500);
+      }, 1000);
     },
   };
 });
@@ -59,12 +59,21 @@ app.directive("customFlashsale", function ($timeout, ApiService) {
         .then(function (resp) {
           scope.flashSaleActive = resp;
           scope.flashSaleActive.endDay = new Date(scope.flashSaleActive.endDay);
+          scope.flashSaleActive.startDay = new Date(
+            scope.flashSaleActive.startDay
+          );
+          var startDay = scope.flashSaleActive.startDay;
+          var endDay = scope.flashSaleActive.endDay;
+          scope.nowDay = new Date();
+          scope.isFlashSaleStart = false;
+          scope.isFlashSaleEnd = false;
+          var startDayMoment = moment(startDay);
+          scope.formattedStartDay = startDayMoment.format(
+            "YYYY/MM/DD HH:mm:ss"
+          );
 
-          var endDayMoment = moment(scope.flashSaleActive.endDay);
+          var endDayMoment = moment(endDay);
           scope.formattedEndDay = endDayMoment.format("YYYY/MM/DD HH:mm:ss");
-
-          console.log(scope.flashSaleActive);
-          console.log(scope.formattedEndDay);
         })
         .catch(function (err) {
           console.log(err);
@@ -123,7 +132,7 @@ app.directive("customFlashsale", function ($timeout, ApiService) {
       $timeout(function () {
         scope.slickFlashsale();
         scope.countdown();
-      }, 500);
+      }, 1000);
     },
   };
 });
@@ -161,6 +170,7 @@ app.directive("quantityControl", function ($rootScope) {
   return {
     restrict: "A",
     link: function (scope, element) {
+      $rootScope.qty = 1;
       var input = element.find(".input-number");
       var updateValue = function (newValue) {
         var min = parseInt(input.attr("data-min")) || 0;
@@ -184,6 +194,8 @@ app.directive("quantityControl", function ($rootScope) {
         } else if (type === "plus") {
           updateValue(currentValue + step);
         }
+        $rootScope.qty = parseInt(input.val());
+        console.log($rootScope.qty);
       });
 
       input.on("input", function () {
@@ -196,6 +208,9 @@ app.directive("quantityControl", function ($rootScope) {
         } else if (currentValue > max) {
           updateValue(max);
         }
+
+        $rootScope.qty = parseInt(input.val());
+        console.log($rootScope.qty);
       });
     },
   };
@@ -328,3 +343,161 @@ app.directive("modalHidden", function ($rootScope) {
     },
   };
 });
+
+app.directive("logoutCtrl", function ($rootScope, ApiService, $location) {
+  return {
+    restrict: "A",
+    link: function (scope, element) {
+      element.on("click", function () {
+        console.log("logoutCtrl");
+        ApiService.callApi("GET", "/account/logout")
+          .then(function (response) {
+            console.log(true);
+            $rootScope.userLogin = null;
+            console.log($rootScope.userLogin);
+            window.location.href = "/account/login";
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      });
+    },
+  };
+});
+
+app.directive("chooseImage", function () {
+  return {
+    restrict: "A",
+    link: function (scope, element) {
+      element.bind("click", function () {
+        var fileInput = document.getElementById("image");
+        var imageContainer = document.getElementById("imageContainer");
+
+        fileInput.addEventListener("change", function () {
+          var selectedFile = fileInput.files[0];
+          var maxSize = 1 * 1024 * 1024;
+          var allowedFormats = [".jpg", ".jpeg", ".png"];
+
+          if (selectedFile) {
+            var fileSize = selectedFile.size;
+            var fileFormat = selectedFile.name
+              .substring(selectedFile.name.lastIndexOf("."))
+              .toLowerCase();
+
+            if (fileSize <= maxSize && allowedFormats.includes(fileFormat)) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                imageContainer.style.backgroundImage =
+                  "url(" + e.target.result + ")";
+                imageContainer.style.display = "block";
+              };
+
+              reader.readAsDataURL(selectedFile);
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Dung lượng file tối đa 1 MB và có định dạng: .JPEG, .PNG, .JPG!",
+              });
+              fileInput.value = null;
+            }
+          }
+        });
+
+        fileInput.click();
+      });
+    },
+  };
+});
+
+app.directive(
+  "addToCart",
+  function ($rootScope, ApiService, $location, $timeout) {
+    return {
+      restrict: "A",
+      scope: {
+        product: "=",
+        quantity: "=",
+        pdDetailId: "=",
+      },
+      link: function (scope, element, attrs) {
+        element.bind("click", function (event) {
+          event.preventDefault();
+
+          let userLogin = $rootScope.userLogin;
+          console.log(userLogin);
+          console.log(scope.quantity);
+          console.log(scope.pdDetailId);
+          console.log($rootScope.choiceProductDetailId);
+          if(scope.pdDetailId== undefined){
+            scope.pdDetailId = $rootScope.choiceProductDetailId;
+          }
+          console.log(scope.pdDetailId);
+          if (userLogin == null) {
+            Swal.fire({
+              title: "Vui lòng đăng nhập !!",
+              text: "Cần đăng nhập để sử dụng chức năng này!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Đăng nhập!",
+              cancelButtonText: "Trở về",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                console.log(123);
+                $timeout(function () {
+                  $location.path("/account/login");
+                }, 0);
+              }
+            });
+          } else {
+            console.log(scope.product);
+            ApiService.callApi(
+              "POST",
+              "/rest/cart/" + $rootScope.userLogin.accountId,
+              {
+                productDetailId: scope.pdDetailId,
+                productDTO: scope.product,
+                quantityInCart: scope.quantity,
+              }
+            )
+              .then(function (resp) {
+                console.log(resp);
+                if (resp != 400) {
+                  const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.onmouseenter = Swal.stopTimer;
+                      toast.onmouseleave = Swal.resumeTimer;
+                    },
+                  });
+                  Toast.fire({
+                    icon: "success",
+                    title: "Thêm vào giỏ hàng thành công !",
+                  });
+                  var index = $rootScope.userLogin.carts.findIndex(
+                    (a) => a.cartId === resp.cartId
+                  );
+
+                  if (index !== -1) {
+                    $rootScope.userLogin.carts[index] = resp;
+                  } else {
+                    $rootScope.userLogin.carts.push(resp);
+                  }
+                }
+              })
+              .catch(function (err) {
+                console.log(err);
+              });
+          }
+        });
+      },
+    };
+  }
+);

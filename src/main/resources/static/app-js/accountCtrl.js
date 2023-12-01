@@ -20,7 +20,6 @@ app.controller("accountCtrl", function ($scope, $location) {
     }
   });
   var links = document.querySelectorAll(".item-custom");
-  console.log(links);
   links.forEach(function (link) {
     if (link.getAttribute("href") === currentURL) {
       link.classList.add("focus-item");

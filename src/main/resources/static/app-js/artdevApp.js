@@ -1,4 +1,7 @@
-var app = angular.module("artdevApp", ["ngRoute"]);
+var app = angular.module("artdevApp", [
+  "ngRoute",
+  "angularUtils.directives.dirPagination",
+]);
 
 const api = "http://localhost:8080";
 app.config(function ($routeProvider, $locationProvider) {
@@ -38,6 +41,10 @@ app.config(function ($routeProvider, $locationProvider) {
       templateUrl: "templates/user/views/cart.html",
       controller: "cartCtrl",
     })
+    .when("/checkout", {
+      templateUrl: "templates/user/views/checkout.html",
+      controller: "checkoutCtrl",
+    })
     .when("/products", {
       templateUrl: "templates/user/views/shop-grid.html",
       controller: "productsiteCtrl",
@@ -53,22 +60,23 @@ app.config(function ($routeProvider, $locationProvider) {
 });
 
 app.service("ApiService", function ($http) {
-  this.callApi = function (method, url, data) {
+  this.callApi = function (method, url, data, params) {
     return $http({
       method: method,
       url: api + url,
       data: data,
+      params: params,
     })
       .then(function successCallback(response) {
         return response.data;
       })
       .catch(function errorCallback(response) {
+        console.log(response);
         throw new Error(response.statusText);
       });
   };
 });
 
-// Service trong AngularJS để gọi API từ backend
 app.service("DataService", function ($http) {
   this.getCategories = function () {
     return $http.get(api + "/rest/category");
@@ -82,12 +90,10 @@ app.service("DataService", function ($http) {
 app.run(function ($rootScope, DataService, ApiService) {
   DataService.getCategories().then(function (response) {
     $rootScope.categories = response.data;
-    console.log($rootScope.categories);
   });
 
   DataService.getBrands().then(function (response) {
     $rootScope.brands = response.data;
-    console.log($rootScope.brands);
   });
 
   $rootScope.getLatestPrice = function (prices) {
@@ -101,27 +107,140 @@ app.run(function ($rootScope, DataService, ApiService) {
 
     return prices[0];
   };
+
   ApiService.callApi("GET", "/rest/userLogin")
     .then(function (response) {
-      console.log(response);
+      $rootScope.userLogin = response == "" ? null : response;
+      console.log($rootScope.userLogin);
+      if ($rootScope.userLogin && $rootScope.userLogin.carts) {
+        $rootScope.userLogin.carts = $rootScope.userLogin.carts.filter(
+          function (cart) {
+            return cart.productDTO.available === true;
+          }
+        );
+      }
     })
     .catch(function (error) {
-      console.log(error);
+      console.log("Lỗi" + error);
     });
 });
 
-app.controller("headerCtrl", function ($scope, DataService, $location) {
-  $scope.isActive = function (...viewLocations) {
-    return viewLocations.some((location) =>
-      $location.path().includes(location)
-    );
-  };
+app.controller(
+  "headerCtrl",
+  function ($scope, DataService, $location, $rootScope, $timeout, ApiService) {
+    console.log($scope.selectedCategory);
+    $scope.submitSearch = function () {
+      $location.path("/products").search({
+        c: $scope.selectedCategory,
+        keyword: $scope.keyword,
+      });
+      console.log($scope.selectedCategory);
+      console.log($scope.keyword);
+    };
 
-  $(".top-search a").on("click", function (event) {
-    event.preventDefault();
-    $(".search-top").toggleClass("active");
-  });
-});
+    $scope.isActive = function (...viewLocations) {
+      return viewLocations.some((location) =>
+        $location.path().includes(location)
+      );
+    };
+
+    $(".top-search a").on("click", function (event) {
+      event.preventDefault();
+      $(".search-top").toggleClass("active");
+    });
+
+    $scope.calculateTotalAmount = function () {
+      $scope.totalAmount = 0;
+      if ($scope.userLogin != null) {
+        $timeout(function () {
+          for (var i = 0; i < $scope.userLogin.carts.length; i++) {
+            var cartItem = $scope.userLogin.carts[i];
+            if (cartItem.productDTO.available) {
+              var price = 0;
+
+              if (cartItem.productDTO.sale) {
+                price =
+                  $rootScope.getLatestPrice(
+                    cartItem.productDTO.productDetails[0].prices
+                  ).price -
+                  $rootScope.getLatestPrice(
+                    cartItem.productDTO.productDetails[0].prices
+                  ).price *
+                    cartItem.productDTO.discountPrice;
+              } else {
+                price = $rootScope.getLatestPrice(
+                  cartItem.productDTO.productDetails[0].prices
+                ).price;
+              }
+              $scope.totalAmount += price * cartItem.quantityInCart;
+            }
+          }
+        }, 300);
+      }
+    };
+    $timeout(function () {
+      $scope.$watch(
+        "userLogin.carts",
+        function () {
+          $scope.calculateTotalAmount();
+        },
+        true
+      );
+    }, 300);
+
+    $rootScope.removeToCart = function (event, cartId, index) {
+      event.preventDefault();
+      console.log(cartId + "index: " + index);
+      ApiService.callApi("DELETE", "/rest/cart/" + cartId)
+        .then(function (resp) {
+          console.log(resp);
+          if (resp == 200) {
+            $scope.userLogin.carts.splice(index, 1);
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 2000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              },
+            });
+            Toast.fire({
+              icon: "success",
+              title: "Xóa khỏi giỏ hàng thành công",
+            });
+          } else {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              },
+            });
+            Toast.fire({
+              icon: "warning",
+              title: "Có lỗi xảy ra, vui lòng thử lại !",
+            });
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+          Swal.fire({
+            icon: "warning",
+            title: "Có lỗi xảy ra",
+            text: "Vui  lòng thử lại !",
+            showConfirmButton: true,
+          });
+        });
+    };
+  }
+);
 
 app.controller("mainCtrl", function ($scope, $timeout, $rootScope, ApiService) {
   $scope.quantity = 1;
@@ -155,6 +274,7 @@ app.controller("mainCtrl", function ($scope, $timeout, $rootScope, ApiService) {
     ApiService.callApi("GET", "/rest/product-detail/" + productDetailId)
       .then(function (resp) {
         $scope.pdt = resp;
+        $rootScope.choiceProductDetailId = productDetailId;
         console.log($scope.pdt);
       })
       .catch(function (err) {

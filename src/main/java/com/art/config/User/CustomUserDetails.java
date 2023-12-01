@@ -56,4 +56,11 @@ public class CustomUserDetails implements UserDetails {
 		return !account.isStatus();
 	}
 
+	@Override
+	public String toString() {
+		return "CustomUserDetails [account=" + account + "]";
+	}
+
+	
+
 }

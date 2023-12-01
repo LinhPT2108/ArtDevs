@@ -2,11 +2,15 @@ package com.art.controller.rest;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,7 +23,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.art.dao.product.ProductDAO;
 import com.art.dao.promotion.FlashSaleDAO;
@@ -35,6 +42,13 @@ import com.art.models.user.AccountRole;
 import com.art.models.user.InforAddress;
 import com.art.models.user.Role;
 import com.art.utils.Path;
+import com.art.utils.validUtil;
+
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -61,16 +75,29 @@ public class AccountRestController {
 	@Autowired
 	ProductDAO pdDAO;
 
+	@Autowired
+	HttpSession session;
+
 	@GetMapping(value = "/userLogin")
 	public ResponseEntity<AccountDTO> getArtDev(Model model) {
 		// Lấy thông tin người dùng từ SecurityContextHolder
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication != null) {
-			AccountDTO accountDTO = AccountMapper.convertToDto(aDAO.findByEmail(authentication.getName()), promotionDAO,
-					fDAO,pdDAO);
-			return ResponseEntity.ok(accountDTO);
+		System.out.println("authentication: " + authentication);
+		try {
+			if (authentication != null) {
+				AccountDTO accountDTO = AccountMapper.convertToDto(
+						aDAO.findByEmail(authentication.getName()),
+						promotionDAO,
+						fDAO, pdDAO);
+				return ResponseEntity.ok(accountDTO);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e);
+			return ResponseEntity.ok(null);
 		}
-		return ResponseEntity.notFound().build();
+
+		return ResponseEntity.ok(null);
 	}
 
 	/*
@@ -90,12 +117,13 @@ public class AccountRestController {
 		System.out.println("co gì hoong : " + principal.toString());
 		return principal;
 	}
-//	@GetMapping("/account")
-//	public ResponseEntity<List<Account>> getAccounts() {
-//		List<Account> accounts = aDAO.findAll();
-////		List<AccountDTO> accountDTOs = accounts.stream().map(AccountMapper::convertToDto).collect(Collectors.toList());
-//		return ResponseEntity.ok(accounts);
-//	}
+	// @GetMapping("/account")
+	// public ResponseEntity<List<Account>> getAccounts() {
+	// List<Account> accounts = aDAO.findAll();
+	//// List<AccountDTO> accountDTOs =
+	// accounts.stream().map(AccountMapper::convertToDto).collect(Collectors.toList());
+	// return ResponseEntity.ok(accounts);
+	// }
 
 	/*
 	 * Lấy tất cả tài khoản theo id
@@ -144,29 +172,49 @@ public class AccountRestController {
 	 * Cập nhật thông tin người dùng
 	 */
 	@PutMapping("/account/{id}")
-	public ResponseEntity<Account> update(@RequestBody AccountDTO accountDTO, @PathVariable("id") String key) {
+	public ResponseEntity<?> update(@RequestBody AccountDTO accountDTO, @PathVariable("id") String key) {
+		System.out.println(accountDTO.toString());
 		Account account = AccountMapper.convertToAccount(accountDTO);
-		if (!aDAO.existsById(key)) {
-			return ResponseEntity.notFound().build();
-		}
-		List<AccountRole> accountRoles = new ArrayList<>();
-		List<String> roleNames = AccountMapper.getRoles(accountDTO);
+		Map<String, String> errors = new HashMap<>();
+		try {
+			System.out.println(account);
 
-		if (roleNames != null) {
-			for (String roleName : roleNames) {
-				Role role = roleDAO.findByRoleName(roleName);
-				if (role != null) {
-					AccountRole accountRole = new AccountRole();
-					accountRole.setUser(account);
-					accountRole.setRole(role);
-					accountRoles.add(accountRole);
-				}
+			if (!aDAO.existsById(key)) {
+				return ResponseEntity.notFound().build();
 			}
+			if (accountDTO.getFullname().isBlank()) {
+				errors.put("fullname", "Vui lòng nhập họ tên");
+			} else if (validUtil.containsSpecialCharacters(accountDTO.getFullname())
+					|| validUtil.containsNumber(accountDTO.getFullname())) {
+				errors.put("fullname", "Họ tên không được chứa số và kí tự đặt biệt");
+			}
+
+			if (!errors.isEmpty()) {
+				return ResponseEntity.ok(errors);
+			} else {
+				List<AccountRole> accountRoles = new ArrayList<>();
+				List<String> roleNames = AccountMapper.getRoles(accountDTO);
+
+				if (roleNames != null) {
+					for (String roleName : roleNames) {
+						Role role = roleDAO.findByRoleName(roleName);
+						if (role != null) {
+							AccountRole accountRole = new AccountRole();
+							accountRole.setUser(account);
+							accountRole.setRole(role);
+							accountRoles.add(accountRole);
+						}
+					}
+				}
+				account.setUserRole(accountRoles);
+				aDAO.save(account);
+				return ResponseEntity.ok(account);
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+			return ResponseEntity.ok(null);
 		}
 
-		account.setUserRole(accountRoles);
-		aDAO.save(account);
-		return ResponseEntity.ok(account);
 	}
 
 	/*
@@ -215,11 +263,17 @@ public class AccountRestController {
 	 * Thêm địa chỉ mới
 	 */
 	@PostMapping("/account/{id}/address")
-	public ResponseEntity<InforAddress> createAddress(@RequestBody InforAddress inforAddress,
+	public ResponseEntity<?> createAddress(@RequestBody InforAddress inforAddress,
 			@PathVariable("id") String key) {
+		System.out.println("line 267: " + key);
 		Account account = aDAO.findById(key).get();
+		boolean isExist = inforAddressDAO.existsById(inforAddress.getPhoneNumber());
+		if (isExist) {
+			return ResponseEntity.ok(409);
+		}
 		inforAddress.setUser(account);
 		inforAddressDAO.save(inforAddress);
+
 		return ResponseEntity.ok(inforAddress);
 	}
 
@@ -227,12 +281,12 @@ public class AccountRestController {
 	 * Cập nhật địa chỉ
 	 */
 	@PutMapping("/account/{id}/address/{phone}")
-	public ResponseEntity<InforAddress> updateAddress(@RequestBody InforAddress inforAddress,
+	public ResponseEntity<?> updateAddress(@RequestBody InforAddress inforAddress,
 			@PathVariable("id") String key, @PathVariable("phone") String phone) {
 		Account account = aDAO.findById(key).get();
 		inforAddress.setUser(account);
 		if (!inforAddressDAO.existsById(phone)) {
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.ok(404);
 		}
 		inforAddressDAO.save(inforAddress);
 		return ResponseEntity.ok(inforAddress);
@@ -242,11 +296,11 @@ public class AccountRestController {
 	 * Xóa địa chỉ
 	 */
 	@DeleteMapping("/account/{id}/address/{phone}")
-	public ResponseEntity<Void> deleteAddress(@PathVariable("id") String id, @PathVariable("phone") String phone) {
+	public ResponseEntity<?> deleteAddress(@PathVariable("id") String id, @PathVariable("phone") String phone) {
 		if (!inforAddressDAO.existsById(phone)) {
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.ok(404);
 		}
 		inforAddressDAO.deleteById(phone);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(200);
 	}
 }

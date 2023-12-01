@@ -11,11 +11,6 @@ import com.art.dao.promotion.PromotionalDetailsDAO;
 import com.art.dto.account.AccountDTO;
 import com.art.dto.account.CartDTO;
 import com.art.dto.account.KeywordSuggestionsDTO;
-import com.art.dto.product.ProductDetailDTO;
-import com.art.models.activity.Cart;
-import com.art.models.product.Product;
-import com.art.models.promotion.FlashSale;
-import com.art.models.promotion.PromotionalDetails;
 import com.art.models.user.Account;
 import com.art.models.user.InforAddress;
 
@@ -26,7 +21,7 @@ public class AccountMapper {
 			ProductDAO productDAO) {
 		AccountDTO accountDTO = modelMapper.map(account, AccountDTO.class);
 		accountDTO.setRoles(getRoles(account));
-//		accountDTO.setKeywordSuggestions(getKeywordSuggestions(account));
+		// accountDTO.setKeywordSuggestions(getKeywordSuggestions(account));
 		accountDTO.setInforAddresses(getAddress(account));
 		accountDTO.setCarts(getCart(account, proDAO, fDAO, productDAO));
 		return accountDTO;
@@ -48,6 +43,7 @@ public class AccountMapper {
 			ProductDAO productDAO) {
 		return account.getUserCart().stream()
 				.map(cart -> new CartDTO(cart.getCartId(),
+						cart.getProductDetail().getId(),
 						ProductMapper.convertToDto(cart.getProductDetail().getProduct(), proDAO, fDAO, productDAO),
 						cart.getQuantity()))
 				.collect(Collectors.toList());
