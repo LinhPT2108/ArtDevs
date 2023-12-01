@@ -46,7 +46,7 @@ public class BannerController {
 		Banner banner = new Banner();
 		banner.setBannerName(paramService.save(file, "images/banner").getName());
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Account user2 = acDAO.findByEmail(authentication.getName());
+		Account user2 = acDAO.findByEmail(authentication.getName()).orElseThrow();
 		banner.setUser(user2);
         bannerDao.save(banner);
 		return "redirect:/admin/banner";

@@ -29,14 +29,12 @@ public class manufacturerController {
 	ManufacturerDAO manufacturerReponsitory;
 	@Autowired
 	ManufacturerDAO mnreps;
-	
 
 	@ModelAttribute("mns")
 	public List<Manufacturer> getUsercustoms() {
 		return mnDAO.findAll();
 	}
 
-	
 	@GetMapping("/manufacturer")
 	public String manufacturer(@ModelAttribute("mn") Manufacturer mn, Model model) {
 		model.addAttribute("views", "manufacturer-form");
@@ -45,7 +43,7 @@ public class manufacturerController {
 
 		return "admin/manufacturer-form";
 	}
-	
+
 	@RequestMapping("/manufacturer/edit/{id}")
 	public String edit(@ModelAttribute("mn") Manufacturer mn, Model model, @PathVariable("id") Integer id) {
 		model.addAttribute("views", "manufacturer-form");
@@ -57,14 +55,14 @@ public class manufacturerController {
 		model.addAttribute("mns", mns);
 		return "admin/manufacturer-form";
 	}
-	
+
 	@PostMapping("/manufacturer/create")
 	public String createManufacturer(@ModelAttribute("mn") Manufacturer mn) {
 //		Account user = sessionService.get("userLogin");
 //		mn.setUser(user);
 //		mn.setDel(true);
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Account user2 = usDAO.findByEmail(authentication.getName());
+		Account user2 = usDAO.findByEmail(authentication.getName()).orElseThrow();
 		mn.setUser(user2);
 		mn.setDel(true);
 		mnDAO.save(mn);
@@ -76,15 +74,15 @@ public class manufacturerController {
 //		Account user = sessionService.get("userLogin");
 //		mn.setUser(user);
 //		mn.setDel(true);
-		
+
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Account user2 = usDAO.findByEmail(authentication.getName());
+		Account user2 = usDAO.findByEmail(authentication.getName()).orElseThrow();
 		mn.setUser(user2);
 		mn.setDel(true);
 		mnDAO.save(mn);
 		return "redirect:/admin/manufacturer";
 	}
-	
+
 	@RequestMapping("/manufacturer/delete")
 	public String delete(@ModelAttribute("mn") Manufacturer mn) {
 
@@ -92,11 +90,11 @@ public class manufacturerController {
 //		mn.setUser(user);
 //		mn.setDel(false);
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Account user2 = usDAO.findByEmail(authentication.getName());
+		Account user2 = usDAO.findByEmail(authentication.getName()).orElseThrow();
 		mn.setUser(user2);
 		mn.setDel(false);
 		mnreps.save(mn);
 		return "redirect:/admin/manufacturer";
 	}
-	
+
 }

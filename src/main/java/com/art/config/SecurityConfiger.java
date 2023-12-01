@@ -103,20 +103,26 @@ public class SecurityConfiger {
 	                .anyRequest().permitAll()
 	        		)
 	        
+//	        .formLogin(login -> login
+//	                .loginPage("/account/login")
+//	                .defaultSuccessUrl("/", false)
+//	                .permitAll()
+//	                )
 	        .formLogin(login -> login
 	                .loginPage("/account/login")
-	                .defaultSuccessUrl("/", false)
-	                .permitAll()
-	                )
+	                .loginProcessingUrl("/account/login")
+	                .usernameParameter("email")
+	                .passwordParameter("password")
+	                .defaultSuccessUrl("/", false))
 	        .logout(logout -> logout
 	                .logoutUrl("/account/logout")
 	                .logoutSuccessUrl("/account/login")
 	                .invalidateHttpSession(true)
 	                .deleteCookies("JSESSIONID")
-	                )
+	                );
 	        
-	        .authenticationProvider(authenticationProvider)
-	        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);	
+//	        .authenticationProvider(authenticationProvider)
+//	        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);	
 	    return http.build();
 	}
 	

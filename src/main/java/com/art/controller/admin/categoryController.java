@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.art.config.User.CustomUserDetails;
 import com.art.dao.product.CategoryDAO;
 import com.art.dao.user.AccountDAO;
 import com.art.models.product.Category;
@@ -63,7 +62,7 @@ public class categoryController {
 //		ct.setUser(user);
 //		ct.setStatus(true);
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Account user2 = ucDao.findByEmail(authentication.getName());
+		Account user2 = ucDao.findByEmail(authentication.getName()).orElseThrow();
 		ct.setUser(user2);
 		ct.setStatus(true);
 		categoryReponsitory.save(ct);
@@ -78,7 +77,7 @@ public class categoryController {
 //		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		System.out.println("userSecurity" + authentication.getName());
-		Account user2 = ucDao.findByEmail(authentication.getName());
+		Account user2 = ucDao.findByEmail(authentication.getName()).orElseThrow();
 		ct.setUser(user2);
 		ct.setStatus(true);
 		categoryReponsitory.save(ct);
@@ -93,7 +92,7 @@ public class categoryController {
 //		ct.setStatus(false);
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		System.out.println("userSecurity" + authentication.getName());
-		Account user2 = ucDao.findByEmail(authentication.getName());
+		Account user2 = ucDao.findByEmail(authentication.getName()).orElseThrow();
 		ct.setUser(user2);
 		categoryReponsitory.save(ct);
 		return "redirect:/admin/category";

@@ -34,10 +34,10 @@ public interface AccountDAO extends JpaRepository<Account, String> {
 	// Tìm kiếm người dùng dựa trên email
 //	List<Account> findByEmail(String email);
 //
-//	@Query("SELECT u.accountId, u.fullname, u.email, COUNT(i.id) " + "FROM Account u " + "LEFT JOIN u.userInvoice i "
-//			+ "GROUP BY u.accountId, u.fullname, u.email")
-//	List<Object[]> getUsersWithInvoiceCount();
-//
+	@Query("SELECT u.accountId, u.fullname, u.email, COUNT(i.id) " + "FROM Account u LEFT JOIN u.userOrder i "
+			+ "GROUP BY u.accountId, u.fullname, u.email")
+	List<Object[]> getUsersWithOrdersCount();
+	
 //	// Tìm kiếm người dùng dựa trên họ tên chứa một từ khóa
 //	List<UserCustom> findByFullnameContainingIgnoreCase(String keyword);
 	
@@ -48,4 +48,7 @@ public interface AccountDAO extends JpaRepository<Account, String> {
 	
 	@Query("SELECT a.userRole From Account a WHERE a.email =:email")
 	List<AccountRole> getAccountRoles(String email);
+	
+	@Query("SELECT count(a) FROM AccountRole a WHERE a.role.roleName =:r and a.user.status = false ")
+	int checkCountAdmin(String r);
 }
