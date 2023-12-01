@@ -74,7 +74,7 @@
 					<div class="mb-3">
 						<label for="image" class="form-label">Hình ảnh</label>
 						<br />
-						<img alt="" th:src="@{/images/avatar/{userCustom.image}}" id="image" width="300" height="300"
+						<img alt="" th:src="@{/images/avatar/} + ${userCustom.image}" id="image" width="300" height="300"
 							style="margin: 10px" />
 						<input name="avatar" type="file" id="imageFile" accept="image/gif, image/jpeg, image/png"
 							onchange="chooseFile(this)" />

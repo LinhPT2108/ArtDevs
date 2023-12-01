@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,11 +25,13 @@ import com.art.dao.product.DetailDescriptionDAO;
 import com.art.dao.product.ImageDAO;
 import com.art.dao.product.ManufacturerDAO;
 import com.art.dao.product.ProductDAO;
+import com.art.dao.user.AccountDAO;
 import com.art.models.product.Category;
 import com.art.models.product.DetailDescription;
 import com.art.models.product.Image;
 import com.art.models.product.Manufacturer;
 import com.art.models.product.Product;
+import com.art.models.user.Account;
 import com.art.service.ParamService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -40,7 +44,8 @@ import jakarta.validation.Valid;
 @Controller
 @RequestMapping("/admin")
 public class productController {
-
+	@Autowired AccountDAO ucDao;
+	
 	@Autowired
 	CategoryDAO caDAO;
 	@Autowired
@@ -59,24 +64,25 @@ public class productController {
 
 	@ModelAttribute("categoriesList")
 	public Map<Category, String> getCategories() {
-		List<Category> listCate = caDAO.findByStatus(true);
+		List<Category> listCate = caDAO.findByStatus(false);
 		Map<Category, String> map = new HashMap<>();
 		for (Category c : listCate) {
 			map.put(c, c.getCategoryName());
 		}
 		return map;
 	}
-
+	
+	
 	@ModelAttribute("manufacturerList")
 	public Map<Manufacturer, String> getManufacturers() {
-		List<Manufacturer> listManu = mnDAO.findByDel(true);
+		List<Manufacturer> listManu = mnDAO.findByDel(false);
 		Map<Manufacturer, String> map = new HashMap<>();
 		for (Manufacturer c : listManu) {
 			map.put(c, c.getManufacturerName());
 		}
 		return map;
 	}
-
+	
 	@GetMapping("/product")
 	public String product(@ModelAttribute("pd") Product pd, Model model) {
 
@@ -116,7 +122,12 @@ public class productController {
 
 		if (errors.isEmpty()) {
 			try {
+				
 //				product.setUser(sessionService.get("userLogin"));
+				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+				System.out.println("userSecurity" + authentication.getName());
+				Account user2 = ucDao.findByEmail(authentication.getName());
+				product.setUser(user2);
 				pdDAO.save(product);
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -141,7 +152,7 @@ public class productController {
 				DetailDescription detailDescription = new DetailDescription();
 				detailDescription.setTitle((map.get("tieuDe")));
 				detailDescription.setDescription(map.get("description"));
-//				detailDescription.setProduct(product);
+				detailDescription.setProduct(product);
 
 				detailDescriptionDAO.save(detailDescription);
 			}
@@ -158,7 +169,7 @@ public class productController {
 				return ResponseEntity.ok("fail");
 			} else {
 				Product pd = pdDAO.getById(id);
-				pd.setAvailable(true);
+				pd.setAvailable(false);
 				pdDAO.save(pd);
 				return ResponseEntity.ok("success");
 			}
@@ -175,12 +186,12 @@ public class productController {
 		model.addAttribute("views", "product-form");
 		model.addAttribute("title", "Quản lí sản phẩm");
 		model.addAttribute("typeButton", true);
-		model.addAttribute("products", pdDAO.findByAvailable(false));
+		model.addAttribute("products", pdDAO.findByAvailable(true));
 		Product pd = pdDAO.getById(productId);
-		model.addAttribute("pd", pd);
+		System.out.println("product Edit" + pd.getProductImage());
 		System.out.println(productId);
-
-		return "admin/index";
+		model.addAttribute("pd", pd);
+		return "admin/product-form";
 	}
 
 	// Chỉnh lại phần product -> product detail dòng 248, 237
