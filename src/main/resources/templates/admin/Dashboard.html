@@ -140,7 +140,7 @@
 					<ul class="timeline-widget mb-0 position-relative mb-n5">
 						<li class="timeline-item d-flex position-relative overflow-hidden"  th:each="item, loop : ${invoice}" th:if="${loop.index < 6}">
 							<div class="timeline-time text-dark flex-shrink-0 text-end">
-								<span th:text="${#dates.format(item.orderDate, 'dd/MM/yyyy')}"></span>
+								<span th:text="${#dates.format(item.orderDate, 'hh:ss dd/MM/yyyy')}"></span>
 							</div>
 							<div class="timeline-badge-wrap d-flex flex-column align-items-center">
 								<span
