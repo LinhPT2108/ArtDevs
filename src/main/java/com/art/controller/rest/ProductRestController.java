@@ -3,6 +3,7 @@ package com.art.controller.rest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.art.dao.activity.CommentDAO;
@@ -39,8 +41,10 @@ import com.art.models.activity.Comment;
 import com.art.models.activity.ImageComment;
 import com.art.models.activity.RecentlyViewed;
 import com.art.models.activity.WishList;
+import com.art.models.product.Category;
 import com.art.models.product.DetailDescription;
 import com.art.models.product.Image;
+import com.art.models.product.Manufacturer;
 import com.art.models.product.Product;
 import com.art.models.product.ProductDetail;
 import com.art.models.promotion.OrderDetail;
@@ -84,10 +88,43 @@ public class ProductRestController {
 	/*
 	 * lấy danh sách sản phẩm
 	 */
-	@GetMapping("/product")
-	public ResponseEntity<List<ProductDTO>> getProducts() {
+	@GetMapping("/product-all")
+	public ResponseEntity<List<ProductDTO>> getProducts(@RequestParam("c") Optional<Integer> c,
+			@RequestParam("b") Optional<Integer> b,
+			@RequestParam("keyword") Optional<String> keyword) {
 		System.out.println("product123");
-		List<Product> products = proDAO.findAll();
+		System.out.println("line 91: " + c.isPresent() + " - " + b.isPresent() + " - " + keyword.isPresent());
+		List<Product> products = proDAO.findByAvailable(true);
+		if (keyword.isPresent()) {
+			if (c.isPresent() && b.isPresent()) {
+				Optional<Category> category = cateDAO.findById(c.get());
+				Optional<Manufacturer> brands = manuDAO.findById(b.get());
+				products = null;
+				products = proDAO.searchProductByNameAndCategoryAndManufacturer(keyword.get(), category.get(),
+						brands.get());
+			} else if (c.isPresent() && !b.isPresent()) {
+				Optional<Category> category = cateDAO.findById(c.get());
+				products = null;
+				products = proDAO.searchProductByNameAndCategory(keyword.get(), category.get());
+			} else {
+				products = proDAO.searchProductByName(keyword.get());
+			}
+		} else {
+			if (c.isPresent() && b.isPresent()) {
+				Optional<Category> category = cateDAO.findById(c.get());
+				Optional<Manufacturer> brands = manuDAO.findById(b.get());
+				products = null;
+				products = proDAO.findByCategoryProductAndManufacturerProduct(category.get(), brands.get());
+			} else if (c.isPresent() && !b.isPresent()) {
+				Optional<Category> category = cateDAO.findById(c.get());
+				products = null;
+				products = proDAO.findByCategoryProduct(category.get());
+			} else if (!c.isPresent() && b.isPresent()) {
+				Optional<Manufacturer> brands = manuDAO.findById(b.get());
+				products = null;
+				products = proDAO.findByManufacturerProduct(brands.get());
+			}
+		}
 		List<ProductDTO> productDTOs = products.stream()
 				.map(product -> ProductMapper.convertToDto(product, promDao, fDAO, proDAO))
 				.collect(Collectors.toList());
@@ -103,10 +140,14 @@ public class ProductRestController {
 
 	@GetMapping("/product-today")
 	public ResponseEntity<List<ProductDTO>> getProductsToday() {
+		// Authentication authentication =
+		// SecurityContextHolder.getContext().getAuthentication();
 		System.out.println("product today");
 		List<Product> products = proDAO.findByAvailable(true);
 		Collections.shuffle(products);
-
+		// if(authentication!=null){
+		// products = proDAO.findByProductNameAlls(null);
+		// }
 		List<Product> randomProducts = products.stream().limit(24).collect(Collectors.toList());
 
 		List<ProductDTO> productDTOs = randomProducts.stream()
@@ -190,7 +231,7 @@ public class ProductRestController {
 		}
 		Product product = proDAO.findById(key).get();
 		deleteImagesProduct(product);
-//		deleteProductDetail(product);
+		// deleteProductDetail(product);
 		deleteProductDescription(product);
 		deleteComment(product);
 		deletePromotionDetail(product);
@@ -216,26 +257,26 @@ public class ProductRestController {
 	/*
 	 * Xóa chi tiết sản phẩm
 	 */
-//	private void deleteProductDetail(Product product) {
-//		List<ProductDetail> productDetails = product.getProductDetail();
-//		if (productDetails != null) {
-//			for (ProductDetail productDetail : productDetails) {
-//				List<Price> prices = productDetail.getProductPrice();
-//				if (prices != null) {
-//					for (Price price : prices) {
-//						priceDAO.deleteById(price.getId());
-//					}
-//				}
-//				List<ProductCart> productCarts = productDetail.getProductCarts();
-//				if (productCarts != null) {
-//					for (ProductCart productCart : productCarts) {
-//						productCartDAO.deleteById(productCart.getId());
-//					}
-//				}
-//				pdDAO.deleteById(productDetail.getId());
-//			}
-//		}
-//	}
+	// private void deleteProductDetail(Product product) {
+	// List<ProductDetail> productDetails = product.getProductDetail();
+	// if (productDetails != null) {
+	// for (ProductDetail productDetail : productDetails) {
+	// List<Price> prices = productDetail.getProductPrice();
+	// if (prices != null) {
+	// for (Price price : prices) {
+	// priceDAO.deleteById(price.getId());
+	// }
+	// }
+	// List<ProductCart> productCarts = productDetail.getProductCarts();
+	// if (productCarts != null) {
+	// for (ProductCart productCart : productCarts) {
+	// productCartDAO.deleteById(productCart.getId());
+	// }
+	// }
+	// pdDAO.deleteById(productDetail.getId());
+	// }
+	// }
+	// }
 
 	/*
 	 * Xóa mô tả sản phẩm

@@ -26,6 +26,11 @@ public class AccountDTO {
 	private List<KeywordSuggestionsDTO> keywordSuggestions;
 	private List<CartDTO> carts; 
 //	private List<WishList> wishLists;
+	@Override
+	public String toString() {
+		return "AccountDTO [accountId=" + accountId + ", fullname=" + fullname + ", image=" + image + ", password="
+				+ password + ", email=" + email + ", verifyCode=" + verifyCode + ", status=" + status + "]";
+	}
 	
-
+	
 }

@@ -13,6 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CartDTO {
 	private int cartId;
+	private int productDetailId;
 	private ProductDTO productDTO;
 	private int quantityInCart;
 }

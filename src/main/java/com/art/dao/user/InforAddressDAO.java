@@ -19,7 +19,7 @@ public interface InforAddressDAO extends JpaRepository<InforAddress, String>{
 //    void deleteById(String phoneNumber);
 //
 //    // Kiểm tra số điện thoại đã tồn tại hay chưa
-//    boolean existsById(String phoneNumber);
+   boolean existsById(String phoneNumber);
 //	
 //	// Tìm kiếm các địa chỉ thông qua người dùng
 

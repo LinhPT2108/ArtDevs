@@ -2,8 +2,6 @@ package com.art.models.product;
 
 import java.util.Date;
 import java.util.List;
-import java.lang.*;
-
 import org.hibernate.annotations.Nationalized;
 
 import com.art.models.activity.Comment;
@@ -13,12 +11,6 @@ import com.art.models.promotion.OrderDetail;
 import com.art.models.promotion.PromotionalDetails;
 import com.art.models.user.Account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

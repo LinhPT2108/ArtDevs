@@ -55,7 +55,6 @@ public class InforAddress implements Serializable{
 
 	@Column
 	@Nationalized
-	@NotBlank
 	private String specific;
 
 	@JsonIgnore

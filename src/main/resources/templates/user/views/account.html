@@ -4,11 +4,11 @@
         <div class="col-12 col-md-3">
             <div class="d-flex  border border-right-0 border-top-0 border-left-0 pb-2">
                 <div class="avatar">
-                    <img alt="" src="../../images/avatar/default-avatar.jpg" class="rounded-circle" width="60px"
+                    <img alt="" ng-src="../../images/avatar/{{userLogin.image!=null?userLogin.image:'default-avatar.jpg'}}" class="rounded-circle" width="60px"
                         height="60px" id="avatar-right">
                 </div>
                 <div class="username p-2 d-flex flex-column">
-                    <span class="font-weight-bold">${userLogin.fullname }</span>
+                    <span class="font-weight-bold">{{userLogin.fullname }}</span>
                     <div class="bot">
                         <i class="ti ti-pencil"></i> <span>Sửa hồ sơ</span>
                     </div>

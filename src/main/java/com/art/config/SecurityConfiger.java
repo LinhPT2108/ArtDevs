@@ -74,7 +74,7 @@ public class SecurityConfiger {
 	        		.requestMatchers(
 	        				AntPathRequestMatcher.antMatcher("/admin/dashboard"),
 							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/product"),
-							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/product/**"),
+							// AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/product/**"),
 							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/flashSale"),
 							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/flashSale/**"),
 	        				AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/voucher"),
