@@ -10,10 +10,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @SpringBootApplication
 @EnableWebSecurity
 @EnableJpaRepositories
-public class ArtDevsApplication {
+public class ArtApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ArtDevsApplication.class, args);
+		SpringApplication.run(ArtApplication.class, args);
 	}
 	
 	@Bean
