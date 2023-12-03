@@ -45,42 +45,42 @@ public class orderRestController {
     @Autowired
     ProductDAO productDAO;
 
-    @PostMapping("/order")
-    public ResponseEntity<?> postMethodName(@RequestBody orderDTO orderDTO) {
-        System.out.println(orderDTO.getUserId() + " - " + orderDTO.getTotalAmount() + " - "
-                + orderDTO.getDeliveryAddress().getPhoneNumber() + " - " + orderDTO.getNote());
-        try {
-            Account account = accountDAO.findById(orderDTO.getUserId()).get();
-            InforAddress infAddress = orderDTO.getDeliveryAddress();
-            Order order = new Order();
-            order.setNote(orderDTO.getNote());
-            order.setStatus(1);
-            order.setTotalAmount(orderDTO.getTotalAmount());
-            order.setOrderDate(new Date());
-            order.setUser(account);
-            String deliveryAddress = "SĐT: " + infAddress.getPhoneNumber() + ";ĐC: " + infAddress.getCity()
-                    + " - " + infAddress.getDistrict() + " - " + infAddress.getWard()
-                    + " - " + infAddress.getSpecific();
-            order.setDeliveryAddress(deliveryAddress);
-            System.out.println(deliveryAddress);
-
-            Order saveOrder = orderDAO.save(order);
-            List<CartDTO> cartDTOs = orderDTO.getCartDTO();
-
-            System.out.println(saveOrder.getId());
-
-            for (CartDTO c : cartDTOs) {
-                OrderDetail orderDetail = new OrderDetail();
-                orderDetail.setQuantity(c.getQuantityInCart());
-                orderDetail.setProduct(productDAO.findById(c.getProductDTO().getProductId()).get());
-                cartDAO.deleteByUserAndProductDetail(account,
-                        productDetailDAO.findById(c.getProductDetailId()).get());
-            }
-
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        return ResponseEntity.ok().build();
-    }
+//    @PostMapping("/order")
+//    public ResponseEntity<?> postMethodName(@RequestBody orderDTO orderDTO) {
+//        System.out.println(orderDTO.getUserId() + " - " + orderDTO.getTotalAmount() + " - "
+//                + orderDTO.getDeliveryAddress().getPhoneNumber() + " - " + orderDTO.getNote());
+//        try {
+//            Account account = accountDAO.findById(orderDTO.getUserId()).get();
+//            InforAddress infAddress = orderDTO.getDeliveryAddress();
+//            Order order = new Order();
+//            order.setNote(orderDTO.getNote());
+//            order.setStatus(1);
+//            order.setTotalAmount(orderDTO.getTotalAmount());
+//            order.setOrderDate(new Date());
+//            order.setUser(account);
+//            String deliveryAddress = "SĐT: " + infAddress.getPhoneNumber() + ";ĐC: " + infAddress.getCity()
+//                    + " - " + infAddress.getDistrict() + " - " + infAddress.getWard()
+//                    + " - " + infAddress.getSpecific();
+//            order.setDeliveryAddress(deliveryAddress);
+//            System.out.println(deliveryAddress);
+//
+//            Order saveOrder = orderDAO.save(order);
+//            List<CartDTO> cartDTOs = orderDTO.getCartDTO();
+//
+//            System.out.println(saveOrder.getId());
+//
+//            for (CartDTO c : cartDTOs) {
+//                OrderDetail orderDetail = new OrderDetail();
+//                orderDetail.setQuantity(c.getQuantityInCart());
+//                orderDetail.setProduct(productDAO.findById(c.getProductDTO().getProductId()).get());
+//                cartDAO.deleteByUserAndProductDetail(account,
+//                        productDetailDAO.findById(c.getProductDetailId()).get());
+//            }
+//
+//        } catch (Exception e) {
+//            System.out.println(e);
+//        }
+//        return ResponseEntity.ok().build();
+//    }
 
 }
