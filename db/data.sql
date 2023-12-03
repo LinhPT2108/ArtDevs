@@ -1,10 +1,6 @@
 
 USE art_devs;
 GO 
-INSERT INTO dbo.role
-        ( role_name )
-VALUES  ( 'admin'),( 'user'),( 'shipper');
-GO 
 
 INSERT INTO dbo.role
         ( role_name )
@@ -213,7 +209,7 @@ INSERT INTO dbo.flash_sale
           end_day ,
           user_flash_sale
         )
-VALUES  ( 1 , -- is_status - bit
+VALUES  ( 0 , -- is_status - bit
           '2023-01-01 00:00:00' ,  -- start_day - datetime2(6)
           '2023-02-01 23:59:00' ,  -- end_day - datetime2(6)
           'nguyentcpc04750'  -- user_id - varchar(255)
@@ -223,9 +219,9 @@ VALUES  ( 1 , -- is_status - bit
           '2023-03-01 23:59:00' ,  -- end_day - datetime2(6)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
-        ( 0 , -- is_status - bit
-          '2023-03-01 00:00:00' ,  -- start_day - datetime2(6)
-          '2023-04-01 23:59:00' ,  -- end_day - datetime2(6)
+        ( 1 , -- is_status - bit
+          '2023-12-01 00:00:00' ,  -- start_day - datetime2(6)
+          '2024-02-01 23:59:00' ,  -- end_day - datetime2(6)
           'nguyentcpc04750'  -- user_id - varchar(255)
         ),
         ( 0 , -- is_status - bit
@@ -1214,59 +1210,107 @@ INSERT INTO dbo.orders
           order_date ,
           delivery_address ,
           user_id,
-		  status,
 		  payment_id
         )
 VALUES  ( 18000000 , -- total_amount - float
           '2023-09-01 13:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
-		  3,
 		  1
         ),
 		( 17980000 , -- total_amount - float
           '2023-10-01 13:30:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
-		  3,
           1
         ),
 		( 44650000 , -- total_amount - float
           '2023-10-05 13:15:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
-		  3,
           1
         ),
 		( 144950000 , -- total_amount - float
           '2023-10-10 13:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
-		  3,
 		  1
         ),
 		( 374800000 , -- total_amount - float
           '2023-10-15 15:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
-		  3,
           1
         ),
 		( 11090000 , -- total_amount - float
           '2023-10-16 19:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
-		  2,
           1
         ),
 		( 10590000 , -- total_amount - float
           '2023-10-16 21:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
-		  1,
           2
         );
 GO
+
+INSERT INTO dbo.delivery_status
+        ( name_status )
+VALUES  ( N'Đang xử lý'  -- name_status - nvarchar(255)
+          ),
+		  ( N'Đang giao hàng'  -- name_status - nvarchar(255)
+          ),
+		  ( N'Giao hàng thành công'  -- name_status - nvarchar(255)
+          ),
+		  ( N'Đã hủy'  -- name_status - nvarchar(255)
+          );
+GO 
+
+INSERT INTO dbo.order_delievery_status
+        ( delivery_id, order_id, status, date )
+VALUES  ( 1, -- delivery_id - int
+          1, -- order_id - int
+          0, -- status - bit
+          '2023-12-02 00:00:00'  -- date - datetime2(6)
+          ),
+		  ( 2, -- delivery_id - int
+          1, -- order_id - int
+          1, -- status - bit
+          SYSDATETIME()  -- date - datetime2(6)
+          ),
+		  ( 1, -- delivery_id - int
+          2, -- order_id - int
+          1, -- status - bit
+          SYSDATETIME()  -- date - datetime2(6)
+          ),
+		  ( 1, -- delivery_id - int
+          3, -- order_id - int
+          1, -- status - bit
+          SYSDATETIME()  -- date - datetime2(6)
+          ),
+		  ( 1, -- delivery_id - int
+          4, -- order_id - int
+          1, -- status - bit
+          SYSDATETIME()  -- date - datetime2(6)
+          ),
+		  ( 1, -- delivery_id - int
+          5, -- order_id - int
+          1, -- status - bit
+          SYSDATETIME()  -- date - datetime2(6)
+          ),
+		  ( 1, -- delivery_id - int
+          6, -- order_id - int
+          1, -- status - bit
+          SYSDATETIME()  -- date - datetime2(6)
+          ),
+		  ( 1, -- delivery_id - int
+          7, -- order_id - int
+          1, -- status - bit
+          SYSDATETIME()  -- date - datetime2(6)
+          )
+
 
 INSERT INTO dbo.order_detail
         ( order_id ,

@@ -35,13 +35,16 @@ import com.art.dao.user.InforAddressDAO;
 import com.art.dao.user.RoleDAO;
 import com.art.dto.account.AccountDTO;
 import com.art.mapper.AccountMapper;
+import com.art.models.MailInfo;
 import com.art.models.user.Account;
 import com.art.models.user.AccountRole;
 import com.art.models.user.InforAddress;
 import com.art.models.user.Role;
+import com.art.service.MailerServiceImpl;
 import com.art.utils.Path;
 import com.art.utils.validUtil;
 
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 
 @CrossOrigin(origins = "*")
@@ -71,6 +74,9 @@ public class AccountRestController {
 
 	@Autowired
 	HttpSession session;
+
+	@Autowired
+	MailerServiceImpl mailer;
 
 	@GetMapping(value = "/userLogin")
 	public ResponseEntity<AccountDTO> getArtDev(Model model) {
@@ -133,17 +139,18 @@ public class AccountRestController {
 	@GetMapping("/account/findAccount/{email}")
 	public ResponseEntity<Account> getAccountByEmail(@PathVariable("email") String email) {
 		Account account = aDAO.findByEmail(email);
-		if (account==null) {
+		if (account == null) {
 			return ResponseEntity.notFound().build();
 		}
 		Account accounts = aDAO.findByEmail(email);
 		return ResponseEntity.ok(accounts);
 	}
+
 	/*
 	 * Thêm người dùng mới
 	 */
 	@PostMapping("/account")
-	public ResponseEntity<Account> create(@RequestBody AccountDTO accountDTO, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<Account> create(@RequestBody AccountDTO accountDTO) throws MessagingException {
 		Account account = AccountMapper.convertToAccount(accountDTO);
 		if (aDAO.existsById(account.getAccountId())) {
 			return ResponseEntity.badRequest().build();
@@ -162,12 +169,16 @@ public class AccountRestController {
 				}
 			}
 		}
+		String verifyCode = getVerifyCode();
 		account.setStatus(true);
-		account.setVerifyCode(getVerifyCode());
+		account.setVerifyCode(verifyCode);
 		account.setUserRole(accountRoles);
 		account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
-		
+
 		aDAO.save(account);
+
+		mailer.sendVerify(new MailInfo(account.getEmail(), "Xác nhận tài khoản ArtGroupES",
+				"Chào mừng bạn đến với ART GROUP EST.2023. Đây là mã xác nhận của bạn: " + verifyCode));
 		return ResponseEntity.ok(account);
 	}
 
