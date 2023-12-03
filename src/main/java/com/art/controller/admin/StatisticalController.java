@@ -103,7 +103,7 @@ public class StatisticalController {
         Optional<Order> optionalInvoice = Optional.of(revenueService.findById(itemId));
         if (optionalInvoice.isPresent()) {
         	Order invoice = optionalInvoice.get();
-            invoice.setStatus(status);
+//            invoice.setStatus(status);
             revenueService.save(invoice);
         }
     }

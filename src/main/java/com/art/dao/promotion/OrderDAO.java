@@ -48,7 +48,7 @@ public interface OrderDAO extends JpaRepository<Order, Integer> {
 
 	//hóa đơn theo người dùng và trạng thái hóa đơn
 	
-	Page<Order> findByUserAndStatus(Account user, int Status,Pageable pageable);
+//	Page<Order> findByUserAndStatus(Account user, int Status,Pageable pageable);
 //	
 //	// Tìm kiếm các hóa đơn có ngày nằm trong khoảng từ một ngày bắt đầu đến một ngày kết thúc
 //    List<Order> findByOrderDateBetween(Date startDate, Date endDate);
