@@ -1,10 +1,6 @@
 
 USE art_devs;
 GO 
-INSERT INTO dbo.role
-        ( role_name )
-VALUES  ( 'admin'),( 'user'),( 'shipper');
-GO 
 
 INSERT INTO dbo.role
         ( role_name )
