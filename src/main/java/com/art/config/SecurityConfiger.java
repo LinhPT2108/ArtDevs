@@ -66,8 +66,8 @@ public class SecurityConfiger {
 							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/account/**")
 	        				).hasAnyAuthority("admin", "staff", "shipper","user")
 	        		.requestMatchers(
-							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/order"),
-							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/order/**"),
+							// AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/order"),
+							// AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/order/**"),
 							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/order"),
 							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/order/**")
 	        				).hasAnyAuthority("admin", "staff", "shipper")

@@ -29,6 +29,14 @@ app.controller(
       coupon: null,
       items: items,
     };
+
+    $rootScope.raw_expected_delivery = {
+      from_district_id: 1572,
+      from_ward_code: "550110",
+      to_district_id: null,
+      to_ward_code: "",
+      service_id: 100039,
+    };
     console.log("checkoutCtrl");
     console.log($rootScope.getCheckedProducts);
 
@@ -54,7 +62,7 @@ app.controller(
     // Quận/huyện
     $scope.calculateShippingFee = function (provinceName) {
       console.log(provinceName);
-      if (provinceName != '') {
+      if (provinceName != "") {
         var index = $scope.provinces.findIndex(function (province) {
           return province.ProvinceName === JSON.parse(provinceName).city;
         });
@@ -80,6 +88,9 @@ app.controller(
               );
               $rootScope.raw.to_district_id =
                 $rootScope.toDistrictId[0].DistrictID;
+              $rootScope.raw_expected_delivery.to_district_id =
+                $rootScope.toDistrictId[0].DistrictID;
+
               console.log($rootScope.raw);
               var index2 = $scope.districts.findIndex(function (district) {
                 return (
@@ -88,7 +99,6 @@ app.controller(
               });
 
               if ($rootScope.toDistrictId != undefined) {
-                console.log("ward");
                 $http
                   .get(
                     "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward",
@@ -109,7 +119,10 @@ app.controller(
                     );
                     console.log($scope.wardCode[0].WardCode);
                     $rootScope.raw.to_ward_code = $scope.wardCode[0].WardCode;
+                    $rootScope.raw_expected_delivery.to_ward_code =
+                      $scope.wardCode[0].WardCode;
                     console.log($rootScope.raw);
+                    console.log($rootScope.raw_expected_delivery);
                     $http({
                       method: "POST",
                       url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
@@ -138,6 +151,39 @@ app.controller(
                         $rootScope.totalPay =
                           parseFloat($rootScope.totalFeeShip) +
                           parseFloat($rootScope.getTotalPrice());
+
+                        $http({
+                          method: "POST",
+                          url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/leadtime",
+                          headers: {
+                            "Content-Type": "application/json",
+                            Token: "f777fb49-835e-11ee-b394-8ac29577e80e",
+                            ShopId: "4698401",
+                          },
+                          data: {
+                            service_id:
+                              $rootScope.raw_expected_delivery.service_id,
+                            from_district_id:
+                              $rootScope.raw_expected_delivery.from_district_id,
+                            from_ward_code:
+                              $rootScope.raw_expected_delivery.from_ward_code,
+                            to_district_id:
+                              $rootScope.raw_expected_delivery.to_district_id,
+                            to_ward_code:
+                              $rootScope.raw_expected_delivery.to_ward_code,
+                          },
+                        })
+                          .then(function (response) {
+                            console.log(response.data.data);
+                            let leadTimeInSeconds = response.data.data.leadtime;
+                            let leadTimeInMillis = leadTimeInSeconds * 1000;
+                            let leadTimeDate = new Date(leadTimeInMillis);
+                            $scope.expectedDeliveryTime = leadTimeDate;
+                            console.log($scope.expectedDeliveryTime);
+                          })
+                          .catch(function (err) {
+                            console.log(err);
+                          });
                       })
                       .catch(function (err) {
                         console.log(err);
@@ -152,7 +198,34 @@ app.controller(
               console.error("Error fetching districts:", error);
             });
         }
+      } else {
+        $rootScope.totalFeeShip = 0;
+        $rootScope.totalPay = 0;
+        $scope.selectedAddress = null;
       }
+    };
+
+    $scope.orderAction = function (event) {
+      event.preventDefault();
+      console.log($rootScope.getCheckedProducts);
+      console.log($rootScope.totalPay);
+      console.log($scope.selectedAddress);
+      console.log($scope.note);
+      var orderData = {
+        cartDTO: $rootScope.getCheckedProducts,
+        totalAmount: $rootScope.totalPay,
+        userId: $rootScope.userLogin.accountId,
+        deliveryAddress: JSON.parse($scope.selectedAddress),
+        note: $scope.note,
+      };
+      console.log(orderData);
+      ApiService.callApi("POST", "/rest/order", orderData)
+        .then(function (resp) {
+          console.log(resp);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
     };
   }
 );

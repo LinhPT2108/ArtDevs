@@ -45,16 +45,20 @@ public class ProductMapper {
 	}
 
 	private static boolean getProductSale(PromotionalDetailsDAO proDAO, FlashSaleDAO fDAO, Product product) {
-
-		FlashSale flashSale = fDAO.findByStatus(true);
-		List<PromotionalDetails> promotionalDetails = flashSale.getPromotionalDetailsList();
-		for (PromotionalDetails pro : promotionalDetails) {
-			if (product.getProductId().equals(pro.getProduct().getProductId())) {
-				if (pro.getDiscountedQuantity() != pro.getQuantitySold()) {
-					discountPrice = pro.getDiscountedPrice();
-					return true;
+		try {
+			FlashSale flashSale = fDAO.findByStatus(true);
+			List<PromotionalDetails> promotionalDetails = flashSale.getPromotionalDetailsList();
+			for (PromotionalDetails pro : promotionalDetails) {
+				if (product.getProductId().equals(pro.getProduct().getProductId())) {
+					if (pro.getDiscountedQuantity() != pro.getQuantitySold()) {
+						discountPrice = pro.getDiscountedPrice();
+						return true;
+					}
 				}
 			}
+		} catch (Exception e) {
+			System.out.println(e);
+			return false;
 		}
 		return false;
 	}

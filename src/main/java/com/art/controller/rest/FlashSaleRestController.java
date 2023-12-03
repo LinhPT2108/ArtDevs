@@ -39,13 +39,17 @@ public class FlashSaleRestController {
         return ResponseEntity.ok(flashSales);
     }
 
-     @GetMapping("/flash-sale-active")
-    public ResponseEntity<FlashSaleDTO> getFlashSalesActive() { 
-        FlashSale flashSales = flashSaleDAO.findByStatus(true);
+    @GetMapping("/flash-sale-active")
+    public ResponseEntity<FlashSaleDTO> getFlashSalesActive() {
+        try {
+            FlashSale flashSales = flashSaleDAO.findByStatus(true);
 
-        FlashSaleDTO flashSaleDTOs = FlashSaleMapper.convertToDto(flashSales,promDao,fDAO,pdDAO);
-            
-        return ResponseEntity.ok(flashSaleDTOs);
+            FlashSaleDTO flashSaleDTOs = FlashSaleMapper.convertToDto(flashSales, promDao, fDAO, pdDAO);
+
+            return ResponseEntity.ok(flashSaleDTOs);
+        } catch (Exception e) {
+            return ResponseEntity.ok(null);
+        }
     }
 
     @GetMapping("/flash-sale/{id}")

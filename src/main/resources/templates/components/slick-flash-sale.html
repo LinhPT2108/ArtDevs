@@ -10,7 +10,7 @@
             </div>
             <div ng-if="flashSaleActive.status" class="d-flex justify-content-around">
                 <div class="styleCountdown d-flex align-items-center mr-3 mt-0">
-                    <span ng-show="flashSaleActive.status"
+                    <span ng-show="flashSaleActive.status && flashSaleActive.endDay > nowDay"
                         class="lof-clock-detail bg-warning text-dark rounded-3 p-2 fw-bold" id="your-countdown"
                         data-countdown="{{formattedEndDay}}">
                     </span>
@@ -30,7 +30,8 @@
                 </div>
             </div>
         </div>
-        <div class="section-flashsale listCarousel cardProduct-flashsale">
+        <div class="section-flashsale listCarousel cardProduct-flashsale"
+            ng-show="flashSaleActive.status && flashSaleActive.endDay > nowDay">
             <div class="mb-3" ng-repeat="p in flashSaleActive.promotionalDetailsList">
                 <div class="card h-100 mx-3 position-relative">
                     <div class="sold-out position-absolute" ng-show="p.discountedQuantity - p.quantitySold == 0">
@@ -51,7 +52,8 @@
                             <div class="col-6 d-flex flex-column"
                                 ng-init="latestPrice = getLatestPrice(p.product.productDetails[0].prices)">
                                 <span class="font-weight-bold">
-                                    <span ng-if="p.product.sale || p.discountedQuantity - p.quantitySold == 0" class="text-decoration-line-through">{{
+                                    <span ng-if="p.product.sale || p.discountedQuantity - p.quantitySold == 0"
+                                        class="text-decoration-line-through">{{
                                         latestPrice.price | number:0 }} &#8363;</span>
                                 </span>
 

@@ -63,4 +63,17 @@ public class Order {
 	
 	@OneToMany(mappedBy = "orderStatus")
 	private List<DeliveryStatus> orderStatus;
+
+	public Order(int id, Account user, Date orderDate, BigDecimal totalAmount, int status, String deliveryAddress,
+			String note) {
+		this.id = id;
+		this.user = user;
+		this.orderDate = orderDate;
+		this.totalAmount = totalAmount;
+		this.status = status;
+		this.deliveryAddress = deliveryAddress;
+		this.note = note;
+	}
+
+	
 }
