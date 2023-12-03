@@ -16,6 +16,14 @@ VALUES  ( N'admin'  -- role_name - nvarchar(255)
         ); 
 GO
 
+INSERT INTO dbo.payment_method
+        ( payment_name )
+VALUES  ( N'Thanh toán khi nhận hàng'  -- payment_name - nvarchar(255)
+        ),
+		( N'Momo'  -- payment_name - nvarchar(255)
+        );
+GO
+
 INSERT INTO dbo.account
         ( status ,
           email ,
@@ -1206,49 +1214,57 @@ INSERT INTO dbo.orders
           order_date ,
           delivery_address ,
           user_id,
-		  status
+		  status,
+		  payment_id
         )
 VALUES  ( 18000000 , -- total_amount - float
           '2023-09-01 13:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
-		  3
+		  3,
+		  1
         ),
 		( 17980000 , -- total_amount - float
           '2023-10-01 13:30:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
-		  3
+		  3,
+          1
         ),
 		( 44650000 , -- total_amount - float
           '2023-10-05 13:15:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
-		  3
+		  3,
+          1
         ),
 		( 144950000 , -- total_amount - float
           '2023-10-10 13:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
-		  3
+		  3,
+		  1
         ),
 		( 374800000 , -- total_amount - float
           '2023-10-15 15:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
-		  3
+		  3,
+          1
         ),
 		( 11090000 , -- total_amount - float
           '2023-10-16 19:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
-		  2
+		  2,
+          1
         ),
 		( 10590000 , -- total_amount - float
           '2023-10-16 21:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
-		  1
+		  1,
+          2
         );
 GO
 
