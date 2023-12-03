@@ -3,6 +3,7 @@ package com.art.models.user;
 import java.io.Serializable;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,9 +33,18 @@ public class AccountRole implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "accountId")
 	private Account user;
-
-	@ManyToOne
+	
+	
+	@ManyToOne( fetch = FetchType.EAGER)
 	@JoinColumn(name = "roleId")
 	private Role role;
 
+
+	public AccountRole(Account user, Role role) {
+		super();
+		this.user = user;
+		this.role = role;
+	}
+
+	
 }

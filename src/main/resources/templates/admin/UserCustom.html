@@ -22,13 +22,23 @@
 							<input type="email" class="form-control" th:field="*{email}" />
 							<div class="text-danger" th:errors="*{email}"></div>
 						</div>
-						<div class="col-12 mb-3">
+						<!--	<div class="col-12 mb-3">
 							<label for="roleName" class="form-label">Chức vụ</label>
 							<select class="form-select">
 								<option value="" label="Chọn..."></option>
 								<option th:each="role : ${roles}" th:value="${role.roleName}"
 									th:text="${role.roleName}"></option>
 							</select>
+						</div>-->
+						<div class="col-12 mb-3">
+							<label for="roleName" class="form-label">Quyền truy cập:</label>
+							<span th:each="role : ${roles}">
+								<input type="checkbox" th:name="${role.roleName}" th:value="${role.id}"
+									th:id="${role.id}"
+									th:checked="${accroles!=null ? IndexRole.contains(role.Id) : false}" />
+								<label th:for="${role.id}" th:text="${role.roleName}"></label>
+							</span>
+							<!--<div class="text-danger" th:errors="*{status}"></div>-->
 						</div>
 						<div class="col-12 mb-3">
 							<label for="fullname" class="form-label">Họ và tên</label>
@@ -37,16 +47,16 @@
 						</div>
 						<div class="col-12 mb-3">
 							<label for="password" class="form-label">Mật khẩu</label>
-							<input type="password" class="form-control" th:field="*{password}" />
+							<input type="text" class="form-control" th:field="*{password}" th:value="*{password}" />
 							<div class="text-danger" th:errors="*{password}"></div>
 						</div>
 						<div class="col-12 mb-3">
 							<label for="del" class="form-label">Trạng thái:</label>
-							<input type="radio" th:field="*{del}" value="false" id="del1" />
+							<input type="radio" th:field="*{status}" value="false" id="del1" />
 							<label for="del1">Đang hoạt động</label>
-							<input type="radio" th:field="*{del}" value="true" id="del2" />
+							<input type="radio" th:field="*{status}" value="true" id="del2" />
 							<label for="del2">Đã bị khóa</label>
-							<div class="text-danger" th:errors="*{del}"></div>
+							<div class="text-danger" th:errors="*{status}"></div>
 						</div>
 					</div>
 					<div class="col-12">
@@ -54,7 +64,8 @@
 							th:text="${typeButton}"></button>
 						<button class="btn btn-warning" formaction="/admin/userCustom/update"
 							th:text="${updateButton}"></button>
-						<button class="btn btn-danger" formaction="/admin/userCustom/delete/${userCustom.accountId}"
+						<button class="btn btn-danger"
+							th:formaction="@{/admin/userCustom/delete/{accountId}(accountId=${userCustom.accountId})}"
 							th:text="${deleteButton}"></button>
 						<a href="/admin/userCustom" class="btn btn-primary">Reset</a>
 					</div>
@@ -86,17 +97,27 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="userCustom : ${userCustoms}">
+					<tr th:each="userCustom : ${userCustoms}" th:if="${authUser.Name}!=${userCustom.email}">
 						<td th:text="${userCustom.email}"></td>
 						<td th:text="${userCustom.fullname}"></td>
-						<td th:text="${userCustom.roleName.roleName}"></td>
+						<td>
+							<span th:each="user : ${userCustom.userRole}"
+								th:text="' *' + ${user.role.roleName} +' * '"></span>
+						</td>
 						<td th:text="${userCustom.image}"></td>
 						<td>
-							<span th:utext="${userCustom.del == true ? 'Đã bị khóa' : 'Đang hoạt động'}"></span>
+							<span th:utext="${userCustom.status == true ? 'Đã bị khóa' : 'Đang hoạt động'}"></span>
 						</td>
-						<td><a
+						<td>
+							<a type="button" class="btn btn-warning"
+								th:href="@{/admin/userCustom/edit/{accountId}(accountId=${userCustom.accountId})}">
+								Edit
+							</a>
+						</td>
+
+						<!--<td><a
 								th:href="@{/admin/userCustom/edit/{accountId}(accountId=${userCustom.accountId})}">Edit</a>
-						</td>
+						</td>-->
 					</tr>
 				</tbody>
 			</table>

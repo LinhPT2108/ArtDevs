@@ -1,7 +1,6 @@
 
 USE art_devs;
 GO 
-
 INSERT INTO dbo.role
         ( role_name )
 VALUES  ( 'admin'),( 'user'),( 'shipper');
@@ -1128,37 +1127,40 @@ INSERT INTO dbo.product_detail
           product_id ,
           size 
         )
-VALUES  ( 50 ,10 ,8 ,SYSDATETIME() ,'#FFFFFF' ,'QA55Q65A' ,'130cmx80cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'55NANO76SQA' ,'120cmx70cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'32V35KP' ,'150cmx65cmx8cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'QA43Q65A' ,'120cmx80cmx8cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'UA43BU8000' ,'130cmx80cmx8cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'UA55AU8100' ,'140cmx90cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'UA43AU7002' ,'130cmx100cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'UA65AU8100' ,'130cmx85cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'QA65Q65A' ,'130cmx83cmx8cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'QA50Q65A' ,'130cmx80cmx7cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'UA55BU8000' ,'130cmx80cmx9cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'QA65Q60B' ,'140cmx80cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'55UQ8000PSC' ,'133cmx80cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'65NANO76SQA' ,'135cmx60cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'65UQ8000PSC' ,'120cmx70cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'43UQ7550PSF' ,'135cmx80cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'43UQ8000PSC' ,'138cmx80cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'43NANO76SQA' ,'141cmx80cmx8cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'50UQ7550PSF' ,'150cmx80cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'50UQ8000PSC' ,'135cmx70cmx8cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'55UQ7550PSF' ,'130cmx60cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'RT25M4032BU' ,'160cmx80cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'GR-B256JDS' ,'140cmx80cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'GR-RF610WE-PGV(22)-XK' ,'130cmx90cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'WW80T3020WW' ,'130cmx85cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'T2351VSAB' ,'130cmx85cmx8cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'AW-L805AV' ,'130cmx88cmx10cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'AR13CYFAAWKNSV' ,'180cmx80cmx11cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'ZTNQ18GPLA0' ,'170cmx80cmx8cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'RAS-H10Z1KCVG-V' ,'140cmx80cmx8cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'#000000' ,'MSAGA-10CRDN8' ,'130cmx80cmx9cm' );
+VALUES  ( 50 ,10 ,8 ,SYSDATETIME() ,'White' ,'QA55Q65A' ,'130cmx80cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA55Q65A' ,'130cmx80cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'White' ,'QA55Q65A' ,'130cmx60cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA55Q65A' ,'130cmx60cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'55NANO76SQA' ,'120cmx70cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'32V35KP' ,'150cmx65cmx8cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA43Q65A' ,'120cmx80cmx8cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'UA43BU8000' ,'130cmx80cmx8cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'UA55AU8100' ,'140cmx90cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'UA43AU7002' ,'130cmx100cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'UA65AU8100' ,'130cmx85cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA65Q65A' ,'130cmx83cmx8cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA50Q65A' ,'130cmx80cmx7cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'UA55BU8000' ,'130cmx80cmx9cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA65Q60B' ,'140cmx80cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'55UQ8000PSC' ,'133cmx80cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'65NANO76SQA' ,'135cmx60cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'65UQ8000PSC' ,'120cmx70cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'43UQ7550PSF' ,'135cmx80cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'43UQ8000PSC' ,'138cmx80cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'43NANO76SQA' ,'141cmx80cmx8cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'50UQ7550PSF' ,'150cmx80cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'50UQ8000PSC' ,'135cmx70cmx8cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'55UQ7550PSF' ,'130cmx60cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'RT25M4032BU' ,'160cmx80cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'GR-B256JDS' ,'140cmx80cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'GR-RF610WE-PGV(22)-XK' ,'130cmx90cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'WW80T3020WW' ,'130cmx85cmx6cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'T2351VSAB' ,'130cmx85cmx8cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'AW-L805AV' ,'130cmx88cmx10cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'AR13CYFAAWKNSV' ,'180cmx80cmx11cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'ZTNQ18GPLA0' ,'170cmx80cmx8cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'RAS-H10Z1KCVG-V' ,'140cmx80cmx8cm' ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'MSAGA-10CRDN8' ,'130cmx80cmx9cm' );
 GO        
 
 INSERT INTO dbo.price
@@ -1254,117 +1256,132 @@ INSERT INTO dbo.order_detail
         ( order_id ,
           price ,
           quantity ,
-          product_id
+          product_detail_id
         )
 VALUES  ( 1 , -- invoice_id - int
           9000000 , -- price - numeric(38, 2)
           2 , -- quantity - int
-          '32V35KP'  -- product_id - varchar(255)
+          1
+        ),
+        ( 1 , -- invoice_id - int
+          9000000 , -- price - numeric(38, 2)
+          2 , -- quantity - int
+          2
+        ),
+        ( 1 , -- invoice_id - int
+          9900000 , -- price - numeric(38, 2)
+          2 , -- quantity - int
+          3
+        ),
+        ( 1 , -- invoice_id - int
+          9900000 , -- price - numeric(38, 2)
+          2 , -- quantity - int
+          4
         ),
 		( 2 , -- invoice_id - int
           9990000 , -- price - numeric(38, 2)
           1 , -- quantity - int
-          '43NANO76SQA'  -- product_id - varchar(255)
+          5
         ),
 		( 2 , -- invoice_id - int
           7990000 , -- price - numeric(38, 2)
           1 , -- quantity - int
-          '43UQ7550PSF'  -- product_id - varchar(255)
+          6
         ),
 		( 3 , -- invoice_id - int
           8390000 , -- price - numeric(38, 2)
           3 , -- quantity - int
-          '43UQ8000PSC'  -- product_id - varchar(255)
+          7
         ),
 		( 3 , -- invoice_id - int
           9490000 , -- price - numeric(38, 2)
           1 , -- quantity - int
-          '50UQ7550PSF'  -- product_id - varchar(255)
+          8
         ),
 		( 3 , -- invoice_id - int
           9990000 , -- price - numeric(38, 2)
           1 , -- quantity - int
-          '50UQ8000PSC'  -- product_id - varchar(255)
+          9
         ),
 		( 4 , -- invoice_id - int
           16000000 , -- price - numeric(38, 2)
           1 , -- quantity - int
-          '55NANO76SQA'  -- product_id - varchar(255)
+          10
         ),
 		( 4 , -- invoice_id - int
           10490000 , -- price - numeric(38, 2)
           1 , -- quantity - int
-          '55UQ7550PSF'  -- product_id - varchar(255)
+          11
         ),
 		( 4 , -- invoice_id - int
           10990000 , -- price - numeric(38, 2)
           1 , -- quantity - int
-          '55UQ8000PSC'  -- product_id - varchar(255)
+          12
         ),
 		( 4 , -- invoice_id - int
           14990000 , -- price - numeric(38, 2)
           1 , -- quantity - int
-          '65NANO76SQA'  -- product_id - varchar(255)
+          13
         ),
 		( 4 , -- invoice_id - int
           12990000 , -- price - numeric(38, 2)
           1 , -- quantity - int
-          '65UQ8000PSC'  -- product_id - varchar(255)
+          14
         ),
 		( 4 , -- invoice_id - int
           14500000 , -- price - numeric(38, 2)
           1 , -- quantity - int
-          'AR13CYFAAWKNSV'  -- product_id - varchar(255)
+          15
         ),
 		( 4 , -- invoice_id - int
           9500000 , -- price - numeric(38, 2)
           1 , -- quantity - int
-          'AW-L805AV'  -- product_id - varchar(255)
+          16
         ),
 		( 4 , -- invoice_id - int
           22000000 , -- price - numeric(38, 2)
           1 , -- quantity - int
-          'GR-B256JDS'  -- product_id - varchar(255)
+          17
         ),
 		( 4 , -- invoice_id - int
           11500000 , -- price - numeric(38, 2)
           1 , -- quantity - int
-          'GR-RF610WE-PGV(22)-XK'  -- product_id - varchar(255)
+          18
         ),
 		( 4 , -- invoice_id - int
           12000000 , -- price - numeric(38, 2)
           1 , -- quantity - int
-          'MSAGA-10CRDN8'  -- product_id - varchar(255)
+          19
         ),
 		( 4 , -- invoice_id - int
           9990000 , -- price - numeric(38, 2)
           1 , -- quantity - int
-          'QA43Q65A'  -- product_id - varchar(255)
+          20
         ),
 		( 5 , -- invoice_id - int
           10990000 , -- price - numeric(38, 2)
           10 , -- quantity - int
-          'QA50Q65A'  -- product_id - varchar(255)
+          21
         ),
 		( 5 , -- invoice_id - int
           23000000 , -- price - numeric(38, 2)
           5 , -- quantity - int
-          'QA55Q65A'  -- product_id - varchar(255)
+          22
         ),
 		( 5 , -- invoice_id - int
           14990000 , -- price - numeric(38, 2)
           10 , -- quantity - int
-          'QA65Q60B'  -- product_id - varchar(255)
+          23
         ),
 		( 6 , -- invoice_id - int
           11090000 , -- price - numeric(38, 2)
           1 , -- quantity - int
-          'UA55AU8100'  -- product_id - varchar(255)
+          24
         ),
 		( 7 , -- invoice_id - int
           10590000 , -- price - numeric(38, 2)
           1 , -- quantity - int
-          'UA55BU8000'  -- product_id - varchar(255)
+          25
         );
 
 GO 
@@ -1373,147 +1390,147 @@ INSERT INTO dbo.comment
         ( date ,
           star ,
           content ,
-          product_id ,
+          product_detail_id ,
           user_comment,
 		  order_detail_id
         )
 VALUES  ( '2023-10-02 20:05:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
-          '32V35KP' , -- product_id - varchar(255)
+          1 , -- product_id - varchar(255)
           'linhptpc04737',  -- user_comment - varchar(255)
 		  1
         ),
 		( '2023-10-06 20:10:00' , -- date - date
           4 , -- star - int
           N'Giao hàng nhanh, nhân viên thân thiện !' , -- content - nvarchar(255)
-          '43NANO76SQA' , -- product_id - varchar(255)
+          2 , -- product_id - varchar(255)
           'linhptpc04737',  -- user_comment - varchar(255)
 		  2
         ),
 		( '2023-10-06 20:15:00' , -- date - date
           4 , -- star - int
           N'Giao hàng nhanh, nhân viên thân thiện !' , -- content - nvarchar(255)
-          '43UQ7550PSF' , -- product_id - varchar(255)
+          3 , -- product_id - varchar(255)
           'linhptpc04737',  -- user_comment - varchar(255)
 		  3
         ),
 		( '2023-10-06 20:20:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, nhân viên thân thiện, nhiệt tình !' , -- content - nvarchar(255)
-          '43UQ8000PSC' , -- product_id - varchar(255)
+          4 , -- product_id - varchar(255)
           'linhptpc04737',  -- user_comment - varchar(255)
           4
         ),
 		( '2023-10-06 20:25:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, nhân viên thân thiện, nhiệt tình !' , -- content - nvarchar(255)
-          '50UQ7550PSF' , -- product_id - varchar(255)
+          5 , -- product_id - varchar(255)
           'linhptpc04737',  -- user_comment - varchar(255)
           5
         ),
 		( '2023-10-06 20:30:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, nhân viên thân thiện, nhiệt tình !' , -- content - nvarchar(255)
-          '50UQ8000PSC' , -- product_id - varchar(255)
+          6 , -- product_id - varchar(255)
           'linhptpc04737',  -- user_comment - varchar(255)
           6
         ),
 		( '2023-10-11 20:35:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
-          '55NANO76SQA' , -- product_id - varchar(255)
+          7 , -- product_id - varchar(255)
           'linhptpc04737',  -- user_comment - varchar(255)
           7
         ),
 		( '2023-10-11 20:40:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
-          '55UQ7550PSF' , -- product_id - varchar(255)
+          8 , -- product_id - varchar(255)
           'linhptpc04737',  -- user_comment - varchar(255)
           8
         ),
 		( '2023-10-11 20:45:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
-          '55UQ8000PSC' , -- product_id - varchar(255)
+          9 , -- product_id - varchar(255)
           'linhptpc04737',  -- user_comment - varchar(255)
           9
         ),
 		( '2023-10-11 20:50:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
-          '65NANO76SQA' , -- product_id - varchar(255)
+          10 , -- product_id - varchar(255)
           'linhptpc04737',  -- user_comment - varchar(255)
           10
         ),
 		( '2023-10-11 20:55:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
-          '65UQ8000PSC' , -- product_id - varchar(255)
+          11 , -- product_id - varchar(255)
           'linhptpc04737',  -- user_comment - varchar(255)
           11
         ),
 		( '2023-10-11 21:00:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
-          'AR13CYFAAWKNSV' , -- product_id - varchar(255)
+         12 , -- product_id - varchar(255)
           'linhptpc04737',  -- user_comment - varchar(255)
           12
         ),
 		( '2023-10-11 21:05:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
-          'AW-L805AV' , -- product_id - varchar(255)
+          13 , -- product_id - varchar(255)
           'linhptpc04737',  -- user_comment - varchar(255)
           13
         ),
 		( '2023-10-11 21:10:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
-          'GR-B256JDS' , -- product_id - varchar(255)
+          14 , -- product_id - varchar(255)
           'linhptpc04737',  -- user_comment - varchar(255)
           14
         ),
 		( '2023-10-11 21:15:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
-          'GR-RF610WE-PGV(22)-XK' , -- product_id - varchar(255)
+          15 , -- product_id - varchar(255)
           'linhptpc04737',  -- user_comment - varchar(255)
           15
         ),
 		( '2023-10-11 21:20:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
-          'MSAGA-10CRDN8' , -- product_id - varchar(255)
+         16, -- product_id - varchar(255)
           'linhptpc04737',  -- user_comment - varchar(255)
           16
         ),
 		( '2023-10-11 21:25:00' , -- date - date
           3 , -- star - int
           N'Giao hàng nhanh, tuy nhiên sản phẩm bị cấn móp !' , -- content - nvarchar(255)
-          'QA43Q65A' , -- product_id - varchar(255)
+         17 , -- product_id - varchar(255)
           'linhptpc04737',  -- user_comment - varchar(255)
           17
         ),
 		( '2023-10-16 21:30:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
-          'QA50Q65A' , -- product_id - varchar(255)
+          18 , -- product_id - varchar(255)
           'linhptpc04737',  -- user_comment - varchar(255)
           18
         ),
 		( '2023-10-16 21:35:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
-          'QA55Q65A' , -- product_id - varchar(255)
+          19 , -- product_id - varchar(255)
           'linhptpc04737',  -- user_comment - varchar(255)
           19
         ),
 		( '2023-10-16 21:40:00' , -- date - date
           5 , -- star - int
           N'Giao hàng nhanh, đóng gói cẩn thận !' , -- content - nvarchar(255)
-          'QA65Q60B' , -- product_id - varchar(255)
+          20 , -- product_id - varchar(255)
           'linhptpc04737',  -- user_comment - varchar(255)
           20
         );
@@ -1540,63 +1557,62 @@ INSERT INTO dbo.promotional_details
 		  quantity_sold
         )
 VALUES  ( 0.15 , -- discounted_price - float
-          11 , -- flash_sale_id - int
+          3 , -- flash_sale_id - int
           0 , -- status - bit
           '32V35KP',  -- product_id - varchar(255)
           50,
 		  20
         ),
 		( 0.1 , -- discounted_price - float
-          11 , -- flash_sale_id - int
+          3 , -- flash_sale_id - int
           0 , -- status - bit
           '50UQ7550PSF',  -- product_id - varchar(255)
           50,
 		  50
         ),
 		( 0.5 , -- discounted_price - float
-          11 , -- flash_sale_id - int
+          3 , -- flash_sale_id - int
           0 , -- status - bit
           '65NANO76SQA',  -- product_id - varchar(255)
           50,
 		  0
         ),
 		( 0.1 , -- discounted_price - float
-          11 , -- flash_sale_id - int
+          3 , -- flash_sale_id - int
           0 , -- status - bit
           'AR13CYFAAWKNSV',  -- product_id - varchar(255)
           50,
 		  0
         ),
 		( 0.2 , -- discounted_price - float
-          11 , -- flash_sale_id - int
+          3 , -- flash_sale_id - int
           0 , -- status - bit
           'GR-B256JDS',  -- product_id - varchar(255)
           50,
 		  0
         ),
 		( 0.3 , -- discounted_price - float
-          11 , -- flash_sale_id - int
+          3 , -- flash_sale_id - int
           0 , -- status - bit
           'MSAGA-10CRDN8',  -- product_id - varchar(255)
           50,
 		  0
         ),
 		( 0.25 , -- discounted_price - float
-          11 , -- flash_sale_id - int
+          3 , -- flash_sale_id - int
           0 , -- status - bit
           'UA43BU8000',  -- product_id - varchar(255)
           50,
 		  50
         ), 
 		( 0.15 , -- discounted_price - float
-          11 , -- flash_sale_id - int
+          3 , -- flash_sale_id - int
           0 , -- status - bit
           'ZTNQ18GPLA0',  -- product_id - varchar(255)
           50,
 		  40
         );
 
-		          
 INSERT INTO dbo.cart
         ( product, quantity, user_id )
 VALUES  ( 1, -- product - int
@@ -1612,6 +1628,6 @@ VALUES  ( 1, -- product - int
           'linhptpc04737'  -- user_id - varchar(255)
           )
 
---SELECT * FROM dbo.cart
+--SELECT * FROM dbo.order_detail
 --SELECT * FROM dbo.user_custom
 --SELECT invoice_id, SUM(c.price*c.quantity) FROM dbo.invoice_detail c INNER JOIN dbo.invoice ON invoice.id = c.invoice_id GROUP BY invoice_id

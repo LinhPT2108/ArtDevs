@@ -2,15 +2,15 @@ package com.art.models.product;
 
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.annotations.Nationalized;
 
-import com.art.models.activity.Comment;
 import com.art.models.activity.RecentlyViewed;
 import com.art.models.activity.WishList;
-import com.art.models.promotion.OrderDetail;
 import com.art.models.promotion.PromotionalDetails;
 import com.art.models.user.Account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -70,10 +70,6 @@ public class Product {
 
 	@OneToMany(mappedBy = "product")
 	@JsonIgnore
-	private List<Comment> productComment;
-
-	@OneToMany(mappedBy = "product")
-	@JsonIgnore
 	private List<RecentlyViewed> productRecentlyViewed;
 	
 	@OneToMany(mappedBy = "product")
@@ -91,10 +87,6 @@ public class Product {
 	@JsonIgnore
 	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
 	private List<Image> productImage;
-
-	@OneToMany(mappedBy = "product")
-	@JsonIgnore
-	private List<OrderDetail> productOrderDetail;
 	
 	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
 	@JsonIgnore

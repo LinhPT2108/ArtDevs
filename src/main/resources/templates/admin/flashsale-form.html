@@ -8,51 +8,52 @@
 
 <body>
 	<div class="site-product">
-		<form:form cssClass="row g-3 needs-validation" action="/admin/flashSale" modelAttribute="flashSale"
-			method="POST" id="formFlashSale">
+		<form class="row g-3 needs-validation" th:action="@{/admin/flashSale}" th:object="${flashSale}" method="POST"
+			id="formFlashSale">
 			<div class="row">
 				<div class="col-xs-12 col-md-7">
 					<div class="row">
 						<div class="col-12 mb-3">
-							<form:label path="id" cssClass="form-label">Id:</form:label>
-							<form:input type="text" cssClass="form-control" path="id" readonly="true"></form:input>
+							<label class="form-label" for="id">Id:</label>
+							<input type="text" class="form-control" th:field="*{id}" readonly="true" />
 						</div>
 						<div class="col-12 mb-3">
-							<form:label path="startDay" cssClass="form-label">Ngày bắt đầu:</form:label>
-							<form:input type="datetime-local" cssClass="form-control" path="startDay"></form:input>
+							<label class="form-label" for="startDay">Ngày bắt đầu:</label>
+							<input type="datetime-local" class="form-control" th:field="*{startDay}" />
 							<p class="text-danger" th:text="${start_dayError}"></p>
 						</div>
-
 						<div class="col-12 mb-3">
-							<form:label path="endDay" cssClass="form-label">Ngày kết thúc:</form:label>
-							<form:input type="datetime-local" cssClass="form-control" path="endDay"></form:input>
+							<label class="form-label" for="endDay">Ngày kết thúc:</label>
+							<input type="datetime-local" class="form-control" th:field="*{endDay}" />
 							<p class="text-danger" th:text="${end_dayError}"></p>
 						</div>
 						<div class="col-12 mb-3">
-							<form:label path="status" cssClass="form-label">Thông tin:</form:label>
-							<form:radiobutton path="status" value="false" label="Đang hoạt động"
-								style="margin-left:10px" />
-							<form:radiobutton path="status" value="true" label="Ngưng hoạt động"
-								style="margin-left:10px" />
-							<form:errors path="status" cssClass="text-danger"></form:errors>
+							<label class="form-label" for="status">Thông tin:</label>
+							<input type="radio" th:field="*{status}" value="false" id="statusActive" />
+							<label for="statusActive" style="margin-left:10px">Đang hoạt động</label>
+							<input type="radio" th:field="*{status}" value="true" id="statusInactive" />
+							<label for="statusInactive" style="margin-left:10px">Ngưng hoạt động</label>
+							<p class="text-danger" th:errors="*{status}"></p>
 						</div>
 					</div>
 					<div class="col-12">
-						<button class="btn btn-success" formaction="/admin/flashSale/create"
+						<button type="submit" class="btn btn-success" th:formaction="@{/admin/flashSale/create}"
 							th:text="${typeButton}"></button>
-						<button formaction="/admin/flashSale/update" class="btn btn-warning"
+						<button type="submit" class="btn btn-warning" th:formaction="@{/admin/flashSale/update}"
 							th:text="${updateButton}"></button>
-						<button formaction="/admin/flashSale/delete/{flashSale.id}" class="btn btn-danger"
+						<button type="submit" class="btn btn-danger"
+							th:formaction="@{/admin/flashSale/delete/{id}(id=${flashSale.id})}"
 							th:text="${deleteButton}"></button>
 						<a href="/admin/flashSale" class="btn btn-primary">Reset</a>
 					</div>
 				</div>
 			</div>
-		</form:form>
+		</form>
+
 		<hr>
 		<br>
 		<div class="table-responsive">
-			<table id="statisticalTable" class="table table-hover">
+			<table id="statisticalTableFlashsale" class="table table-hover">
 				<thead>
 					<tr>
 						<th>Id</th>
@@ -61,34 +62,71 @@
 						<th>Trạng thái</th>
 						<th>Số lượng sản phẩm</th>
 						<th></th>
-						<!-- <th>Thông tin</th> -->
+
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="flashSale : ${flashSales}">
 						<td th:text="${flashSale.id}"></td>
-						<td>
-							<fmt:formatDate value="${flashSale.startDay}" pattern="HH:mm dd/MM/yyyy" />
-						</td>
-						<td>
-							<fmt:formatDate value="${flashSale.endDay}" pattern="HH:mm dd/MM/yyyy" />
-						</td>
-						<td>
-							<span th:if="${flashSale.status == false}">Đang hoạt động</span>
-							<span th:if="${flashSale.status == true}">Ngưng hoạt động</span>
-						</td>
+						<td th:text="${#dates.format(flashSale.startDay, 'HH:mm dd/MM/yyyy')}"></td>
+						<td th:text="${#dates.format(flashSale.endDay, 'HH:mm dd/MM/yyyy')}"></td>
+							<td th:text="${flashSale.status ? 'Ngưng hoạt động' : 'Đang hoạt động'}"></td>
+						
 						<td th:text="${flashSale.promotionalDetailsList.size()}">
-							<a th:href="@{/admin/promotionalDetail/{flashSale.id}(id=${flashSale.id})}">
-								Xem chi tiết
-							</a>
 						</td>
-						<td><a th:href="@{/admin/flashSale/edit/{flashSale.id}(id=${flashSale.id})}">Edit</a></td>
+						<td>
+							<div class="btn-group">
+								<a type="button" class="btn btn-primary"
+									th:href="@{/admin/promotionalDetail/{id}(id=${flashSale.id})}">
+									Xem Chi Tiết
+								</a>
+								<a type="button" class="btn btn-warning"
+									th:href="@{/admin/flashSale/edit/{id}(id=${flashSale.id})}">
+									Edit
+								</a>
+							</div>
+						</td>
+						<!--<td><a th:href="@{/admin/promotionalDetail/{id}(id=${flashSale.id})}">
+								Xem Chi Tiết ||
+							</a>
+							<a th:href="@{/admin/flashSale/edit/{id}(id=${flashSale.id})}">Edit</a></td>-->
+
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
+	<script type="text/javascript" th:inline="javascript">
+		$(document).ready(function () {
+			var table = $('#statisticalTableFlashsale').DataTable();
 
+			// Tạo radio buttons
+			var radioHtml = `
+            <div class="mb-3">
+                <label>
+                    <input type="radio" name="statusFilter" value="" checked> Tất cả
+                </label>
+                <label class="mx-2">
+                    <input type="radio" name="statusFilter" value="Đang hoạt động"> Đang hoạt động
+                </label>
+                <label>
+                    <input type="radio" name="statusFilter" value="Ngưng hoạt động"> Ngưng hoạt động
+                </label>
+            </div>
+        `;
+
+			// Thêm radio buttons vào phần tử có class "table-responsive"
+			$('.table-responsive').prepend(radioHtml);
+
+			// Xử lý sự kiện khi radio buttons được chọn
+			$('input[name="statusFilter"]').on('change', function () {
+				var selectedValue = $(this).val();
+
+				// Lọc dữ liệu trong cột "Trạng thái" của DataTable
+				table.column(3).search(selectedValue).draw();
+			});
+		});
+	</script>
 </body>
 
 </html>

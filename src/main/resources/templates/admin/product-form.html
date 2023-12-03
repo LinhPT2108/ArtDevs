@@ -38,7 +38,7 @@
 						</select>
 						<small class="text-danger fst-italic" id="manufacturerProductError"></small>
 					</div>
-					<div class="col-md-6 mb-3">
+					<!--<div class="col-md-6 mb-3">
 						<label for="price" class="form-label">Giá bán</label>
 						<input type="number" th:field="*{price}" class="form-control" autocomplete="none" />
 						<small class="text-danger fst-italic" id="priceError"></small>
@@ -47,7 +47,7 @@
 						<label for="quantityInStock" class="form-label">Số lượng trong kho</label>
 						<input type="number" th:field="*{quantityInStock}" class="form-control" autocomplete="none" />
 						<small class="text-danger fst-italic" id="quantityInStockError"></small>
-					</div>
+					</div> -->
 					<div class="col-12 mb-3">
 						<label class="form-label mb-3">Thông tin chi tiết:</label>
 						<small class="text-danger fst-italic" id="detailDecriptionError"></small>
@@ -111,8 +111,8 @@
 				<tr>
 					<th>Mã sản phẩm</th>
 					<th>Tên sản phẩm</th>
-					<th>Số lượng</th>
-					<th>Đơn giá</th>
+					<th>Loại Sản Phẩm</th>
+					<th>Thương Hiệu</th>
 					<th>Ngày tạo</th>
 					<th></th>
 				</tr>
@@ -121,20 +121,19 @@
 				<tr th:each="product : ${products}">
 					<td th:text="${product.productId}"></td>
 					<td th:text="${product.productName}"></td>
-					<td th:text="${product.quantityInStock}"></td>
+					<td th:text="${product.categoryProduct.categoryName}"></td>
+					<td th:text="${product.manufacturerProduct.manufacturerName}"></td>
 					<td>
-						<fmt:setLocale value="vi_VN" />
-						<fmt:formatNumber value="${product.price}" type="currency" currencyCode="VND"
-							maxFractionDigits="0" minFractionDigits="0" />
-					</td>
-					<td>
-						<fmt:formatDate value="${product.createdDate}" pattern="dd/MM/yyyy" />
+						<span th:text="${#dates.format(product.createdDate, 'dd/MM/yyyy')}"></span>
+
 					</td>
 					<td class="d-flex justify-content-between">
+						<a type="button" class="btn btn-success btnDelProduct" th:href="@{/admin/product/edit/{productId}(productId=${product.productId})}">Chi Tiết Sản Phẩm</a>
 						<a type="button" class="btn btn-secondary"
 							th:href="@{/admin/product/edit/{productId}(productId=${product.productId})}">Chỉnh sửa</a>
 						<a type="button" class="btn btn-danger btnDelProduct"
 							th:href="@{/admin/product/remove/{productId}(productId=${product.productId})}">Xóa</a>
+
 					</td>
 				</tr>
 			</tbody>

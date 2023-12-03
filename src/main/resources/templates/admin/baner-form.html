@@ -32,7 +32,13 @@
 					<td th:text="${item.id}"></td>
 					<td><img alt="" th:src="@{/images/banner/{bannerName}(bannerName=${item.bannerName})}" height="100"
 							width="200"></td>
-					<td><a th:href="@{/admin/banner/delete/{id}(id=${item.id})}">Delete</a></td>
+					<td>
+						<a type="button" class="btn btn-danger" th:href="@{/admin/banner/delete/{id}(id=${item.id})}">
+							Delete
+						</a>
+					</td>
+
+					<!--<td><a th:href="@{/admin/banner/delete/{id}(id=${item.id})}">Delete</a></td>-->
 				</tr>
 			</tbody>
 		</table>

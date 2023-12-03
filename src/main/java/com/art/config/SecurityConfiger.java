@@ -51,6 +51,7 @@ public class SecurityConfiger {
 	        		.requestMatchers(
 	        				AntPathRequestMatcher.antMatcher("/*"),
 	        				AntPathRequestMatcher.antMatcher("/account/login"),
+	        				AntPathRequestMatcher.antMatcher("/account/verify-code/**"),
 	        				AntPathRequestMatcher.antMatcher("/product"),
 	        				AntPathRequestMatcher.antMatcher("/product/**")
 	        				).permitAll()
@@ -59,11 +60,11 @@ public class SecurityConfiger {
 							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/cart/**")
 	        				).hasAnyAuthority("user")
 	        		.requestMatchers(
-							AntPathRequestMatcher.antMatcher("/account/**"),
-							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/account"),
-							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/account/**"),
-							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/account"),
-							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/account/**")
+							AntPathRequestMatcher.antMatcher("/account/profile")
+//							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/account"),
+//							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/account/**"),
+//							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/account"),
+//							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/account/**")
 	        				).hasAnyAuthority("admin", "staff", "shipper","user")
 	        		.requestMatchers(
 							// AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/order"),
@@ -73,7 +74,7 @@ public class SecurityConfiger {
 	        				).hasAnyAuthority("admin", "staff", "shipper")
 	        		.requestMatchers(
 	        				AntPathRequestMatcher.antMatcher("/admin/dashboard"),
-							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/product"),
+//							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/product"),
 							// AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/product/**"),
 							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/flashSale"),
 							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/flashSale/**"),
@@ -118,8 +119,12 @@ public class SecurityConfiger {
 	                .loginProcessingUrl(Path.BASE_PATH+"/account/user")
 	                .usernameParameter("email")
 	                .passwordParameter("password")
+
+	                .defaultSuccessUrl("/", false))
+
 //	                .defaultSuccessUrl("/", false)
-	                )
+	                
+
 	        .logout(logout -> logout
 	                .logoutUrl("/account/logout")
 	                .logoutSuccessUrl("/account/login")

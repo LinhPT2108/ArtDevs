@@ -38,7 +38,12 @@ public class Role implements Serializable {
 
 	@Column
 	@Nationalized
+
+
+	
+
 	private String roleName;
+
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "role", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

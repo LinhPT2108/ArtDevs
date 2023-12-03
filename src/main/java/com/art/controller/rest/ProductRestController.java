@@ -37,8 +37,6 @@ import com.art.dao.promotion.OrderDetailDAO;
 import com.art.dao.promotion.PromotionalDetailsDAO;
 import com.art.dto.product.ProductDTO;
 import com.art.mapper.ProductMapper;
-import com.art.models.activity.Comment;
-import com.art.models.activity.ImageComment;
 import com.art.models.activity.RecentlyViewed;
 import com.art.models.activity.WishList;
 import com.art.models.product.Category;
@@ -47,7 +45,6 @@ import com.art.models.product.Image;
 import com.art.models.product.Manufacturer;
 import com.art.models.product.Product;
 import com.art.models.product.ProductDetail;
-import com.art.models.promotion.OrderDetail;
 import com.art.models.promotion.PromotionalDetails;
 import com.art.utils.Path;
 
@@ -233,9 +230,9 @@ public class ProductRestController {
 		deleteImagesProduct(product);
 		// deleteProductDetail(product);
 		deleteProductDescription(product);
-		deleteComment(product);
+//		deleteComment(product);
 		deletePromotionDetail(product);
-		deleteOrderDetail(product);
+//		deleteOrderDetail(product);
 		deleteWishList(product);
 		deleteRecentlyView(product);
 		proDAO.deleteById(key);
@@ -293,18 +290,18 @@ public class ProductRestController {
 	/*
 	 * Xóa bình luận sản phẩm
 	 */
-	private void deleteComment(Product product) {
-		List<Comment> comments = product.getProductComment();
-		if (comments != null) {
-			for (Comment comment : comments) {
-				List<ImageComment> imageComments = comment.getCommentImages();
-				for (ImageComment imageComment : imageComments) {
-					imageCommentDAO.deleteById(imageComment.getId());
-				}
-				commentDAO.deleteById(comment.getId());
-			}
-		}
-	}
+//	private void deleteComment(Product product) {
+//		List<Comment> comments = product.getProductComment();
+//		if (comments != null) {
+//			for (Comment comment : comments) {
+//				List<ImageComment> imageComments = comment.getCommentImages();
+//				for (ImageComment imageComment : imageComments) {
+//					imageCommentDAO.deleteById(imageComment.getId());
+//				}
+//				commentDAO.deleteById(comment.getId());
+//			}
+//		}
+//	}
 
 	/*
 	 * Xóa sản phẩm khuyến mãi
@@ -321,14 +318,14 @@ public class ProductRestController {
 	/*
 	 * Xóa sản phẩm trong hóa đơn
 	 */
-	private void deleteOrderDetail(Product product) {
-		List<OrderDetail> orderDetails = product.getProductOrderDetail();
-		if (orderDetails != null) {
-			for (OrderDetail orderDetail : orderDetails) {
-				orderDetailDAO.deleteById(orderDetail.getId());
-			}
-		}
-	}
+//	private void deleteOrderDetail(Product product) {
+//		List<OrderDetail> orderDetails = product.getProductOrderDetail();
+//		if (orderDetails != null) {
+//			for (OrderDetail orderDetail : orderDetails) {
+//				orderDetailDAO.deleteById(orderDetail.getId());
+//			}
+//		}
+//	}
 
 	/*
 	 * Xóa sản phẩm trong danh sách yêu thích

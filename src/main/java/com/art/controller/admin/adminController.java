@@ -20,12 +20,17 @@ public class adminController {
 	@Autowired
 	OrderDetailDAO idDAO;
 	
+	
+	
 	@GetMapping("/dashboard")
 	public String dashboard(Model model) {
 		model.addAttribute("views", "dashboard");
 		model.addAttribute("title", "Trang chủ");
 		model.addAttribute("invoice", revenueService.findAllByOrderByOrderDateDesc());
-		model.addAttribute("bestSellers", idDAO.countProductsOrderByCountDesc());
+//		model.addAttribute("bestSellers", idDAO.countProductsOrderByCountDesc());
+		
+		
+//		System.out.println("bestsellers" + idDAO.countProductsOrderByCountDesc());
 		getRateYear(model);
 		getRateMonth(model);
 		return "admin/Dashboard";
@@ -34,7 +39,10 @@ public class adminController {
 	public void getRateYear(Model model) {
 		List<Integer> labels = revenueService.getYearLabelsRevenue();
 		List<Double> values = revenueService.getTotalAmountByYear();
-
+		
+//		NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.forLanguageTag("vi-VN"));
+//		String formattedNumber = numberFormat.format(nowYear);
+		
 		if (labels.size() == 1) {
 			model.addAttribute("nowYear", values.get(0));
 			model.addAttribute("lastYear", 0);
@@ -64,7 +72,7 @@ public class adminController {
 	public String test(Model model) {
 		model.addAttribute("title", "Trang chủ");
 		model.addAttribute("invoice", revenueService.findAllByOrderByOrderDateDesc());
-		model.addAttribute("bestSellers", idDAO.countProductsOrderByCountDesc());
+//		model.addAttribute("bestSellers", idDAO.countProductsOrderByCountDesc());
 		getRateYear(model);
 		getRateMonth(model);
 		return "/admin/NewFile";

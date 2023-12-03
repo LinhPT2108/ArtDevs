@@ -1,8 +1,13 @@
 package com.art.controller.admin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,13 +19,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-
 import com.art.dao.user.RoleDAO;
 import com.art.dao.user.AccountDAO;
+import com.art.dao.user.AccountRoleDAO;
 import com.art.models.user.Account;
+import com.art.models.user.AccountRole;
 import com.art.models.user.Role;
 import com.art.service.ParamService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
@@ -29,6 +36,12 @@ import jakarta.validation.Valid;
 public class userCustomController {
 	@Autowired
 	RoleDAO roleDAO;
+
+	@Autowired
+	HttpServletRequest req;
+
+	@Autowired
+	AccountRoleDAO acRoleDAO;
 	@Autowired
 	AccountDAO userCustomDAO;
 	@Autowired
@@ -38,6 +51,9 @@ public class userCustomController {
 
 	@GetMapping("/userCustom")
 	public String UserCustom(@ModelAttribute("userCustom") Account userCustom, Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		model.addAttribute("authUser", authentication);
+		System.out.println("authUser" + authentication.getName());
 		model.addAttribute("views", "userCustom-form");
 		model.addAttribute("title", "Quản lí tài khoản");
 		model.addAttribute("typeButton", "Thêm");
@@ -47,33 +63,87 @@ public class userCustomController {
 		List<Account> Accounts = userCustomDAO.findAll();
 		model.addAttribute("roles", listRole);
 		model.addAttribute("userCustoms", Accounts);
+		System.out.println("count: " + userCustomDAO.checkCountAdmin("admin"));
 		return "admin/UserCustom";
 	}
 
 	@PostMapping("/userCustom/create")
-	public String createUserCustom(@Valid @ModelAttribute("userCustom") Account usercustom , BindingResult bd,
+	public String createUserCustom(@Valid @ModelAttribute("userCustom") Account usercustom, BindingResult bd,
 			Model model, @RequestParam("avatar") MultipartFile avatar) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		model.addAttribute("authUser", authentication);
 		List<Role> listRole = roleDAO.findAll();
-//		model.addAttribute("views", "userCustom-form");
+		model.addAttribute("views", "userCustom-form");
 		model.addAttribute("title", "Quản lí tài khoản");
 		model.addAttribute("typeButton", "Thêm");
 		model.addAttribute("updateButton", "Cập nhật");
 		model.addAttribute("deleteButton", "Xóa");
 		model.addAttribute("roles", listRole);
 		if (bd.hasErrors()) {
+			List<Account> Accounts = userCustomDAO.findAll();
+			model.addAttribute("userCustoms", Accounts);
 			return "admin/UserCustom";
-			
+
 		}
 		if (!avatar.isEmpty()) {
 			usercustom.setImage(paramService.save(avatar, "images/avatar").getName());
 		}
+		List<AccountRole> acrole = new ArrayList<>();
+		for (Role role : listRole) {
+			String param = req.getParameter(role.getRoleName());
+			if (param != null) {
+				acrole.add(new AccountRole(usercustom, role));
+			}
+		}
+		usercustom.setUserRole(acrole);
+		usercustom.setPassword(new BCryptPasswordEncoder().encode(usercustom.getPassword()));
 		userCustomDAO.save(usercustom);
 		return "redirect:/admin/userCustom";
+	}
+
+	@RequestMapping("/userCustom/update")
+	public String updateUserCustom(@ModelAttribute("userCustom") Account userCustom, BindingResult bd, Model model,
+			@RequestParam("avatar") MultipartFile avatar) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		model.addAttribute("authUser", authentication);
+		List<Role> listRole = roleDAO.findAll();
+		model.addAttribute("views", "userCustom-form");
+		model.addAttribute("title", "Quản lí tài khoản");
+		model.addAttribute("typeButton", "Thêm");
+		model.addAttribute("updateButton", "Cập nhật");
+		model.addAttribute("deleteButton", "Xóa");
+		model.addAttribute("roles", listRole);
+		if (bd.hasErrors()) {
+			List<Account> Accounts = userCustomDAO.findAll();
+			model.addAttribute("userCustoms", Accounts);
+			return "admin/UserCustom";
+		}
+
+		Account currentUser = userCustomDAO.getById(userCustom.getAccountId());
+		if (!avatar.isEmpty()) {
+			userCustom.setImage(paramService.save(avatar, "images/avatar").getName());
+		} else {
+			userCustom.setImage(currentUser.getImage());
+		}
+		List<AccountRole> acrole = new ArrayList<>();
+		for (Role role : listRole) {
+			String param = req.getParameter(role.getRoleName());
+			if (param != null) {
+				acrole.add(new AccountRole(userCustom, role));
+			}
+		}
+		userCustom.setUserRole(acrole);
+		userCustom.setPassword(new BCryptPasswordEncoder().encode(userCustom.getPassword()));
+		userCustomDAO.save(userCustom);
+
+		return "redirect:/admin/userCustom/edit/" + userCustom.getAccountId();
 	}
 
 	@GetMapping("/userCustom/edit/{userId}")
 	public String editUserCustom(@ModelAttribute("userCustom") Account userCustom, Model model,
 			@PathVariable("userId") String userId) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		model.addAttribute("authUser", authentication);
 		try {
 			model.addAttribute("views", "userCustom-form");
 			model.addAttribute("title", "Quản lí tài khoản");
@@ -83,8 +153,20 @@ public class userCustomController {
 			List<Role> listRole = roleDAO.findAll();
 			List<Account> userCustoms = userCustomDAO.findAll();
 			Account usercus = userCustomDAO.getById(userId);
+			System.out.println("password" + usercus.getPassword());
+			List<AccountRole> accRole = usercus.getUserRole();
+//			List<AccountRole> accRole = acRoleDAO.findByUser(usercus);
+			List<Integer> IntRole = new ArrayList<Integer>();
+			if (accRole != null) {
+				for (AccountRole acr : accRole) {
+					IntRole.add(acr.getRole().getId());
+				}
+			}
+			model.addAttribute("IndexRole", IntRole);
+			model.addAttribute("roles", listRole);
+			model.addAttribute("accroles", accRole);
 			model.addAttribute("userCustom", usercus);
-			model.addAttribute("roles", usercus.getUserRole());
+
 			model.addAttribute("userCustoms", userCustoms);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -92,34 +174,11 @@ public class userCustomController {
 		return "admin/UserCustom";
 	}
 
-	@RequestMapping("/userCustom/update")
-	public String updateUserCustom(@ModelAttribute("userCustom") Account userCustom, BindingResult bd, Model model,
-			@RequestParam("avatar") MultipartFile avatar) {
-		List<Role> listRole = roleDAO.findAll();
-		model.addAttribute("views", "userCustom-form");
-		model.addAttribute("title", "Quản lí tài khoản");
-		model.addAttribute("typeButton", "Thêm");
-		model.addAttribute("updateButton", "Cập nhật");
-		model.addAttribute("deleteButton", "Xóa");
-		model.addAttribute("roles", listRole);
-		if (bd.hasErrors()) {
-			return "admin/index";
-		}
-		String userId = paramService.getString("userId", "");
-		Account currentUser = userCustomDAO.getById(userId);
-		if (!avatar.isEmpty()) {
-			userCustom.setImage(paramService.save(avatar, "images/avatar").getName());
-		}else {
-			userCustom.setImage(currentUser.getImage());
-		}
-		userCustomDAO.save(userCustom);
-
-		return "redirect:/admin/userCustom/edit/" + userCustom.getAccountId();
-	}
-
 	@RequestMapping("/userCustom/delete/{userId}")
-	public String deleteUserCustom(@PathVariable("userId") String userId, Model model,@ModelAttribute("userCustom") Account userCustom,
-			@RequestParam("avatar") MultipartFile avatar) {
+	public String deleteUserCustom(@PathVariable("userId") String userId, Model model,
+			@ModelAttribute("userCustom") Account userCustom, @RequestParam("avatar") MultipartFile avatar) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		model.addAttribute("authUser", authentication);
 		List<Role> listRole = roleDAO.findAll();
 		model.addAttribute("views", "userCustom-form");
 		model.addAttribute("title", "Quản lí tài khoản");
@@ -129,11 +188,17 @@ public class userCustomController {
 		model.addAttribute("roles", listRole);
 		if (!avatar.isEmpty()) {
 			userCustom.setImage(paramService.save(avatar, "images/avatar").getName());
-		}else {
+		} else {
 			userCustom.setImage(userCustomDAO.getById(userId).getImage());
 		}
-		userCustom.setStatus(true);
-		userCustomDAO.save(userCustom);
+		int a = userCustomDAO.checkCountAdmin("admin");
+		if (a > 1) {
+			userCustom.setStatus(true);
+			userCustomDAO.save(userCustom);
+		} else {
+			System.out.println("Lỗi");
+		}
+
 		return "redirect:/admin/userCustom";
 	}
 }

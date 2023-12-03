@@ -37,6 +37,10 @@ app.config(function ($routeProvider, $locationProvider) {
       templateUrl: "templates/user/views/register.html",
       controller: "registerCtrl",
     })
+    .when("/account/verify-code/:accountId", {
+      templateUrl: "templates/user/views/verify-code.html",
+      controller: "verifyCtrl",
+    })
     .when("/cart", {
       templateUrl: "templates/user/views/cart.html",
       controller: "cartCtrl",

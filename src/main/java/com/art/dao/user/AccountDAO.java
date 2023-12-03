@@ -2,6 +2,7 @@ package com.art.dao.user;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.art.models.user.Account;
 
@@ -22,6 +23,7 @@ public interface AccountDAO extends JpaRepository<Account, String> {
 //
 	// Tìm kiếm người dùng dựa trên trạng thái is_del
 	List<Account> findByStatus(boolean del);
+
 //
 //	// Tìm kiếm người dùng dựa trên vai trò
 //	List<UserCustom> findByRole(Role role);
@@ -29,13 +31,15 @@ public interface AccountDAO extends JpaRepository<Account, String> {
 	// Tìm kiếm người dùng dựa trên email
 //	List<Account> findByEmail(String email);
 //
-//	@Query("SELECT u.accountId, u.fullname, u.email, COUNT(i.id) " + "FROM Account u " + "LEFT JOIN u.userInvoice i "
-//			+ "GROUP BY u.accountId, u.fullname, u.email")
-//	List<Object[]> getUsersWithInvoiceCount();
+	@Query("SELECT u.accountId, u.fullname, u.email, COUNT(i.id) " + "FROM Account u LEFT JOIN u.userOrder i "
+			+ "GROUP BY u.accountId, u.fullname, u.email")
+	List<Object[]> getUsersWithOrdersCount();
 //
 //	// Tìm kiếm người dùng dựa trên họ tên chứa một từ khóa
 //	List<UserCustom> findByFullnameContainingIgnoreCase(String keyword);
 	
 	Account findByEmail(String email);
 	
+	@Query("SELECT count(a) FROM AccountRole a WHERE a.role.roleName =:r and a.user.status = false ")
+	int checkCountAdmin(String r);
 }

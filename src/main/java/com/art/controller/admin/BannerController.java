@@ -3,6 +3,8 @@ package com.art.controller.admin;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.art.dao.activity.BannerDAO;
+import com.art.dao.user.AccountDAO;
 import com.art.models.activity.Banner;
+import com.art.models.user.Account;
 import com.art.service.ParamService;
 
 @Controller
@@ -24,7 +28,7 @@ public class BannerController {
 	private ParamService paramService;
 	@Autowired
 	private BannerDAO bannerDao;
-
+	@Autowired AccountDAO acDAO;
 	@GetMapping({ "/", "/banner" })
 	public String showIndex(Model model) {
 		model.addAttribute("views", "banner");
@@ -41,7 +45,9 @@ public class BannerController {
 		model.addAttribute("title", "banner");
 		Banner banner = new Banner();
 		banner.setBannerName(paramService.save(file, "images/banner").getName());
-//		banner.setUser(sessionService.get("userLogin"));
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Account user2 = acDAO.findByEmail(authentication.getName());
+		banner.setUser(user2);
         bannerDao.save(banner);
 		return "redirect:/admin/banner";
 	}

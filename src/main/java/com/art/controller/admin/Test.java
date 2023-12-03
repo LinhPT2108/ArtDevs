@@ -14,6 +14,6 @@ public class Test {
 	public String getLogin(Model model) {
 		CustomUserDetails user = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication();
 		model.addAttribute("user", user);
-		return "login";
+				return "login";
 	}
 }
