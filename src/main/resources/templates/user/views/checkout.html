@@ -17,9 +17,9 @@
                                         ng-show="userLogin.inforAddresses.length==0">Thêm
                                         địa chỉ</a>
 
-                                    <select class="custom-select custom-select-lg" id="address" style="height: 50px;"
-                                        ng-show="userLogin.inforAddresses.length > 0" ng-model="selectedAddress"
-                                        ng-change="calculateShippingFee(selectedAddress)">
+                                    <select class="custom-select custom-select-lg" id="address"
+                                        style="height: 50px;width: 100%;" ng-show="userLogin.inforAddresses.length > 0"
+                                        ng-model="selectedAddress" ng-change="calculateShippingFee(selectedAddress)">
                                         <option value="" class="display-6 mb-2 font-weight-bold">Chọn địa chỉ...
                                         </option>
                                         <option class="font-weight-bold display-6 mb-2"
@@ -30,6 +30,14 @@
                                     </select>
 
                                     <small class="text-danger" id="addressError"></small>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text font-weight-bold" for="note">Chú thích: </label>
+                                        <textarea cols="" rows="4" name="note" id="note" ng-model="note"></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -89,6 +97,10 @@
                                         {{totalFeeShip|number:0}}
                                     </span>
                                 </li>
+                                <li class=" mb-5" ng-show="userLogin.inforAddresses.length>0 && selectedAddress!=null ">
+                                    <span class="text-muted">Thời gian giao hàng dự kiến:
+                                        {{expectedDeliveryTime| date :"dd/MM/yyyy"}}</span>
+                                </li>
                                 <li class="last">Tổng cộng:
                                     <span id="totalPriceAmount">
                                         {{totalPay|number:0}}₫
@@ -127,10 +139,10 @@
                     <div class="single-widget get-button">
                         <div class="content">
                             <div class="alert alert-danger" role="alert" ng-show="selectedAddress==null">
-                                Bạn chưa chọn
+                                Bạn chưa chọn địa chỉ
                             </div>
-                            <div class="button" ng-show="userLogin.inforAddresses.length>0 ">
-                                <a href="/checkout" class="btn" id="postCheckout">ĐẶT
+                            <div class="button" ng-show="userLogin.inforAddresses.length>0 && selectedAddress!=null ">
+                                <a href="#" class="btn" id="postCheckout" ng-click="orderAction($event)">ĐẶT
                                     HÀNG</a>
                             </div>
                             <div ng-show="userLogin.inforAddresses.length==0">
