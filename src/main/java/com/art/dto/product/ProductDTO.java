@@ -22,7 +22,6 @@ public class ProductDTO {
 	private List<String> images;
 	private List<ProductDetailDTO> productDetails;
 	private List<DetailDescriptionDTO> descriptions;
-	private List<CommentDTO> comments;
 	private double star = 0;
 	private int countSold = 0;
 	private boolean isSale = false;

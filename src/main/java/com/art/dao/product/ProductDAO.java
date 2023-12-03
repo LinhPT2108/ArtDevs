@@ -35,10 +35,10 @@ public interface ProductDAO extends JpaRepository<Product, String> {
 	// List<Product> searchProductByNameAndCategory(String keyword, Category
 	// category);
 	//
-	@Query("SELECT AVG(c.star) FROM Comment c WHERE c.product.id = :productId")
+	@Query("SELECT AVG(c.star) FROM Comment c WHERE c.productDetail.product.id = :productId")
 	Double calculateAverageRating(String productId);
 
-	@Query("SELECT count(o.id) FROM OrderDetail o WHERE o.product.id = :productId")
+	@Query("SELECT count(o.id) FROM OrderDetail o WHERE o.productDetail.product.id = :productId")
 	int countProuctSold(String productId);
 
 	//

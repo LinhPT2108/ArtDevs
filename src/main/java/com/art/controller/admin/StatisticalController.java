@@ -125,7 +125,7 @@ public class StatisticalController {
 
 		
 		//sản phẩm bán chạy
-		model.addAttribute("bestSellers", idDAO.countProductsOrderByCountDesc());
+//		model.addAttribute("bestSellers", idDAO.countProductsOrderByCountDesc());
 		
 		return "admin/static-best-seller";
 	}

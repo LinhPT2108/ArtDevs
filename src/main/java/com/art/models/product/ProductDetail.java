@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.art.models.activity.Cart;
+import com.art.models.activity.Comment;
+import com.art.models.promotion.OrderDetail;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -63,6 +65,14 @@ public class ProductDetail {
 	
 	@OneToMany(mappedBy = "productDetail", fetch = FetchType.EAGER)
 	private List<Price> productPrice;
+	
+	@OneToMany(mappedBy = "productDetail")
+	@JsonIgnore
+	private List<OrderDetail> productOrderDetail;
+
+	@OneToMany(mappedBy = "productDetail")
+	@JsonIgnore
+	private List<Comment> productComment;
 
 	public ProductDetail(int id, int quantityInStock, String size, String color, double weight, double power,
 			Date productionDate, List<Price> productPrice) {

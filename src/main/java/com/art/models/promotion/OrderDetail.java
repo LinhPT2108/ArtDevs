@@ -1,7 +1,7 @@
 package com.art.models.promotion;
 
 import com.art.models.activity.Comment;
-import com.art.models.product.Product;
+import com.art.models.product.ProductDetail;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,8 +29,8 @@ public class OrderDetail {
 	private Order order;
 
 	@ManyToOne
-	@JoinColumn(name = "product_id")
-	private Product product;
+	@JoinColumn(name = "product_detail_id")
+	private ProductDetail productDetail;
 
 	@Column
 	private int quantity;
