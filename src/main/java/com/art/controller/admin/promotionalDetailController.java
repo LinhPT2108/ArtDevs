@@ -75,8 +75,10 @@ public class promotionalDetailController {
 //		String productIdString=paramService.getString("product","");
 		int flashSaleIdString=paramService.getInt("idflashSale", -1);
 		PromotionalDetails promotionalDetailbyid=promotionDetailDAO.findById(flashSaleIdString).get();
-		String productIdString = promotionalDetailbyid.getProduct().getProductName();
-		System.out.println("productIdString" + productIdString );
+		/*
+		 * String productIdString = promotionalDetailbyid.getProduct().getProductName();
+		 * System.out.println("productIdString" + productIdString );
+		 */
 		promotionalDetail.setProduct(promotionalDetailbyid.getProduct());
 		List<PromotionalDetails> promotionalDetails=promotionDetailDAO.findAll();
 		model.addAttribute("promotionalDetails",promotionalDetails);

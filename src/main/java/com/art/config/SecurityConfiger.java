@@ -91,7 +91,8 @@ public class SecurityConfiger {
 							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/flashSale/**"),
 	        				AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/voucher"),
 	        				AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/voucher/**"),
-	        				AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/update-status")
+	        				AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/update-status"),
+	        				AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/OrderDetail/**")
 	        				).hasAnyAuthority("admin", "staff")
 	        		.requestMatchers(
 	        				AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/userCustom"),
@@ -109,7 +110,8 @@ public class SecurityConfiger {
 	        				AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/statistical-order"),
 	        				AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/statistical-wishlist"),
 	        				AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/statistical-orders-by-user"),
-	        				AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/statistical-best-seller")
+	        				AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/statistical-best-seller"),
+	        				AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/OrderDetail/**")
 	        				).hasAnyAuthority("admin")
 	                .anyRequest().permitAll()
 	        		)

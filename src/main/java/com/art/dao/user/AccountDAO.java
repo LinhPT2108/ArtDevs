@@ -42,4 +42,6 @@ public interface AccountDAO extends JpaRepository<Account, String> {
 	
 	@Query("SELECT count(a) FROM AccountRole a WHERE a.role.roleName =:r and a.user.status = false ")
 	int checkCountAdmin(String r);
+	
+	
 }
