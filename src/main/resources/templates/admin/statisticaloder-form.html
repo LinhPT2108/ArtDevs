@@ -17,15 +17,17 @@
 					<th>Tổng tiền</th>
 					<th>Trạng thái</th>
 					<th>Ghi chú</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="item : ${invoice}">
+				<tr th:each="item : ${invoice}" th:class="${item.status == 4} ? 'cancel-order' : ''">
 					<td th:text="${item.id}"></td>
 					<td th:text="${item.user.fullname}"></td>
-					<td th:text="${#dates.format(item.orderDate, 'dd/MM/yyyy')}"></td>
+					<td th:text="${#dates.format(item.orderDate, 'hh:mm dd/MM/yyyy')}"></td>
 					<td>
-						<span th:text="${#numbers.formatDecimal(item.totalAmount, 0, 0)} + '&#8363;' "></span>
+
+						<span th:text="${#numbers.formatDecimal(item.totalAmount,0,'COMMA',0,'POINT')}+' đ'"></span>
 					</td>
 					<td>
 						<select class="form-select statusSelect" th:disabled="${item.status==3}"
@@ -34,9 +36,14 @@
 							<option value="1" th:selected="${item.status==1}">Đang xử lý</option>
 							<option value="2" th:selected="${item.status==2}">Đang giao hàng</option>
 							<option value="3" th:selected="${item.status==3}">Giao hàng thành công</option>
+							<option value="4" th:selected="${item.status==4}">Hủy Đơn</option>
 						</select>
 					</td>
 					<td th:text="${item.note}"></td>
+					<td> <a type="button" class="btn btn-primary"
+							th:href="@{/admin/OrderDetail/{Id}(Id=${item.id})}">
+							Xem Chi Tiết
+						</a></td>
 				</tr>
 			</tbody>
 		</table>

@@ -52,69 +52,68 @@
 					<div class="col-12 mb-3">
 						<label class="form-label mb-3">Thông tin chi tiết:</label>
 						<small class="text-danger fst-italic" id="detailDecriptionError"></small>
-						<div class="describe row">
-							<th:block th:switch="${typeButton}">
-								<th:block th:case="false">
-									<th:block th:each="i : ${pd.productDescriptions}">
-										<div class="description-container col-xs-12 col-md-6 mb-3">
-											... rest of the code ...
-											<span class="motaClass position-absolute z-3 bg-white"
-												data-counter-number="${i.index +1}" style="top: -13px">Mô tả 1:</span>
-											<div class="mb-3">
-												<div class="form-floating">
-													<input type="text" class="form-control" id="tieude1" value=""
-														placeholder="124" />
-													<label for="tieude1">Tiêu đề:</label>
-												</div>
-											</div>
+						<div class="describe row" th:switch="${typeButton}">
+
+							<th:block th:case="false">
+								<div class="description-container col-xs-12 col-md-6 mb-3">
+									<span class="motaClass position-absolute z-3 bg-white"
+										data-counter-number="${i.index +1}" style="top: -13px">Mô tả 1:</span>
+									<div class="mb-3">
+										<div class="form-floating">
+											<input type="text" class="form-control" id="tieude1" value=""
+												placeholder="124" />
+											<label for="tieude1">Tiêu đề:</label>
+										</div>
+									</div>
+									<div class="form-floating">
+										<textarea class="form-control" placeholder="Leave a comment here"
+											style="height: 100px;" id="noidung1"></textarea>
+										<label path="">Nội dung:</label>
+									</div>
+								</div>
+
+							</th:block>
+							<th:block th:case="true">
+								<th:block th:each="p, i : ${pd.productDescriptions}">
+									<div class="col-xs-12 col-md-6 mb-3 description-container">
+
+										<span class="position-absolute z-3 bg-white motaClass" style="top: -13px"
+											data-counter-number="${i.index + 1}">Mô tả
+											${i.index + 1}:</span>
+										<div class="mb-3">
 											<div class="form-floating">
-												<textarea class="form-control" placeholder="Leave a comment here"
-													style="height: 100px;" id="noidung1"></textarea>
-												<label path="">Nội dung:</label>
+												<input type="text" class="form-control"
+													th:id="'tieude' + ${i.index + 1}" th:value="${p.title}"
+													placeholder="124" />
+												<label th:for="'tieude' + ${i.index + 1}">Tiêu đề:</label>
 											</div>
 										</div>
-									</th:block>
-									<th:block th:case="true">
-										<th:block th:each="p, i : ${pd.productDescriptions}">
-											<div class="col-xs-12 col-md-6 mb-3 description-container">
-												... rest of the code ...
-												<span class="position-absolute z-3 bg-white motaClass"
-													style="top: -13px" data-counter-number="${i.index + 1}">Mô tả
-													${i.index + 1}:</span>
-												<div class="mb-3">
-													<div class="form-floating">
-														<input type="text" class="form-control"
-															th:id="'tieude' + ${i.index + 1}" th:value="${p.tile}"
-															placeholder="124" />
-														<label th:for="'tieude' + ${i.index + 1}">Tiêu đề:</label>
-													</div>
-												</div>
-												<div class="form-floating">
-													<textarea class="form-control" placeholder="Leave a comment here"
-														style="height: 100px;" th:id="'noidung' + ${i.index + 1}"
-														th:text="${p.description}"></textarea>
-													<label th:path="">Nội dung:</label>
-												</div>
-												<div th:if="${i.index != 0}">
-													<button class="btn btn-danger" th:onclick="xoaMoTa(this)"
-														style="position: absolute; top: -13px; right: -12px; padding: 2px 6px; border-radius: 50%;">X
-													</button>
-												</div>
-											</div>
-										</th:block>
-									</th:block>
+										<div class="form-floating">
+											<textarea class="form-control" placeholder="Leave a comment here"
+												style="height: 100px;" th:id="'noidung' + ${i.index + 1}"
+												th:text="${p.description}"></textarea>
+											<label>Nội dung:</label>
+										</div>
+										<div th:if="${i.index != 0}">
+											<button class="btn btn-danger" th:onclick="xoaMoTa(this)"
+												style="position: absolute; top: -13px; right: -12px; padding: 2px 6px; border-radius: 50%;">X
+											</button>
+										</div>
+									</div>
 								</th:block>
-								<button type="button" class="button ms-2 mb-3" onclick="themMoTa()">
-									<span class="button__text">Thêm mô tả</span>
-									<span class="button__icon">
-										<svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24"
-											stroke-width="2" stroke-linejoin="round" stroke-linecap="round"
-											stroke="currentColor" height="24" fill="none" class="svg">
-											<line y2="19" y1="5" x2="12" x1="12"></line>
-											<line y2="12" y1="12" x2="19" x1="5"></line>
-										</svg>
-									</span>
-								</button>
+							</th:block>
+
+							<button type="button" class="button ms-2 mb-3" onclick="themMoTa()">
+								<span class="button__text">Thêm mô tả</span>
+								<span class="button__icon">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24"
+										stroke-width="2" stroke-linejoin="round" stroke-linecap="round"
+										stroke="currentColor" height="24" fill="none" class="svg">
+										<line y2="19" y1="5" x2="12" x1="12"></line>
+										<line y2="12" y1="12" x2="19" x1="5"></line>
+									</svg>
+								</span>
+							</button>
 						</div>
 					</div>
 				</div>

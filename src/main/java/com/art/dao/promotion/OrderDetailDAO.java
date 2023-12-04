@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.art.models.promotion.Order;
 import com.art.models.promotion.OrderDetail;
 
 public interface OrderDetailDAO extends JpaRepository<OrderDetail, Integer> {
@@ -29,5 +30,10 @@ public interface OrderDetailDAO extends JpaRepository<OrderDetail, Integer> {
 //
 //	// Tìm kiếm OrderDetail theo Product
 //	List<OrderDetail> findByProduct(Product product);
+
+	List<OrderDetail> findByOrder(Order order);
+
+	@Query("SELECT a.price FROM Price a WHERE a.productDetail.product.productId =:r ")
+	long findPriceByProductId(String r);
 
 }
