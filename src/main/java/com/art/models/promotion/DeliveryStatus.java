@@ -38,6 +38,4 @@ public class DeliveryStatus {
 	@JoinColumn(name = "orderStatus")
 	private Order orderStatus;
 	
-	@Column
-	private String DetailUpdate;
 }
