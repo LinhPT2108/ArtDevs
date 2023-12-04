@@ -120,12 +120,7 @@ public class SecurityConfiger {
 	                .loginProcessingUrl(Path.BASE_PATH+"/account/user")
 	                .usernameParameter("email")
 	                .passwordParameter("password")
-
 	                .defaultSuccessUrl("/", false))
-
-//	                .defaultSuccessUrl("/", false)
-	                
-
 	        .logout(logout -> logout
 	                .logoutUrl("/account/logout")
 	                .logoutSuccessUrl("/account/login")
