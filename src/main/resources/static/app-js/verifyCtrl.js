@@ -29,7 +29,7 @@ app.controller("verifyCtrl", function($scope, $routeParams, $http) {
             .catch(function (error) {
 				console.log(error);
 				Swal.fire({
-                  icon: "success",
+                  icon: "error",
                   title: "Thông báo",
                   text: error.data.message,
                   showConfirmButton: true,

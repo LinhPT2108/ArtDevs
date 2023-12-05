@@ -1,26 +1,68 @@
 package com.art.config;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
+import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
+import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.art.dao.user.AccountDAO;
+import com.art.dao.user.AccountRoleDAO;
+import com.art.models.user.Account;
+import com.art.models.user.AccountRole;
+import com.art.models.user.Role;
 import com.art.service.user.CustomUserDetailService;
 import com.art.utils.Path;
+import com.art.utils.Permission;
+
+import jakarta.servlet.RequestDispatcher;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiger {
 
 	@Autowired
+	private AccountDAO aDAO;
+	
+	@Autowired
+	private AccountRoleDAO arDAO;
+	
+	@Autowired
 	private CustomUserDetailService customUserDetailService;
-
+	
+	
 	/*
 	 * Mã hóa mật khẩu
 	 */
@@ -119,17 +161,44 @@ public class SecurityConfiger {
 	                .loginProcessingUrl(Path.BASE_PATH+"/account/user")
 	                .usernameParameter("email")
 	                .passwordParameter("password")
-
 	                .defaultSuccessUrl("/", false))
-
-//	                .defaultSuccessUrl("/", false)
-	                
-
 	        .logout(logout -> logout
 	                .logoutUrl("/account/logout")
 	                .logoutSuccessUrl("/account/login")
 	                .invalidateHttpSession(true)
-	                .deleteCookies("JSESSIONID"));	
+	                .deleteCookies("JSESSIONID"))
+	        
+	        .oauth2Login(oauth2 -> oauth2
+				    .loginPage("/account/login")
+				    .authorizationEndpoint(authorization -> authorization
+				        .baseUri("/login/oauth2/authorization")
+				        .authorizationRequestRepository(getrRepository())
+				    )
+				    .defaultSuccessUrl("/ArtDev",false)
+				    .userInfoEndpoint(o -> o.oidcUserService(oidcUserService()))
+		        .successHandler((req, res, user) -> {
+					if (user instanceof OAuth2AuthenticationToken) {
+						OAuth2AuthenticationToken oAuthenticationToken = (OAuth2AuthenticationToken) user;
+						String username = oAuthenticationToken.getPrincipal().getName();
+						String email = oAuthenticationToken.getPrincipal().getAttribute("email");
+						String fullname = oAuthenticationToken.getPrincipal().getAttribute("name");
+						if (!isUserExist(email)) {
+							System.out.println(email + " 123123");
+
+							System.out.println(fullname + " fullname");
+							System.out.println(username + " username");
+							Account newUser = createUser(username, email, fullname);
+							grantPermissions(newUser, new HashSet<>(Set.of(Permission.user)));
+							RequestDispatcher dispatcher = req.getRequestDispatcher("http://localhost:8080/login/oauth2/authorization/google");
+							dispatcher.forward(req, res);
+							return;
+						}
+					}
+				})
+		        )
+	        ;
+				
+	        
 	    return http.build();
 	}
 	
@@ -140,4 +209,57 @@ public class SecurityConfiger {
 	WebSecurityCustomizer webSecurityCustomizer() {
 		return web -> web.ignoring().requestMatchers(AntPathRequestMatcher.antMatcher("/static/**"));
 	}
+	
+	
+	public boolean isUserExist(String email) {
+		  Account user = aDAO.findByEmail(email);
+		  return user!=null;
+		}
+	
+	public Account createUser(String uersname,String email, String name) {
+		Account user = new Account();
+		user.setAccountId(uersname);
+		user.setEmail(email);
+		user.setFullname(name);
+		user.setStatus(false);
+		aDAO.save(user);
+		return user;
+	}
+	
+	public void grantPermissions(Account user, Set<Permission> permissions) {
+		Role role = new Role(2, "user");
+		List<AccountRole> listACRole = new ArrayList<>();
+		AccountRole acrole = new AccountRole(user, role);
+		listACRole.add(acrole);
+		user.setUserRole(listACRole);
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		for (AccountRole accountRole : listACRole) {
+			authorities.add(new SimpleGrantedAuthority(accountRole.getRole().getRoleName()));
+		}
+		aDAO.save(user);
+		Authentication auth = new UsernamePasswordAuthenticationToken(user, null,authorities);
+		SecurityContextHolder.getContext().setAuthentication(auth);
+	}
+	
+	@Bean
+	AuthorizationRequestRepository<OAuth2AuthorizationRequest> getrRepository(){
+		return new HttpSessionOAuth2AuthorizationRequestRepository();
+	}
+	
+	@Bean
+	OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> getToken(){
+		return new DefaultAuthorizationCodeTokenResponseClient();
+	}
+	
+	@Bean
+    public OidcUserService oidcUserService() {
+        return new OidcUserService() {
+            @Override
+            public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
+                OidcUser user = super.loadUser(userRequest);
+                // You can customize the user details if needed
+                return user;
+            }
+        };
+    }
 }

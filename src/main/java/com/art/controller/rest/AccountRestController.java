@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,7 +25,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.art.dao.product.ProductDAO;
 import com.art.dao.promotion.FlashSaleDAO;
@@ -41,6 +41,7 @@ import com.art.models.user.AccountRole;
 import com.art.models.user.InforAddress;
 import com.art.models.user.Role;
 import com.art.service.MailerServiceImpl;
+import com.art.service.user.CustomUserDetailService;
 import com.art.utils.Path;
 import com.art.utils.validUtil;
 
@@ -73,6 +74,9 @@ public class AccountRestController {
 	ProductDAO pdDAO;
 
 	@Autowired
+	CustomUserDetailService userService;
+
+	@Autowired
 	HttpSession session;
 
 	@Autowired
@@ -82,15 +86,17 @@ public class AccountRestController {
 	public ResponseEntity<AccountDTO> getArtDev(Model model) {
 		// Lấy thông tin người dùng từ SecurityContextHolder
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		System.out.println("authentication: " + authentication);
+		String email = authentication.getName();
 		try {
 			if (authentication != null) {
-				AccountDTO accountDTO = AccountMapper.convertToDto(aDAO.findByEmail(authentication.getName()),
-						promotionDAO, fDAO, pdDAO);
+				Account account = aDAO.findByEmail(email);
+				if (!email.contains("@") && account == null) {
+					account = aDAO.findById(authentication.getName()).get();
+				}
+				AccountDTO accountDTO = AccountMapper.convertToDto(account, promotionDAO, fDAO, pdDAO);
 				return ResponseEntity.ok(accountDTO);
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
 			System.out.println(e);
 			return ResponseEntity.ok(null);
 		}
@@ -110,11 +116,6 @@ public class AccountRestController {
 		return ResponseEntity.ok(accountDTOs);
 	}
 
-	@GetMapping(value = "/account/user")
-	public Principal getLogin(Principal principal) {
-		System.out.println("co gì hoong : " + principal.toString());
-		return principal;
-	}
 	// @GetMapping("/account")
 	// public ResponseEntity<List<Account>> getAccounts() {
 	// List<Account> accounts = aDAO.findAll();
@@ -199,7 +200,6 @@ public class AccountRestController {
 		Account account = AccountMapper.convertToAccount(accountDTO);
 		Map<String, String> errors = new HashMap<>();
 		try {
-			System.out.println(account);
 
 			if (!aDAO.existsById(key)) {
 				return ResponseEntity.notFound().build();
@@ -286,7 +286,6 @@ public class AccountRestController {
 	 */
 	@PostMapping("/account/{id}/address")
 	public ResponseEntity<?> createAddress(@RequestBody InforAddress inforAddress, @PathVariable("id") String key) {
-		System.out.println("line 267: " + key);
 		Account account = aDAO.findById(key).get();
 		boolean isExist = inforAddressDAO.existsById(inforAddress.getPhoneNumber());
 		if (isExist) {
