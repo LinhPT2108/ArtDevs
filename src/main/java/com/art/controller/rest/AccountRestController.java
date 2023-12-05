@@ -91,7 +91,6 @@ public class AccountRestController {
 
 	@GetMapping(value = "/userLogin")
 	public ResponseEntity<AccountDTO> getArtDev(Model model) {
-		// Lấy thông tin người dùng từ SecurityContextHolder
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		System.out.println("authentication: " + authentication);
 		try {
@@ -250,21 +249,22 @@ public class AccountRestController {
 	}
 
 	// cập nhật ảnh người dùng
-	// @PutMapping(value = "/account/update-avatar/{id}")
-	// public ResponseEntity<?> putMethodName(@PathVariable String id, @RequestBody MultipartFile avatar) {
-	// 	// try {
-	// 	// Account account = aDAO.findById(id).get();
-	// 	// String avatarName = paramService.save(avatar, "/images/avatar").getName();
-	// 	// account.setImage(avatarName);
-	// 	// System.out.println(avatarName);
-	// 	// return ResponseEntity.ok(avatarName);
-	// 	// } catch (Exception e) {
-	// 	// System.out.println(e);
-	// 	// return ResponseEntity.ok(500);
-	// 	// }
-	// 	System.out.println(avatar.getOriginalFilename());
-	// 	return ResponseEntity.ok().build();
-	// }
+	@PutMapping(value = "/account/update-avatar/{id}")
+	public ResponseEntity<?> putMethodName(@PathVariable String id, @RequestBody MultipartFile avatar) {
+		try {
+			Account account = aDAO.findById(id).get();
+			String avatarName = paramService.saveFile(avatar, "images/avatar").getName();
+			account.setImage(avatarName);
+			System.out.println(avatarName);
+			Map<String, String> rs = new HashMap<String, String>();
+			rs.put("avatarName", avatarName);
+			aDAO.save(account);
+			return ResponseEntity.ok(rs);
+		} catch (Exception e) {
+			System.out.println(e);
+			return ResponseEntity.badRequest().build();
+		}
+	}
 
 	/*
 	 * Xóa người dùng

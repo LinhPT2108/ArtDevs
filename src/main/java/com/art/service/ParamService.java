@@ -1,12 +1,17 @@
 package com.art.service;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -112,6 +117,7 @@ public class ParamService {
 	            // Kiểm tra phần mở rộng của tệp (đảm bảo là tệp hình ảnh hợp lệ)
 	            if (isValidImageExtension(fileExtension)) {
 	                file.transferTo(saveFile);
+					System.out.println(saveFile.getAbsolutePath());
 	                return saveFile;
 	            } else {
 	                // Xử lý lỗi nếu phần mở rộng không hợp lệ
@@ -124,6 +130,34 @@ public class ParamService {
 	        }
 	    }
 	    return null;
+	}
+	
+
+	public File saveFile(MultipartFile file, String filePath) throws IOException {
+		if (!file.isEmpty()) {
+			File dir = getFile(filePath);
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
+			try (InputStream inputStream = file.getInputStream()) {
+				String originalFileName = file.getOriginalFilename();
+				String fileExtension = getFileExtension(originalFileName);
+				String timestamp = String.valueOf(System.currentTimeMillis());
+				String uniqueFileName = timestamp + fileExtension;
+				File saveFile = new File(dir, uniqueFileName);
+
+				try (FileOutputStream outputStream = new FileOutputStream(saveFile)) {
+					FileCopyUtils.copy(inputStream, outputStream);
+					return saveFile;
+				}
+			}
+		}
+		return null;
+	}
+
+	private File getFile(String filePath) throws IOException {
+		File file = ResourceUtils.getFile("classpath:static/" + filePath);
+		return file;
 	}
 
 	private String getFileExtension(String filename) {

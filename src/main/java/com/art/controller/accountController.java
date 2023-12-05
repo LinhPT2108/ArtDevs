@@ -19,7 +19,7 @@ import com.art.models.user.Account;
 @Controller
 @RequestMapping("/account")
 public class accountController {
-	
+
 	@Autowired
 	private AccountDAO aDAO;
 
@@ -32,34 +32,34 @@ public class accountController {
 	public String getRegister() {
 		return "index";
 	}
-	
+
 	/*
 	 * Cập nhật thông tin người dùng
 	 */
 	@PutMapping("/verify-code/{accountId}")
 	public ResponseEntity<?> verifyCode(@PathVariable("accountId") String accountId, @RequestBody String verify) {
-	    Account account = aDAO.findById(accountId).orElseThrow();
-	    String message = "";
+		Account account = aDAO.findById(accountId).orElseThrow();
+		String message = "";
 
-	    Map<String, Object> messages = new HashMap<>();
-	    if (account != null) {
-	        if (account.getVerifyCode().equalsIgnoreCase(verify)) {
-	            account.setVerifyCode(null);
-	            account.setStatus(false);
-	            aDAO.save(account);
-	            message = "Xác thực thành công !";
-	    	    messages.put("message", message);
-	    	    return ResponseEntity.ok(messages);
-	        } else {
-	            message = "Mã xác nhận không hợp lệ. Vui lòng kiểm tra lại !";
-	            messages.put("message", message);
-	    	    return ResponseEntity.badRequest().body(messages);
-	        }
-	    } else {
-	        message = "Tài khoản không tồn tại !";
-	        messages.put("message", message);
-	        return ResponseEntity.badRequest().body(messages);
-	    }
+		Map<String, Object> messages = new HashMap<>();
+		if (account != null) {
+			if (account.getVerifyCode().equalsIgnoreCase(verify)) {
+				account.setVerifyCode(null);
+				account.setStatus(false);
+				aDAO.save(account);
+				message = "Xác thực thành công !";
+				messages.put("message", message);
+				return ResponseEntity.ok(messages);
+			} else {
+				message = "Mã xác nhận không hợp lệ. Vui lòng kiểm tra lại !";
+				messages.put("message", message);
+				return ResponseEntity.badRequest().body(messages);
+			}
+		} else {
+			message = "Tài khoản không tồn tại !";
+			messages.put("message", message);
+			return ResponseEntity.badRequest().body(messages);
+		}
 	}
 
 	@GetMapping(value = "/profile")
@@ -87,8 +87,8 @@ public class accountController {
 		return "index";
 	}
 
-	// @GetMapping(value = "/purchase-order/{type}")
-	// public String getOrder(Model model) {
-	// 	return "index";
-	// }
+	@GetMapping(value = "/purchase-order")
+	public String getOrder(Model model) {
+		return "index";
+	}
 }

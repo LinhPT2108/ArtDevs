@@ -48,7 +48,8 @@ app.controller("profileCtrl", function ($scope, $rootScope, ApiService, $http) {
       });
       request
         .then((response) => {
-          console.log(response);
+          console.log(response.data);
+          $rootScope.userLogin.image = response.data.avatarName;
         })
         .catch((error) => {
           console.log(error);

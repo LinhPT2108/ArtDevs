@@ -25,7 +25,7 @@ app.config(function ($routeProvider, $locationProvider) {
       templateUrl: "templates/user/views/account.html",
       controller: "changePasswordCtrl",
     })
-    .when("/account/purchase-order/:orderId", {
+    .when("/account/purchase-order", {
       templateUrl: "templates/user/views/account.html",
       controller: "orderCtrl",
     })

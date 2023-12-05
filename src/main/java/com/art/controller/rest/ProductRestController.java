@@ -142,9 +142,9 @@ public class ProductRestController {
 		// SecurityContextHolder.getContext().getAuthentication();
 		System.out.println("product today");
 		List<Product> products = proDAO.findByAvailable(true);
-		ProductDTO dto = ProductMapper.convertToDto(proDAO.findById("32V35KP").get(), promDao, fDAO, proDAO);
-		System.out.println("line 145:"
-				+ validUtil.getPriceProduct(dto, 35, fDAO, promDao, pdDAO));
+		// ProductDTO dto = ProductMapper.convertToDto(proDAO.findById("32V35KP").get(), promDao, fDAO, proDAO);
+		// System.out.println("line 145:"
+		// 		+ validUtil.getPriceProduct(dto, 35, fDAO, promDao, pdDAO));
 		Collections.shuffle(products);
 		// if(authentication!=null){
 		// products = proDAO.findByProductNameAlls(null);

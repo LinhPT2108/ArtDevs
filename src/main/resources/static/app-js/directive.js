@@ -77,7 +77,7 @@ app.directive("customFlashsale", function ($timeout, ApiService) {
           $timeout(function () {
             scope.slickFlashsale();
             scope.countdown();
-          }, 5000);
+          }, 500);
         })
         .catch(function (err) {
           console.log(err);
