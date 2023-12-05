@@ -25,6 +25,10 @@ app.config(function ($routeProvider, $locationProvider) {
       templateUrl: "templates/user/views/account.html",
       controller: "changePasswordCtrl",
     })
+    .when("/account/purchase-order/:orderId", {
+      templateUrl: "templates/user/views/account.html",
+      controller: "orderCtrl",
+    })
     .when("/account/forgot-password", {
       templateUrl: "templates/user/views/forgotPass.html",
       controller: "forgotPasswordCtrl",
@@ -91,9 +95,15 @@ app.service("DataService", function ($http) {
   };
 });
 
-app.run(function ($rootScope, DataService, ApiService) {
+app.run(function ($rootScope, DataService, ApiService, $timeout) {
   DataService.getCategories().then(function (response) {
     $rootScope.categories = response.data;
+    $timeout(function () {
+      var firstAnchor = document.querySelectorAll(".nav-link-select");
+      if (firstAnchor) {
+        angular.element(firstAnchor).triggerHandler("click");
+      }
+    }, 500);
   });
 
   DataService.getBrands().then(function (response) {
@@ -250,13 +260,6 @@ app.controller("mainCtrl", function ($scope, $timeout, $rootScope, ApiService) {
   $scope.quantity = 1;
   console.log("mainCtrl");
 
-  $timeout(function () {
-    var firstAnchor = document.querySelectorAll(".nav-link-select");
-    if (firstAnchor) {
-      angular.element(firstAnchor).triggerHandler("click");
-    }
-  }, 100);
-
   $scope.choiceProduct = function (
     productDetailId,
     $event,
@@ -280,6 +283,7 @@ app.controller("mainCtrl", function ($scope, $timeout, $rootScope, ApiService) {
         $scope.pdt = resp;
         $rootScope.choiceProductDetailId = productDetailId;
         console.log($scope.pdt);
+        console.log($rootScope.choiceProductDetailId);
       })
       .catch(function (err) {
         console.log(err);

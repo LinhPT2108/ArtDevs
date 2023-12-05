@@ -4,13 +4,12 @@ app.controller("accountCtrl", function ($scope, $location) {
 
   if (currentURL.includes("profile")) {
     $scope.views = "profile";
-    console.log(true);
   } else if (currentURL.includes("address")) {
     $scope.views = "address";
-    console.log(true);
   } else if (currentURL.includes("change-password")) {
     $scope.views = "changePass";
-    console.log(true);
+  } else if (currentURL.includes("purchase-order")) {
+    $scope.views = "order";
   }
 
   var allCollapses = document.querySelectorAll(".collapse");

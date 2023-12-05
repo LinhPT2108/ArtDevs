@@ -98,7 +98,7 @@
                                     </span>
                                 </li>
                                 <li class=" mb-5" ng-show="userLogin.inforAddresses.length>0 && selectedAddress!=null ">
-                                    <span class="text-muted">Thời gian giao hàng dự kiến:
+                                    <span class="text-muted">Thời gian nhận hàng dự kiến:
                                         {{expectedDeliveryTime| date :"dd/MM/yyyy"}}</span>
                                 </li>
                                 <li class="last">Tổng cộng:
@@ -116,12 +116,13 @@
                         <div class="content mt-3">
                             <div class="form-check ml-5">
                                 <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
-                                    value="option1" checked> <label class="form-check-label" for="exampleRadios1">Thanh
+                                    ng-value="1" ng-model="payment">
+                                <label class="form-check-label" for="exampleRadios1">Thanh
                                     toán khi nhận hàng</label>
                             </div>
                             <div class="form-check ml-5">
                                 <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
-                                    value="option2">
+                                    ng-value="2" ng-model="payment">
                                 <label class="form-check-label" for="exampleRadios2">
                                     Ví ArtPay</label>
                             </div>

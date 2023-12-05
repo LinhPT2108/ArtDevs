@@ -1,10 +1,12 @@
 var apiKey = "f777fb49-835e-11ee-b394-8ac29577e80e";
 app.controller(
   "checkoutCtrl",
-  function ($scope, $rootScope, ApiService, $http) {
+  function ($scope, $rootScope, ApiService, $http, $location) {
     let items = [];
     $rootScope.totalFeeShip = 0;
     $rootScope.totalPay = 0;
+    $scope.payment = 1;
+    console.log($scope.payment);
     $rootScope.getCheckedProducts.forEach((e) => {
       items.push({
         name: e.productDTO.productName,
@@ -207,25 +209,58 @@ app.controller(
 
     $scope.orderAction = function (event) {
       event.preventDefault();
-      console.log($rootScope.getCheckedProducts);
-      console.log($rootScope.totalPay);
-      console.log($scope.selectedAddress);
-      console.log($scope.note);
-      var orderData = {
-        cartDTO: $rootScope.getCheckedProducts,
-        totalAmount: $rootScope.totalPay,
-        userId: $rootScope.userLogin.accountId,
-        deliveryAddress: JSON.parse($scope.selectedAddress),
-        note: $scope.note,
-      };
-      console.log(orderData);
-      ApiService.callApi("POST", "/rest/order", orderData)
-        .then(function (resp) {
-          console.log(resp);
-        })
-        .catch(function (err) {
-          console.log(err);
-        });
+      Swal.fire({
+        title: "Xác nhận đặt hàng",
+        text: "Hãy chắn chắc rằng các thông tin bạn nhập là chính xác !",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Đặt hàng!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          var orderData = {
+            cartDTO: $rootScope.getCheckedProducts,
+            totalAmount: $rootScope.totalPay,
+            userId: $rootScope.userLogin.accountId,
+            deliveryAddress: JSON.parse($scope.selectedAddress),
+            expectedDeliveryTime: $scope.expectedDeliveryTime,
+            paymentMethod: $scope.payment,
+            note: $scope.note,
+          };
+          console.log(orderData);
+          ApiService.callApi("POST", "/rest/order", orderData)
+            .then(function (resp) {
+              console.log(resp);
+              if (resp == 200) {
+                Swal.fire({
+                  title: "Đặt hàng thành công",
+                  text: "Cảm ơn bạn đã mua hàng ở cửa hàng chúng tôi !!",
+                  icon: "success",
+                });
+                Swal.fire({
+                  title: "Đặt hàng thành công!",
+                  text: "Cảm ơn bạn đã mua hàng ở cửa hàng chúng tôi !!",
+                  icon: "success",
+                  showCancelButton: true,
+                  confirmButtonColor: "#fca100",
+                  cancelButtonColor: "#0a72ff",
+                  confirmButtonText: "Về trang chủ!",
+                  cancelButtonText: "Xem đơn hàng vừa đặt",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location.href = "/ArtDevs";
+                  } else {
+                    window.location.href = "/account/orders";
+                  }
+                });
+              }
+            })
+            .catch(function (err) {
+              console.log(err);
+            });
+        }
+      });
     };
   }
 );

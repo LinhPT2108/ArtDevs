@@ -55,6 +55,7 @@ public class CartRestController {
     public ResponseEntity<?> postMethodName(@RequestBody CartDTO cartDTO,
             @PathVariable("userId") String userId) {
         try {
+            System.out.println(cartDTO.getProductDetailId());
             List<Cart> cartUser = cartDAO.findByUserAndProductDetail(
                     accountDAO.findById(userId).get(),
                     pdtDAO.findById(cartDTO.getProductDetailId()).get());

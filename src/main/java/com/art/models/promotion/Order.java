@@ -43,7 +43,7 @@ public class Order {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column
 	private Date orderDate;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column
 	private Date expected_delivery_time;
@@ -57,7 +57,7 @@ public class Order {
 	@Column
 	@Nationalized
 	private String note;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "payment_id")
 	private PaymentMethod paymentMethod;
@@ -78,5 +78,4 @@ public class Order {
 		this.note = note;
 	}
 
-	
 }

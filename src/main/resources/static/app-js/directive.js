@@ -20,6 +20,9 @@ app.directive("customBanner", function () {
       ApiService.callApi("GET", "/rest/banner")
         .then(function (resp) {
           $scope.listBanner = resp;
+          $timeout(function () {
+            $scope.slickBanner();
+          }, 1000);
         })
         .catch(function (err) {
           console.log(err);
@@ -42,10 +45,6 @@ app.directive("customBanner", function () {
           ],
         });
       };
-
-      $timeout(function () {
-        $scope.slickBanner();
-      }, 1000);
     },
   };
 });
@@ -58,6 +57,7 @@ app.directive("customFlashsale", function ($timeout, ApiService) {
       ApiService.callApi("GET", "/rest/flash-sale-active")
         .then(function (resp) {
           scope.flashSaleActive = resp;
+          console.log(resp);
           scope.flashSaleActive.endDay = new Date(scope.flashSaleActive.endDay);
           scope.flashSaleActive.startDay = new Date(
             scope.flashSaleActive.startDay
@@ -74,6 +74,10 @@ app.directive("customFlashsale", function ($timeout, ApiService) {
 
           var endDayMoment = moment(endDay);
           scope.formattedEndDay = endDayMoment.format("YYYY/MM/DD HH:mm:ss");
+          $timeout(function () {
+            scope.slickFlashsale();
+            scope.countdown();
+          }, 5000);
         })
         .catch(function (err) {
           console.log(err);
@@ -128,11 +132,6 @@ app.directive("customFlashsale", function ($timeout, ApiService) {
         var percentSold = (quantitySold / discountedQuantity) * 100;
         return percentSold + "%";
       };
-
-      $timeout(function () {
-        scope.slickFlashsale();
-        scope.countdown();
-      }, 1000);
     },
   };
 });
@@ -220,7 +219,6 @@ app.directive("stopPropagation", function (ApiService, $timeout, $rootScope) {
   return {
     restrict: "A",
     link: function (scope, element) {
-      scope.showLoading = function () {};
       scope.removeActiveClassFromLinks = function () {
         var anchorElements = document.querySelectorAll(".nav-link-select");
         anchorElements.forEach(function (a) {
@@ -239,7 +237,7 @@ app.directive("stopPropagation", function (ApiService, $timeout, $rootScope) {
 
         //get api list product by category id
         var hrefValue = e.currentTarget.getAttribute("href");
-        $(".btnViewAll").attr("href", "/product/category/" + hrefValue);
+        $(".btnViewAll").attr("href", "/products?c=" + hrefValue);
         console.log("Href value:", hrefValue);
         ApiService.callApi("GET", "/rest/product-by-category/" + hrefValue)
           .then(function (resp) {
@@ -332,6 +330,7 @@ app.directive("modalHidden", function ($rootScope) {
     link: function (scope, element) {
       element.on("hidden.bs.modal", function (e) {
         $rootScope.qvpd = null;
+        $rootScope.choiceProductDetailId = null;
         $(".quickview-slider-active")
           .trigger("destroy.owl.carousel")
           .removeClass("owl-carousel owl-loaded");
@@ -430,7 +429,7 @@ app.directive(
           console.log(scope.quantity);
           console.log(scope.pdDetailId);
           console.log($rootScope.choiceProductDetailId);
-          if(scope.pdDetailId== undefined){
+          if ($rootScope.choiceProductDetailId != null) {
             scope.pdDetailId = $rootScope.choiceProductDetailId;
           }
           console.log(scope.pdDetailId);
@@ -446,10 +445,10 @@ app.directive(
               cancelButtonText: "Trở về",
             }).then((result) => {
               if (result.isConfirmed) {
-                console.log(123);
+                $("[data-dismiss=modal]").trigger({ type: "click" });
                 $timeout(function () {
                   $location.path("/account/login");
-                }, 0);
+                }, 100);
               }
             });
           } else {

@@ -56,11 +56,14 @@ public class SecurityConfiger {
 	        				AntPathRequestMatcher.antMatcher("/product/**")
 	        				).permitAll()
 	        		.requestMatchers(
+							AntPathRequestMatcher.antMatcher("/cart"),
 							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/cart"),
 							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/cart/**")
 	        				).hasAnyAuthority("user")
 	        		.requestMatchers(
-							AntPathRequestMatcher.antMatcher("/account/profile")
+							AntPathRequestMatcher.antMatcher("/cart"),
+							AntPathRequestMatcher.antMatcher("/account/profile"),
+							AntPathRequestMatcher.antMatcher("/account/change-password")
 //							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/account"),
 //							AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/account/**"),
 //							AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/account"),

@@ -21,7 +21,8 @@ public class FlashSaleMapper {
 	@Autowired
 	FlashSaleDAO fDAO;
 
-	public static FlashSaleDTO convertToDto(FlashSale flashSale, PromotionalDetailsDAO proDao, FlashSaleDAO fDAO, ProductDAO productDAO) {
+	public static FlashSaleDTO convertToDto(FlashSale flashSale, PromotionalDetailsDAO proDao, FlashSaleDAO fDAO,
+			ProductDAO productDAO) {
 		FlashSaleDTO flashSaleDTO = modelMapper.map(flashSale, FlashSaleDTO.class);
 		flashSaleDTO.setPromotionalDetailsList(getPromotionalDetailsListDTO(flashSale, proDao, fDAO, productDAO));
 		return flashSaleDTO;
@@ -29,10 +30,11 @@ public class FlashSaleMapper {
 
 	private static List<PromotionalDetailsListDTO> getPromotionalDetailsListDTO(FlashSale flashSale,
 			PromotionalDetailsDAO proDao, FlashSaleDAO fDAO, ProductDAO productDAO) {
-		return flashSale.getPromotionalDetailsList().stream()
+		return flashSale.getPromotionalDetailsList().stream().filter(pmt -> !pmt.isStatus())
 				.map(pmt -> new PromotionalDetailsListDTO(pmt.getId(),
 						ProductMapper.convertToDto(pmt.getProduct(), proDao, fDAO, productDAO),
 						pmt.getDiscountedPrice(), pmt.getDiscountedQuantity(), pmt.getQuantitySold(), pmt.isStatus()))
 				.collect(Collectors.toList());
 	}
+
 }

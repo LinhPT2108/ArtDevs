@@ -23,4 +23,5 @@ public class orderDTO {
     private InforAddress deliveryAddress;
     private String note;
     private Date expectedDeliveryTime;
+    private int paymentMethod;
 }

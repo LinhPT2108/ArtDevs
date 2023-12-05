@@ -36,7 +36,8 @@
 									</span>
 								</p>
 							</td>
-							<td class="price" data-title="Price" ng-repeat="pdt in c.productDTO.productDetails">
+							<td class="price" data-title="Price" ng-repeat="pdt in c.productDTO.productDetails"
+								ng-class="{'d-none': pdt.id != c.productDetailId}">
 								<span class="amount" ng-if="c.productDTO.sale && pdt.id == c.productDetailId">
 									{{ getLatestPrice(pdt.prices).price -
 									(getLatestPrice(pdt.prices).price *
@@ -50,8 +51,11 @@
 								</span>
 							</td>
 							<td class="qty" data-title="Qty" width="140px"
-								ng-repeat="pdt in c.productDTO.productDetails"><!-- Input Order -->
-								<div class="input-group" ng-if="pdt.id == c.productDetailId">
+								ng-repeat="pdt in c.productDTO.productDetails"
+								ng-class="{'d-none': pdt.id != c.productDetailId}"
+								ng-show="pdt.id == c.productDetailId">
+								<!-- Input Order -->
+								<div class="input-group">
 									<div class="button minus">
 										<button type="button" class="btn btn-primary btn-number" data-type="minus"
 											data-field="quant[1]" ng-click="decreaseQuantity(c, pdt.quantityInStock)">
@@ -71,7 +75,8 @@
 								</div>
 								<!--/ End Input Order -->
 							</td>
-							<td class="total-amount" data-title="Total" ng-repeat="pdt in c.productDTO.productDetails">
+							<td class="total-amount" data-title="Total" ng-repeat="pdt in c.productDTO.productDetails"
+								ng-class="{'d-none': pdt.id != c.productDetailId}">
 								<span class="amount" ng-if="c.productDTO.sale && pdt.id == c.productDetailId">
 									{{ (getLatestPrice(pdt.prices).price -
 									(getLatestPrice(pdt.prices).price *
@@ -125,11 +130,10 @@
 									</li>
 								</ul>
 								<div class="button5">
-									<div class="alert alert-danger" role="alert" 
-									ng-show="getCheckedProducts.length==0">
+									<div class="alert alert-danger" role="alert" ng-show="getCheckedProducts.length==0">
 										Bạn chưa chọn sản phẩm
 									</div>
-									<a href="/checkout" class="btn" ng-show="getCheckedProducts.length>0">Thanh toán</a>
+									<a href="/checkout" class="btn" ng-show="getCheckedProducts.length>0 ||userLogin.carts.length>0">Thanh toán</a>
 									<a href="/ArtDevs" class="btn">Tiếp tục mua sắm</a>
 								</div>
 							</div>

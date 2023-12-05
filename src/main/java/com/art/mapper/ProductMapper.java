@@ -1,5 +1,6 @@
 package com.art.mapper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -46,12 +47,16 @@ public class ProductMapper {
 	private static boolean getProductSale(PromotionalDetailsDAO proDAO, FlashSaleDAO fDAO, Product product) {
 		try {
 			FlashSale flashSale = fDAO.findByStatus(true);
-			List<PromotionalDetails> promotionalDetails = flashSale.getPromotionalDetailsList();
-			for (PromotionalDetails pro : promotionalDetails) {
-				if (product.getProductId().equals(pro.getProduct().getProductId())) {
-					if (pro.getDiscountedQuantity() != pro.getQuantitySold()) {
-						discountPrice = pro.getDiscountedPrice();
-						return true;
+			if (flashSale.getEndDay().after(new Date())) {
+				List<PromotionalDetails> promotionalDetails = flashSale.getPromotionalDetailsList();
+				for (PromotionalDetails pro : promotionalDetails) {
+					if (product.getProductId().equals(pro.getProduct().getProductId())) {
+						if (!pro.isStatus()) {
+							if (pro.getDiscountedQuantity() != pro.getQuantitySold()) {
+								discountPrice = pro.getDiscountedPrice();
+								return true;
+							}
+						}
 					}
 				}
 			}
@@ -68,7 +73,7 @@ public class ProductMapper {
 
 	private static List<CommentDTO> getCommentDTO(ProductDetail product) {
 		return product.getProductComment().stream().map(comment -> new CommentDTO(comment.getId(), comment.getStar(),
-						comment.getContent(), comment.getDate(), comment.getUser().getFullname()))
+				comment.getContent(), comment.getDate(), comment.getUser().getFullname()))
 				.collect(Collectors.toList());
 	}
 

@@ -86,4 +86,9 @@ public class accountController {
 	public String getForgotPassword(Model model) {
 		return "index";
 	}
+
+	// @GetMapping(value = "/purchase-order/{type}")
+	// public String getOrder(Model model) {
+	// 	return "index";
+	// }
 }

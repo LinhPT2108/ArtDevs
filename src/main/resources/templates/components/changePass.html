@@ -1,31 +1,53 @@
-<div class="content-profile" ng-controller="changePasswordCtrl"> 
+<div class="content-profile" ng-controller="changePasswordCtrl">
     <div class="title  border border-right-0 border-top-0 border-left-0 py-2">
         <span class="display-6">Đổi mật khẩu</span>
     </div>
     <div class="main-content p-3">
-        <form action="/account/change-password" method="post" id="formChangePass">
+        <form method="post" id="formChangePass" ng-submit="submitForm()">
             <div class="form-group mb-3">
                 <label for="currentPass" class="form-label ">Mật khẩu hiện
-                    tại:</label> <input type="password" class="form-control " id="currentPass" name="currentPass"
-                    placeholder="" required="required">
-                <small class="text-danger d-none" id="currentPassError"></small>
+                    tại: <span class="text-danger">(*)</span></label> <input type="password" class="form-control "
+                    id="currentPass" name="currentPass" placeholder="" required="required"
+                    ng-model="form.currentPassword" autocomplete="off" ng-change="focus()">
+                <small class="text-danger" id="currentPassError" ng-show="form.currentPassword==null">
+                    Vui lòng nhập mật khẩu hiện tại
+                </small>
+                <small class="text-danger" id="currentPassError2">
+
+                </small>
             </div>
 
             <div class="form-group mb-3">
-                <label for="newPassword" class="form-label ">Mật khẩu mới:</label> <input type="password"
-                    class="form-control " id="newPassword" name="newPassword" placeholder="" required="required">
-                <small class="text-danger d-none" id="newPasswordError"></small>
+                <label for="newPassword" class="form-label ">Mật khẩu mới: <span class="text-danger">(*)</span></label>
+                <input type="password" class="form-control " id="newPassword" name="newPassword" placeholder=""
+                    required="required" ng-model="form.newPassword" autocomplete="off">
+                <small class="text-danger" id="newPasswordError" ng-show="form.newPassword==null">
+                    Vui lòng nhập mật khẩu mới
+                </small>
+                <small class="text-danger" id="newPasswordError"
+                    ng-show="!validatePassword(form.newPassword) && form.newPassword!=null">
+                    Mật khẩu mới có ít nhất 6 kí tự và trong đó ít nhất có 1 kí tự chữ cái
+                </small>
             </div>
 
             <div class="form-group mb-3">
                 <label for="confirmPassword" class="form-label ">Nhập lại
-                    mật khẩu mới:</label> <input type="password" class="form-control " id="confirmPassword"
-                    name="confirmPassword" placeholder="" required="required">
-                <small class="text-danger d-none" id="confirmPasswordError"></small>
+                    mật khẩu mới: <span class="text-danger">(*)</span></label> <input type="password"
+                    class="form-control " id="confirmPassword" name="confirmPassword" placeholder="" required="required"
+                    ng-model="form.confirmPassword" autocomplete="off"
+                    ng-disabled="form.newPassword==null || !validatePassword(form.newPassword)">
+                <small class="text-danger" id="confirmPasswordError" ng-show="form.confirmPassword==null">
+                    Vui lòng xác nhận mật khẩu
+                </small>
+                <small class="text-danger" id="newPasswordError"
+                    ng-show="form.newPassword != form.confirmPassword && form.confirmPassword!=null && form.confirmPassword!=''">
+                    Xác nhận mật khẩu không khớp với mật khẩu mới
+                </small>
             </div>
 
             <div class="d-grid gap-2 mx-auto mb-3">
-                <button class="btn" type="submit">Cập nhật</button>
+                <button class="btn" type="submit"
+                    ng-disabled="form.confirmPassword==null || form.confirmPassword==''">Cập nhật</button>
             </div>
         </form>
     </div>
