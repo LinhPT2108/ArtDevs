@@ -54,7 +54,6 @@ public class ProductDetail {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date productionDate;
 	
-	@JsonIgnore 
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
@@ -64,6 +63,7 @@ public class ProductDetail {
 	private List<Cart> productCarts;
 	
 	@OneToMany(mappedBy = "productDetail", fetch = FetchType.EAGER)
+	@JsonIgnore
 	private List<Price> productPrice;
 	
 	@OneToMany(mappedBy = "productDetail")

@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.art.dao.product.ProductDAO;
 import com.art.dao.promotion.FlashSaleDAO;
+import com.art.dao.promotion.OrderDAO;
 import com.art.dao.promotion.PromotionalDetailsDAO;
 import com.art.dao.user.AccountDAO;
 import com.art.dao.user.AccountRoleDAO;
@@ -40,6 +41,7 @@ import com.art.dto.account.AccountDTO;
 import com.art.dto.account.ChangePasswordDTO;
 import com.art.mapper.AccountMapper;
 import com.art.models.MailInfo;
+import com.art.models.promotion.Order;
 import com.art.models.user.Account;
 import com.art.models.user.AccountRole;
 import com.art.models.user.InforAddress;
@@ -49,7 +51,6 @@ import com.art.service.ParamService;
 import com.art.utils.Path;
 import com.art.utils.validUtil;
 
-import io.micrometer.core.ipc.http.HttpSender.Response;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 
@@ -86,6 +87,9 @@ public class AccountRestController {
 
 	@Autowired
 	ParamService paramService;
+
+	@Autowired
+	OrderDAO orderDAO;
 
 	private PasswordEncoder passwordEncoder;
 
@@ -253,7 +257,7 @@ public class AccountRestController {
 	public ResponseEntity<?> putMethodName(@PathVariable String id, @RequestBody MultipartFile avatar) {
 		try {
 			Account account = aDAO.findById(id).get();
-			String avatarName = paramService.saveFile(avatar, "images/avatar").getName();
+			String avatarName = paramService.saveFile(avatar, "/avatar").getName();
 			account.setImage(avatarName);
 			System.out.println(avatarName);
 			Map<String, String> rs = new HashMap<String, String>();
@@ -382,7 +386,15 @@ public class AccountRestController {
 			System.out.println(ex);
 			return ResponseEntity.ok(500);
 		}
+	}
 
+	@GetMapping("/account/purchase-order/{type}/{accountId}")
+	public ResponseEntity<?> getOrderType(@PathVariable("type") int type,
+			@PathVariable("accountId") String accountId) {
+		System.out.println(accountId + " - " + type);
+		Account account = aDAO.findById(accountId).get();
+		List<Order> orders = orderDAO.findByUser(account);
+		return ResponseEntity.ok(orders);
 	}
 
 }

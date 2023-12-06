@@ -19,6 +19,8 @@ import lombok.Setter;
 public class orderDTO {
     private List<CartDTO> cartDTO;
     private BigDecimal totalAmount;
+    private Double deliveryFee;
+    private Double discount;
     private String userId;
     private InforAddress deliveryAddress;
     private String note;

@@ -13,13 +13,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.apache.commons.io.FileUtils;
 
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class ParamService {
 	@Autowired
 	HttpServletRequest request;
+	@Autowired
+	ServletContext app;
 
 	/**
 	 * Đọc chuỗi giá trị của tham số
@@ -65,10 +69,10 @@ public class ParamService {
 	 * @param defaultValue giá trị mặc định
 	 * @return giá trị tham số hoặc giá trị mặc định nếu không tồn tại
 	 */
-//	public boolean getBoolean(String name, boolean defaultValue) {
-//		String value = getString(name, String.valueOf(defaultValue));
-//		return Boolean.parseBoolean(value);
-//	}
+	// public boolean getBoolean(String name, boolean defaultValue) {
+	// String value = getString(name, String.valueOf(defaultValue));
+	// return Boolean.parseBoolean(value);
+	// }
 
 	/**
 	 * Đọc giá trị thời gian của tham số
@@ -101,55 +105,55 @@ public class ParamService {
 	 * @throws RuntimeException lỗi lưu file
 	 */
 	public File save(MultipartFile file, String path) {
-	    if (!file.isEmpty()) {
-	        File dir = new File(request.getServletContext().getRealPath(path));
-	        if (!dir.exists()) {
-	            dir.mkdirs();
-	        }
-	        try {
-	            // Tránh tên trùng lặp bằng cách thêm timestamp vào tên tệp
-	            String originalFileName = file.getOriginalFilename();
-	            String fileExtension = getFileExtension(originalFileName);
-	            String timestamp = String.valueOf(System.currentTimeMillis());
-	            String uniqueFileName = timestamp+fileExtension;
-	            File saveFile = new File(dir, uniqueFileName);
-
-	            // Kiểm tra phần mở rộng của tệp (đảm bảo là tệp hình ảnh hợp lệ)
-	            if (isValidImageExtension(fileExtension)) {
-	                file.transferTo(saveFile);
-					System.out.println(saveFile.getAbsolutePath());
-	                return saveFile;
-	            } else {
-	                // Xử lý lỗi nếu phần mở rộng không hợp lệ
-	                System.out.println("Định dạng tệp không hợp lệ");
-	                return null;
-	            }
-	        } catch (Exception e) {
-	            // Xử lý lỗi nếu có
-	            System.out.println(e);
-	        }
-	    }
-	    return null;
-	}
-	
-
-	public File saveFile(MultipartFile file, String filePath) throws IOException {
 		if (!file.isEmpty()) {
-			File dir = getFile(filePath);
+			File dir = new File(request.getServletContext().getRealPath(path));
 			if (!dir.exists()) {
 				dir.mkdirs();
 			}
-			try (InputStream inputStream = file.getInputStream()) {
+			try {
+				// Tránh tên trùng lặp bằng cách thêm timestamp vào tên tệp
 				String originalFileName = file.getOriginalFilename();
 				String fileExtension = getFileExtension(originalFileName);
 				String timestamp = String.valueOf(System.currentTimeMillis());
 				String uniqueFileName = timestamp + fileExtension;
 				File saveFile = new File(dir, uniqueFileName);
 
-				try (FileOutputStream outputStream = new FileOutputStream(saveFile)) {
-					FileCopyUtils.copy(inputStream, outputStream);
+				// Kiểm tra phần mở rộng của tệp (đảm bảo là tệp hình ảnh hợp lệ)
+				if (isValidImageExtension(fileExtension)) {
+					file.transferTo(saveFile);
+					System.out.println(saveFile.getAbsolutePath());
 					return saveFile;
+				} else {
+					// Xử lý lỗi nếu phần mở rộng không hợp lệ
+					System.out.println("Định dạng tệp không hợp lệ");
+					return null;
 				}
+			} catch (Exception e) {
+				// Xử lý lỗi nếu có
+				System.out.println(e);
+			}
+		}
+		return null;
+	}
+
+	public File saveFile(MultipartFile file, String filePath) throws IOException {
+		if (!file.isEmpty()) {
+			String projectPath = System.getProperty("user.dir");
+			String newPath = projectPath+"\\ArtDevs\\src\\main\\resources\\static\\images" + filePath;
+			try {
+				// Tránh tên trùng lặp bằng cách thêm timestamp vào tên tệp
+				String originalFileName = file.getOriginalFilename();
+				String fileExtension = getFileExtension(originalFileName);
+				String timestamp = String.valueOf(System.currentTimeMillis());
+				String uniqueFileName = timestamp + fileExtension;
+				File saveF = new File(newPath, uniqueFileName);
+				// Lưu ảnh vào thư mục
+				FileUtils.copyInputStreamToFile(file.getInputStream(), saveF);
+				System.out.println(saveF.getAbsolutePath());
+				return saveF;
+			} catch (Exception e) {
+				// Xử lý lỗi nếu có
+				System.out.println(e);
 			}
 		}
 		return null;
@@ -161,18 +165,19 @@ public class ParamService {
 	}
 
 	private String getFileExtension(String filename) {
-	    int dotIndex = filename.lastIndexOf(".");
-	    if (dotIndex >= 0) {
-	        return filename.substring(dotIndex);
-	    }
-	    return "";
+		int dotIndex = filename.lastIndexOf(".");
+		if (dotIndex >= 0) {
+			return filename.substring(dotIndex);
+		}
+		return "";
 	}
 
 	private boolean isValidImageExtension(String fileExtension) {
-	    // Kiểm tra phần mở rộng của tệp có phải là một hình ảnh hợp lệ (vd: jpg, jpeg, png)
-	    return fileExtension.equalsIgnoreCase(".jpg") ||
-	           fileExtension.equalsIgnoreCase(".jpeg") ||
-	           fileExtension.equalsIgnoreCase(".png");
+		// Kiểm tra phần mở rộng của tệp có phải là một hình ảnh hợp lệ (vd: jpg, jpeg,
+		// png)
+		return fileExtension.equalsIgnoreCase(".jpg") ||
+				fileExtension.equalsIgnoreCase(".jpeg") ||
+				fileExtension.equalsIgnoreCase(".png");
 	}
 
 }

@@ -1,6 +1,5 @@
 app.controller("accountCtrl", function ($scope, $location) {
   var currentURL = $location.path();
-  console.log(currentURL);
 
   if (currentURL.includes("profile")) {
     $scope.views = "profile";

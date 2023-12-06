@@ -3,7 +3,6 @@ var apiKey = "f777fb49-835e-11ee-b394-8ac29577e80e";
 app.controller(
   "addressCtrl",
   function ($scope, ApiService, $http, $timeout, $rootScope) {
-    
     $scope.currentPage = 1;
     $scope.pageSize = 4;
 
@@ -164,7 +163,7 @@ app.controller(
         isValid = true;
       }
 
-      if (isValid&&data.phoneNumber != "") {
+      if (isValid && data.phoneNumber != "") {
         ApiService.callApi(typeApi, url, data)
           .then(function (response) {
             if (typeApi == "POST") {
@@ -274,9 +273,8 @@ app.controller(
       );
       $scope.getDistricts($scope.address.city);
       $timeout(function () {
-        
-      $scope.getWards(thisAddress.district);
-      },400)
+        $scope.getWards(thisAddress.district);
+      }, 400);
     };
 
     $scope.cancelUpdate = function () {

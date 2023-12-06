@@ -87,7 +87,7 @@ public class accountController {
 		return "index";
 	}
 
-	@GetMapping(value = "/purchase-order")
+	@GetMapping(value = "/purchase-order/{type}")
 	public String getOrder(Model model) {
 		return "index";
 	}

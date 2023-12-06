@@ -150,9 +150,8 @@ app.controller(
                       .then(function (response) {
                         console.log(response.data.data);
                         $rootScope.totalFeeShip = response.data.data.total;
-                        $rootScope.totalPay =
-                          parseFloat($rootScope.totalFeeShip) +
-                          parseFloat($rootScope.getTotalPrice());
+                        $rootScope.totalPay = parseFloat($rootScope.getTotalPrice());
+                        $rootScope.deliveryFee = parseFloat($rootScope.totalFeeShip);
 
                         $http({
                           method: "POST",
@@ -222,6 +221,8 @@ app.controller(
           var orderData = {
             cartDTO: $rootScope.getCheckedProducts,
             totalAmount: $rootScope.totalPay,
+            deliveryFee: $rootScope.deliveryFee,
+            discount: 0,
             userId: $rootScope.userLogin.accountId,
             deliveryAddress: JSON.parse($scope.selectedAddress),
             expectedDeliveryTime: $scope.expectedDeliveryTime,

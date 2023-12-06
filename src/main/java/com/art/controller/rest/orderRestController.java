@@ -37,6 +37,8 @@ import com.art.utils.validUtil;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -81,6 +83,8 @@ public class orderRestController {
             Order order = new Order();
             order.setNote(orderDTO.getNote());
             order.setTotalAmount(orderDTO.getTotalAmount());
+            order.setDeliveryFee(orderDTO.getDeliveryFee());
+            order.setDiscount(orderDTO.getDiscount());
             order.setOrderDate(new Date());
             order.setExpected_delivery_time(orderDTO.getExpectedDeliveryTime());
             order.setUser(account);
@@ -135,4 +139,26 @@ public class orderRestController {
         }
     }
 
+    @PutMapping("/order/cancel-order/{id}")
+    public ResponseEntity<?> putMethodName(@PathVariable("id") int id) {
+        try {
+            Order order = orderDAO.findById(id);
+            List<OrderDelieveryStatus> ods = orderDeliStatusDAO.findByOrderStatus(order);
+            for (OrderDelieveryStatus e : ods) {
+                e.setStatus(false);
+                orderDeliStatusDAO.save(e);
+            }
+            OrderDelieveryStatus newStatus = new OrderDelieveryStatus();
+            newStatus.setDeliveryStatus(deliveryStatusDAO.findById(4).get());
+            newStatus.setDate(new Date());
+            newStatus.setOrderStatus(order);
+            newStatus.setStatus(true);
+            orderDeliStatusDAO.save(newStatus);
+
+            return ResponseEntity.ok(200);
+        } catch (Exception e) {
+            // TODO: handle exception
+            return ResponseEntity.ok(400);
+        }
+    }
 }

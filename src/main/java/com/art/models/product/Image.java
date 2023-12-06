@@ -1,6 +1,7 @@
 package com.art.models.product;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,8 +27,9 @@ public class Image {
 	@Column
 	private String image;
 
-	@JsonBackReference("productImageReference")
+	
 	@ManyToOne
 	@JoinColumn(name = "product_id")
+	@JsonIgnore
 	private Product product;
 }

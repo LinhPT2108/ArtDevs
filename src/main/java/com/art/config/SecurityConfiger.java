@@ -66,7 +66,8 @@ public class SecurityConfiger {
 						.requestMatchers(
 								AntPathRequestMatcher.antMatcher("/cart"),
 								AntPathRequestMatcher.antMatcher("/account/profile"),
-								AntPathRequestMatcher.antMatcher("/account/change-password")
+								AntPathRequestMatcher.antMatcher("/account/change-password"),
+								AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/account/purchase-order/**")
 						// AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/account"),
 						// AntPathRequestMatcher.antMatcher(Path.BASE_PATH + "/account/**"),
 						// AntPathRequestMatcher.antMatcher(Path.ADMIN_PATH + "/account"),
