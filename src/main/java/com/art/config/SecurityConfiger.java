@@ -221,6 +221,7 @@ public class SecurityConfiger {
 		user.setAccountId(uersname);
 		user.setEmail(email);
 		user.setFullname(name);
+		user.setPassword(new BCryptPasswordEncoder().encode(uersname));
 		user.setStatus(false);
 		aDAO.save(user);
 		return user;

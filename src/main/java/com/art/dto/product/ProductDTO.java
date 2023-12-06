@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter	
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDTO {
@@ -26,5 +26,6 @@ public class ProductDTO {
 	private int countSold = 0;
 	private boolean isSale = false;
 	private double discountPrice;
-	
+	private int sumRate = 0;
+
 }

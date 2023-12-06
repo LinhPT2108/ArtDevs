@@ -39,14 +39,14 @@
                             <span class="display-6 text-white">Bán hết</span>
                         </div>
                     </div>
-                    <a href="/product/{{p.product.productId}}" style="height: 280px !important;"
+                    <a href="/products/{{p.product.productId}}" style="height: 280px !important;"
                         class="d-flex align-items-center">
                         <img ng-src="images/products/{{p.product.images[0]}}" class="card-img-top"
                             alt="{{p.product.images[0]}}">
                     </a>
                     <div class="card-body d-flex flex-column">
                         <span class="text-muted">{{p.product.manufacturer.manufacturerName}}</span>
-                        <a class="card-title fs-6 font-weight-bold text-black text-decoration-none" href=""
+                        <a class="card-title fs-6 font-weight-bold text-black text-decoration-none" href="/products/{{p.product.productId}}"
                             style="min-height: 48px">{{p.product.productName }}</a>
                         <div class="price-product row">
                             <div class="col-6 d-flex flex-column"
@@ -65,7 +65,7 @@
 
                             </div>
                             <div class="col-6 d-flex align-items-center justify-content-center mb-3">
-                                <a href="/product/{{p.product.productId}}"
+                                <a href="/products/{{p.product.productId}}"
                                     class="btn-danger text-white font-weight-bold rounded p-2 my-auto"
                                     ng-show="p.discountedQuantity - p.quantitySold >0">Mua ngay</a>
                             </div>

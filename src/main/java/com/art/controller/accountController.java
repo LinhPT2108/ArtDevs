@@ -1,15 +1,11 @@
 package com.art.controller;
 
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +18,6 @@ import com.art.dao.user.AccountDAO;
 import com.art.models.MailInfo;
 import com.art.models.user.Account;
 import com.art.service.MailerServiceImpl;
-import com.art.utils.Path;
 
 import jakarta.mail.MessagingException;
 

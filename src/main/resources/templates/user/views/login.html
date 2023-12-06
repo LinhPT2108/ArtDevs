@@ -17,13 +17,13 @@
 										<div class="form-signup clearfix">
 											<fieldset class="form-group">
 												<input type="email" class="form-control form-control-lg" value=""
-													name="email" id="customer_email" placeholder="Email" required=""
-													autocomplete="none">
+													ng-model="formdata.email" name="email" id="customer_email"
+													placeholder="Email" required="">
 											</fieldset>
 											<fieldset class="form-group">
 												<input type="password" class="form-control form-control-lg" value=""
 													name="password" id="customer_password" placeholder="Mật khẩu"
-													required="">
+													ng-model="formdata.password" required="">
 											</fieldset>
 											<fieldset class="form-group pl-4">
 												<input id="remember" name="remember" type="checkbox"

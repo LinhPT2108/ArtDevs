@@ -46,14 +46,6 @@ app.config(function($routeProvider, $locationProvider) {
 			templateUrl: "templates/user/views/verify-code.html",
 			controller: "verifyCtrl",
 		})
-		/*.when('/oauth2/google', {
-		  templateUrl: 'views/auth.html',
-		  controller: 'GoogleAuthController'
-		})
-		.when('/oauth2/facebook', {
-		  templateUrl: 'views/auth.html',
-		  controller: 'FacebookAuthController'
-		})*/
 		.when("/account/forgot-password", {
 			templateUrl: "templates/user/views/forget-password.html",
 			controller: "forgetPasswordCtrl",
@@ -69,6 +61,10 @@ app.config(function($routeProvider, $locationProvider) {
 		.when("/products", {
 			templateUrl: "templates/user/views/shop-grid.html",
 			controller: "productsiteCtrl",
+		})
+		.when("/products/:productId", {
+			templateUrl: "templates/user/views/product-detail.html",
+			controller: "productdetailCtrl",
 		})
 		.when("/about-us", {
 			templateUrl: "templates/user/views/about-us.html",
@@ -316,3 +312,4 @@ app.controller("mainCtrl", function($scope, $timeout, $rootScope, ApiService) {
 		$scope.limit += 12;
 	};
 });
+

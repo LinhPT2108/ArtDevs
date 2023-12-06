@@ -1,6 +1,5 @@
 package com.art.controller.rest;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -180,6 +178,36 @@ public class AccountRestController {
 
 		mailer.sendVerify(new MailInfo(account.getEmail(), "Xác nhận tài khoản ArtGroupES",
 				"Chào mừng bạn đến với ART GROUP EST.2023. Đây là mã xác nhận của bạn: " + verifyCode));
+		return ResponseEntity.ok(account);
+	}
+
+	@PostMapping("/account-with-google")
+	public ResponseEntity<Account> createWithGoogle(@RequestBody AccountDTO accountDTO) throws MessagingException {
+		Account account = AccountMapper.convertToAccount(accountDTO);
+		if (aDAO.existsById(account.getAccountId())) {
+			return ResponseEntity.badRequest().build();
+		}
+		List<AccountRole> accountRoles = new ArrayList<>();
+		List<String> roleNames = AccountMapper.getRoles(accountDTO);
+
+		if (roleNames != null) {
+			for (String roleName : roleNames) {
+				Role role = roleDAO.findByRoleName(roleName);
+				if (role != null) {
+					AccountRole accountRole = new AccountRole();
+					accountRole.setUser(account);
+					accountRole.setRole(role);
+					accountRoles.add(accountRole);
+				}
+			}
+		}
+		account.setStatus(false);
+		account.setVerifyCode(null);
+		account.setUserRole(accountRoles);
+		account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
+
+		aDAO.save(account);
+
 		return ResponseEntity.ok(account);
 	}
 

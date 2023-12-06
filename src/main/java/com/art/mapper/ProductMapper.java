@@ -40,6 +40,7 @@ public class ProductMapper {
 		productDTO.setStar(star);
 		productDTO.setCountSold(productDAO.countProuctSold(product.getProductId()));
 		productDTO.setDiscountPrice(discountPrice);
+		productDTO.setSumRate(productDAO.countCommentsByProduct(product.getProductId()));
 		return productDTO;
 	}
 
