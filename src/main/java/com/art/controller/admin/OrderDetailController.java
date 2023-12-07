@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.annotations.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.art.dao.product.ProductDAO;
+import com.art.dao.promotion.CommentOrderDetailDAO;
 import com.art.dao.promotion.DeliveryStatusDAO;
 import com.art.dao.promotion.OrderDAO;
 import com.art.dao.promotion.OrderDetailDAO;
@@ -45,12 +47,13 @@ public class OrderDetailController {
 
 	@Autowired
 	DeliveryStatusDAO deliveryDAO;
+	
+	@Autowired CommentOrderDetailDAO cmtDAO;
 
 	@ModelAttribute("productList")
 	public Map<Product, String> getproduct() {
 		List<Product> products = productDAO.findAll();
 		Map<Product, String> map = new HashMap<>();
-		System.out.println("product LISt" + products);
 		for (Product c : products) {
 			map.put(c, c.getProductName());
 		}
@@ -81,6 +84,7 @@ public class OrderDetailController {
 
 		long price = orderdetailDAO.findPriceByProductId(orderdetail.getProduct().getProductId());
 		orderdetail.setPrice(price);
+		orderdetail.setId(0);
 		orderdetailDAO.save(orderdetail);
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -99,8 +103,8 @@ public class OrderDetailController {
 	}
 
 	@RequestMapping("/OrderDetail/{orderId}/edit/{orderDetailID}")
-	public String Edit(@ModelAttribute("OrderDetail") OrderDetail orderdetail, @PathVariable("orderId") int orderID,
-			@PathVariable("orderDetailID") int orderetailid, BindingResult bd, Model model) {
+	public String Edit( @PathVariable("orderId") int orderID,
+			@PathVariable("orderDetailID") int orderetailid, Model model) {
 		model.addAttribute("title", "Quản lí hóa đơn chi tiết");
 		model.addAttribute("typeButton", "Thêm");
 		model.addAttribute("updateButton", "Cập nhật");
@@ -109,6 +113,7 @@ public class OrderDetailController {
 		model.addAttribute("idOrder", orderID);
 		Order od = odDAO.getById(orderID);
 		model.addAttribute("OrderDetails", orderdetailDAO.findByOrder(od));
+		System.out.println("oderDetailID" + orderdetailDAO.getById(orderetailid).getId() );
 		return "admin/OrderDetail-form";
 	}
 
@@ -144,14 +149,13 @@ public class OrderDetailController {
 	}
 
 	@RequestMapping("/OrderDetail/{orderId}/delete")
-	@ResponseBody
-	public String delete(@ModelAttribute("OrderDetail") OrderDetail orderdetail,@PathVariable("orderId") int orderID,
-			BindingResult bd, Model model) {
+	public String delete(@ModelAttribute("OrderDetail") OrderDetail orderdetail,@PathVariable("orderId") int orderID
+			,BindingResult bd, Model model) {
 		
-
+		System.out.println("order Detail:"  + orderdetail);
 		Order oder = odDAO.getById(orderID);
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
+		List<com.art.models.activity.Comment> cmt = cmtDAO.findByOrderDetail(orderdetail);
 		DeliveryStatus deliverystt = new DeliveryStatus();
 		deliverystt.setStatus(false);
 		deliverystt.setDate(new Date());
@@ -160,9 +164,19 @@ public class OrderDetailController {
 
 				" Acccount  update :" + authentication.getName() + "Delete ID : " + orderdetail.getId() + " Product : "
 						+ orderdetail.getProduct().getProductId() + " Quantity :" + orderdetail.getQuantity());
-
+		
 		deliveryDAO.save(deliverystt);
+		for (com.art.models.activity.Comment comment : cmt) {
+			cmtDAO.delete(comment);
+		}
 		orderdetailDAO.deleteById(orderdetail.getId());
 		return "redirect:/admin/OrderDetail/" + orderID;
+	}
+	
+	@RequestMapping("/OrderDetail/{orderId}/history")
+	public String History(@PathVariable("orderId") int orderID
+			, Model model) {
+		model.addAttribute("History",deliveryDAO.findByOrderStatus(odDAO.getById(orderID)));
+		return "/admin/DeliveryStatus-form";
 	}
 }

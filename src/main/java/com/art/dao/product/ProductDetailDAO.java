@@ -1,8 +1,11 @@
 package com.art.dao.product;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.art.models.product.Product;
 import com.art.models.product.ProductDetail;
 
 
@@ -20,4 +23,6 @@ public interface ProductDetailDAO extends JpaRepository<ProductDetail, Integer> 
 //	Optional<DetailDescription> findById(int detailDescriptionId);
 //
 //	void deleteByProduct(Product product);
+	
+	List<ProductDetail> findByProduct(Product product);
 }

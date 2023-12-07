@@ -85,7 +85,7 @@ public class productController {
 	
 	@GetMapping("/product")
 	public String product(@ModelAttribute("pd") Product pd, Model model) {
-
+		model.addAttribute("index", 1 );
 		model.addAttribute("views", "product-form");
 		model.addAttribute("title", "Quản lí sản phẩm");
 		model.addAttribute("typeButton", false);
@@ -195,16 +195,71 @@ public class productController {
 	}
 
 	// Chỉnh lại phần product -> product detail dòng 248, 237
-//	@PostMapping("/product/update-product")
-//	public ResponseEntity<?> updateProduct(@Valid @ModelAttribute("pd") Product product, BindingResult result,
-//			@RequestParam("listImage") MultipartFile[] listImage, @RequestParam("descriptions") String descriptions) {
-//
-//		Map<String, String> errors = new HashMap<>();
-//		System.out.println(descriptions);
-//		if (descriptions.length() == 32 || descriptions.length() == 2) {
-//			errors.put("detailDecription", "Vui lòng nhập ít nhất 1 mô tả");
-//		}
-//	}
+	@PostMapping("/product/update-product")
+	public ResponseEntity<?> updateProduct(@Valid @ModelAttribute("pd") Product product, BindingResult result,
+			@RequestParam("listImage") MultipartFile[] listImage, @RequestParam("descriptions") String descriptions) {
+		Map<String, String> errors = new HashMap<>();
+		System.out.println(descriptions);
+		if (descriptions.length() == 32 || descriptions.length() == 2) {
+			errors.put("detailDecription", "Vui lòng nhập ít nhất 1 mô tả");
+		}
+
+		for (MultipartFile image : listImage) {
+			if (!image.isEmpty()) {
+				System.out.println(image.getOriginalFilename());
+			} else {
+				errors.put("image", "Vui lòng chọn ít nhất 1 ảnh");
+			}
+		}
+		if (result.hasErrors()) {
+			// Trả lỗi về Json
+			for (FieldError error : result.getFieldErrors()) {
+				errors.put(error.getField(), error.getDefaultMessage());
+			}
+			return ResponseEntity.ok(errors);
+		}
+		if (errors.isEmpty()) {
+			try {
+				
+//				product.setUser(sessionService.get("userLogin"));
+				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+				System.out.println("userSecurity" + authentication.getName());
+				Account user2 = ucDao.findByEmail(authentication.getName());
+				product.setUser(user2);
+				pdDAO.save(product);
+			} catch (Exception e) {
+				// TODO: handle exception
+				return ResponseEntity.ok("fail");
+			}
+			for (MultipartFile img : listImage) {
+				Image image = new Image();
+				image.setImage(paramService.save(img, "images/products").getName());
+				image.setProduct(product);
+				imgDao.save(image);
+			}
+
+			Gson gson = new Gson();
+			List<Map<String, String>> list = gson.fromJson(descriptions, new TypeToken<List<Map<String, String>>>() {
+			}.getType());
+
+			for (Map<String, String> map : list) {
+				System.out.println(map.values());
+			}
+			for (Map<String, String> map : list) {
+
+				DetailDescription detailDescription = new DetailDescription();
+				detailDescription.setTitle((map.get("tieuDe")));
+				detailDescription.setDescription(map.get("description"));
+				detailDescription.setProduct(product);
+
+				detailDescriptionDAO.save(detailDescription);
+			}
+			return ResponseEntity.ok("success");
+		} else {
+			return ResponseEntity.ok(errors);
+		}
+	
+	}
 
 //	@Autowired
 //	CategoryDAO caDAO;

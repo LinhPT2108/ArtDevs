@@ -1,8 +1,12 @@
 package com.art.dao.product;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.art.models.product.Price;
+
 
 
 public interface PriceDAO extends JpaRepository<Price, Integer>{
@@ -23,5 +27,8 @@ public interface PriceDAO extends JpaRepository<Price, Integer>{
 	
 //	void deleteByProduct(Product product);
 	
+
+	@Query("SELECT p FROM Price p WHERE p.productDetail.id =:r ORDER BY (p.createdDate) DESC")
+	List<Price> sortPriceByDatecreate(int r);
 	
 }
