@@ -2,6 +2,7 @@ package com.art.models.promotion;
 
 import com.art.models.activity.Comment;
 import com.art.models.product.ProductDetail;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,6 +27,7 @@ public class OrderDetail {
 
 	@ManyToOne
 	@JoinColumn(name = "order_id")
+	@JsonIgnore
 	private Order order;
 
 	@ManyToOne

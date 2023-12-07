@@ -1,0 +1,198 @@
+<div class="content-profile">
+    <div class="title  border border-right-0 border-top-0 border-left-0 py-2 d-flex justify-content-between">
+        <span class="display-6">Danh sách đơn hàng {{type}}</span>
+        <span class="display-7 font-weight-bold">Số lượng: {{listOrderByType.length}}</span>
+    </div>
+    <div class="main-content p-3">
+        <div class="row mb-3">
+            <div class="col-6">
+                <label for="search" class="d-inline">Tìm kiếm:</label>
+                <input ng-model="q" id="search" class="form-control" placeholder="Giá, ngày mua hàng, ...">
+            </div>
+            <div class="col-6 ">
+                <label for="show" class="d-inline">Hiển thị:</label>
+                <input type="number" id="show" min="1" max="100" class="form-control"
+                    placeholder="Nhập số lượng hiển thị cho phép" ng-model="pageSize">
+            </div>
+        </div>
+        <div class="invoice-item mb-3 p-3 bg-white border"
+            dir-paginate="o in listOrderByType| orderBy: '-orderDate' | filter:q | itemsPerPage: pageSize"
+            current-page="currentPage">
+            <div class=" site-inf d-flex">
+                <div class="start mr-auto">
+                    <i class="bi bi-calendar2-check"></i>
+                    <span class="font-weight-bold">Ngày đặt hàng:
+                        {{o.orderDate|date:'yyyy-MM-dd HH:mm:ss'}}
+                    </span>
+                </div>
+                <div class="delivery ml-auto">
+                    <span class="text-danger mr-3" ng-show="getLatestOrder(o.orderStatus).deliveryStatus.id==1">
+                        <i class="ti ti-package"></i>
+                        Đơn hàng đang được xử lí
+                    </span>
+
+                    <span class="text-warning mr-3" ng-show="getLatestOrder(o.orderStatus).deliveryStatus.id==2">
+                        <i class="ti ti-truck"></i>
+                        Đang giao hàng
+                    </span>
+
+                    <span class="text-danger mr-3" ng-show="getLatestOrder(o.orderStatus).deliveryStatus.id==4">
+                        <i class="ti ti-truck"></i>
+                        Đã hủy
+                    </span>
+
+                    <span class="text-success mr-3" ng-show="getLatestOrder(o.orderStatus).deliveryStatus.id==3">
+                        <i class="ti ti-check"></i>
+                        Giao hàng thành công
+                    </span>
+                </div>
+            </div>
+            <hr>
+            <div class="list-product-invoice" ng-repeat="p in o.orderDetails">
+                <div class="row mb-3">
+                    <div class="col-12 col-md-2 me-0 d-flex align-items-center justify-content-center">
+                        <div class="img-product d-inline position-relative">
+                            <img alt="Hình ảnh sản phẩm"
+                                ng-src="../../images/products/{{p.productDetail.product.productImage[0].image}}"
+                                width="150px" height="100%" class="img-thumbnail mx-auto align-middle">
+                        </div>
+                    </div>
+                    <div class="title-product col-12  col-md-7 ps-0 ms-0">
+                        <div class="d-flex flex-column mb-3">
+                            <span class="product-description-name display-6 font-weight-bold">
+                                {{p.productDetail.product.productName}}
+                            </span>
+                            <span class="text-muted fs-6">Loại hàng:
+                                {{p.productDetail.product.categoryProduct.categoryName}}</span>
+                            <span class="text-muted ">Hãng:
+                                {{p.productDetail.product.manufacturerProduct.manufacturerName}}</span>
+                            <span>Số lượng: {{p.quantity }}</span>
+                        </div>
+
+                    </div>
+                    <div class="price-product col-12 col-md-3 d-flex flex-column">
+                        <a type="button" class="btn-warning p-2  text-white align-self-end mb-3 showComment" href=""
+                            data-toggle="modal" data-target="#modalReviews"
+                            ng-click="showComment(p.productDetail.id, p.id)" ng-show="p.comment==null &&type==3">Chưa
+                            đánh giá {{p.id}}</a>
+
+                        <a type="button" class="btn-success p-2 align-self-end mb-3 showComment rounded text-white"
+                            href="" data-toggle="modal" data-target="#modalReviews"
+                            ng-click="showComment(p.productDetail.id, p.id)" ng-show="p.comment!=null &&type==3">Đã đánh
+                            giá {{p.id}}</a>
+
+                        <span class="font-weight-bold float-right text-danger align-self-end mt-3">
+                            {{p.price | number:0 }} &#8363;
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="site-button d-flex justify-content-beetween align-items-center">
+                <div class="col-4">
+                    <a class="btn-danger p-2 rounded text-white" href="#" id="cancel-order" data-invoice-id="${iv.id }"
+                        role="button" ng-click="cancelOrder(o.id, $index)" ng-show="type==1">Hủy đơn hàng</a>
+                </div>
+                <div class="price col-8">
+                    <div class="float-end">
+                        <span class="float-right">Tổng tiền: <span class="text-danger font-weight-bold display-6 ">
+                                {{o.totalAmount + o.deliveryFee | number:0 }} &#8363;
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="other-controller">
+            <div class="text-center d-flex align-items-center justify-content-center">
+                <dir-pagination-controls boundary-links="true">
+                </dir-pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-sm" id="modalReviews" tabindex="-1" role="dialog"
+    aria-labelledby="modalReviewsTitle" aria-hidden="true" style="max-width: 600px; margin: auto;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="max-width: 600px; height: 508px">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Đánh giá sản
+                    phẩm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" class="form-reviews" method="post" modelAttribute="cmt">
+                    <div class="form-group row  justify-content-start">
+                        <label for="" class="col-12 col-sm-4 col-form-label">Chất
+                            lượng sản phẩm:</label>
+                        <div class="col-12 col-sm-8 d-flex align-items-center">
+                            <div class="rating float-left">
+                                <input value="5" name="rate" id="star5" type="radio" ng-model="rating.star">
+                                <label title="text" for="star5"></label>
+
+                                <input value="4" name="rate" id="star4" type="radio" ng-model="rating.star">
+                                <label title="text" for="star4"></label>
+
+                                <input value="3" name="rate" id="star3" type="radio" ng-model="rating.star">
+                                <label title="text" for="star3"></label>
+
+                                <input value="2" name="rate" id="star2" type="radio" ng-model="rating.star">
+                                <label title="text" for="star2"></label>
+
+                                <input value="1" name="rate" id="star1" type="radio" ng-model="rating.star">
+                                <label title="text" for="star1"></label>
+                            </div>
+                            <!-- Tuyệt vời, Hài lòng, Bình thường, Không hài lòng, tệ -->
+                            <span class="ml-2 status-ratting" style="color: #ffa723">
+                                {{rating.star==5?'Tuyệt vời':rating.star==4?'Hài lòng':rating.star==3?'Bình
+                                thường':rating.star==2?'Không
+                                hài lòng':'Tệ'}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group text-muted">
+                        <div class="date-comment" ng-show="rating.date!=null">
+                            <span>Ngày đánh giá: {{rating.date|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="">Hình ảnh</label>
+                        <ul id="imageList">
+                            <li class="" style="list-style: none;">
+                                <label class="custum-file-upload">
+                                    <div class="ico2n">
+                                        <i class="bi bi-card-image"></i>
+                                    </div>
+                                    <div class="text">
+                                        <span>Tải ảnh lên</span>
+                                    </div>
+                                    <input type="file" name="listImage" id="listImage" multiple accept=".jpg,.jpeg,.png"
+                                        ng-model="rating.commentImages" ng-change="checkPic()">
+                                </label>
+                            </li>
+                            <li class="" id="listImg" ng-repeat="pic in rating.commentImages">
+                                <img ng-src="../../images/products/{{pic.image}}" alt="{{pic.image}}">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class=" form-group">
+                        <label path="content">Chi tiết đánh
+                            giá:</label>
+                        <textarea class="form-control" path="content" rows="5" placeholder=""
+                            ng-model="rating.content"></textarea>
+                        <small class="contentError"></small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Trở
+                    lại</button>
+                <button type="button" class="btn btn-primary" id="btnCheck">Hoàn
+                    thành</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -2,6 +2,8 @@ package com.art.models.promotion;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,6 +38,7 @@ public class OrderDelieveryStatus {
 	
 	@ManyToOne
 	@JoinColumn(name = "order_id")
+	@JsonIgnore
 	private Order orderStatus;
 	
 	@ManyToOne

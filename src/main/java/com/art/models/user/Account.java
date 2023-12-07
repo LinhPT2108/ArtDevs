@@ -118,6 +118,7 @@ public class Account implements Serializable {
 	private List<FlashSale> userFlashSale;
 
 	@OneToMany(mappedBy = "user")
+	@JsonIgnore
 	private List<Order> userOrder;
 
 	@JsonIgnore

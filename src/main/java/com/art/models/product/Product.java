@@ -37,6 +37,7 @@ import lombok.Setter;
 public class Product {
 
 	@Id
+	@JsonIgnore
 	private String productId;
  
 	@Column
@@ -57,13 +58,11 @@ public class Product {
 	private Account user;
 
 	@ManyToOne
-	@JsonIgnore
 	@JoinColumn(name = "category")
 	@NotNull(message = "Vui lòng chọn loại sản phẩm")
 	private Category categoryProduct;
 
 	@ManyToOne
-	@JsonIgnore
 	@JoinColumn(name = "manufacturer")
 	@NotNull(message = "Vui lòng chọn thương hiệu")
 	private Manufacturer manufacturerProduct;
@@ -84,7 +83,6 @@ public class Product {
 	@JsonIgnore
 	private List<DetailDescription> productDescriptions;
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
 	private List<Image> productImage;
 	

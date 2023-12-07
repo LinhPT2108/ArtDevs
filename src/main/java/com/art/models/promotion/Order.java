@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.annotations.Nationalized;
 
 import com.art.models.user.Account;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -38,17 +39,24 @@ public class Order {
 
 	@ManyToOne
 	@JoinColumn(name = "userId")
+	@JsonIgnore
 	private Account user;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column
 	private Date orderDate;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column
 	private Date expected_delivery_time;
 	@Column
 	private BigDecimal totalAmount;
+
+	@Column
+	private Double deliveryFee;
+
+	@Column
+	private Double discount;
 
 	@Column
 	@Nationalized
@@ -57,7 +65,7 @@ public class Order {
 	@Column
 	@Nationalized
 	private String note;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "payment_id")
 	private PaymentMethod paymentMethod;
@@ -78,5 +86,4 @@ public class Order {
 		this.note = note;
 	}
 
-	
 }

@@ -28,7 +28,32 @@ app.controller("profileCtrl", function ($scope, $rootScope, ApiService, $http) {
     }
 
     if (avatarValue != "") {
-      $rootScope.userLogin.image = avatarValue;
+      console.log("đã chọn ảnh");
+
+      const imageInput = document.getElementById("image");
+
+      const file = imageInput.files[0];
+      console.log(file);
+      const formData = new FormData();
+      formData.append("avatar", file);
+
+      const request = $http({
+        method: "PUT",
+        url: "/rest/account/update-avatar/" + $rootScope.userLogin.accountId,
+        headers: {
+          transformRequest: angular.identity,
+          "Content-Type": undefined,
+        },
+        data: formData,
+      });
+      request
+        .then((response) => {
+          console.log(response.data);
+          $rootScope.userLogin.image = response.data.avatarName;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
     console.log(isError);
     if (!isError) {

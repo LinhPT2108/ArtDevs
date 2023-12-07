@@ -74,3 +74,112 @@
 .selectize-dropdown{
 	width: 100% !important;
 }
+
+
+.custum-file-upload {
+
+	height: 90px;
+	width: 127px;
+	display: flex;
+	flex-direction: column;
+	align-items: space-between;
+	/* gap: 60px; */
+	cursor: pointer;
+	align-items: center;
+	justify-content: center;
+	border: 2px dashed #cacaca;
+	background-color: rgba(255, 255, 255, 1);
+	padding: 1.5rem;
+	border-radius: 10px;
+	box-shadow: 0px 48px 35px -48px rgba(0, 0, 0, 0.1);
+	margin-bottom: 0px !important;
+}
+
+.custum-file-upload .text {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	align-items: center;
+}
+
+.custum-file-upload .text span {
+	font-weight: 400;
+	color: rgba(75, 85, 99, 1);
+}
+
+.custum-file-upload input {
+	display: none;
+}
+
+#imageList {
+	list-style: none;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	    align-items: center;
+}
+
+.delete-button {
+	padding: 1.7px;
+	position: absolute;
+	top: -10px;
+	right: -7px;
+	background-color: rgb(158, 158, 158);
+	color: rgb(8, 8, 8);
+	border: none;
+	border-radius: 50%;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+
+#imageList img {
+	width: 100px;
+	height: 90px;
+	border-radius: 10px;
+}
+
+#fileContainer {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+}
+
+#file {
+	flex: 0 0 auto;
+}
+
+.rating:not(:checked)>input {
+	position: absolute;
+	appearance: none;
+}
+
+.rating:not(:checked)>label {
+	float: right;
+	cursor: pointer;
+	font-size: 30px;
+	color: #666;
+}
+
+.rating:not(:checked)>label:before {
+	content: '★';
+}
+
+.rating>input:checked+label:hover,
+.rating>input:checked+label:hover~label,
+.rating>input:checked~label:hover,
+.rating>input:checked~label:hover~label,
+.rating>label:hover~input:checked~label {
+	color: #e58e09;
+}
+
+.rating:not(:checked)>label:hover,
+.rating:not(:checked)>label:hover~label {
+	color: #ff9e0b;
+}
+
+.rating>input:checked~label {
+	color: #ffa723;
+}
