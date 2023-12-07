@@ -1,0 +1,55 @@
+<section class="section">
+    <div class="container">
+        <div class="wrap_background_aside page_login">
+            <div class="row">
+                <div
+                    class="col-lg-4 col-md-6 col-sm-12 col-xl-4 offset-0 offset-xl-4 offset-lg-4 offset-md-3 offset-xl-3 col-12">
+                    <div class="row px-3 py-5" style="box-shadow:  0px 1px 10px 10px   #f0eaea">
+                        <div class="page-login pagecustome clearfix w-100">
+                            <div class="wpx">
+                                <h1 class="title_heads text-center"><span>XÁC THỰC TÀI KHOẢN</span></h1>
+                                <span class="block d-flex justify-content-center dkm mt-2">Kiểm tra email của bạn và
+                                    nhập mã xác nhận vào đây !</span>
+                                <div id="login" class="form-login mt-3">
+                                    <form method="post" ng-submit="submitVerify()" id="customer_login"
+                                        accept-charset="UTF-8">
+                                        <div class="form-signup clearfix">
+                                            <fieldset class="form-group">
+                                                <input type="text" class="form-control form-control-lg"
+                                                    ng-model="formData.verifyCode" name="verifyCode" id="customer_email"
+                                                    placeholder="verify code" required="" autocomplete="none">
+                                            </fieldset>
+                                            <span class="form-error" ng-show="formErrors.verifyCode">Mã xác thực không
+                                                được để trống.</span>
+
+                                            <div class="d-flex flex-column mt-3">
+                                                <input class="btn btn-style btn_50 text-white" type="submit"
+                                                    value="Xác Thực"
+                                                    style="background-color:#2a2929; margin-bottom: 1rem;">
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+
+                                <div
+                                    class="block social-login--facebooks d-flex flex-column justify-content-center mt-3">
+                                    <p class="text-center mb-3">
+                                        Hoặc đăng nhập bằng
+                                    </p>
+                                    <a href="javascript:void(0)" class="social-login--google mx-auto"
+                                        onclick="loginGoogle()"><img width="129px" height="37px"
+                                            alt="google-login-button"
+                                            src="//bizweb.dktcdn.net/assets/admin/images/login/gp-btn.svg"></a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

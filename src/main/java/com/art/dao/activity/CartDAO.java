@@ -3,11 +3,13 @@ package com.art.dao.activity;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.art.models.activity.Cart;
 import com.art.models.product.ProductDetail;
 import com.art.models.user.Account;
 
+@Transactional
 public interface CartDAO extends JpaRepository<Cart, Integer> {
 	
 	// Thêm hoặc cập nhật một giỏ hàng
@@ -27,6 +29,6 @@ public interface CartDAO extends JpaRepository<Cart, Integer> {
 //	
 //	Cart findByProductAndUser(Product product, Account user);
 //	
-//	void deleteByUser(Account user);
+	void deleteByUserAndProductDetail(Account user, ProductDetail productDetail);
 
 }

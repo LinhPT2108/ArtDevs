@@ -20,5 +20,6 @@ public class ProductDetailDTO {
 	private double weight;
 	private double power;
 	private Date productionDate;
+	private List<CommentDTO> comments;
 	private List<PriceDTO> prices;
 }

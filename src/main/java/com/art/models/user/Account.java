@@ -33,13 +33,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Getter
 @Setter
-public class Account implements Serializable{
+public class Account implements Serializable {
 
 	/**
 	 * 
@@ -48,32 +47,32 @@ public class Account implements Serializable{
 
 	@Id
 	private String accountId;
-	
+
 	@Column
 	@Nationalized
-	@NotBlank(message = "Vui lòng nhập họ tên")
-    @Pattern(regexp = "^[a-zA-ZÀ-ỹ\\s]*$", message = "Họ tên không hợp lệ")
+//	@NotBlank(message = "Vui lòng nhập họ tên")
+//	@Pattern(regexp = "^[a-zA-ZÀ-ỹ\\s]*$", message = "Họ tên không hợp lệ")
 	private String fullname;
-	
+
 	@Column
 	private String image;
-	
+
 	@Column
-    @NotBlank(message = "Vui lòng nhập mật khẩu")
-    @Size(min = 6, message = "Mật khẩu phải chứa ít nhất 6 ký tự")
-    @Pattern(regexp = ".*[a-zA-Z].*", message = "Mật khẩu phải chứa ít nhất một chữ cái")
-    private String password;
+//	@NotBlank(message = "Vui lòng nhập mật khẩu")
+//	@Size(min = 6, message = "Mật khẩu phải chứa ít nhất 6 ký tự")
+//	@Pattern(regexp = ".*[a-zA-Z].*", message = "Mật khẩu phải chứa ít nhất một chữ cái")
+	private String password;
 
 	@Column
 	@Email(message = "Email không hợp lệ")
 	private String email;
-	
+
 	@Column
 	private String verifyCode;
-	
+
 	@Column
 	private boolean status;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private List<InforAddress> userInfor;
@@ -118,8 +117,8 @@ public class Account implements Serializable{
 	@OneToMany(mappedBy = "user")
 	private List<FlashSale> userFlashSale;
 
-
 	@OneToMany(mappedBy = "user")
+	@JsonIgnore
 	private List<Order> userOrder;
 
 	@JsonIgnore
@@ -129,12 +128,19 @@ public class Account implements Serializable{
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<KeywordSuggestions> userKeyword;
-	
+
 	@Override
 	public String toString() {
-		return "UserCustom [userId=" + accountId + ", fullname=" + fullname + ", password=" + password + ", email=" + email
-				+ ", del=" + status + "]";
+		return "UserCustom [userId=" + accountId + ", fullname=" + fullname + ", password=" + password + ", email="
+				+ email + ", del=" + status + "]";
 	}
 
-	
+	public Account(String accountId, String fullname, String password, String email) {
+		super();
+		this.accountId = accountId;
+		this.fullname = fullname;
+		this.password = password;
+		this.email = email;
+	}
+
 }

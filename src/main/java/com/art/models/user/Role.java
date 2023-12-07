@@ -39,14 +39,18 @@ public class Role implements Serializable {
 	@Column
 	@Nationalized
 
-
-	
-
 	private String roleName;
-
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "role", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<AccountRole> roleId;
+
+	public Role(int id, String roleName) {
+		super();
+		this.id = id;
+		this.roleName = roleName;
+	}
+	
+	
 
 }

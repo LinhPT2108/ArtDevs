@@ -1,5 +1,6 @@
 package com.art.mapper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,7 +34,6 @@ public class ProductMapper {
 		ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
 		discountPrice = 0;
 		productDTO.setImages(getImagesDTO(product));
-		productDTO.setComments(getCommentDTO(product));
 		productDTO.setSale(getProductSale(proDAO, fDAO, product));
 		productDTO.setProductDetails(getProductDetailsDTO(product));
 		double star = productDAO.calculateAverageRating(product.getProductId()) == null ? 0
@@ -41,20 +41,29 @@ public class ProductMapper {
 		productDTO.setStar(star);
 		productDTO.setCountSold(productDAO.countProuctSold(product.getProductId()));
 		productDTO.setDiscountPrice(discountPrice);
+		productDTO.setSumRate(productDAO.countCommentsByProduct(product.getProductId()));
 		return productDTO;
 	}
 
 	private static boolean getProductSale(PromotionalDetailsDAO proDAO, FlashSaleDAO fDAO, Product product) {
-
-		FlashSale flashSale = fDAO.findByStatus(true);
-		List<PromotionalDetails> promotionalDetails = flashSale.getPromotionalDetailsList();
-		for (PromotionalDetails pro : promotionalDetails) {
-			if (product.getProductId().equals(pro.getProduct().getProductId())) {
-				if (pro.getDiscountedQuantity() != pro.getQuantitySold()) {
-					discountPrice = pro.getDiscountedPrice();
-					return true;
+		try {
+			FlashSale flashSale = fDAO.findByStatus(true);
+			if (flashSale.getEndDay().after(new Date())) {
+				List<PromotionalDetails> promotionalDetails = flashSale.getPromotionalDetailsList();
+				for (PromotionalDetails pro : promotionalDetails) {
+					if (product.getProductId().equals(pro.getProduct().getProductId())) {
+						if (!pro.isStatus()) {
+							if (pro.getDiscountedQuantity() != pro.getQuantitySold()) {
+								discountPrice = pro.getDiscountedPrice();
+								return true;
+							}
+						}
+					}
 				}
 			}
+		} catch (Exception e) {
+			System.out.println(e);
+			return false;
 		}
 		return false;
 	}
@@ -63,17 +72,16 @@ public class ProductMapper {
 		return product.getProductImage().stream().map(image -> image.getImage()).collect(Collectors.toList());
 	}
 
-	private static List<CommentDTO> getCommentDTO(Product product) {
-		return product
-				.getProductComment().stream().map(comment -> new CommentDTO(comment.getId(), comment.getStar(),
-						comment.getContent(), comment.getDate(), comment.getUser().getFullname()))
+	private static List<CommentDTO> getCommentDTO(ProductDetail product) {
+		return product.getProductComment().stream().map(comment -> new CommentDTO(comment.getId(), comment.getStar(),
+				comment.getContent(), comment.getDate(), comment.getUser().getFullname()))
 				.collect(Collectors.toList());
 	}
 
 	private static List<ProductDetailDTO> getProductDetailsDTO(Product product) {
 		List<ProductDetailDTO> prDetailDTOs = product.getProductDetail().stream()
 				.map(pd -> new ProductDetailDTO(pd.getId(), pd.getQuantityInStock(), pd.getSize(), pd.getColor(),
-						pd.getWeight(), pd.getPower(), pd.getProductionDate(), getPriceDTO(pd)))
+						pd.getWeight(), pd.getPower(), pd.getProductionDate(), getCommentDTO(pd), getPriceDTO(pd)))
 				.collect(Collectors.toList());
 		return prDetailDTOs;
 	}

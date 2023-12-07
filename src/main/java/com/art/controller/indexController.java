@@ -8,7 +8,6 @@ public class indexController {
 
     @GetMapping(value = {"/", ""})
     public String redirectArtDevs() {
-        System.out.println("Hello qua đây đi");
         return "redirect:/ArtDevs";
     }
 

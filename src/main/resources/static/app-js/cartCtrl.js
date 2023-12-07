@@ -1,10 +1,13 @@
 app.controller("cartCtrl", function ($scope, $rootScope, ApiService, $timeout) {
   console.log("cartCtrl");
+  $scope.checkAll = false;
+
   $scope.handleInputBlur = function (cart) {
     console.log(cart.quantityInCart);
-    if (!cart.quantityInCart.trim()) {
+    if (!cart.quantityInCart.trim() || cart.quantityInCart == 0) {
       cart.quantityInCart = 1;
     }
+    $scope.updateCart(cart);
   };
 
   $scope.updateTotalAmount = function (cart, qty) {
@@ -69,7 +72,7 @@ app.controller("cartCtrl", function ($scope, $rootScope, ApiService, $timeout) {
       });
   };
 
-  $scope.checkAll = false; // Giá trị mặc định cho checkbox chọn tất cả
+  $scope.checkAll = false;
 
   $rootScope.getCheckedProducts = [];
 

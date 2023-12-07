@@ -2,8 +2,6 @@ package com.art.models.user;
 
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;

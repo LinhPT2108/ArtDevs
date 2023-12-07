@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.hibernate.annotations.Nationalized;
 
-import com.art.models.product.Product;
+import com.art.models.product.ProductDetail;
 import com.art.models.promotion.OrderDetail;
 import com.art.models.user.Account;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -57,8 +57,8 @@ public class Comment {
 	
 	@JsonBackReference
 	@ManyToOne
-	@JoinColumn(name = "product_id")
-	private Product product;
+	@JoinColumn(name = "product_detail_id")
+	private ProductDetail productDetail;
 	
 	@JsonBackReference
 	@OneToOne

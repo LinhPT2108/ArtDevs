@@ -2,15 +2,15 @@ package com.art.models.product;
 
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.annotations.Nationalized;
 
-import com.art.models.activity.Comment;
 import com.art.models.activity.RecentlyViewed;
 import com.art.models.activity.WishList;
-import com.art.models.promotion.OrderDetail;
 import com.art.models.promotion.PromotionalDetails;
 import com.art.models.user.Account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -37,6 +37,7 @@ import lombok.Setter;
 public class Product {
 
 	@Id
+	@JsonIgnore
 	private String productId;
  
 	@Column
@@ -57,20 +58,14 @@ public class Product {
 	private Account user;
 
 	@ManyToOne
-	@JsonIgnore
 	@JoinColumn(name = "category")
 	@NotNull(message = "Vui lòng chọn loại sản phẩm")
 	private Category categoryProduct;
 
 	@ManyToOne
-	@JsonIgnore
 	@JoinColumn(name = "manufacturer")
 	@NotNull(message = "Vui lòng chọn thương hiệu")
 	private Manufacturer manufacturerProduct;
-
-	@OneToMany(mappedBy = "product")
-	@JsonIgnore
-	private List<Comment> productComment;
 
 	@OneToMany(mappedBy = "product")
 	@JsonIgnore
@@ -88,13 +83,8 @@ public class Product {
 	@JsonIgnore
 	private List<DetailDescription> productDescriptions;
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
 	private List<Image> productImage;
-
-	@OneToMany(mappedBy = "product")
-	@JsonIgnore
-	private List<OrderDetail> productOrderDetail;
 	
 	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
 	@JsonIgnore

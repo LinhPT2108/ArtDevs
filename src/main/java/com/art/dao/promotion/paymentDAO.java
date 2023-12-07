@@ -1,0 +1,9 @@
+package com.art.dao.promotion;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.art.models.promotion.PaymentMethod;
+
+public interface paymentDAO extends JpaRepository<PaymentMethod, Integer> {
+    
+}

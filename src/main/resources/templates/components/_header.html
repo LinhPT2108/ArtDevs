@@ -7,7 +7,7 @@
                     <!-- Top Left -->
                     <div class="top-left">
                         <ul class="list-main">
-                            <li><i class="ti-headphone-alt"></i> 0911726601 </li>
+                            <li class="hidehide"><i class="ti-headphone-alt"></i> 0911726601 </li>
                             <li><i class="ti-email"></i> artdevk18@gmail.com</li>
                         </ul>
                     </div>
@@ -112,10 +112,10 @@
                                             <a href="/account/profile">Thông tin tài khoản</a>
                                         </li>
                                         <li class="list-group-item">
-                                            <a href="/account/purchased-order/3">Đơn mua</a>
+                                            <a href="/account/purchase-order/3">Đơn mua</a>
                                         </li>
                                         <li class="list-group-item">
-                                            <a href="#">Đổi mật khẩu</a>
+                                            <a href="/account/change-password">Đổi mật khẩu</a>
                                         </li>
                                         <li class="list-group-item">
                                             <a href="#" logout-ctrl>Đăng xuất</a>
@@ -165,7 +165,8 @@
                                                 {{pdt.size}} - {{pdt.color}}
                                             </span>
                                         </p>
-                                        <p class="quantity" ng-repeat="pdt in c.productDTO.productDetails">
+                                        <p class="quantity" ng-repeat="pdt in c.productDTO.productDetails"
+                                            ng-class="{'d-none':  pdt.id != c.productDetailId}">
                                             {{c.quantityInCart}} x -
                                             <span class="amount"
                                                 ng-if="c.productDTO.sale && pdt.id == c.productDetailId">
