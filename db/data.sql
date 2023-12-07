@@ -1137,7 +1137,6 @@ VALUES  ( 50 ,10 ,8 ,SYSDATETIME() ,'White' ,'QA55Q65A' ,'130cmx80cmx6cm' ),
         ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA55Q65A' ,'130cmx60cmx6cm' ),
         ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'55NANO76SQA' ,'120cmx70cmx6cm' ),
         ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'32V35KP' ,'150cmx65cmx8cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Gray' ,'32V35KP' ,'160cmx75cmx8cm' ),
         ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA43Q65A' ,'120cmx80cmx8cm' ),
         ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'UA43BU8000' ,'130cmx80cmx8cm' ),
         ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'UA55AU8100' ,'140cmx90cmx6cm' ),
@@ -1203,9 +1202,10 @@ VALUES  ( 23000000,SYSDATETIME(), 1 ),
         ( 14500000 ,SYSDATETIME(), 28 ),
         ( 18500000 ,SYSDATETIME(), 29 ),
         ( 8500000 ,SYSDATETIME(), 30 ),
-        ( 12000000 ,SYSDATETIME(), 31 );
-        ( 10000000 ,SYSDATETIME(), 32 );
-        ( 10000000 ,SYSDATETIME(), 35 );
+        ( 12000000 ,SYSDATETIME(), 31),
+        ( 18500000 ,SYSDATETIME(), 32 ),
+        ( 8500000 ,SYSDATETIME(), 33 ),
+        ( 12000000 ,SYSDATETIME(), 34 );
 GO 
 
 INSERT INTO dbo.orders
@@ -1620,14 +1620,14 @@ INSERT INTO dbo.promotional_details
 		  quantity_sold
         )
 VALUES  ( 0.15 , -- discounted_price - float
-          5 , -- flash_sale_id - int
+          3 , -- flash_sale_id - int
           0 , -- status - bit
-          'WW80T3020WW',  -- product_id - varchar(255)
+          '32V35KP',  -- product_id - varchar(255)
           50,
 		  20
         ),
 		( 0.1 , -- discounted_price - float
-          5 , -- flash_sale_id - int
+          3 , -- flash_sale_id - int
           0 , -- status - bit
           '50UQ7550PSF',  -- product_id - varchar(255)
           50,

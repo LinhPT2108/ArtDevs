@@ -6,13 +6,19 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.art.dao.product.ProductDAO;
 import com.art.dao.product.ProductDetailDAO;
+import com.art.dao.promotion.FlashSaleDAO;
+import com.art.dao.promotion.PromotionalDetailsDAO;
+import com.art.dto.product.ProductDTO;
 import com.art.dto.product.ProductDetailDTO;
 import com.art.mapper.ProductDetailsMapper;
+import com.art.mapper.ProductMapper;
 import com.art.models.product.ProductDetail;
 import com.art.utils.Path;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -20,15 +26,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class ProductDetailRestController {
     @Autowired
     ProductDetailDAO pdtDAO;
+    
+    @Autowired
+    ProductDAO productDAO;
+    
+    @Autowired
+    PromotionalDetailsDAO promotionalDetailsDAO;
 
-    @GetMapping(value = "/product-detail/{id}")
+    @Autowired
+    FlashSaleDAO flashSaleDAO;
+    
+    @GetMapping(value="/product-detail/{id}")
     public ResponseEntity<ProductDetailDTO> getMethodName(@PathVariable("id") int id) {
         if (!pdtDAO.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        ProductDetail productDetail = pdtDAO.findById(id).get();
-        ProductDetailDTO productDetailDTO = ProductDetailsMapper.convertToDto(productDetail);
+			return ResponseEntity.notFound().build();	
+		}
+		ProductDetail productDetail = pdtDAO.findById(id).get();
+		ProductDetailDTO productDetailDTO = ProductDetailsMapper.convertToDto(productDetail);
 
-        return ResponseEntity.ok(productDetailDTO);
+		return ResponseEntity.ok(productDetailDTO);
     }
+    
 }

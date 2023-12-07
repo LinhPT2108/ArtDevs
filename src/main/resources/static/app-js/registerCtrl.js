@@ -2,6 +2,7 @@ var host = "http://localhost:8080";
 app.controller("registerCtrl", function($scope, $http) {
 	$scope.formData = {};
 	$scope.formErrors = {};
+	$scope.isSendingMail = false;
 
 	$scope.formData.roles = ["user"];
 	$scope.formData.accountId = getAccountId();
@@ -41,6 +42,16 @@ app.controller("registerCtrl", function($scope, $http) {
 				if (Object.keys($scope.formErrors).length > 0) {
 					return;
 				} else {
+					Swal.fire({
+						icon: 'success',
+						title: 'Xác thực tài khoản',
+						text: "Bạn sẽ được chuyển sang trang xác thực tài khoản với email!",
+						showConfirmButton: false,
+						allowOutsideClick: false,
+						allowEscapeKey: false,
+						timer: 5000,
+						timerProgressBar: true
+					});
 					$http
 						.post(host + "/rest/account", $scope.formData)
 						.then(function(response) {
