@@ -114,8 +114,18 @@
 											<i class=" ti-eye"></i>
 											<span>Xem nhanh</span>
 										</a>
-										<a title="Wishlist" href="#">
+										<a title="Wishlist" href="#" add-to-wishlist pd-id="pd.productId"
+											check-alive="false" ng-click="addToWishlist($event,
+                                                        pd.productId, false)"
+											ng-show="checkInWishlist(pd.productId).length==0">
 											<i class=" ti-heart "></i><span>Thêm vào yêu thích</span>
+										</a>
+
+										<a title="Wishlist" href="#" add-to-wishlist pd-id="pd.productId"
+											check-alive="true" ng-click="addToWishlist($event,
+                                                        pd.productId, true)"
+											ng-show="checkInWishlist(pd.productId).length!=0">
+											<i class=" ti-heart "></i><span>Xóa khỏi yêu thích</span>
 										</a>
 									</div>
 									<div class="product-action-2">
@@ -277,7 +287,17 @@
 									product="qvpd" quantity="qty" pd-detail-id=""
 									ng-click="addToCart($event ,qvpd, qty, null)">Thêm vào giỏ
 									hàng</a>
-								<a href="#" class="btn min"><i class="ti-heart"></i></a>
+								<a title="Wishlist" class="display-6 ml-4" href="#" add-to-wishlist
+									pd-id="qvpd.productId" check-alive="false" ng-click="addToWishlist($event,
+                                qvpd.productId, false)" ng-show="checkInWishlist(qvpd.productId).length==0">
+									<i class="bi bi-heart"></i>
+								</a>
+
+								<a title="Wishlist" class="display-6 ml-4" href="#" add-to-wishlist
+									pd-id="qvpd.productId" check-alive="true" ng-click="addToWishlist($event,
+                                qvpd.productId, true)" ng-show="checkInWishlist(qvpd.productId).length!=0">
+									<i class="bi bi-heart-fill text-danger"></i>
+								</a>
 							</div>
 							<!-- <div class="default-social">
                                 <h4 class="share-now">Share:</h4>

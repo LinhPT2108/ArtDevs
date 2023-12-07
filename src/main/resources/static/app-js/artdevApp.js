@@ -25,6 +25,10 @@ app.config(function ($routeProvider, $locationProvider) {
       templateUrl: "templates/user/views/account.html",
       controller: "changePasswordCtrl",
     })
+    .when("/account/wishlist", {
+      templateUrl: "templates/user/views/account.html",
+      controller: "wishlistCtrl",
+    })
     .when("/account/purchase-order/:type", {
       templateUrl: "templates/user/views/account.html",
       controller: "orderCtrl",
@@ -132,11 +136,31 @@ app.run(function ($rootScope, DataService, ApiService, $timeout) {
             return cart.productDTO.available === true;
           }
         );
+
+        ApiService.callApi(
+          "GET",
+          "/rest/wishlist/" + $rootScope.userLogin.accountId
+        )
+          .then(function (response) {
+            console.log(response);
+            $rootScope.wishlistAccount = response;
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
       }
     })
     .catch(function (error) {
       console.log("Lỗi" + error);
     });
+
+  $rootScope.checkInWishlist = function (productId) {
+    if ($rootScope.wishlistAccount!=undefined) {
+      return $rootScope.wishlistAccount.filter(function (w) {
+        return w.product.productId == productId ? true : false;
+      });
+    }
+  };
 });
 
 app.controller(

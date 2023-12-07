@@ -1,0 +1,246 @@
+<div class="content-profile">
+    <div class="title  border border-right-0 border-top-0 border-left-0 py-2 d-flex justify-content-between">
+        <span class="display-6">Danh sách yêu thích</span>
+        <span class="display-7 font-weight-bold">Số lượng: {{wishlistAccount.length}}</span>
+    </div>
+    <div class="main-content p-3">
+        <div class="row">
+            <div class="col-12">
+                <!-- Shop Top -->
+                <div class="shop-top">
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="search" class="d-inline">Tìm kiếm:</label>
+                            <input ng-model="q" id="search" class="form-control" placeholder="Tên sản phẩm"
+                                autocomplete="none">
+                        </div>
+                        <div class="col-4">
+                            <label for="show" class="d-inline">Hiển thị:</label>
+                            <input type="number" id="show" min="1" max="100" class="form-control "
+                                placeholder="Nhập số lượng hiển thị cho phép" ng-model="pageSize"
+                                style="padding: .375rem .75rem !important;">
+                        </div>
+                        <div class="col-4">
+                            <label for="sort" class="d-inline">Sắp xếp: </label>
+                            <select name="sort" id="sort" class="form-control" ng-model="tc" ng-change="sortList(tc)">
+                                <option value="">---Chọn---</option>
+                                <option value="priceAsc">Giá tăng dần</option>
+                                <option value="priceDesc">Giá giảm dần</option>
+                                <option value="productName">Tên A-Z</option>
+                                <option value="-productName">Tên Z-A</option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+                <!--/ End Shop Top -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 col-12"
+                dir-paginate="pd in listProductsAll | filter:q| myFilter : search:false| itemsPerPage: pageSize | orderBy: tc"
+                current-page="currentPage">
+                <div class="single-product">
+                    <div class="product-img">
+                        <a href="/product/{{pd.productId}}">
+                            <img class="default-img" ng-src="../images/products/{{pd.images[0]}}" alt="anh 1">
+                            <img class="hover-img" ng-src="../images/products/{{pd.images[1]}}" alt="anh 2">
+                            <span class="out-of-stock font-weight-bold" ng-show="pd.sale">
+                                - {{pd.discountPrice*100}}%
+                            </span>
+                        </a>
+
+                        <div class="button-head">
+                            <div class="product-action">
+                                <a data-toggle="modal" data-target="#exampleModal" title="Quick View" class="quickViews"
+                                    href="#" data-product-id="{{pd.productId}}" quick-view-modal>
+                                    <i class=" ti-eye"></i>
+                                    <span>Xem nhanh</span>
+                                </a>
+                                <a title="Wishlist" href="#" add-to-wishlist pd-id="pd.productId" check-alive="false"
+                                    ng-click="addToWishlist($event,
+                                                pd.productId, false)"
+                                    ng-show="checkInWishlist(pd.productId).length==0">
+                                    <i class=" ti-heart "></i><span>Thêm vào yêu thích</span>
+                                </a>
+
+                                <a title="Wishlist" href="#" add-to-wishlist pd-id="pd.productId" check-alive="true"
+                                    ng-click="addToWishlist($event,
+                                                pd.productId, true)" ng-show="checkInWishlist(pd.productId).length!=0">
+                                    <i class=" ti-heart "></i><span>Xóa khỏi yêu thích</span>
+                                </a>
+                            </div>
+                            <div class="product-action-2">
+                                <a title="Add to cart" href="#" add-to-cart product="pd" quantity="1"
+                                    pd-detail-id="pd.productDetails[0].id"
+                                    ng-click="addToCart($event ,pd, 1,pd.productDetails[0].id)">
+                                    Thêm vào giỏ hàng</a>
+                                <!--  -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <span class="text-muted">{{pd.manufacturer.manufacturerName}}</span>
+                        <h3 class="card-title"><a href="/product/{{pd.productId}}">{{pd.productName}}</a></h3>
+                        <div class="row">
+                            <div class="product-price d-flex flex-column col-6" ng-if="pd.productDetails.length > 0">
+                                <span class="font-weight-bold"
+                                    ng-init="latestPrice = getLatestPrice(pd.productDetails[0].prices)">
+                                    <span ng-if="pd.sale" class="text-decoration-line-through">
+                                        {{latestPrice.price | number:0 }} &#8363;</span>
+                                    <span ng-if="!pd.sale" class="text-danger font-weight-bold">{{
+                                        latestPrice.price
+                                        | number:0 }} &#8363;</span>
+                                </span>
+
+                                <span class="font-weight-bold text-danger" ng-show="pd.sale">
+                                    {{ latestPrice.price - (latestPrice.price *
+                                    pd.discountPrice) |
+                                    number:0 }} &#8363;
+                                </span>
+                            </div>
+                            <div class="col-6 d-flex align-items-start justify-content-center">
+                                Đã bán {{pd.countSold}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="other-controller col-12">
+                <div class="text-center d-flex align-items-center justify-content-center">
+                    <dir-pagination-controls boundary-links="true">
+                    </dir-pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" modal-hidden>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="ti-close" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row no-gutters">
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12" style="margin-top: auto;
+                    margin-bottom: auto;">
+                        <!-- Product Slider -->
+                        <div class="product-gallery">
+                            <div class="quickview-slider-active" owl-carousel>
+                                <div class="single-slider" ng-repeat="img in qvpd.images" on-finish-render>
+                                    <img ng-src="../images/products/{{img}}" alt="{{img}}">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Product slider -->
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <div class="quickview-content">
+                            <h2>{{qvpd.productName}}</h2>
+                            <div class="quickview-ratting-review">
+                                <div class="quickview-ratting-wrap">
+                                    <!-- <div class="quickview-ratting">
+                                        <i class="yellow fa fa-star"></i>
+                                        <i class="yellow fa fa-star"></i>
+                                        <i class="yellow fa fa-star"></i>
+                                        <i class="yellow fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div> -->
+                                    <!-- <a href="#"> (1 customer review)</a> -->
+                                </div>
+                                <div class="quickview-stock">
+                                    <span ng-if="pdt.quantityInStock > 0">
+                                        <i class="fa fa-check-circle-o"></i> Số lượng trong kho:
+                                        {{pdt.quantityInStock}}
+                                    </span>
+                                    <span ng-if="pdt.quantityInStock == 0" class="text-danger">
+                                        <i class="fa fa-times-circle text-danger" aria-hidden="true"></i>
+                                        Hết hàng
+                                    </span>
+                                </div>
+                            </div>
+                            <div ng-show="isSale" class="d-flex align-items-center">
+                                <h3 class="font-weight-bold text-decoration-line-through mr-3">
+                                    {{ getLatestPrice(pdt.prices).price | number:0 }}
+                                    &#8363;
+                                </h3>
+
+                                <h3 class="font-weight-bold text-danger mr-3">
+                                    {{ getLatestPrice(pdt.prices).price - (getLatestPrice(pdt.prices).price *
+                                    discountPrice) | number:0 }}
+                                    &#8363;
+                                </h3>
+
+                                <div class="bg-danger text-white p-2 font-weight-bold rounded">
+                                    Giảm {{discountPrice*100}}%
+                                </div>
+                            </div>
+                            <h3 class="font-weight-bold text-danger" ng-show="!isSale">
+                                {{ getLatestPrice(pdt.prices).price | number:0 }}
+                                &#8363;
+                            </h3>
+                            <div class="quickview-peragraph">
+                                <p><strong>{{qvpd.descriptions[0].title}}:</strong></p>
+                                <p>{{qvpd.descriptions[0].description}}</p>
+                            </div>
+                            <div class="size">
+                                <div class="d-flex">
+                                    <div ng-repeat="p in qvpd.productDetails">
+                                        <a href="#" class="btn-type p-2 border rounded border-secondary mr-3"
+                                            ng-click="choiceProduct(p.id, $event, qvpd.discountPrice, qvpd.sale)">
+                                            {{p.size}} - {{p.color}}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="quantity" quantity-control>
+                                <!-- Input Order -->
+                                <div class="input-group">
+                                    <div class="button minus">
+                                        <button type="button" class="btn btn-primary btn-number" data-type="minus"
+                                            data-field="quant[1]" ng-class="{disabled:pdt.quantityInStock == 0}">
+                                            <i class="ti-minus"></i>
+                                        </button>
+                                    </div>
+                                    <input type="text" name="quant[1]" class="input-number" data-min="1"
+                                        data-max="{{pdt.quantityInStock}}" value="1" ng-model="qty" numbers-only>
+                                    <div class="button plus">
+                                        <button type="button" class="btn btn-primary btn-number" data-type="plus"
+                                            data-field="quant[1]" ng-class="{disabled:pdt.quantityInStock == 0}">
+                                            <i class="ti-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!--/ End Input Order -->
+                            </div>
+                            <div class="add-to-cart">
+                                <a href="#" class="btn" ng-class="{disabled:pdt.quantityInStock == 0}" add-to-cart
+                                    product="qvpd" quantity="qty" pd-detail-id=""
+                                    ng-click="addToCart($event ,qvpd, qty, null)">Thêm vào giỏ
+                                    hàng</a>
+                                <a title="Wishlist" class="display-6 ml-4" href="#" add-to-wishlist
+                                    pd-id="qvpd.productId" check-alive="false" ng-click="addToWishlist($event,
+                                qvpd.productId, false)" ng-show="checkInWishlist(qvpd.productId).length==0">
+                                    <i class="bi bi-heart"></i>
+                                </a>
+
+                                <a title="Wishlist" class="display-6 ml-4" href="#" add-to-wishlist
+                                    pd-id="qvpd.productId" check-alive="true" ng-click="addToWishlist($event,
+                                qvpd.productId, true)" ng-show="checkInWishlist(qvpd.productId).length!=0">
+                                    <i class="bi bi-heart-fill text-danger"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal end -->

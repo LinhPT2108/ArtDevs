@@ -87,6 +87,11 @@ public class accountController {
 		return "index";
 	}
 
+	@GetMapping(value = "/wishlist")
+	public String getWishlist(Model model) {
+		return "index";
+	}
+
 	@GetMapping(value = "/purchase-order/{type}")
 	public String getOrder(Model model) {
 		return "index";

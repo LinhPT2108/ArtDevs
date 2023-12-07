@@ -3,6 +3,7 @@ package com.art.controller.rest;
 import java.io.File;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.art.dao.activity.WishListDAO;
 import com.art.dao.product.ProductDAO;
 import com.art.dao.promotion.FlashSaleDAO;
 import com.art.dao.promotion.OrderDAO;
@@ -41,6 +43,8 @@ import com.art.dto.account.AccountDTO;
 import com.art.dto.account.ChangePasswordDTO;
 import com.art.mapper.AccountMapper;
 import com.art.models.MailInfo;
+import com.art.models.activity.WishList;
+import com.art.models.product.Product;
 import com.art.models.promotion.Order;
 import com.art.models.user.Account;
 import com.art.models.user.AccountRole;
@@ -90,6 +94,9 @@ public class AccountRestController {
 
 	@Autowired
 	OrderDAO orderDAO;
+
+	@Autowired
+	WishListDAO wishListDAO;
 
 	private PasswordEncoder passwordEncoder;
 
@@ -396,5 +403,7 @@ public class AccountRestController {
 		List<Order> orders = orderDAO.findByUser(account);
 		return ResponseEntity.ok(orders);
 	}
+
+
 
 }
