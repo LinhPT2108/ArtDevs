@@ -202,6 +202,36 @@ public class AccountRestController {
 		return ResponseEntity.ok(account);
 	}
 
+	@PostMapping("/account-with-google")
+	public ResponseEntity<Account> createWithGoogle(@RequestBody AccountDTO accountDTO) throws MessagingException {
+		Account account = AccountMapper.convertToAccount(accountDTO);
+		if (aDAO.existsById(account.getAccountId())) {
+			return ResponseEntity.badRequest().build();
+		}
+		List<AccountRole> accountRoles = new ArrayList<>();
+		List<String> roleNames = AccountMapper.getRoles(accountDTO);
+
+		if (roleNames != null) {
+			for (String roleName : roleNames) {
+				Role role = roleDAO.findByRoleName(roleName);
+				if (role != null) {
+					AccountRole accountRole = new AccountRole();
+					accountRole.setUser(account);
+					accountRole.setRole(role);
+					accountRoles.add(accountRole);
+				}
+			}
+		}
+		account.setStatus(false);
+		account.setVerifyCode(null);
+		account.setUserRole(accountRoles);
+		account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
+
+		aDAO.save(account);
+
+		return ResponseEntity.ok(account);
+	}
+
 	private String getVerifyCode() {
 		String randomString = UUID.randomUUID().toString().replace("-", "");
 		String randomPart = randomString.substring(0, 8);
@@ -403,7 +433,5 @@ public class AccountRestController {
 		List<Order> orders = orderDAO.findByUser(account);
 		return ResponseEntity.ok(orders);
 	}
-
-
 
 }

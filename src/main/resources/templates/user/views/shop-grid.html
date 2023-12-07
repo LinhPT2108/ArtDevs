@@ -98,7 +98,7 @@
 						current-page="currentPage">
 						<div class="single-product">
 							<div class="product-img">
-								<a href="/product/{{pd.productId}}">
+								<a href="/products/{{pd.productId}}">
 									<img class="default-img" ng-src="../images/products/{{pd.images[0]}}" alt="anh 1">
 									<img class="hover-img" ng-src="../images/products/{{pd.images[1]}}" alt="anh 2">
 									<span class="out-of-stock font-weight-bold" ng-show="pd.sale">
@@ -114,18 +114,8 @@
 											<i class=" ti-eye"></i>
 											<span>Xem nhanh</span>
 										</a>
-										<a title="Wishlist" href="#" add-to-wishlist pd-id="pd.productId"
-											check-alive="false" ng-click="addToWishlist($event,
-                                                        pd.productId, false)"
-											ng-show="checkInWishlist(pd.productId).length==0">
+										<a title="Wishlist" href="#">
 											<i class=" ti-heart "></i><span>Thêm vào yêu thích</span>
-										</a>
-
-										<a title="Wishlist" href="#" add-to-wishlist pd-id="pd.productId"
-											check-alive="true" ng-click="addToWishlist($event,
-                                                        pd.productId, true)"
-											ng-show="checkInWishlist(pd.productId).length!=0">
-											<i class=" ti-heart "></i><span>Xóa khỏi yêu thích</span>
 										</a>
 									</div>
 									<div class="product-action-2">
@@ -139,7 +129,7 @@
 							</div>
 							<div class="product-content">
 								<span class="text-muted">{{pd.manufacturer.manufacturerName}}</span>
-								<h3 class="card-title"><a href="/product/{{pd.productId}}">{{pd.productName}}</a></h3>
+								<h3 class="card-title"><a href="/products/{{pd.productId}}">{{pd.productName}}</a></h3>
 								<div class="row">
 									<div class="product-price d-flex flex-column col-6"
 										ng-if="pd.productDetails.length > 0">
@@ -287,17 +277,7 @@
 									product="qvpd" quantity="qty" pd-detail-id=""
 									ng-click="addToCart($event ,qvpd, qty, null)">Thêm vào giỏ
 									hàng</a>
-								<a title="Wishlist" class="display-6 ml-4" href="#" add-to-wishlist
-									pd-id="qvpd.productId" check-alive="false" ng-click="addToWishlist($event,
-                                qvpd.productId, false)" ng-show="checkInWishlist(qvpd.productId).length==0">
-									<i class="bi bi-heart"></i>
-								</a>
-
-								<a title="Wishlist" class="display-6 ml-4" href="#" add-to-wishlist
-									pd-id="qvpd.productId" check-alive="true" ng-click="addToWishlist($event,
-                                qvpd.productId, true)" ng-show="checkInWishlist(qvpd.productId).length!=0">
-									<i class="bi bi-heart-fill text-danger"></i>
-								</a>
+								<a href="#" class="btn min"><i class="ti-heart"></i></a>
 							</div>
 							<!-- <div class="default-social">
                                 <h4 class="share-now">Share:</h4>

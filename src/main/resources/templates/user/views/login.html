@@ -17,13 +17,13 @@
                                         <div class="form-signup clearfix">
                                             <fieldset class="form-group">
                                                 <input type="email" class="form-control form-control-lg" value=""
-                                                    name="email" id="customer_email" placeholder="Email" required=""
-                                                    autocomplete="none">
+                                                    ng-model="formdata.email" name="email" id="customer_email"
+                                                    placeholder="Email" required="">
                                             </fieldset>
                                             <fieldset class="form-group">
                                                 <input type="password" class="form-control form-control-lg" value=""
                                                     name="password" id="customer_password" placeholder="Mật khẩu"
-                                                    required="">
+                                                    ng-model="formdata.password" required="">
                                             </fieldset>
                                             <fieldset class="form-group pl-4">
                                                 <input id="remember" name="remember" type="checkbox"
@@ -45,44 +45,17 @@
 
                                     </form>
                                 </div>
-
-                                <div class="h_recover" style="display:none;">
-                                    <div id="recover-password" class="form-signup page-login">
-                                        <form method="post" action="/account/login" id="recover_customer_password"
-                                            accept-charset="UTF-8"><input name="FormType" type="hidden"
-                                                value="recover_customer_password"><input name="utf8" type="hidden"
-                                                value="true">
-                                            <div class="form-signup" style="color: red;">
-
-                                            </div>
-                                            <div class="form-signup clearfix">
-                                                <fieldset class="form-group">
-                                                    <input type="email"
-                                                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
-                                                        class="form-control form-control-lg" value="" name="Email"
-                                                        id="recover-email" placeholder="Email" required="">
-                                                </fieldset>
-                                            </div>
-                                            <div class="action_bottom">
-                                                <input class="btn btn-style btn_50" style="margin-top: 0px;"
-                                                    type="submit" value="Lấy lại mật khẩu">
-
-                                            </div>
-
-                                        </form>
-                                    </div>
-                                </div>
-
                                 <div
                                     class="block social-login--facebooks d-flex flex-column justify-content-center mt-3">
-                                    <p class="text-center mb-3">
-                                        Hoặc đăng nhập bằng
-                                    </p>
-                                    <a href="javascript:void(0)" class="social-login--google mx-auto"
-                                        onclick="loginGoogle()"><img width="129px" height="37px"
-                                            alt="google-login-button"
-                                            src="//bizweb.dktcdn.net/assets/admin/images/login/gp-btn.svg"></a>
+                                    <p class="text-center mb-3">Hoặc đăng nhập bằng</p>
+                                    <a href="#" class="social-login--google mx-auto" ng-click="loginWithGoogle()">
+                                        <img width="129px" height="37px" alt="google-login-button"
+                                            src="//bizweb.dktcdn.net/assets/admin/images/login/gp-btn.svg">
+                                    </a>
+
+
                                 </div>
+
                             </div>
 
                         </div>

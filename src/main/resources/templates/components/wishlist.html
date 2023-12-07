@@ -9,27 +9,16 @@
                 <!-- Shop Top -->
                 <div class="shop-top">
                     <div class="row mb-3">
-                        <div class="col-4">
+                        <div class="col-6">
                             <label for="search" class="d-inline">Tìm kiếm:</label>
                             <input ng-model="q" id="search" class="form-control" placeholder="Tên sản phẩm"
                                 autocomplete="none">
                         </div>
-                        <div class="col-4">
+                        <div class="col-6">
                             <label for="show" class="d-inline">Hiển thị:</label>
                             <input type="number" id="show" min="1" max="100" class="form-control "
                                 placeholder="Nhập số lượng hiển thị cho phép" ng-model="pageSize"
                                 style="padding: .375rem .75rem !important;">
-                        </div>
-                        <div class="col-4">
-                            <label for="sort" class="d-inline">Sắp xếp: </label>
-                            <select name="sort" id="sort" class="form-control" ng-model="tc" ng-change="sortList(tc)">
-                                <option value="">---Chọn---</option>
-                                <option value="priceAsc">Giá tăng dần</option>
-                                <option value="priceDesc">Giá giảm dần</option>
-                                <option value="productName">Tên A-Z</option>
-                                <option value="-productName">Tên Z-A</option>
-                            </select>
-
                         </div>
                     </div>
                 </div>
@@ -38,7 +27,7 @@
         </div>
         <div class="row">
             <div class="col-lg-4 col-md-6 col-12"
-                dir-paginate="pd in listProductsAll | filter:q| myFilter : search:false| itemsPerPage: pageSize | orderBy: tc"
+                dir-paginate="pd in listProductsAll | filter:q| itemsPerPage: pageSize | orderBy: tc"
                 current-page="currentPage">
                 <div class="single-product">
                     <div class="product-img">
@@ -66,7 +55,8 @@
 
                                 <a title="Wishlist" href="#" add-to-wishlist pd-id="pd.productId" check-alive="true"
                                     ng-click="addToWishlist($event,
-                                                pd.productId, true)" ng-show="checkInWishlist(pd.productId).length!=0">
+                                                pd.productId, true); removeLike(pd.productId)"
+                                    ng-show="checkInWishlist(pd.productId).length!=0">
                                     <i class=" ti-heart "></i><span>Xóa khỏi yêu thích</span>
                                 </a>
                             </div>
@@ -81,7 +71,7 @@
                     </div>
                     <div class="product-content">
                         <span class="text-muted">{{pd.manufacturer.manufacturerName}}</span>
-                        <h3 class="card-title"><a href="/product/{{pd.productId}}">{{pd.productName}}</a></h3>
+                        <h3 class="card-title"><a href="/products/{{pd.productId}}">{{pd.productName}}</a></h3>
                         <div class="row">
                             <div class="product-price d-flex flex-column col-6" ng-if="pd.productDetails.length > 0">
                                 <span class="font-weight-bold"

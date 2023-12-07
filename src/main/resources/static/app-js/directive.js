@@ -272,12 +272,13 @@ app.directive("quickViewModal", function (ApiService, $rootScope, $timeout) {
         scope.clickFirstElement = function () {
           var firstElement = document.querySelectorAll(".btn-type");
           if (firstElement) {
+            console.log('click');
             angular.element(firstElement).triggerHandler("click");
           }
         };
         $timeout(function () {
           scope.clickFirstElement();
-        }, 400);
+        }, 500);
       });
     },
   };

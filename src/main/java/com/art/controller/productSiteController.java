@@ -16,5 +16,8 @@ public class productSiteController {
     public String getProductSiteSearch() {
         return "index";
     }
-    
+    @GetMapping(value="/products/{id}")
+    public String getProductSiteDetail() {
+        return "index";
+    }
 }

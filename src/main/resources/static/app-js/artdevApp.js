@@ -57,6 +57,10 @@ app.config(function ($routeProvider, $locationProvider) {
       templateUrl: "templates/user/views/checkout.html",
       controller: "checkoutCtrl",
     })
+    .when("/products/:productId", {
+			templateUrl: "templates/user/views/product-detail.html",
+			controller: "productdetailCtrl",
+		})
     .when("/products", {
       templateUrl: "templates/user/views/shop-grid.html",
       controller: "productsiteCtrl",
@@ -155,7 +159,7 @@ app.run(function ($rootScope, DataService, ApiService, $timeout) {
     });
 
   $rootScope.checkInWishlist = function (productId) {
-    if ($rootScope.wishlistAccount!=undefined) {
+    if ($rootScope.wishlistAccount != undefined) {
       return $rootScope.wishlistAccount.filter(function (w) {
         return w.product.productId == productId ? true : false;
       });
@@ -283,7 +287,12 @@ app.controller(
 app.controller("mainCtrl", function ($scope, $timeout, $rootScope, ApiService) {
   $scope.quantity = 1;
   console.log("mainCtrl");
-
+  $timeout(function () {
+    var firstAnchor = document.querySelectorAll(".nav-link-select");
+    if (firstAnchor) {
+      angular.element(firstAnchor).triggerHandler("click");
+    }
+  }, 500);
   $scope.choiceProduct = function (
     productDetailId,
     $event,
