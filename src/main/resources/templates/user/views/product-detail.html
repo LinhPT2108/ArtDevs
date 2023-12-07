@@ -125,7 +125,8 @@
 						</div>
 						<div class="mt-5">
 							<h3 class="mb-2">ĐÁNH GIÁ SẢN PHẨM</h3>
-							<div ng-if="product.productDetails[0].comments.length==0" class="display-custom--sale">Chưa có đánh giá nào</div>
+							<div ng-if="product.productDetails[0].comments.length==0" class="display-custom--sale">Chưa
+								có đánh giá nào</div>
 							<div ng-repeat="comment in product.productDetails[0].comments">
 								<div class="d-flex align-items-center">
 									<img src="../../images/avatar/default-avatar.jpg" class="image-user--comment" />
@@ -227,9 +228,9 @@
 										<del>{{product.productDetails[0].prices[0].price|vnNumber}}</del>(-{{product.discountPrice*100}}%)
 									</h6>
 								</div>
-								<div class="d-flex flex-column justify-content-around text-white">
+								<div class="d-flex flex-column justify-content-around text-white align-items-end">
 									<h5>Kết thúc vào</h5>
-									<h5>23:59 | 12/12</h5>
+									<h5>{{flashSaleActive.data.endDay|date:"hh:mm dd/MM/yyyy"}}</h5>
 									<h6>Còn 12/20 suất</h6>
 								</div>
 							</div>
@@ -322,100 +323,68 @@
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-	</div>
 
-</div>
-<section class="small-banner section flash-sale-site mt-3 rounded">
-	<div class="container-fluid">
-		<div class="bg-light section-heading text-center d-flex align-items-center mb-3 p-3">
-			<div class="title-flashsale mr-3 ">
-				<h2 class="hTitle ">
-					Sản phẩm khác
-				</h2>
-			</div>
-		</div>
-		<div class="section-flashsale listCarousel cardProduct-comment">
-			x
-			<c:forEach var="p" items="${productOther}" varStatus="i">
-				<c:if test="${!p.del && i.index<8}">
-					<div class="mb-3">
-						<div class="card h-100 mx-3">
-							<input type="hidden" name="productId" value="${p.productId}">
-							<a href="/products/${p.productId}"><img
-									src="../../images/products/${p.productImage[0].image }" class="card-img-top"
-									alt="${p.productName }" style="height: 280px !important;"></a>
-							<div class="card-body d-flex flex-column">
-								<span class="text-muted">${p.manufacturerProduct.manufacturerName
-									}</span>
-								<a class="card-title fs-6 font-weight-bold text-black text-decoration-none"
-									href="/products/${p.productId }" style="min-height: 48px">${p.productName
-									}</a>
-								<div class="price-product mb-3">
-									<c:set var="foundFlashSale" value="false" />
-									<c:forEach var="f" items="${listPdFlashsale}">
-										<c:choose>
-											<c:when test="${f.product.productId == p.productId}">
-												<span class="text-decoration-line-through"
-													style="text-decoration: line-through;">
-													<fmt:formatNumber type="number" pattern="###,###,###"
-														value="${p.price}" />
-													đ
+				<section class="small-banner section flash-sale-site mt-3 rounded">
+					<div class="container-fluid">
+						<div class="bg-light section-heading text-center d-flex align-items-center mb-3 p-3">
+							<div class="title-flashsale mr-3 ">
+								<h2 class="hTitle ">
+									Sản phẩm khác
+								</h2>
+							</div>
+						</div>
+						
+						<div class="section-flashsale listCarousel cardProduct-flashsale">
+							<div ng-repeat="p in listProductByCategory" class="item">
+								<div class="card h-100 mx-3 position-relative">
+									<a href="/products/{{p.productId}}" style="height: 280px !important;"
+										class="d-flex align-items-center">
+										<img ng-src="images/products/{{p.images[0]}}" class="card-img-top"
+											alt="{{p.images[0]}}">
+									</a>
+									<div class="card-body d-flex flex-column">
+										<span class="text-muted">{{p.manufacturer.manufacturerName}}</span>
+										<a class="card-title fs-6 font-weight-bold text-black text-decoration-none"
+											href="/products/{{p.productId}}" style="min-height: 48px">{{p.productName
+											}}</a>
+										<div class="price-product row">
+											<div class="col-6 d-flex flex-column" ng-if="p.sale">
+												<span class="font-weight-bold text-danger">
+													{{p.productDetails[0].prices[0].price*(1-p.discountPrice)|vnNumber}}
 												</span>
-												<span class="text-danger font-weight-bold">
-													<fmt:formatNumber type="number" pattern="###,###,###"
-														value="${f.discountedPrice}" /> đ
+												<span>
+													<del>{{p.productDetails[0].prices[0].price|vnNumber}}</del>
 												</span>
-												<div class="position-absolute" style="top: 0; left: 0">
-													<div>
-														<span class="p-1 bg-danger text-white"> -
-															<fmt:formatNumber type="number" pattern="###,###,###"
-																value="${(p.price - f.discountedPrice)/p.price *100}" />
-															%
-														</span>
-														<c:if test="${p.quantityInStock==0 }">
-															<span class="p-1  bg-dark text-white ms-3">Tạm
-																hết hàng</span>
-														</c:if>
-													</div>
+
+											</div>
+											<div class="col-6 d-flex flex-column" ng-if="!p.sale">
+												<span class="font-weight-bold text-danger">
+													{{p.productDetails[0].prices[0].price|vnNumber}}
+												</span>
+
+											</div>
+											<div class="col-6 d-flex align-items-center justify-content-center mb-3">
+												<a href="/products/{{p.productId}}"
+													class="btn-danger text-white font-weight-bold rounded p-2 my-auto">Thêm
+													vào giỏ hàng</a>
+											</div>
+											<div class="position-absolute" style="top: 0; left: 0">
+												<div>
+													<span class="p-1 bg-danger text-white"
+														ng-init="disPrice = p.discountedPrice" ng-if="p.sale">
+														-{{p.discountPrice*100}}%
+													</span>
 												</div>
-												<c:set var="foundFlashSale" value="true" />
-											</c:when>
-										</c:choose>
-									</c:forEach>
-									<c:if test="${!foundFlashSale}">
-										<span class="text-danger fw-bold">
-											<fmt:formatNumber type="number" pattern="###,###,###" value="${p.price}" />
-											đ
-										</span>
-									</c:if>
-								</div>
-								<div class="siteAction d-flex justify-content-between">
-									<c:choose>
-										<c:when test="${p.quantityInStock==0  }">
-											<button type="button" disabled
-												class="btn-outline-primary p-2  float-xl-start">Thêm
-												vào giỏ</button>
-
-										</c:when>
-										<c:otherwise>
-											<button type="button" class="btn-outline-primary p-2 addToCart"
-												data-product-id="${p.productId}" data-user-id="${userLogin.userId}">Thêm
-												vào giỏ</button>
-
-										</c:otherwise>
-									</c:choose>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-
-				</c:if>
-			</c:forEach>
+				</section>
+			</div>
 		</div>
 	</div>
-</section>
 
 </div>
-</section>
