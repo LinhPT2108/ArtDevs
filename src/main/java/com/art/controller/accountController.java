@@ -27,7 +27,7 @@ public class accountController {
 
 	@Autowired
 	private AccountDAO aDAO;
-	
+
 	@Autowired
 	MailerServiceImpl mailer;
 
@@ -35,11 +35,12 @@ public class accountController {
 	public String getRegister() {
 		return "index";
 	}
-	
+
 	@GetMapping(value = "/login")
 	public String getLogin() {
 		return "index";
 	}
+
 	/*
 	 * Cập nhật thông tin người dùng
 	 */
@@ -107,11 +108,17 @@ public class accountController {
 	public String getForgotPassword(Model model) {
 		return "index";
 	}
+
 	private String getVerifyCode() {
 		String randomString = UUID.randomUUID().toString().replace("-", "");
 		String randomPart = randomString.substring(0, 8);
 		String timestampPart = String.valueOf(System.currentTimeMillis());
 		String accountId = randomPart + timestampPart;
 		return accountId;
+	}
+
+	@GetMapping(value = "/purchase-order/{type}")
+	public String getOrder(Model model) {
+		return "index";
 	}
 }
