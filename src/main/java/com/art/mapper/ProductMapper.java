@@ -1,9 +1,7 @@
 package com.art.mapper;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -33,6 +31,7 @@ public class ProductMapper {
 	public static ProductDTO convertToDto(Product product, PromotionalDetailsDAO proDAO, FlashSaleDAO fDAO,
 			ProductDAO productDAO) {
 		ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
+
 		productDTO.setImages(getImagesDTO(product));
 		productDTO.setSale(getProductSale(proDAO, fDAO, product));
 		productDTO.setProductDetails(getProductDetailsDTO(product));
@@ -41,6 +40,7 @@ public class ProductMapper {
 		productDTO.setStar(star);
 		productDTO.setCountSold(productDAO.countProuctSold(product.getProductId()));
 		productDTO.setDiscountPrice(getProductDiscount(proDAO, fDAO, product));
+		System.out.println("line 44: " + productDTO.getProductId() + "-" + productDTO.getDiscountPrice());
 		productDTO.setSumRate(productDAO.countCommentsByProduct(product.getProductId()));
 		return productDTO;
 	}
@@ -92,9 +92,9 @@ public class ProductMapper {
 	}
 
 	private static List<CommentDTO> getCommentDTO(ProductDetail product) {
-		return product
-				.getProductComment().stream().map(comment -> new CommentDTO(comment.getId(), comment.getStar(),
-						comment.getContent(), comment.getDate(), comment.getUser().getFullname()))
+		return product.getProductComment().stream().map(comment -> new CommentDTO(comment.getId(), comment.getStar(),
+				comment.getContent(), comment.getDate(), comment.getUser().getFullname(), comment.getUser().getImage(),
+				comment.getCommentImages()))
 				.collect(Collectors.toList());
 	}
 

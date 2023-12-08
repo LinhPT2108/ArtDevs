@@ -9,6 +9,8 @@ app.controller("accountCtrl", function ($scope, $location) {
     $scope.views = "changePass";
   } else if (currentURL.includes("purchase-order")) {
     $scope.views = "order";
+  } else if (currentURL.includes("wishlist")) {
+    $scope.views = "wishlist";
   }
 
   var allCollapses = document.querySelectorAll(".collapse");

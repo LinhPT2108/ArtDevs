@@ -1,84 +1,143 @@
 var host = "http://localhost:8080";
-app.controller("productdetailCtrl", function($scope, $http, $timeout, $routeParams) {
-	var productId = $routeParams.productId;
-	$scope.product = {};
-	$scope.star = [];
-	$scope.formattedEndDay = null;
-	$scope.listProductByCategory = [];
-	$http.get(host + "/rest/product/" + productId)
-		.then(function(res) {
-			$scope.product = res.data;
-			$scope.star = $scope.product.star;
-			$http.get(host + "/rest/product-by-category/" + res.data.category.categoryId)
-				.then(function(respone) {
-					$scope.listProductByCategory = respone.data;
+app.controller(
+  "productdetailCtrl",
+  function ($scope, $http, $timeout, $routeParams, ApiService, $rootScope) {
+    console.log($rootScope.flashSaleActive);
+    var productId = $routeParams.productId;
+    $scope.currentPage = 1;
+    $scope.product = {};
+    $scope.star = [];
+    $scope.formattedEndDay = null;
+    $scope.listProductByCategory = [];
+    $scope.clickFirstElement = function () {
+      var firstElement = document.querySelectorAll(".btn-type");
+      if (firstElement) {
+        console.log("click");
+        angular.element(firstElement).triggerHandler("click");
+      }
+    };
+    $timeout(function () {
+      $scope.clickFirstElement();
+    }, 500);
+    $http
+      .get(host + "/rest/product/" + productId)
+      .then(function (res) {
+        $scope.product = res.data;
+        console.log($scope.product);
+        $scope.pddt = [];
+        angular.forEach($scope.product.productDetails, function (value) {
+          angular.forEach(value.comments, function (comment) {
+            $scope.pddt.push(comment);
+          });
+        });
+        console.log($scope.pddt);
+        $scope.star = $scope.product.star;
+        $http
+          .get(
+            host + "/rest/product-by-category/" + res.data.category.categoryId
+          )
+          .then(function (respone) {
+            $scope.listProductByCategory = respone.data;
+            $timeout(function () {
+              $scope.slickFlashsale();
+            }, 100);
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+    $http
+      .get(host + "/rest/flash-sale-active")
+      .then(function (resp) {
+        $scope.flashSaleActive = resp;
+        $scope.currentProduct =
+          $scope.flashSaleActive.data.promotionalDetailsList.filter(function (
+            i
+          ) {
+            return i.product.productId == productId;
+          });
+        console.log($scope.currentProduct);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+    $scope.slickFlashsale = function () {
+      $(".listCarousel").owlCarousel({
+        items: 3,
+        autoplay: true,
+        autoplayTimeout: 3000,
+        smartSpeed: 400,
+        autoplayHoverPause: true,
+        nav: true,
+        loop: true,
+        merge: true,
+        dots: true,
+        navText: [
+          '<i class=" ti-arrow-left"></i>',
+          '<i class=" ti-arrow-right"></i>',
+        ],
+        responsive: {
+          0: {
+            items: 1,
+          },
+          300: {
+            items: 1,
+          },
+          480: {
+            items: 2,
+          },
+          768: {
+            items: 3,
+          },
+          1170: {
+            items: 4,
+          },
+        },
+      });
+    };
 
-				})
-				.catch(function(err) {
-					console.log(err);
-				})
-		})
-		.catch(function(err) {
-			console.log(err);
-		})
-	$http.get(host + "/rest/flash-sale-active")
-		.then(function(resp) {
-			$scope.flashSaleActive = resp;
-			$scope.flashSaleActive.endDay = new Date($scope.flashSaleActive.endDay);
-			$scope.flashSaleActive.startDay = new Date(
-				$scope.flashSaleActive.startDay
-			);
-			var startDay = $scope.flashSaleActive.startDay;
-			var endDay = $scope.flashSaleActive.data.endDay;
-			$scope.nowDay = new Date();
-			$scope.isFlashSaleStart = false;
-			$scope.isFlashSaleEnd = false;
-			var startDayMoment = moment(startDay);
-			$scope.formattedStartDay = startDayMoment.format(
-				"YYYY/MM/DD HH:mm:ss"
-			);
+    $scope.choiceProduct = function (
+      productDetailId,
+      $event,
+      discountPrice,
+      isSale
+    ) {
+      console.log(isSale, discountPrice);
+      $scope.isSale = isSale;
+      $scope.discountPrice = discountPrice;
+      $scope.quantity = 1;
+      var elements = document.querySelectorAll(".btn-type");
+      elements.forEach(function (element) {
+        element.classList.remove("type-active");
+      });
 
-			var endDayMoment = moment(endDay);
-			console.log($scope.flashSaleActive.data.endDay)
-			$scope.formattedEndDay = endDayMoment.format("YYYY/MM/DD HH:mm:ss");
-		})
-		.catch(function(err) {
-			console.log(err);
-		});
-	$('.owl-carousel').owlCarousel({
-		loop: true,
-		margin: 30,
-		dots: true,
-		nav: false,
-		responsiveClass: true,
-		responsive: {
-			0: {
-				items: 2,
-				margin: 10,
-				stagePadding: 20,
-			},
-			600: {
-				items: 3,
-				margin: 20,
-				stagePadding: 50,
-			},
-			1000: {
-				items: 4
-			}
-		}
-	});
+      var targetElement = $event.target;
+      targetElement.classList.add("type-active");
 
+      ApiService.callApi("GET", "/rest/product-detail/" + productDetailId)
+        .then(function (resp) {
+          $scope.pdt = resp;
+          $rootScope.choiceProductDetailId = productDetailId;
+          console.log($scope.pdt);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    };
+  }
+);
 
-});
+app.filter("vnNumber", function () {
+  return function (input) {
+    if (isNaN(input)) return input;
 
-app.filter('vnNumber', function() {
-	return function(input) {
-		if (isNaN(input)) return input;
+    var parts = input.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-		var parts = input.toString().split('.');
-		parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-		var formattedNumber = parts.join('.') + ' ₫';
-		return formattedNumber;
-	};
+    var formattedNumber = parts.join(".") + " ₫";
+    return formattedNumber;
+  };
 });

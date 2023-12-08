@@ -72,6 +72,7 @@ public class CartRestController {
                 return ResponseEntity.ok(CartMapper.convertToCartDTO(saveCart, proDAO, flashSaleDAO, productDAO));
             }
         } catch (Exception e) {
+            System.out.println(e);
             return ResponseEntity.ok(400);
         }
     }
