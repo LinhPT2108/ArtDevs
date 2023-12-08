@@ -21,6 +21,9 @@ import io.micrometer.core.ipc.http.HttpSender.Response;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -45,5 +48,12 @@ public class CommentRestController {
 
         return ResponseEntity.ok(comment.isEmpty()?null:comment.get());
     }
+
+    @PostMapping("/add-comment")
+    public ResponseEntity<?> postMethodName(@RequestBody Comment comment) {
+         
+        return ResponseEntity.ok(comment);
+    }
+    
 
 }

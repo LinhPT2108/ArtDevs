@@ -57,8 +57,7 @@ app.controller(
       });
     };
 
-    $scope.showComment = function (productId, orderDetailId) {
-      console.log(productId + " - " + orderDetailId);
+    $timeout(function () {
       $scope.rating = {
         star: 5,
         content: "",
@@ -68,6 +67,20 @@ app.controller(
         productId: "",
         commentImages: [],
       };
+    }, 500);
+    $scope.showComment = function (productId, orderDetailId) {
+      console.log(productId + " - " + orderDetailId);
+      $scope.rating = {
+        star: 5,
+        content: "",
+        date: "",
+        userComment: $rootScope.userLogin.accountId,
+        orderDetailId: orderDetailId,
+        productId: productId,
+        commentImages: [],
+      };
+      $("#gallery-photo-add").val(null);
+      $(".gallery").html("");
       ApiService.callApi(
         "GET",
         "/rest/comment/" + productId + "/" + orderDetailId
@@ -77,12 +90,10 @@ app.controller(
           if (response == "") {
             $scope.rating.star = 5;
             $("#star5").trigger({ type: "click" });
-            console.log("click");
           } else {
             $scope.rating = response;
             console.log($scope.rating);
             var star = response.star;
-
             switch (star) {
               case 1:
                 $("#star1").trigger({ type: "click" });
@@ -147,47 +158,20 @@ app.controller(
       });
     };
 
-    $scope.checkPic = function () {
+    $scope.addComment = function () {
       console.log($scope.rating);
-    };
+      var imageInput = document.getElementById("gallery-photo-add");
+      console.log(imageInput.files);
 
-    $scope.checkFileSize = function (e) {
-      var file_list = e.files;
-      var totalSize = 0;
-
-      for (var i = 0; i < file_list.length; i++) {
-        var file = file_list[i];
-        var fileExtension = file.name
-          .split(".")
-          [file.name.split(".").length - 1].toLowerCase();
-        var iConvert;
-
-        if (file.size > 1024 * 1024) {
-          iConvert = (file.size / (1024 * 1024)).toFixed(2); // Chuyển đổi thành MB
-        } else {
-          iConvert = (file.size / 1024).toFixed(2); // Chuyển đổi thành KB
-        }
-
-        totalSize += file.size;
-
-        txt = "File type: " + fileExtension + "\n";
-        txt +=
-          "Size: " +
-          iConvert +
-          (file.size > 1024 * 1024 ? " MB" : " KB") +
-          "\n";
-      }
-
-      if (totalSize > 10 * 1024 * 1024) {
-        console.log("Vượt quá kích thước");
-        Swal.fire({
-          icon: "warning",
-          title: "Vượt quá kích thước",
-          text: "Vui lòng chọn ảnh kích thước lớn nhỏ hơn 10MB !",
-          showConfirmButton: true,
+      ApiService.callApi("POST", "/rest/add-comment", {
+        comment: $scope.rating,
+      })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (err) {
+          console.log(err);
         });
-        e.value = null;
-      }
     };
   }
 );

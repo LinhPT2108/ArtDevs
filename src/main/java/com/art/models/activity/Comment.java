@@ -8,7 +8,8 @@ import org.hibernate.annotations.Nationalized;
 import com.art.models.product.ProductDetail;
 import com.art.models.promotion.OrderDetail;
 import com.art.models.user.Account;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
@@ -41,7 +42,7 @@ public class Comment {
 
 	@Column
 	private int star;
-	
+
 	@Column
 	@Nationalized
 	private String content;
@@ -50,22 +51,22 @@ public class Comment {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 
-	@JsonBackReference
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "userComment")
 	private Account user;
-	
-	@JsonBackReference
+
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "product_detail_id")
 	private ProductDetail productDetail;
-	
-	@JsonBackReference
+
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name = "orderDetailId")
 	private OrderDetail orderDetail;
 
-	@OneToMany(mappedBy = "comment", fetch =  FetchType.EAGER)
-	@JsonManagedReference 
+	@OneToMany(mappedBy = "comment", fetch = FetchType.EAGER)
+	@JsonIgnore
 	private List<ImageComment> commentImages;
 }

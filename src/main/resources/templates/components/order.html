@@ -124,7 +124,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" class="form-reviews" method="post" modelAttribute="cmt">
+                <form action="" class="form-reviews">
                     <div class="form-group row  justify-content-start">
                         <label for="" class="col-12 col-sm-4 col-form-label">Chất
                             lượng sản phẩm:</label>
@@ -161,7 +161,7 @@
                     <div class="form-group">
                         <label class="form-label" for="">Hình ảnh</label>
                         <ul id="imageList">
-                            <li class="" style="list-style: none;">
+                            <!-- <li class="" style="list-style: none;">
                                 <label class="custum-file-upload">
                                     <div class="ico2n">
                                         <i class="bi bi-card-image"></i>
@@ -169,14 +169,28 @@
                                     <div class="text">
                                         <span>Tải ảnh lên</span>
                                     </div>
-                                    <input type="file" name="listImage" id="listImage" multiple accept=".jpg,.jpeg,.png"
-                                        ng-model="rating.commentImages" ng-change="checkPic()">
+                                     <input type="file" multi-image-upload name="listImage" id="listImage" multiple
+                                        accept=".jpg,.jpeg,.png" ng-model="rating.commentImages"> 
                                 </label>
-                            </li>
+                            </li> -->
+                            <!-- <input type="file" select-ng-files ng-model="fileArray" multiple>
                             <li class="" id="listImg" ng-repeat="pic in rating.commentImages">
                                 <img ng-src="../../images/products/{{pic.image}}" alt="{{pic.image}}">
-                            </li>
+                            </li> -->
                         </ul>
+                        <div class="multiple-image-upload mt-2 d-flex mr-2 justify-content-center align-items-center">
+                            <label class="custum-file-upload">
+                                <div class="ico2n">
+                                    <i class="bi bi-card-image"></i>
+                                </div>
+                                <div class="text">
+                                    <span>Tải ảnh lên</span>
+                                </div>
+                                <input type="file" name="listImage" id="gallery-photo-add" multiple
+                                    accept=".jpg,.jpeg,.png">
+                            </label>
+                            <div class="gallery"></div>
+                        </div>
                     </div>
                     <div class=" form-group">
                         <label path="content">Chi tiết đánh
@@ -190,9 +204,47 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Trở
                     lại</button>
-                <button type="button" class="btn btn-primary" id="btnCheck">Hoàn
+                <button type="submit" class="btn btn-primary" id="btnCheck" ng-click="addComment()">Hoàn
                     thành</button>
             </div>
         </div>
     </div>
 </div>
+<script>
+    $(function () {
+        var imagesPreview = function (input, placeToInsertImagePreview) {
+            var totalFileSize = 0;
+            var maxFileSize = 10240000; // 10MB in bytes
+
+            if (input.files) {
+                var filesAmount = input.files.length;
+
+                for (var i = 0; i < filesAmount; i++) {
+                    var file = input.files[i];
+                    totalFileSize += file.size;
+
+                    if (totalFileSize > maxFileSize) {
+                        alert("TỔNG DUNG LƯỢNG HÌNH ĐÃ VƯỢT QUÁ 10MB!");
+                        return;
+                    }
+                    var reader = new FileReader();
+                    reader.onload = function (event) {
+                        $($.parseHTML("<img>"))
+                            .attr("src", event.target.result)
+                            .attr("width", "100px")
+                            .attr("height", "100px")
+                            .addClass("m-2 rounded")
+                            .appendTo(placeToInsertImagePreview);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        };
+
+        $("#gallery-photo-add").on("change", function () {
+            $(".gallery").html('')
+            imagesPreview(this, "div.gallery");
+        });
+    });
+
+</script>
