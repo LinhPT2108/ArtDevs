@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.art.dao.product.ProductDAO;
 import com.art.dao.promotion.FlashSaleDAO;
+import com.art.dao.promotion.OrderDAO;
 import com.art.dao.promotion.PromotionalDetailsDAO;
 import com.art.dao.user.AccountDAO;
 import com.art.dao.user.AccountRoleDAO;
@@ -34,6 +35,7 @@ import com.art.dao.user.RoleDAO;
 import com.art.dto.account.AccountDTO;
 import com.art.mapper.AccountMapper;
 import com.art.models.MailInfo;
+import com.art.models.promotion.Order;
 import com.art.models.user.Account;
 import com.art.models.user.AccountRole;
 import com.art.models.user.InforAddress;
@@ -79,6 +81,9 @@ public class AccountRestController {
 
 	@Autowired
 	MailerServiceImpl mailer;
+	
+	@Autowired
+	OrderDAO orderDAO;
 
 	@GetMapping(value = "/userLogin")
 	public ResponseEntity<AccountDTO> getArtDev(Model model) {
@@ -350,5 +355,14 @@ public class AccountRestController {
 		}
 		inforAddressDAO.deleteById(phone);
 		return ResponseEntity.ok(200);
+	}
+	
+	@GetMapping("/account/purchase-order/{type}/{accountId}")
+	public ResponseEntity<?> getOrderType(@PathVariable("type") int type,
+			@PathVariable("accountId") String accountId) {
+		System.out.println(accountId + " - " + type);
+		Account account = aDAO.findById(accountId).get();
+		List<Order> orders = orderDAO.findByUser(account);
+		return ResponseEntity.ok(orders);
 	}
 }

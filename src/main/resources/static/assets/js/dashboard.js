@@ -31,11 +31,16 @@ $(document).ready(
 				url: '/admin/statistical-revenue/daily-revenue',
 				method: 'GET',
 				success: function(response) {
+					const formattedDates = response.labels.map((dateTime) => {
+						const formattedDate = moment(dateTime).format('DD/MM/YYYY');
+
+						return formattedDate;
+					});
 					dataDay = {
-						labels: response.labels,
+						labels: formattedDates,
 						values: response.values
 					}
-					console.log(Math.max(...dataDay.values))
+
 					var chart = {
 						series: [
 							{ name: "Earnings this month:", data: dataDay.values },/*

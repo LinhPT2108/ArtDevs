@@ -27,7 +27,7 @@ public class adminController {
 		model.addAttribute("views", "dashboard");
 		model.addAttribute("title", "Trang chủ");
 		model.addAttribute("invoice", revenueService.findAllByOrderByOrderDateDesc());
-//		model.addAttribute("bestSellers", idDAO.countProductsOrderByCountDesc());
+		model.addAttribute("bestSellers", idDAO.countProductsOrderByCountDesc());
 		
 		
 //		System.out.println("bestsellers" + idDAO.countProductsOrderByCountDesc());

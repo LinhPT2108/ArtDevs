@@ -1,7 +1,9 @@
 package com.art.mapper;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -27,12 +29,10 @@ import com.art.models.promotion.PromotionalDetails;
 
 public class ProductMapper {
 	private static final ModelMapper modelMapper = new ModelMapper();
-	private static double discountPrice;
 
 	public static ProductDTO convertToDto(Product product, PromotionalDetailsDAO proDAO, FlashSaleDAO fDAO,
 			ProductDAO productDAO) {
 		ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
-		discountPrice = 0;
 		productDTO.setImages(getImagesDTO(product));
 		productDTO.setSale(getProductSale(proDAO, fDAO, product));
 		productDTO.setProductDetails(getProductDetailsDTO(product));
@@ -40,7 +40,7 @@ public class ProductMapper {
 				: productDAO.calculateAverageRating(product.getProductId());
 		productDTO.setStar(star);
 		productDTO.setCountSold(productDAO.countProuctSold(product.getProductId()));
-		productDTO.setDiscountPrice(discountPrice);
+		productDTO.setDiscountPrice(getProductDiscount(proDAO, fDAO, product));
 		productDTO.setSumRate(productDAO.countCommentsByProduct(product.getProductId()));
 		return productDTO;
 	}
@@ -54,7 +54,6 @@ public class ProductMapper {
 					if (product.getProductId().equals(pro.getProduct().getProductId())) {
 						if (!pro.isStatus()) {
 							if (pro.getDiscountedQuantity() != pro.getQuantitySold()) {
-								discountPrice = pro.getDiscountedPrice();
 								return true;
 							}
 						}
@@ -62,10 +61,30 @@ public class ProductMapper {
 				}
 			}
 		} catch (Exception e) {
-			System.out.println(e);
 			return false;
 		}
 		return false;
+	}
+
+	private static double getProductDiscount(PromotionalDetailsDAO proDAO, FlashSaleDAO fDAO, Product product) {
+		try {
+			FlashSale flashSale = fDAO.findByStatus(true);
+			if (flashSale.getEndDay().after(new Date())) {
+				List<PromotionalDetails> promotionalDetails = flashSale.getPromotionalDetailsList();
+				for (PromotionalDetails pro : promotionalDetails) {
+					if (product.getProductId().equals(pro.getProduct().getProductId())) {
+						if (!pro.isStatus()) {
+							if (pro.getDiscountedQuantity() != pro.getQuantitySold()) {
+								return pro.getDiscountedPrice();
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			return 0;
+		}
+		return 0;
 	}
 
 	private static List<String> getImagesDTO(Product product) {
@@ -73,8 +92,9 @@ public class ProductMapper {
 	}
 
 	private static List<CommentDTO> getCommentDTO(ProductDetail product) {
-		return product.getProductComment().stream().map(comment -> new CommentDTO(comment.getId(), comment.getStar(),
-				comment.getContent(), comment.getDate(), comment.getUser().getFullname()))
+		return product
+				.getProductComment().stream().map(comment -> new CommentDTO(comment.getId(), comment.getStar(),
+						comment.getContent(), comment.getDate(), comment.getUser().getFullname()))
 				.collect(Collectors.toList());
 	}
 

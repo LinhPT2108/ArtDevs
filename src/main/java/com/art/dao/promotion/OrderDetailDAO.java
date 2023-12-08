@@ -1,13 +1,16 @@
 package com.art.dao.promotion;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.art.models.promotion.OrderDetail;
 
 public interface OrderDetailDAO extends JpaRepository<OrderDetail, Integer> {
 
-//	@Query("SELECT id.product, p.productName, COUNT(id.product) FROM OrderDetail id JOIN id.productDetail p GROUP BY id.product, p.productName ORDER BY COUNT(id.product) DESC")
-//	List<Object[]> countProductsOrderByCountDesc();
+	@Query("SELECT od.productDetail.product, COUNT(od.productDetail.product) FROM OrderDetail od GROUP BY od.productDetail.product ORDER BY COUNT(od.productDetail.product) DESC")
+	List<Object[]> countProductsOrderByCountDesc();
 //	@SuppressWarnings("unchecked")
 //	// Thêm hoặc cập nhật một OrderDetail
 //	OrderDetail save(OrderDetail OrderDetail);
