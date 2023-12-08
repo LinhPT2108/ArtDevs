@@ -140,7 +140,10 @@ app.directive("niceSelect", function ($timeout) {
   return {
     restrict: "A",
     link: function (scope, element) {
-      $(element).niceSelect();
+		$timeout(function(){
+			
+			$(element).niceSelect();
+		},100)
     },
   };
 });

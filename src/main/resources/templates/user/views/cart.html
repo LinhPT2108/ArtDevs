@@ -106,15 +106,24 @@
 					<div class="row">
 						<div class="col-lg-8 col-md-5 col-12">
 							<div class="left">
-								<div class="coupon">
-									<form action="#" target="_blank">
-										<input name="Coupon" placeholder="Enter Your Coupon">
-										<button class="btn">Apply</button>
-									</form>
-								</div>
-								<div class="checkbox">
-									<label class="checkbox-inline" for="2"><input name="news" id="2" type="checkbox">
-										Shipping (+10$)</label>
+								<div class="coupon d-flex" ng-show="getCheckedProducts.length>0">
+									<div class="form-check mb-0  d-flex justify-content-center align-items-center mx-2">
+										<div class="form-check mb-0">
+											<select class="custom-select custom-select-lg" id="voucherDiscount"
+												nice-select name="voucherDiscount" style="height: 50px;width: 100%;">
+												<option value="" class="display-sale--custom mb-2">Chọn voucher
+													khuyến mãi...
+												</option>
+												<option class="display-sale--custom mb-2"
+													ng-repeat="voucher in listVoucher | orderBy:'discount'"
+													value="{{voucher.discount}}">
+													Voucher giảm
+													{{voucher.discount |number: 0}} VNĐ
+												</option>
+											</select>
+											<button ng-click="applyVoucher()" class="btn border rounded ml-3">Áp dụng</button>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -124,17 +133,17 @@
 									<li>Tổng thanh toán
 										<span>{{ getTotalPrice()|number:0}}</span>
 									</li>
-									<li>Tiết kiệm<span></span></li>
+									<li>Tiết kiệm<span>{{discountPrice|number:0}}</span></li>
 									<li class="last">Tổng phải trả
-										<span>{{ getTotalPrice()|number:0}}</span>
+										<span>{{ (getTotalPrice()-discountPrice)|number:0}}</span>
 									</li>
 								</ul>
 								<div class="button5">
 									<div class="alert alert-danger" role="alert" ng-show="getCheckedProducts.length==0">
 										Bạn chưa chọn sản phẩm
 									</div>
-									<a href="/checkout" class="btn"
-										ng-show="getCheckedProducts.length>0 &&userLogin.carts.length>0">Thanh toán</a>
+									<a href="#" class="btn"
+										ng-show="getCheckedProducts.length>0 && userLogin.carts.length>0" ng-click="checkChooseVoucher()">Thanh toán</a>
 									<a href="/ArtDevs" class="btn">Tiếp tục mua sắm</a>
 								</div>
 							</div>
@@ -149,7 +158,7 @@
 <!--/ End Shopping Cart -->
 
 <!-- Start Shop Services Area  -->
-<section class="shop-services section">
+<section class="shop-services section py-5">
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-3 col-md-6 col-12">

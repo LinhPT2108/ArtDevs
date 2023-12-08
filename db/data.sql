@@ -144,59 +144,59 @@ VALUES  ( SYSDATETIME(), -- date - datetime2(6)
           'linhptpc04737'  -- user_id - varchar(255)
           );
 GO
+
 INSERT INTO dbo.voucher
-        ( discount ,
-          maximum_number_of_uses ,
-          maximum_price_discount ,
+         (maximum_number_of_uses ,
+          discount ,
           number_of_uses ,
-          end_day ,
           start_day ,
+          end_day ,
           user_voucher
         )
-VALUES  ( 0.3 , -- discount - float
-          1000 , -- maximum_number_of_uses - int
+VALUES  ( 
+          100 , -- maximum_number_of_uses - int
           99000 , -- maximum_price_discount - float
-          260 , -- number_of_uses - int
+          100 , -- number_of_uses - int
           SYSDATETIME() ,   -- end_day - datetime2(6)
           '2023-12-31 23:59:00' , -- start_day - datetime2(6)
           'nguyentcpc04750'  -- user_voucher - varchar(255)
         ),
-        ( 0.25 , -- discount - float
-          900 , -- maximum_number_of_uses - int
-          199000 , -- maximum_price_discount - float
-          55 , -- number_of_uses - int
-          SYSDATETIME() ,   -- end_day - datetime2(6)
-          '2023-12-31 23:59:00' , -- start_day - datetime2(6)
-          'nguyentcpc04750'  -- user_voucher - varchar(255)
-        ),
-        ( 0.2 , -- discount - float
-          800 , -- maximum_number_of_uses - int
-          299000 , -- maximum_price_discount - float
-          40 , -- number_of_uses - int
-          SYSDATETIME() ,   -- end_day - datetime2(6)
-          '2023-12-31 23:59:00' , -- start_day - datetime2(6)
-          'nguyentcpc04750'  -- user_voucher - varchar(255)
-        ),
-        ( 0.15 , -- discount - float
-          700 , -- maximum_number_of_uses - int
-          399000 , -- maximum_price_discount - float
+        ( 
+          100 , -- maximum_number_of_uses - int
+          49000 , -- maximum_price_discount - float
           20 , -- number_of_uses - int
           SYSDATETIME() ,   -- end_day - datetime2(6)
           '2023-12-31 23:59:00' , -- start_day - datetime2(6)
           'nguyentcpc04750'  -- user_voucher - varchar(255)
         ),
-        ( 0.1 , -- discount - float
-          600 , -- maximum_number_of_uses - int
-          499000 , -- maximum_price_discount - float
+        ( 
+          100 , -- maximum_number_of_uses - int
+          39000 , -- maximum_price_discount - float
+          10 , -- number_of_uses - int
+          SYSDATETIME() ,   -- end_day - datetime2(6)
+          '2023-12-31 23:59:00' , -- start_day - datetime2(6)
+          'nguyentcpc04750'  -- user_voucher - varchar(255)
+        ),
+        ( 
+          100 , -- maximum_number_of_uses - int
+          29000 , -- maximum_price_discount - float
+          20 , -- number_of_uses - int
+          SYSDATETIME() ,   -- end_day - datetime2(6)
+          '2023-12-31 23:59:00' , -- start_day - datetime2(6)
+          'nguyentcpc04750'  -- user_voucher - varchar(255)
+        ),
+        ( 
+          100 , -- maximum_number_of_uses - int
+          19000 , -- maximum_price_discount - float
           18 , -- number_of_uses - int
           SYSDATETIME() ,   -- end_day - datetime2(6)
           '2023-12-31 23:59:00' , -- start_day - datetime2(6)
           'nguyentcpc04750'  -- user_voucher - varchar(255)
         ),
-        ( 0.5 , -- discount - float
-          500 , -- maximum_number_of_uses - int
-          999000 , -- maximum_price_discount - float
-          15 , -- number_of_uses - int
+        ( 
+          300 , -- maximum_number_of_uses - int
+          10000 , -- maximum_price_discount - float
+          25 , -- number_of_uses - int
           SYSDATETIME() ,   -- end_day - datetime2(6)
           '2023-12-31 23:59:00' , -- start_day - datetime2(6)
           'nguyentcpc04750'  -- user_voucher - varchar(255)
@@ -1213,49 +1213,65 @@ INSERT INTO dbo.orders
           order_date ,
           delivery_address ,
           user_id,
-		  payment_id
+		  payment_id,
+		  delivery_fee ,
+		  expected_delivery_time 
         )
 VALUES  ( 18000000 , -- total_amount - float
           '2023-09-01 13:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
-		  1
+		  1,
+		  15000,
+		  '2023-12-10 10:00:00'
         ),
 		( 17980000 , -- total_amount - float
           '2023-10-01 13:30:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
-          1
+          1,
+		  15000,
+		  '2023-12-10 10:30:00'
         ),
 		( 44650000 , -- total_amount - float
           '2023-10-05 13:15:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
-          1
+          1,
+		  15000,
+		  '2023-12-10 11:00:00'
         ),
 		( 144950000 , -- total_amount - float
           '2023-10-10 13:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
-		  1
+		  1,
+		  15000,
+		  '2023-12-11 10:00:00'
         ),
 		( 374800000 , -- total_amount - float
           '2023-10-15 15:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
-          1
+          1,
+		  15000,
+		  '2023-12-11 11:00:00'
         ),
 		( 11090000 , -- total_amount - float
           '2023-10-16 19:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
-          1
+          1,
+		  15000,
+		  '2023-12-12 10:00:00'
         ),
 		( 10590000 , -- total_amount - float
           '2023-10-16 21:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
-          2
+          2,
+		  15000,
+		  '2023-12-12 15:00:00'
         );
 GO
 

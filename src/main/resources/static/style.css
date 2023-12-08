@@ -3824,8 +3824,8 @@ Version:1.0
 
 .shop.checkout .nice-select .list {
 	width: 100%;
-	height: 300px;
-	overflow-y: scroll;
+	height: 164px;
+    overflow-y: auto !important;
 }
 
 .shop.checkout .nice-select .list li {}
@@ -5840,7 +5840,7 @@ Version:1.0
 }
 
 .bg-custom {
-	background-color: rgba(160, 169, 173) !important;
+	background: linear-gradient(272.75deg,#f38c25 38.99%,#fb6848 76.29%) !important;
 	border-radius: 12px !important;
 }
 
@@ -5862,7 +5862,7 @@ Version:1.0
 }
 
 .display-custom--sale {
-	font-size: 1rem;
+	font-size: 1rem !important;
 }
 
 .ship-sale li {

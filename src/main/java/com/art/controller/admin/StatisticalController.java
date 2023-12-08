@@ -28,53 +28,53 @@ public class StatisticalController {
 
 	@Autowired
 	OrderDAO revenueService;
-	
+
 	@Autowired
 	OrderDetailDAO idDAO;
-	
+
 	@Autowired
 	AccountDAO uDAO;
-	
-	 @GetMapping("/statistical-revenue/daily-revenue")
-	    public ResponseEntity<?> getDailyRevenue() {
-	        // Gọi phương thức của dịch vụ để lấy dữ liệu doanh thu theo ngày
-	        List<String> labels = revenueService.getLabelsRevenueByDate();
-	        List<Double> values = revenueService.getPriceRevenueByDate();
-	        Map<String, Object> responseData = new HashMap<>();
 
-	        responseData.put("labels", labels);
-	        responseData.put("values", values);
-	        return ResponseEntity.ok(responseData);
+	@GetMapping("/statistical-revenue/daily-revenue")
+	public ResponseEntity<?> getDailyRevenue() {
+		// Gọi phương thức của dịch vụ để lấy dữ liệu doanh thu theo ngày
+		List<String> labels = revenueService.getLabelsRevenueByDate();
+		List<Double> values = revenueService.getPriceRevenueByDate();
+		Map<String, Object> responseData = new HashMap<>();
 
-	    }
+		responseData.put("labels", labels);
+		responseData.put("values", values);
+		return ResponseEntity.ok(responseData);
 
-	    @GetMapping("/statistical-revenue/monthly-revenue")
-	    public ResponseEntity<?> getMonthlyRevenue() {
-	        // Gọi phương thức của dịch vụ để lấy dữ liệu doanh thu theo tháng
-	        List<Integer> labels = revenueService.getMonthLabelsRevenue();
-	        List<Double> values = revenueService.getTotalAmountByMonth();
+	}
 
-	        Map<String, Object> responseData = new HashMap<>();
-	        responseData.put("labels", labels);
-	        responseData.put("values", values);
+	@GetMapping("/statistical-revenue/monthly-revenue")
+	public ResponseEntity<?> getMonthlyRevenue() {
+		// Gọi phương thức của dịch vụ để lấy dữ liệu doanh thu theo tháng
+		List<Integer> labels = revenueService.getMonthLabelsRevenue();
+		List<Double> values = revenueService.getTotalAmountByMonth();
 
-	        return ResponseEntity.ok(responseData);
-	    }
+		Map<String, Object> responseData = new HashMap<>();
+		responseData.put("labels", labels);
+		responseData.put("values", values);
 
-	    @GetMapping("/statistical-revenue/yearly-revenue")
-	    public ResponseEntity<?> getYearlyRevenue() {
-	        // Gọi phương thức của dịch vụ để lấy dữ liệu doanh thu theo năm
-	        List<Integer> labels = revenueService.getYearLabelsRevenue();
-	        List<Double> values = revenueService.getTotalAmountByYear();
+		return ResponseEntity.ok(responseData);
+	}
 
-	        Map<String, Object> responseData = new HashMap<>();
-	        responseData.put("labels", labels);
-	        responseData.put("values", values);
+	@GetMapping("/statistical-revenue/yearly-revenue")
+	public ResponseEntity<?> getYearlyRevenue() {
+		// Gọi phương thức của dịch vụ để lấy dữ liệu doanh thu theo năm
+		List<Integer> labels = revenueService.getYearLabelsRevenue();
+		List<Double> values = revenueService.getTotalAmountByYear();
 
-	        return ResponseEntity.ok(responseData);
-	    }
-	
-	  //Chỉnh lại phần invoice -> order dòng 83
+		Map<String, Object> responseData = new HashMap<>();
+		responseData.put("labels", labels);
+		responseData.put("values", values);
+
+		return ResponseEntity.ok(responseData);
+	}
+
+	// Chỉnh lại phần invoice -> order dòng 83
 	@GetMapping("/statistical-order")
 	public String showOrders(@ModelAttribute("pd") Product pd, Model model) {
 
@@ -84,30 +84,30 @@ public class StatisticalController {
 		return "admin/statisticaloder-form";
 	}
 
-    @PostMapping("/update-status")
-    @ResponseBody
-    public ResponseEntity<Boolean> updateStatus(@RequestParam int itemId, @RequestParam Integer status) {
-        // Gọi phương thức service để cập nhật trạng thái hóa đơn
-    	try {
-    		updateStatusOrder(itemId, status);
-        	System.out.println("123qwe");
-        	  return ResponseEntity.ok(true);
+	@PostMapping("/update-status")
+	@ResponseBody
+	public ResponseEntity<Boolean> updateStatus(@RequestParam int itemId, @RequestParam Integer status) {
+		// Gọi phương thức service để cập nhật trạng thái hóa đơn
+		try {
+			updateStatusOrder(itemId, status);
+			System.out.println("123qwe");
+			return ResponseEntity.ok(true);
 		} catch (Exception e) {
 			// TODO: handle exception
 			return ResponseEntity.ok(false);
 		}
-      
-    }
-    
-    public void updateStatusOrder(int itemId, Integer status) {
-        Optional<Order> optionalInvoice = Optional.of(revenueService.findById(itemId));
-        if (optionalInvoice.isPresent()) {
-        	Order invoice = optionalInvoice.get();
+
+	}
+
+	public void updateStatusOrder(int itemId, Integer status) {
+		Optional<Order> optionalInvoice = Optional.of(revenueService.findById(itemId));
+		if (optionalInvoice.isPresent()) {
+			Order invoice = optionalInvoice.get();
 //            invoice.setStatus(status);
-            revenueService.save(invoice);
-        }
-    }
-	
+			revenueService.save(invoice);
+		}
+	}
+
 	@GetMapping("/statistical-wishlist")
 	public String showWishlists(@ModelAttribute("pd") Product pd, Model model) {
 
@@ -123,21 +123,20 @@ public class StatisticalController {
 		model.addAttribute("views", "best-seller-form");
 		model.addAttribute("title", "Thống kê sản phẩm bán chạy");
 
-		
-		//sản phẩm bán chạy
-//		model.addAttribute("bestSellers", idDAO.countProductsOrderByCountDesc());
-		
+		// sản phẩm bán chạy
+		model.addAttribute("bestSellers", idDAO.countProductsOrderByCountDesc());
+		System.out.println("123" + idDAO.countProductsOrderByCountDesc());
 		return "admin/static-best-seller";
 	}
 
-	//Chỉnh lại phần product -> product detail dòng 132
+	// Chỉnh lại phần product -> product detail dòng 132
 	@GetMapping("/statistical-orders-by-user")
 	public String showOrdersByUser(@ModelAttribute("pd") Product pd, Model model) {
 
 		model.addAttribute("views", "orders-by-user-form");
 		model.addAttribute("title", "Thống kê đơn hàng theo tài khoản");
 		model.addAttribute("ordersByUser", uDAO.getUsersWithOrdersCount());
-		
+
 		return "admin/orders-by-user-form";
 	}
 }
