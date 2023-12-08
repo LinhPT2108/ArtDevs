@@ -61,7 +61,8 @@
 											<i class="ti ti-arrow-down-right text-danger"></i>
 										</span>
 										<p class="text-dark me-1 fs-3 mb-0" th:if="${nowYear < lastYear}">
-											-<span th:text="*{#numbers.formatDecimal(rateYear,0,'COMMA',0,'POINT')}"></span>%
+											-<span
+												th:text="*{#numbers.formatDecimal(rateYear,0,'COMMA',0,'POINT')}"></span>%
 										</p>
 										<p class=" fs-3 mb-0" th:if="${nowYear < lastYear}">năm trước</p>
 									</div>
@@ -105,9 +106,9 @@
 											<i class="ti ti-arrow-down-right text-danger"></i>
 										</span>
 										<p class="text-dark me-1 fs-3 mb-0" th:if="${nowMonth < lastMonth}">
-											<span th:text="${#numbers.formatDecimal(rateMonth, 2, 1)}"></span>
+											<span th:text="${#numbers.formatDecimal(100-rateMonth, 0,'COMMA',0,'POINT')}"></span>
 										</p>
-										<p class="fs-3 mb-0" th:if="${nowMonth < lastMonth}">tháng trước</p>
+										<p class="fs-3 mb-0" th:if="${nowMonth < lastMonth}">% tháng trước</p>
 
 										<span th:if="${nowMonth >= lastMonth}"
 											class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
@@ -210,8 +211,7 @@
 											th:text="${bestSeller[0].categoryProduct.categoryName}"></span>
 									</td>
 									<td class="border-bottom-0">
-										<span class="fw-normal"
-											th:text="${bestSeller[0].productName}"></span>
+										<span class="fw-normal" th:text="${bestSeller[0].productName}"></span>
 									</td>
 									<td class="border-bottom-0 text-center">
 										<h6 class="fw-semibold mb-0 fs-4 text-danger" th:text="${bestSeller[1]}">

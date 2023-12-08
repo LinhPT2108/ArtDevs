@@ -231,8 +231,8 @@
 
 						</div>
 					</div>
-					<div class="col-lg-6 col-md-6 col-12 px-4">
-						<div class="d-flex">
+					<div class="col-lg-6 col-md-6 col-12 px-5">
+						<div class="d-flex flex-wrap align-items-center justify-content-start" style="height: 80px;">
 							<div ng-repeat="p in product.productDetails">
 								<a href="#" class="btn-type p-2 border rounded border-secondary mr-3"
 									ng-click="choiceProduct(p.id, $event, product.discountPrice, product.sale)">
@@ -248,7 +248,7 @@
 										&#8363;
 									</h3>
 
-									<h3 class="font-weight-bold text-danger mr-3">
+									<h3 class="font-weight-bold text-white mr-3">
 										{{ getLatestPrice(pdt.prices).price - (getLatestPrice(pdt.prices).price *
 										discountPrice) | number:0 }}
 										&#8363;
@@ -258,7 +258,7 @@
 										Giảm {{discountPrice*100}}%
 									</div>
 								</div>
-								<h3 class="font-weight-bold text-danger" ng-show="!isSale">
+								<h3 class="font-weight-bold text-white" ng-show="!isSale">
 									{{ getLatestPrice(pdt.prices).price | number:0 }}
 									&#8363;
 								</h3>

@@ -64,7 +64,7 @@
                                 </span>
 
                             </div>
-                            <div class="col-6 d-flex align-items-center justify-content-center mb-3">
+                            <div class="col-6 d-flex align-items-center justify-content-end mb-3">
                                 <a href="/products/{{p.product.productId}}"
                                     class="btn-danger text-white font-weight-bold rounded p-2 my-auto"
                                     ng-show="p.discountedQuantity - p.quantitySold >0">Mua ngay</a>
@@ -79,11 +79,11 @@
                                         Vừa mở bán
                                     </div>
                                     <div class="text-white position-absolute d-flex align-items-center text-sold"
-                                        ng-show="p.discountedQuantity - p.quantitySold > 10 && p.quantitySold > 0">Đã
+                                        ng-show="p.discountedQuantity - p.quantitySold >= 10 && p.quantitySold > 0">Đã
                                         bán
                                         {{p.quantitySold}}</div>
                                     <div class="text-white position-absolute d-flex align-items-center text-sold"
-                                        ng-show="p.discountedQuantity - p.quantitySold <= 10 && p.discountedQuantity - p.quantitySold > 0">
+                                        ng-show="p.discountedQuantity - p.quantitySold < 10 && p.discountedQuantity - p.quantitySold > 0">
                                         <i class="bi bi-fire text-danger display-6"></i>
                                         Chỉ còn
                                         {{p.discountedQuantity - p.quantitySold}}

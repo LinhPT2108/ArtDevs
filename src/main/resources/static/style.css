@@ -5840,7 +5840,7 @@ Version:1.0
 }
 
 .bg-custom {
-	background-color: rgba(160, 169, 173) !important;
+	background: linear-gradient(272.75deg,#f38c25 38.99%,#fb6848 76.29%) !important;
 	border-radius: 12px !important;
 }
 
