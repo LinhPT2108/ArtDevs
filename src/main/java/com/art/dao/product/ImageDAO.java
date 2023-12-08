@@ -1,11 +1,12 @@
 package com.art.dao.product;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.art.models.product.Image;
 import com.art.models.product.Product;
 
-
+@Transactional
 public interface ImageDAO extends JpaRepository<Image, Integer>{
 
 	

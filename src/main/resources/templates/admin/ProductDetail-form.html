@@ -55,9 +55,7 @@
 						</div>
 						<div class="col-6 mb-3">
 							<label th:for="discountedPrice" class="form-label">Đơn Giá :</label>
-							<input type="number" min="0" class="form-control" th:field="*{productPrice}"
-							th:value="*{productPrice[0].price}"
-							/>
+							<input type="number" min="0" class="form-control" th:field="*{productPrice[0].price}"/>
 						</div>
 					</div>
 
@@ -71,8 +69,8 @@
 							th:formaction="@{/admin/OrderDetail/{idProduct}/delete(idProduct=${idProduct})}"
 							th:text="${deleteButton}"></button>
 						<button class="btn btn-primary"
-							th:formaction="@{/admin/OrderDetail/{idProduct}/history(idOrder=${idProduct})}" text="History"
-							value="History">Lịch Sử</button>
+							th:formaction="@{/admin/OrderDetail/{idProduct}/history(idOrder=${idProduct})}"
+							text="History" value="History">Lịch Sử</button>
 						<!--<a th:formaction="@{/admin/OrderDetail/{idOrder}(idOrder=${idOrder})}"
 							class="btn btn-primary">Reset</a>-->
 

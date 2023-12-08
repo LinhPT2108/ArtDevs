@@ -139,7 +139,7 @@ public class ParamService {
 	public File saveFile(MultipartFile file, String filePath) throws IOException {
 		if (!file.isEmpty()) {
 			String projectPath = System.getProperty("user.dir");
-			String newPath = projectPath+"\\ArtDevs\\src\\main\\resources\\static\\images" + filePath;
+			String newPath = projectPath+"\\src\\main\\resources\\static\\images" + filePath;
 			try {
 				// Tránh tên trùng lặp bằng cách thêm timestamp vào tên tệp
 				String originalFileName = file.getOriginalFilename();

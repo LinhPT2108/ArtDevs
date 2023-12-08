@@ -3,8 +3,10 @@ package com.art.controller.admin;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -83,18 +85,20 @@ public class ProductDetailController {
 		model.addAttribute("typeButton", "Thêm");
 		model.addAttribute("updateButton", "Cập nhật");
 		model.addAttribute("deleteButton", "Xóa");
+		System.out.println("productID" + ProductID);
 		ProductDetail prodetail = productdetailDAO.getById(pddetailID);
 		
 		
 		Product pd = pdDAO.getById(ProductID);
 		List<ProductDetail> pdDetail = productdetailDAO.findByProduct(pd);
-		for (ProductDetail p : pdDetail) {
-			List<Price> myList = new ArrayList<>();
-			myList.add(pricedao.sortPriceByDatecreate(p.getId()).get(0));
-
-			p.setProductPrice(myList);
-		}
-		prodetail.setProductPrice(pdDetail.get(0).getProductPrice());
+		
+		List<Price> price =pricedao.sortPriceByDatecreate(prodetail.getId());
+		
+		prodetail.setProductPrice(price);
+		
+		System.out.println("price"+price);
+		
+		
 		model.addAttribute("ProductDetail",prodetail );
 		model.addAttribute("ProductDetails", pdDetail);
 		return "/admin/ProductDetail-form";

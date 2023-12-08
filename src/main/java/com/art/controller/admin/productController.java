@@ -1,5 +1,6 @@
 package com.art.controller.admin;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,7 +86,7 @@ public class productController {
 	
 	@GetMapping("/product")
 	public String product(@ModelAttribute("pd") Product pd, Model model) {
-		model.addAttribute("index", 1 );
+		model.addAttribute("index", 0 );
 		model.addAttribute("views", "product-form");
 		model.addAttribute("title", "Quản lí sản phẩm");
 		model.addAttribute("typeButton", false);
@@ -203,7 +204,7 @@ public class productController {
 		if (descriptions.length() == 32 || descriptions.length() == 2) {
 			errors.put("detailDecription", "Vui lòng nhập ít nhất 1 mô tả");
 		}
-
+		imgDao.deleteByProduct(product);
 		for (MultipartFile image : listImage) {
 			if (!image.isEmpty()) {
 				System.out.println(image.getOriginalFilename());
@@ -233,7 +234,12 @@ public class productController {
 			}
 			for (MultipartFile img : listImage) {
 				Image image = new Image();
-				image.setImage(paramService.save(img, "images/products").getName());
+				try {
+					image.setImage(paramService.saveFile(img, "/products").getName());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				image.setProduct(product);
 				imgDao.save(image);
 			}
@@ -251,7 +257,9 @@ public class productController {
 				detailDescription.setTitle((map.get("tieuDe")));
 				detailDescription.setDescription(map.get("description"));
 				detailDescription.setProduct(product);
-
+				
+				
+				detailDescriptionDAO.deleteByProduct(product);
 				detailDescriptionDAO.save(detailDescription);
 			}
 			return ResponseEntity.ok("success");
