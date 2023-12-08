@@ -22,7 +22,7 @@ app.directive("customBanner", function () {
           $scope.listBanner = resp;
           $timeout(function () {
             $scope.slickBanner();
-          }, 1000);
+          }, 0);
         })
         .catch(function (err) {
           console.log(err);
@@ -48,6 +48,7 @@ app.directive("customBanner", function () {
     },
   };
 });
+
 app.directive("customFlashsale", function ($timeout, ApiService) {
   return {
     restrict: "E",
@@ -272,7 +273,7 @@ app.directive("quickViewModal", function (ApiService, $rootScope, $timeout) {
         scope.clickFirstElement = function () {
           var firstElement = document.querySelectorAll(".btn-type");
           if (firstElement) {
-            console.log('click');
+            console.log("click");
             angular.element(firstElement).triggerHandler("click");
           }
         };
@@ -454,6 +455,8 @@ app.directive(
             });
           } else {
             console.log(scope.product);
+            console.log(scope.pdDetailId);
+            console.log(scope.quantity);
             ApiService.callApi(
               "POST",
               "/rest/cart/" + $rootScope.userLogin.accountId,
@@ -516,9 +519,7 @@ app.directive(
           console.log("add to wishlist");
           console.log(scope.pdId);
           console.log(scope.checkAlive);
-          console.log(
-            $rootScope.checkInWishlist(scope.pdId).length == 0 ? false : true
-          );
+
           if ($rootScope.userLogin == null) {
             Swal.fire({
               title: "Vui lòng đăng nhập !!",
@@ -614,6 +615,5 @@ app.directive(
         });
       },
     };
-    Ff;
   }
 );

@@ -214,12 +214,12 @@
                                     product="qvpd" quantity="qty" pd-detail-id=""
                                     ng-click="addToCart($event ,qvpd, qty, null)">Thêm vào giỏ
                                     hàng</a>
+
                                 <a title="Wishlist" class="display-6 ml-4" href="#" add-to-wishlist
                                     pd-id="qvpd.productId" check-alive="false" ng-click="addToWishlist($event,
                                 qvpd.productId, false)" ng-show="checkInWishlist(qvpd.productId).length==0">
                                     <i class="bi bi-heart"></i>
                                 </a>
-
                                 <a title="Wishlist" class="display-6 ml-4" href="#" add-to-wishlist
                                     pd-id="qvpd.productId" check-alive="true" ng-click="addToWishlist($event,
                                 qvpd.productId, true)" ng-show="checkInWishlist(qvpd.productId).length!=0">

@@ -133,7 +133,8 @@
 									<div class="alert alert-danger" role="alert" ng-show="getCheckedProducts.length==0">
 										Bạn chưa chọn sản phẩm
 									</div>
-									<a href="/checkout" class="btn" ng-show="getCheckedProducts.length>0 ||userLogin.carts.length>0">Thanh toán</a>
+									<a href="/checkout" class="btn"
+										ng-show="getCheckedProducts.length>0 &&userLogin.carts.length>0">Thanh toán</a>
 									<a href="/ArtDevs" class="btn">Tiếp tục mua sắm</a>
 								</div>
 							</div>

@@ -1,6 +1,9 @@
 package com.art.dto.product;
 
 import java.util.Date;
+import java.util.List;
+
+import com.art.models.activity.ImageComment;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,4 +20,6 @@ public class CommentDTO {
 	private String content;
 	private Date date;
 	private String fullnameOfUser;
+	private String imageAccount;
+	private List<ImageComment> ImageComment;
 }
