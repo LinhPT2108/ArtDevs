@@ -30,7 +30,7 @@ public class Price {
 	private int id;
 
 	@Column
-	private double price;
+	private long price;
 
 	@Column
 	@Temporal(TemporalType.TIMESTAMP)

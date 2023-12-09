@@ -50,9 +50,7 @@
 						<button class="btn btn-danger"
 							th:formaction="@{/admin/OrderDetail/{idOrder}/delete(idOrder=${idOrder})}"
 							th:text="${deleteButton}"></button>
-						<button class="btn btn-primary"
-							th:formaction="@{/admin/OrderDetail/{idOrder}/history(idOrder=${idOrder})}" text="History"
-							value="History">Lịch Sử</button>
+						
 						<!--<a th:formaction="@{/admin/OrderDetail/{idOrder}(idOrder=${idOrder})}"
 							class="btn btn-primary">Reset</a>-->
 

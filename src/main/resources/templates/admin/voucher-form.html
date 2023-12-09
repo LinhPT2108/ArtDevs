@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	<div class="site-product">
+		<form class="row g-3 needs-validation" th:action="@{/admin/voucher}" th:object="${vouchers}" method="POST"
+			id="formVoucher">
+			<div class="row">
+				<div class="col-xs-12 col-md-12">
+
+					<div class="col-12 mb-3">
+
+						<input type="hidden" class="form-control" th:field="*{id}" />
+					</div>
+					<div class="row">
+						<div class="col-6 mb-3">
+							<label class="form-label" for="startDay">Ngày bắt đầu:</label>
+							<input type="datetime-local" class="form-control" th:field="*{startDay}" />
+							<p class="text-danger" th:text="${start_dayError}"></p>
+						</div>
+						<div class="col-6 mb-3">
+							<label class="form-label" for="endDay">Ngày kết thúc:</label>
+							<input type="datetime-local" class="form-control" th:field="*{endDay}" />
+							<p class="text-danger" th:text="${end_dayError}"></p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-6 mb-3">
+							<label class="form-label">Voucher Phát Hành:</label>
+							<input type="number" class="form-control"  for="maximumvoucher" th:field="*{maximumNumberOfUses}" />
+							<p class="text-danger" th:text="${maximumvoucher_Error}"></p>
+						</div>
+						<div class="col-6 mb-3">
+							<label class="form-label"  for="maximumpricevoucher" >Giá trị Voucher:</label>
+							<input type="number" class="form-control" th:field="*{maximumPriceDiscount}" />
+							<p class="text-danger" th:text="${maximumpricevoucher_Error}"></p>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="col-12">
+				<button type="submit" class="btn btn-success" th:formaction="@{/admin/voucher/create}"
+					th:text="${typeButton}"></button>
+				<button type="submit" class="btn btn-warning" th:formaction="@{/admin/flashSale/update}"
+					th:text="${updateButton}"></button>
+				<button type="submit" class="btn btn-danger"
+					th:formaction="@{/admin/flashSale/delete/{id}(id=${vouchers.id})}"
+					th:text="${deleteButton}"></button>
+				<a href="/admin/flashSale" class="btn btn-primary">Reset</a>
+			</div>
+		</form>
+		<hr>
+		<br>
+		<div class="table-responsive">
+			<table id="statisticalTableFlashsale" class="table table-hover">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Ngày bắt đầu</th>
+						<th>Ngày kết thúc</th>
+						<th>Voucher phát hành</th>
+						<th>Voucher đã sử dụng</th>
+						<th>Giá trị voucher</th>
+						<th>Người tạo</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="voucher : ${ListVoucher}">
+						<td th:text="${voucher.id}"></td>
+						<td th:text="${#dates.format(voucher.startDay, 'HH:mm dd/MM/yyyy')}"></td>
+						<td th:text="${#dates.format(voucher.endDay, 'HH:mm dd/MM/yyyy')}"></td>
+						<td th:text="${voucher.maximumNumberOfUses}">
+						<td th:text="${voucher.NumberOfUses}"></td>
+						<td><span
+								th:text="*{#numbers.formatDecimal(voucher.maximumPriceDiscount ,0,'COMMA',0,'POINT')}+' đ'"></span>
+						</td>
+
+						<td th:text="${voucher.user.fullname}"></td>
+						<td>
+							<div class="btn-group">
+								<!--	<a type="button" class="btn btn-primary"
+									th:href="@{/admin/promotionalDetail/{id}(id=${flashSale.id})}">
+									Xem Chi Tiết
+								</a>-->
+								<a type="button" class="btn btn-warning"
+									th:href="@{/admin/voucher/edit/{voucherid}(voucherid=${voucher.id})}">
+									Edit
+								</a>
+							</div>
+						</td>
+						<!--<td><a th:href="@{/admin/promotionalDetail/{id}(id=${flashSale.id})}">
+								Xem Chi Tiết ||
+							</a>
+							<a th:href="@{/admin/flashSale/edit/{id}(id=${flashSale.id})}">Edit</a></td>-->
+
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<script type="text/javascript" th:inline="javascript">
+			$(document).ready(function () {
+				var table = $('#statisticalTableFlashsale').DataTable();
+
+				// Tạo radio buttons
+				var radioHtml = `
+            <div class="mb-3">
+                <label>
+                    <input type="radio" name="statusFilter" value="" checked> Tất cả
+                </label>
+                <label class="mx-2">
+                    <input type="radio" name="statusFilter" value="Đang hoạt động"> Đang hoạt động
+                </label>
+                <label>
+                    <input type="radio" name="statusFilter" value="Ngưng hoạt động"> Ngưng hoạt động
+                </label>
+            </div>
+        `;
+
+				// Thêm radio buttons vào phần tử có class "table-responsive"
+				$('.table-responsive').prepend(radioHtml);
+
+				// Xử lý sự kiện khi radio buttons được chọn
+				$('input[name="statusFilter"]').on('change', function () {
+					var selectedValue = $(this).val();
+
+					// Lọc dữ liệu trong cột "Trạng thái" của DataTable
+					table.column(3).search(selectedValue).draw();
+				});
+			});
+		</script>
+</body>
+
+</html>

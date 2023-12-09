@@ -8,7 +8,7 @@
 
 <body>
 	<div class="table-responsive">
-		<table id="statisticalTable" class="table table-hover">
+		<table id="statisticalOrderTable" class="table table-hover">
 			<thead>
 				<tr>
 
@@ -25,7 +25,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="item : ${invoice}" >
+				<tr th:each="item : ${invoice}">
 
 					<td th:text="${item.user.fullname}"></td>
 					<td th:text="${#dates.format(item.orderDate, 'hh:mm dd/MM/yyyy')}"></td>
@@ -33,17 +33,24 @@
 					<td th:text="${#numbers.formatDecimal(item.deliveryFee,0,'COMMA',0,'POINT')}+' đ'"></td>
 					<td th:text="${item.discount}"></td>
 					<td>
-						<span
-							th:text="${#numbers.formatDecimal(item.totalAmount,0,'COMMA',0,'POINT')}+' đ'"></span>
+						<span th:text="${#numbers.formatDecimal(item.totalAmount,0,'COMMA',0,'POINT')}+' đ'"></span>
 					</td>
 					<td th:text="${item.paymentMethod.paymentName}"></td>
 					<td th:each=" orderdeliveryDeail : ${item.orderStatus}">
-						
-						<select class="form-select statusSelect" th:disabled="${orderdeliveryDeail.deliveryStatus.id == 3}"
-							aria-label="Default select example" style="padding: 1px 38px 1px 16px;" th:data-item-id="${item.id}">
-						
-							<option th:each="p : ${statusList}" th:text="${p.nameStatus}"  th:selected="${orderdeliveryDeail.deliveryStatus.id}==${p.id}"></option>
-						
+
+						<select class="form-select statusSelect"
+							th:disabled="${orderdeliveryDeail.deliveryStatus.id == 3}"
+							aria-label="Default select example" style="padding: 1px 38px 1px 16px;"
+							th:data-item-id="${item.id}">
+							<option th:each="p : ${statusList}" th:text="${p.nameStatus}"
+								th:selected="${orderdeliveryDeail.deliveryStatus.id}==${p.id}"
+								th:if="${orderdeliveryDeail.deliveryStatus.id+3}==${p.id} "></option>
+							<option th:each="p : ${statusList}" th:text="${p.nameStatus}"
+								th:selected="${orderdeliveryDeail.deliveryStatus.id}==${p.id}"
+								th:if="${orderdeliveryDeail.deliveryStatus.id}==${p.id}"></option>
+							<option th:each="p : ${statusList}" th:text="${p.nameStatus}"
+								th:selected="${orderdeliveryDeail.deliveryStatus.id}==${p.id}"
+								th:if="${orderdeliveryDeail.deliveryStatus.id+1}==${p.id}"></option>
 						</select>
 					</td>
 					<td th:text="${item.note}"></td>
@@ -111,6 +118,40 @@
 						// Xử lý lỗi (nếu cần)
 					}
 				});
+			});
+			
+				var table = $('#statisticalOrderTable').DataTable();
+
+			// Tạo radio buttons
+			var radioHtml = `
+            <div class="mb-3">
+                <label>
+                    <input type="radio" name="statusFilter" value="" checked> Tất cả
+                </label>
+                <label class="mx-2">
+                    <input type="radio" name="statusFilter" value="Đang xử lý"> Đang xử lý
+                </label>
+                <label class="mx-2">
+                    <input type="radio" name="statusFilter" value="Đang giao hàng"> Đang giao hàng
+                </label>
+                <label class="mx-2">
+                    <input type="radio" name="statusFilter" value="Giao hàng thành công"> Giao hàng thành công
+                </label>
+                <label>
+                    <input type="radio" name="statusFilter" value="Đã hủy"> Đã hủy
+                </label>
+            </div>
+        `;
+
+			// Thêm radio buttons vào phần tử có class "table-responsive"
+			$('.table-responsive').prepend(radioHtml);
+
+			// Xử lý sự kiện khi radio buttons được chọn
+			$('input[name="statusFilter"]').on('change', function () {
+				var selectedValue = $(this).val();
+
+				// Lọc dữ liệu trong cột "Trạng thái" của DataTable
+				table.column(7).search(selectedValue).draw();
 			});
 		});
 	</script>

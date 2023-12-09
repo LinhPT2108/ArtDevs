@@ -10,29 +10,32 @@
 	<div class="site-product">
 
 		<form th:action="@{/OrderDetail/create}" th:object="${ProductDetail}" th:method="POST"
-			class="row g-3 needs-validation" id="OrderDetail">
+			class="row g-3 needs-validation" th:id="formProductDetail">
 
 			<div class="row">
 				<div class="col-xs-12 ">
 					<div class="row">
 						<div class="col-12 mb-3">
-							<input type="hidden" th:name="idProduct" id="idProduct" th:value="${idProduct}"
-								class="form-control" />
+							<input type="hidden" th:name="123" id="id" th:value="*{id}" class="form-control"
+								th:field="*{id}" />
 						</div>
 						<div class="col-12 mb-3">
-							<input type="hidden" th:name="id" id="id" th:value="*{id}" class="form-control"
-								th:field="*{id}" />
+							<input type="hidden" th:name="idProduct" id="idProduct" th:value="${idProduct}"
+								class="form-control" />
+								
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-6 mb-3">
 							<label th:for="discountedPrice" class="form-label">Size :</label>
 							<input type="text" class="form-control" th:field="*{size}" th:value="*{size}" />
+							<i th:errors="*{size}"></i>
 						</div>
 
 						<div class="col-6 mb-3">
 							<label th:for="discountedPrice" class="form-label">Màu Sắc :</label>
 							<input type="text" class="form-control" th:field="*{color}" th:value="*{color}" />
+							<i th:errors="*{color}"></i>
 						</div>
 					</div>
 					<div class="row">
@@ -40,11 +43,13 @@
 							<label th:for="discountedPrice" class="form-label">Khối Lượng :</label>
 							<input type="number" min="0" step="0.1" class="form-control" th:field="*{weight}"
 								th:value="*{weight}" />
+								<i th:errors="*{weight}"></i>
 						</div>
 						<div class="col-6 mb-3">
 							<label th:for="discountedPrice" class="form-label">Số lượng :</label>
 							<input type="number" min="0" class="form-control" th:field="*{quantityInStock}"
 								th:value="*{quantityInStock}" />
+								<i th:errors="*{quantityInStock}"></i>
 						</div>
 					</div>
 					<div class="row">
@@ -52,10 +57,12 @@
 							<label th:for="discountedPrice" class="form-label">Công Suất :</label>
 							<input type="number" min="0" step="1" class="form-control" th:field="*{power}"
 								th:value="*{power}" />
+								<i th:errors="*{power}"></i>
 						</div>
 						<div class="col-6 mb-3">
 							<label th:for="discountedPrice" class="form-label">Đơn Giá :</label>
-							<input type="number" min="0" class="form-control" th:field="*{productPrice[0].price}"/>
+							<input type="number" min="0" class="form-control" th:name="priceDetail" id="priceDetail"
+								th:field="*{productPrice[0].price}" />
 						</div>
 					</div>
 
@@ -63,14 +70,11 @@
 						<button class="btn btn-success" th:formaction="@{/admin/ProductDetail/create}"
 							th:text="${typeButton}"></button>
 						<button class="btn btn-warning"
-							th:formaction="@{/admin/OrderDetail/{idProduct}/update(idProduct=${idProduct})}"
+							th:formaction="@{/admin/ProductDetail/{idProduct}/update(idProduct=${idProduct})}"
 							th:text="${updateButton}"></button>
-						<button class="btn btn-danger"
-							th:formaction="@{/admin/OrderDetail/{idProduct}/delete(idProduct=${idProduct})}"
+						<button class="btn btn-danger btnDelProductDetail"
+							th:formaction="@{/admin/ProductDetail/{idProduct}/delete(idProduct=${idProduct})}"
 							th:text="${deleteButton}"></button>
-						<button class="btn btn-primary"
-							th:formaction="@{/admin/OrderDetail/{idProduct}/history(idOrder=${idProduct})}"
-							text="History" value="History">Lịch Sử</button>
 						<!--<a th:formaction="@{/admin/OrderDetail/{idOrder}(idOrder=${idOrder})}"
 							class="btn btn-primary">Reset</a>-->
 
@@ -88,7 +92,7 @@
 		<table id="statisticalTablePromotion" class="table table-hover" style="vertical-align:middle;">
 			<thead>
 				<tr>
-					<th>Số thứ tự</th>
+					<th>STT</th>
 					<th>Tên sản phẩm</th>
 					<th>Màu Sắc</th>
 					<th>Công Suất</th>
@@ -96,12 +100,13 @@
 					<th>Khối Lượng</th>
 					<th>Số Lượng</th>
 					<th>Đơn Giá</th>
+					<th>Trạng Thái</th>
 					<th>Ngày Thêm</th>
 					<th></th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each=" pdDetail ,i : ${ProductDetails}">
+				<tr th:each=" pdDetail ,i : ${ProductDetails}" >
 					<td th:text="${i.index + 1}"></td>
 					<td th:text="${pdDetail.product.productName}"></td>
 					<!--<td th:text="${promotionalDetail.product.productDetail.quantityInStock}"></td>-->
@@ -113,8 +118,10 @@
 					<td th:each="price : ${pdDetail.productPrice} ">
 						<span th:text="*{#numbers.formatDecimal(price.price ,0,'COMMA',0,'POINT')}+' đ'"></span>
 					</td>
+						<td ><span th:utext="${pdDetail.status == true ? 'Còn Hàng' : 'Đã Hết Hàng'}"></span></td>
 					<td th:text="${#dates.format(pdDetail.productionDate, 'hh:ss  dd/MM/yyyy')}">
 					</td>
+				
 					<td>
 						<a class="btn btn-warning"
 							th:href="@{/admin/ProductDetail/{idProduct}/edit/{productDetailid}(idProduct=${idProduct}, productDetailid=${pdDetail.id})}">Chỉnh
@@ -136,10 +143,10 @@
                     <input type="radio" name="statusFilter" value="" checked> Tất cả
                 </label>
                 <label class="mx-2">
-                    <input type="radio" name="statusFilter" value="Đang hoạt động"> Đang hoạt động
+                    <input type="radio" name="statusFilter" value="Còn Hàng"> Còn Hàng
                 </label>
                 <label>
-                    <input type="radio" name="statusFilter" value="Ngưng hoạt động"> Ngưng hoạt động
+                    <input type="radio" name="statusFilter" value="Đã Hết Hàng"> Đã Hết Hàng
                 </label>
             </div>
         `;
@@ -152,8 +159,14 @@
 				var selectedValue = $(this).val();
 
 				// Lọc dữ liệu trong cột "Trạng thái" của DataTable
-				table.column(5).search(selectedValue).draw();
+				table.column(8).search(selectedValue).draw();
 			});
+			
+			
+			
+			
+			
+			
 		});
 	</script>
 </body>

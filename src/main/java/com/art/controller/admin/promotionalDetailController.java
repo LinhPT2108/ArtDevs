@@ -86,6 +86,7 @@ public class promotionalDetailController {
 		System.out.println(flashSaleIdString);
 		promotionalDetail.setFlashSale(flashSaleDAO.getById(flashSaleIdString));
 		promotionalDetail.setStatus(false);
+		promotionalDetail.setId(0);
 		promotionDetailDAO.save(promotionalDetail);
 		
 		return "redirect:/admin/promotionalDetail/" +flashSaleIdString;
