@@ -87,7 +87,12 @@ public class userCustomController {
 
 		}
 		if (!avatar.isEmpty()) {
-			usercustom.setImage(paramService.save(avatar, "images/avatar").getName());
+			try {
+				usercustom.setImage(paramService.saveFile(avatar, "/avatar").getName());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		List<AccountRole> acrole = new ArrayList<>();
 		for (Role role : listRole) {
@@ -146,7 +151,7 @@ public class userCustomController {
 		}
 		
 		userCustom.setUserRole(acrole);
-		userCustom.setPassword(new BCryptPasswordEncoder().encode(userCustom.getPassword()));
+		userCustom.setPassword(currentUser.getPassword());
 		
 		userCustomDAO.save(userCustom);
 
@@ -180,8 +185,8 @@ public class userCustomController {
 			model.addAttribute("roles", listRole);
 			model.addAttribute("accroles", accRole);
 			model.addAttribute("userCustom", usercus);
-
 			model.addAttribute("userCustoms", userCustoms);
+			model.addAttribute("CheckEdit", true);
 		} catch (Exception e) {
 			
 			e.printStackTrace();

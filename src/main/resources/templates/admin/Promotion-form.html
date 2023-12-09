@@ -26,19 +26,21 @@
 							<label class="form-label">Sản phẩm:</label> <br>
 							<select class="form-select" th:field="*{product}">
 								<!--<option value="" label="Chọn..."></option>-->
-								<option th:each="product : ${productList}" th:value="${product}"
-									th:text="${product.productName}"></option>
+								<option th:each="product : ${productList}" th:value="${product.key.productId}"
+									th:text="${product.value}"></option>
 							</select>
 						</div>
 						<div class="col-12 mb-3">
 							<label th:for="discountedPrice" class="form-label">Giá khuyến mãi:</label>
-							<input type="number" step="0.05" max="1" class="form-control" th:field="*{discountedPrice}" th:value="*{discountedPrice}" />
+							<input type="number" step="0.05" max="1" class="form-control" th:field="*{discountedPrice}"
+								th:value="*{discountedPrice}" />
 						</div>
 						<div class="col-12 mb-3">
 							<label th:for="discountedPrice" class="form-label">Số lượng khuyến mãi:</label>
-							<input type="number" class="form-control" th:field="*{discountedQuantity}" th:value="*{discountedQuantity}" />
+							<input type="number" class="form-control" th:field="*{discountedQuantity}"
+								th:value="*{discountedQuantity}" />
 						</div>
-							<div class="col-12 mb-3">
+						<div class="col-12 mb-3">
 							<label for="del" class="form-label">Trạng thái:</label>
 							<input type="radio" th:field="*{status}" value="false" id="del1" />
 							<label for="del1">Đang hoạt động</label>
@@ -51,13 +53,12 @@
 						<button class="btn btn-success" th:formaction="@{/admin/promotionalDetail/create}"
 							th:text="${typeButton}"></button>
 						<button class="btn btn-warning"
-							th:formaction="@{/admin/promotionalDetail/{idflashSale}/update(idflashSale=${idflashSale})}"
+							th:formaction="@{/admin/promotionalDetail/{idflashSale}/update/{promotionalDetail}(idflashSale=${idflashSale}, promotionalDetail=${promotionalDetail.id})}"
 							th:text="${updateButton}"></button>
 						<button class="btn btn-danger"
 							th:formaction="@{/admin/promotionalDetail/{idflashSale}/delete/{promotionalDetail}(idflashSale=${idflashSale}, promotionalDetail=${promotionalDetail.id})}"
 							th:text="${deleteButton}"></button>
-						<a href="@{/admin/promotionalDetail/{idflashS}(idflashS=${idflashSale})}"
-							class="btn btn-primary">Reset</a>
+						
 					</div>
 				</div>
 			</div>
@@ -85,15 +86,16 @@
 						<td th:text="${promotionalDetail.product.productName}"></td>
 						<!--<td th:text="${promotionalDetail.product.productDetail.quantityInStock}"></td>-->
 						<td>
-							<span th:utext="${#numbers.formatDecimal(promotionalDetail.discountedPrice*100, 1, 0)} + ' %'"></span>
+							<span
+								th:utext="${#numbers.formatDecimal(promotionalDetail.discountedPrice*100, 1, 0)} + ' %'"></span>
 						</td>
 						<td th:text="${promotionalDetail.discountedQuantity}">
 						</td>
 						<td th:text="${promotionalDetail.quantitySold}">
 						</td>
-						
-							<td th:text="${promotionalDetail.status ? 'Ngưng hoạt động' : 'Đang hoạt động'}"></td>
-						
+
+						<td th:text="${promotionalDetail.status ? 'Ngưng hoạt động' : 'Đang hoạt động'}"></td>
+
 						<td>
 							<a class="btn btn-warning"
 								th:href="@{/admin/promotionalDetail/{idflashSale}/edit/{promotionalDetailid}(idflashSale=${idflashSale}, promotionalDetailid=${promotionalDetail.id})}">Chỉnh

@@ -37,7 +37,7 @@
 						</div>
 						<div class="col-6 mb-3">
 							<label class="form-label"  for="maximumpricevoucher" >Giá trị Voucher:</label>
-							<input type="number" class="form-control" th:field="*{maximumPriceDiscount}" />
+							<input type="number" class="form-control" th:field="*{discount}" />
 							<p class="text-danger" th:text="${maximumpricevoucher_Error}"></p>
 						</div>
 					</div>
@@ -47,12 +47,12 @@
 			<div class="col-12">
 				<button type="submit" class="btn btn-success" th:formaction="@{/admin/voucher/create}"
 					th:text="${typeButton}"></button>
-				<button type="submit" class="btn btn-warning" th:formaction="@{/admin/flashSale/update}"
+				<button type="submit" class="btn btn-warning" th:formaction="@{/admin/voucher/update}"
 					th:text="${updateButton}"></button>
 				<button type="submit" class="btn btn-danger"
-					th:formaction="@{/admin/flashSale/delete/{id}(id=${vouchers.id})}"
+					th:formaction="@{/admin/voucher/delete/{id}(id=${vouchers.id})}"
 					th:text="${deleteButton}"></button>
-				<a href="/admin/flashSale" class="btn btn-primary">Reset</a>
+				<a href="/admin/voucher" class="btn btn-primary">Reset</a>
 			</div>
 		</form>
 		<hr>
@@ -79,7 +79,7 @@
 						<td th:text="${voucher.maximumNumberOfUses}">
 						<td th:text="${voucher.NumberOfUses}"></td>
 						<td><span
-								th:text="*{#numbers.formatDecimal(voucher.maximumPriceDiscount ,0,'COMMA',0,'POINT')}+' đ'"></span>
+								th:text="*{#numbers.formatDecimal(voucher.discount ,0,'COMMA',0,'POINT')}+' đ'"></span>
 						</td>
 
 						<td th:text="${voucher.user.fullname}"></td>

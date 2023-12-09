@@ -45,7 +45,7 @@
 							<input type="text" class="form-control" th:field="*{fullname}" />
 							<div class="text-danger" th:errors="*{fullname}"></div>
 						</div>
-						<div class="col-12 mb-3">
+						<div class="col-12 mb-3" th:if="!${CheckEdit}">
 							<label for="password" class="form-label">Mật khẩu</label>
 							<input type="text" class="form-control" th:field="*{password}" th:value="*{password}" />
 							<div class="text-danger" th:errors="*{password}"></div>
