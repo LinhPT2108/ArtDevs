@@ -31,11 +31,16 @@ $(document).ready(
 				url: '/admin/statistical-revenue/daily-revenue',
 				method: 'GET',
 				success: function(response) {
+					const formattedDates = response.labels.map((dateTime) => {
+						const formattedDate = moment(dateTime).format('DD/MM/YYYY');
+
+						return formattedDate;
+					});
 					dataDay = {
-						labels: response.labels,
+						labels: formattedDates,
 						values: response.values
 					}
-					console.log(Math.max(...dataDay.values))
+
 					var chart = {
 						series: [
 							{ name: "Earnings this month:", data: dataDay.values },/*
@@ -44,7 +49,7 @@ $(document).ready(
 
 						chart: {
 							type: "bar",
-							height: 345,
+							height: 580,
 							offsetX: -15,
 							toolbar: { show: true },
 							foreColor: "#adb0bb",
@@ -205,8 +210,115 @@ $(document).ready(
 
 			// =====================================
 			// Earning
+			$(function() {
+				var dataDay;
+				$.ajax({
+					url: '/admin/statistical-revenue/monthly-revenue',
+					method: 'GET',
+					success: function(response) {
+
+						dataDay = {
+							labels: response.labels,
+							values: response.values
+						}
+
+						var chart = {
+							series: [
+								{ name: "Earnings this month:", data: dataDay.values },/*
+					{ name: "Expense this month:", data: [280, 250, 325, 215, 250, 310, 280, 250] },*/
+							],
+
+							chart: {
+								type: "bar",
+								height: 250,
+								offsetX: -15,
+								toolbar: { show: true },
+								foreColor: "#adb0bb",
+								fontFamily: 'inherit',
+								sparkline: { enabled: false },
+							},
+
+							colors: ["#5D87FF", "#49BEFF"],
+
+							plotOptions: {
+								bar: {
+									horizontal: false,
+									columnWidth: "35%",
+									borderRadius: [6],
+									borderRadiusApplication: 'end',
+									borderRadiusWhenStacked: 'all'
+								},
+							},
+							markers: { size: 0 },
+
+							dataLabels: {
+								enabled: false,
+							},
+							legend: {
+								show: false,
+							},
+							grid: {
+								borderColor: "rgba(0,0,0,0.1)",
+								strokeDashArray: 3,
+								xaxis: {
+									lines: {
+										show: false,
+									},
+								},
+							},
+							xaxis: {
+								type: "category",
+								categories: dataDay.labels,
+								labels: {
+									style: { cssClass: "grey--text lighten-2--text fill-color" },
+								},
+							},
+							yaxis: {
+								show: true,
+								min: 0,
+								max: Math.max(...dataDay.values) + 50000,
+								tickAmount: 8,
+								labels: {
+									style: {
+										cssClass: "grey--text lighten-2--text fill-color",
+									},
+								},
+							},
+							stroke: {
+								show: true,
+								width: 3,
+								lineCap: "butt",
+								colors: ["transparent"],
+							},
+
+
+							tooltip: { theme: "light" },
+
+							responsive: [
+								{
+									breakpoint: 600,
+									options: {
+										plotOptions: {
+											bar: {
+												borderRadius: 3,
+											}
+										},
+									}
+								}
+							]
+						};
+						var chart = new ApexCharts(document.querySelector("#earning"), chart);
+						chart.render();
+					},
+
+					error: function(error) {
+						console.log(error);
+					}
+				});
+			});
 			// =====================================
-			$.ajax({
+
+			/*$.ajax({
 				url: '/admin/statistical-revenue/monthly-revenue',
 				method: 'GET',
 				success: function(response) {
@@ -263,7 +375,7 @@ $(document).ready(
 				error: function(error) {
 					console.log(error);
 				}
-			});
+			});*/
 
 
 		})

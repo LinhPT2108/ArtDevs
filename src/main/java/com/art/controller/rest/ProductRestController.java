@@ -90,7 +90,6 @@ public class ProductRestController {
 	public ResponseEntity<List<ProductDTO>> getProducts(@RequestParam("c") Optional<Integer> c,
 			@RequestParam("b") Optional<Integer> b,
 			@RequestParam("keyword") Optional<String> keyword) {
-		System.out.println("product123");
 		System.out.println("line 91: " + c.isPresent() + " - " + b.isPresent() + " - " + keyword.isPresent());
 		List<Product> products = proDAO.findByAvailable(true);
 		if (keyword.isPresent()) {

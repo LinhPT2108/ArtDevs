@@ -1,6 +1,9 @@
 package com.art.controller.rest;
 
+import java.io.File;
+import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,24 +26,32 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.art.dao.activity.WishListDAO;
 import com.art.dao.product.ProductDAO;
 import com.art.dao.promotion.FlashSaleDAO;
+import com.art.dao.promotion.OrderDAO;
 import com.art.dao.promotion.PromotionalDetailsDAO;
 import com.art.dao.user.AccountDAO;
 import com.art.dao.user.AccountRoleDAO;
 import com.art.dao.user.InforAddressDAO;
 import com.art.dao.user.RoleDAO;
 import com.art.dto.account.AccountDTO;
+import com.art.dto.account.ChangePasswordDTO;
 import com.art.mapper.AccountMapper;
 import com.art.models.MailInfo;
+import com.art.models.activity.WishList;
+import com.art.models.product.Product;
+import com.art.models.promotion.Order;
 import com.art.models.user.Account;
 import com.art.models.user.AccountRole;
 import com.art.models.user.InforAddress;
 import com.art.models.user.Role;
 import com.art.service.MailerServiceImpl;
-import com.art.service.user.CustomUserDetailService;
+import com.art.service.ParamService;
 import com.art.utils.Path;
 import com.art.utils.validUtil;
 
@@ -72,26 +84,30 @@ public class AccountRestController {
 	ProductDAO pdDAO;
 
 	@Autowired
-	CustomUserDetailService userService;
-
-	@Autowired
 	HttpSession session;
 
 	@Autowired
 	MailerServiceImpl mailer;
 
+	@Autowired
+	ParamService paramService;
+
+	@Autowired
+	OrderDAO orderDAO;
+
+	@Autowired
+	WishListDAO wishListDAO;
+
+	private PasswordEncoder passwordEncoder;
+
 	@GetMapping(value = "/userLogin")
 	public ResponseEntity<AccountDTO> getArtDev(Model model) {
-		// Lấy thông tin người dùng từ SecurityContextHolder
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String email = authentication.getName();
+		System.out.println("authentication: " + authentication);
 		try {
 			if (authentication != null) {
-				Account account = aDAO.findByEmail(email);
-				if (!email.contains("@") && account == null) {
-					account = aDAO.findById(authentication.getName()).get();
-				}
-				AccountDTO accountDTO = AccountMapper.convertToDto(account, promotionDAO, fDAO, pdDAO);
+				AccountDTO accountDTO = AccountMapper.convertToDto(aDAO.findByEmail(authentication.getName()),
+						promotionDAO, fDAO, pdDAO);
 				return ResponseEntity.ok(accountDTO);
 			}
 		} catch (Exception e) {
@@ -114,6 +130,11 @@ public class AccountRestController {
 		return ResponseEntity.ok(accountDTOs);
 	}
 
+	@GetMapping(value = "/account/user")
+	public Principal getLogin(Principal principal) {
+		System.out.println("co gì hoong : " + principal.toString());
+		return principal;
+	}
 	// @GetMapping("/account")
 	// public ResponseEntity<List<Account>> getAccounts() {
 	// List<Account> accounts = aDAO.findAll();
@@ -228,6 +249,7 @@ public class AccountRestController {
 		Account account = AccountMapper.convertToAccount(accountDTO);
 		Map<String, String> errors = new HashMap<>();
 		try {
+			System.out.println(account);
 
 			if (!aDAO.existsById(key)) {
 				return ResponseEntity.notFound().build();
@@ -265,6 +287,24 @@ public class AccountRestController {
 			return ResponseEntity.ok(null);
 		}
 
+	}
+
+	// cập nhật ảnh người dùng
+	@PutMapping(value = "/account/update-avatar/{id}")
+	public ResponseEntity<?> putMethodName(@PathVariable String id, @RequestBody MultipartFile avatar) {
+		try {
+			Account account = aDAO.findById(id).get();
+			String avatarName = paramService.saveFile(avatar, "/avatar").getName();
+			account.setImage(avatarName);
+			System.out.println(avatarName);
+			Map<String, String> rs = new HashMap<String, String>();
+			rs.put("avatarName", avatarName);
+			aDAO.save(account);
+			return ResponseEntity.ok(rs);
+		} catch (Exception e) {
+			System.out.println(e);
+			return ResponseEntity.badRequest().build();
+		}
 	}
 
 	/*
@@ -314,6 +354,7 @@ public class AccountRestController {
 	 */
 	@PostMapping("/account/{id}/address")
 	public ResponseEntity<?> createAddress(@RequestBody InforAddress inforAddress, @PathVariable("id") String key) {
+		System.out.println("line 267: " + key);
 		Account account = aDAO.findById(key).get();
 		boolean isExist = inforAddressDAO.existsById(inforAddress.getPhoneNumber());
 		if (isExist) {
@@ -351,4 +392,46 @@ public class AccountRestController {
 		inforAddressDAO.deleteById(phone);
 		return ResponseEntity.ok(200);
 	}
+
+	@PostMapping("/account/change-password")
+	public ResponseEntity<?> postMethodName(@RequestBody ChangePasswordDTO e) {
+		System.out.println(e.getCurrentPassword() + " - " +
+				e.getConfirmPassword() + " - " +
+				e.getNewPassword());
+		try {
+			Map<String, String> errors = new HashMap<>();
+			passwordEncoder = new BCryptPasswordEncoder();
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			if (e.getConfirmPassword() != "" || e.getCurrentPassword() != "" || e.getNewPassword() != "") {
+				System.out.println(authentication.getName());
+				Account account = aDAO.findByEmail(authentication.getName());
+				String userLoginPassword = account.getPassword();
+				System.out.println(userLoginPassword);
+				System.out.println(passwordEncoder.matches(e.getCurrentPassword(), userLoginPassword));
+				if (passwordEncoder.matches(e.getCurrentPassword(), userLoginPassword)) {
+					account.setPassword(new BCryptPasswordEncoder().encode(e.getConfirmPassword()));
+					aDAO.save(account);
+					return ResponseEntity.ok(AccountMapper.convertToDto(account, promotionDAO, fDAO, pdDAO));
+				} else {
+					errors.put("currentPasswordError", "Mật khẩu hiện tại không chính xác");
+					return ResponseEntity.ok(errors);
+				}
+			} else {
+				return ResponseEntity.ok(500);
+			}
+		} catch (Exception ex) {
+			System.out.println(ex);
+			return ResponseEntity.ok(500);
+		}
+	}
+
+	@GetMapping("/account/purchase-order/{type}/{accountId}")
+	public ResponseEntity<?> getOrderType(@PathVariable("type") int type,
+			@PathVariable("accountId") String accountId) {
+		System.out.println(accountId + " - " + type);
+		Account account = aDAO.findById(accountId).get();
+		List<Order> orders = orderDAO.findByUser(account);
+		return ResponseEntity.ok(orders);
+	}
+
 }

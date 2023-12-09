@@ -22,7 +22,7 @@ app.directive("customBanner", function () {
           $scope.listBanner = resp;
           $timeout(function () {
             $scope.slickBanner();
-          }, 1000);
+          }, 0);
         })
         .catch(function (err) {
           console.log(err);
@@ -48,6 +48,7 @@ app.directive("customBanner", function () {
     },
   };
 });
+
 app.directive("customFlashsale", function ($timeout, ApiService) {
   return {
     restrict: "E",
@@ -139,7 +140,10 @@ app.directive("niceSelect", function ($timeout) {
   return {
     restrict: "A",
     link: function (scope, element) {
-      $(element).niceSelect();
+		$timeout(function(){
+			
+			$(element).niceSelect();
+		},100)
     },
   };
 });
@@ -272,12 +276,13 @@ app.directive("quickViewModal", function (ApiService, $rootScope, $timeout) {
         scope.clickFirstElement = function () {
           var firstElement = document.querySelectorAll(".btn-type");
           if (firstElement) {
+            console.log("click");
             angular.element(firstElement).triggerHandler("click");
           }
         };
         $timeout(function () {
           scope.clickFirstElement();
-        }, 400);
+        }, 500);
       });
     },
   };
@@ -453,6 +458,8 @@ app.directive(
             });
           } else {
             console.log(scope.product);
+            console.log(scope.pdDetailId);
+            console.log(scope.quantity);
             ApiService.callApi(
               "POST",
               "/rest/cart/" + $rootScope.userLogin.accountId,
@@ -483,7 +490,6 @@ app.directive(
                   var index = $rootScope.userLogin.carts.findIndex(
                     (a) => a.cartId === resp.cartId
                   );
-
                   if (index !== -1) {
                     $rootScope.userLogin.carts[index] = resp;
                   } else {
@@ -494,6 +500,120 @@ app.directive(
               .catch(function (err) {
                 console.log(err);
               });
+          }
+        });
+      },
+    };
+  }
+);
+
+app.directive(
+  "addToWishlist",
+  function ($rootScope, ApiService, $location, $timeout) {
+    return {
+      restrict: "A",
+      scope: {
+        pdId: "=",
+        checkAlive: "=",
+      },
+      link: function (scope, element, attrs) {
+        element.bind("click", function (event) {
+          event.preventDefault();
+          console.log("add to wishlist");
+          console.log(scope.pdId);
+          console.log(scope.checkAlive);
+
+          if ($rootScope.userLogin == null) {
+            Swal.fire({
+              title: "Vui lòng đăng nhập !!",
+              text: "Cần đăng nhập để sử dụng chức năng này!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Đăng nhập!",
+              cancelButtonText: "Trở về",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                $("[data-dismiss=modal]").trigger({ type: "click" });
+                $timeout(function () {
+                  $location.path("/account/login");
+                }, 100);
+              }
+            });
+          } else {
+            var accountId = $rootScope.userLogin.accountId;
+            if (!scope.checkAlive) {
+              ApiService.callApi(
+                "POST",
+                "/rest/wishlist/" + scope.pdId + "/" + accountId
+              )
+                .then(function (response) {
+                  $rootScope.wishlistAccount.push(response);
+                  console.log($rootScope.wishlistAccount);
+                  const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.onmouseenter = Swal.stopTimer;
+                      toast.onmouseleave = Swal.resumeTimer;
+                    },
+                  });
+                  Toast.fire({
+                    icon: "success",
+                    title: "Đã thêm sản phẩm vào danh sách yêu thích !",
+                  });
+                })
+                .catch(function (err) {
+                  console.log(err);
+                  Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Some thing went wrong, please try again",
+                  });
+                });
+            } else {
+              ApiService.callApi(
+                "DELETE",
+                "/rest/wishlist/" + scope.pdId + "/" + accountId
+              )
+                .then(function (response) {
+                  console.log(response);
+                  if (response) {
+                    let index2 = $rootScope.wishlistAccount.findIndex(
+                      (wl) => wl.productId == scope.pdId
+                    );
+                    $rootScope.wishlistAccount.splice(index2, 1);
+                    console.log(index2);
+                    const Toast = Swal.mixin({
+                      toast: true,
+                      position: "top-end",
+                      showConfirmButton: false,
+                      timer: 1500,
+                      timerProgressBar: true,
+                      didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                      },
+                    });
+                    Toast.fire({
+                      icon: "error",
+                      title: "Đã xóa sản phẩm vào danh sách yêu thích !",
+                    });
+                  }
+                })
+                .catch(function (err) {
+                  console.log(err);
+                  Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Some thing went wrong, please try again",
+                  });
+                });
+            }
           }
         });
       },

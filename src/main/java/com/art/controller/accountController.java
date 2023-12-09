@@ -2,7 +2,6 @@ package com.art.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.art.dao.user.AccountDAO;
-import com.art.models.MailInfo;
 import com.art.models.user.Account;
-import com.art.service.MailerServiceImpl;
-
-import jakarta.mail.MessagingException;
 
 @Controller
 @RequestMapping("/account")
@@ -28,16 +23,13 @@ public class accountController {
 	@Autowired
 	private AccountDAO aDAO;
 
-	@Autowired
-	MailerServiceImpl mailer;
-
-	@GetMapping(value = "/register")
-	public String getRegister() {
+	@GetMapping(value = "/login")
+	public String getLogin() {
 		return "index";
 	}
 
-	@GetMapping(value = "/login")
-	public String getLogin() {
+	@GetMapping(value = "/register")
+	public String getRegister() {
 		return "index";
 	}
 
@@ -70,20 +62,6 @@ public class accountController {
 		}
 	}
 
-	@PutMapping("/forgot-password/{accountId}")
-	public ResponseEntity<?> forgotPassword(@PathVariable("accountId") String accountId) throws MessagingException {
-		Account account = aDAO.findById(accountId).get();
-		if (account == null) {
-			return ResponseEntity.notFound().build();
-		}
-		String verifyCode = getVerifyCode();
-		account.setVerifyCode(verifyCode);
-		aDAO.save(account);
-		mailer.sendVerify(new MailInfo(account.getEmail(), "Quên mật khẩu - ART GROUP EST.2023",
-				"Đây là mã xác nhận của bạn: " + verifyCode));
-		return ResponseEntity.ok().build();
-	}
-
 	@GetMapping(value = "/profile")
 	public String getProfile(Model model) {
 		return "index";
@@ -109,12 +87,9 @@ public class accountController {
 		return "index";
 	}
 
-	private String getVerifyCode() {
-		String randomString = UUID.randomUUID().toString().replace("-", "");
-		String randomPart = randomString.substring(0, 8);
-		String timestampPart = String.valueOf(System.currentTimeMillis());
-		String accountId = randomPart + timestampPart;
-		return accountId;
+	@GetMapping(value = "/wishlist")
+	public String getWishlist(Model model) {
+		return "index";
 	}
 
 	@GetMapping(value = "/purchase-order/{type}")

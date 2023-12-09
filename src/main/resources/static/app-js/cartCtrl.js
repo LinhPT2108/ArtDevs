@@ -1,145 +1,199 @@
-app.controller("cartCtrl", function ($scope, $rootScope, ApiService, $timeout) {
-  console.log("cartCtrl");
-  $scope.checkAll = false;
+app.controller("cartCtrl", function($scope, $rootScope, ApiService, $timeout, $location) {
+	console.log("cartCtrl");
+	$scope.checkAll = false;
+	$scope.listVoucher = [];
+	$rootScope.discountPrice = 0;
 
-  $scope.handleInputBlur = function (cart) {
-    console.log(cart.quantityInCart);
-    if (!cart.quantityInCart.trim() || cart.quantityInCart == 0) {
-      cart.quantityInCart = 1;
-    }
-    $scope.updateCart(cart);
-  };
+	$timeout(function() {
+		angular.forEach($rootScope.userLogin.carts, function(cart) {
+			cart.checked = false;
+		});
+		$rootScope.getCheckedProducts = $rootScope.userLogin.carts.filter(function(
+			c
+		) {
+			return c.checked;
+		});
+	}, 100);
 
-  $scope.updateTotalAmount = function (cart, qty) {
-    var numberPattern = /^[0-9]*$/;
-    console.log(cart);
-    if (!numberPattern.test(cart.quantityInCart)) {
-      cart.quantityInCart = 1;
-    }
+	ApiService.callApi(
+		"GET",
+		"/rest/voucher"
+	)
+		.then(function(response) {
+			$scope.listVoucher = response;
+		})
+		.catch(function(error) {
+			console.log(error);
+		});
 
-    if (cart.quantityInCart < 0) {
-      cart.quantityInCart = 1;
-    }
+	var selectedValue = 0;
+	$scope.applyVoucher = function() {
+		selectedValue = $("#voucherDiscount").val();
+		$rootScope.discountPrice = selectedValue;
+	};
 
-    if (cart.quantityInCart > qty) {
-      cart.quantityInCart = qty;
-    }
+	$scope.checkChooseVoucher = function() {
+		console.log($rootScope.discountPrice, $("#voucherDiscount").val())
+		if ($rootScope.discountPrice == 0 && $("#voucherDiscount").val() != '') {
+			Swal.fire({
+				title: "Thông báo",
+				text: "Bạn đã chọn voucher nhưng chưa áp dụng. Bạn có muốn tiếp tục thanh toán không voucher giảm giá không?",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "OK"
+			}).then((result) => {
 
-    cart.totalAmount = totalAmount(cart);
-    $scope.updateCart(cart);
-  };
+				if (result.isConfirmed) {
+					$timeout(function() {
+						$location.path("/checkout")
+					}, 0)
+				}
+			});
+		} else {
+			$location.path("/checkout");
+		}
+	}
 
-  $scope.increaseQuantity = function (cart, qty) {
-    console.log(cart);
-    if (cart.quantityInCart < qty) {
-      cart.quantityInCart++;
-      cart.totalAmount = totalAmount(cart);
-      $scope.updateCart(cart);
-    }
-  };
+	$scope.handleInputBlur = function(cart) {
+		console.log(cart.quantityInCart);
+		if (!cart.quantityInCart.trim() || cart.quantityInCart == 0) {
+			cart.quantityInCart = 1;
+		}
+		$scope.updateCart(cart);
+	};
 
-  $scope.decreaseQuantity = function (cart) {
-    console.log(cart);
-    if (cart.quantityInCart > 1) {
-      cart.quantityInCart--;
-      cart.totalAmount = totalAmount(cart);
-      $scope.updateCart(cart);
-    }
-  };
+	$scope.updateTotalAmount = function(cart, qty) {
+		var numberPattern = /^[0-9]*$/;
+		console.log(cart);
+		if (!numberPattern.test(cart.quantityInCart)) {
+			cart.quantityInCart = 1;
+		}
 
-  function totalAmount(cart) {
-    var price =
-      $rootScope.getLatestPrice(cart.productDTO.productDetails[0].prices)
-        .price -
-      $rootScope.getLatestPrice(cart.productDTO.productDetails[0].prices)
-        .price *
-        cart.productDTO.discountPrice;
-    return (price * cart.quantityInCart).toFixed(0);
-  }
+		if (cart.quantityInCart < 0) {
+			cart.quantityInCart = 1;
+		}
 
-  $scope.updateCart = function (cart) {
-    console.log(cart);
-    ApiService.callApi(
-      "PUT",
-      "/rest/update-cart/" + $rootScope.userLogin.accountId,
-      cart
-    )
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
+		if (cart.quantityInCart > qty) {
+			cart.quantityInCart = qty;
+		}
 
-  $scope.checkAll = false;
+		cart.totalAmount = totalAmount(cart);
+		$scope.updateCart(cart);
+	};
 
-  $rootScope.getCheckedProducts = [];
+	$scope.increaseQuantity = function(cart, qty) {
+		console.log(cart);
+		if (cart.quantityInCart < qty) {
+			cart.quantityInCart++;
+			cart.totalAmount = totalAmount(cart);
+			$scope.updateCart(cart);
+		}
+	};
 
-  $scope.toggleAllCheckboxes = function () {
-    angular.forEach($rootScope.userLogin.carts, function (cart) {
-      cart.checked = $scope.checkAll;
-    });
-    $rootScope.getCheckedProducts = $rootScope.userLogin.carts.filter(function (
-      c
-    ) {
-      return c.checked;
-    });
-  };
+	$scope.decreaseQuantity = function(cart) {
+		console.log(cart);
+		if (cart.quantityInCart > 1) {
+			cart.quantityInCart--;
+			cart.totalAmount = totalAmount(cart);
+			$scope.updateCart(cart);
+		}
+	};
 
-  $scope.updateCheckAll = function () {
-    $scope.checkAll = $rootScope.userLogin.carts.every(function (cart) {
-      return cart.checked;
-    });
+	function totalAmount(cart) {
+		var price =
+			$rootScope.getLatestPrice(cart.productDTO.productDetails[0].prices)
+				.price -
+			$rootScope.getLatestPrice(cart.productDTO.productDetails[0].prices)
+				.price *
+			cart.productDTO.discountPrice;
+		return (price * cart.quantityInCart).toFixed(0);
+	}
 
-    $rootScope.getCheckedProducts = $rootScope.userLogin.carts.filter(function (
-      c
-    ) {
-      return c.checked;
-    });
-    console.log($rootScope.getCheckedProducts);
-  };
+	$scope.updateCart = function(cart) {
+		console.log(cart);
+		ApiService.callApi(
+			"PUT",
+			"/rest/update-cart/" + $rootScope.userLogin.accountId,
+			cart
+		)
+			.then(function(response) {
+				console.log(response);
+			})
+			.catch(function(error) {
+				console.log(error);
+			});
+	};
 
-  $timeout(function () {
-    try {
-      $rootScope.getTotalPrice = function () {
-        var totalPrice = 0;
-        angular.forEach($rootScope.userLogin.carts, function (cart) {
-          if (cart.checked) {
-            totalPrice += $scope.calculateProductTotal(cart);
-          }
-        });
-        return totalPrice.toFixed(0);
-      };
-    } catch (error) {
-      console.log(error);
-    }
-  }, 1000);
+	$scope.checkAll = false;
 
-  $scope.calculateProductTotal = function (cart) {
-    var productTotal = 0;
+	$rootScope.getCheckedProducts = [];
 
-    var productDetails = cart.productDTO.productDetails.find(function (pdt) {
-      return pdt.id === cart.productDetailId;
-    });
+	$scope.toggleAllCheckboxes = function() {
+		angular.forEach($rootScope.userLogin.carts, function(cart) {
+			cart.checked = $scope.checkAll;
+		});
+		$rootScope.getCheckedProducts = $rootScope.userLogin.carts.filter(function(
+			c
+		) {
+			return c.checked;
+		});
+	};
 
-    if (productDetails) {
-      var price = 0;
-      if (cart.productDTO.sale) {
-        price =
-          productDetails.prices.reduce(function (max, curr) {
-            return new Date(max.createdDate) > new Date(curr.createdDate)
-              ? max
-              : curr;
-          }).price *
-          (1 - cart.productDTO.discountPrice);
-      } else {
-        price = productDetails.prices[0].price;
-      }
+	$scope.updateCheckAll = function() {
+		$scope.checkAll = $rootScope.userLogin.carts.every(function(cart) {
+			return cart.checked;
+		});
 
-      productTotal = price * cart.quantityInCart;
-    }
+		$rootScope.getCheckedProducts = $rootScope.userLogin.carts.filter(function(
+			c
+		) {
+			return c.checked;
+		});
+		console.log($rootScope.getCheckedProducts);
+	};
 
-    return productTotal;
-  };
+	$timeout(function() {
+		try {
+			$rootScope.getTotalPrice = function() {
+				var totalPrice = 0;
+				angular.forEach($rootScope.userLogin.carts, function(cart) {
+					if (cart.checked) {
+						totalPrice += $scope.calculateProductTotal(cart);
+					}
+				});
+				return totalPrice.toFixed(0);
+			};
+		} catch (error) {
+			console.log(error);
+		}
+	}, 1000);
+
+	$scope.calculateProductTotal = function(cart) {
+		var productTotal = 0;
+
+		var productDetails = cart.productDTO.productDetails.find(function(pdt) {
+			return pdt.id === cart.productDetailId;
+		});
+
+		if (productDetails) {
+			var price = 0;
+			if (cart.productDTO.sale) {
+				price =
+					productDetails.prices.reduce(function(max, curr) {
+						return new Date(max.createdDate) > new Date(curr.createdDate)
+							? max
+							: curr;
+					}).price *
+					(1 - cart.productDTO.discountPrice);
+			} else {
+				price = productDetails.prices[0].price;
+			}
+
+			productTotal = price * cart.quantityInCart;
+		}
+
+		return productTotal;
+	};
 });

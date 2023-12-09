@@ -37,7 +37,6 @@ import lombok.Setter;
 public class Product {
 
 	@Id
-	@JsonIgnore
 	private String productId;
  
 	@Column

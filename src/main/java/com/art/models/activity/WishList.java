@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.art.models.product.Product;
 import com.art.models.user.Account;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,6 +32,7 @@ public class WishList {
 
 	@ManyToOne
 	@JoinColumn(name = "userWishList")
+	@JsonIgnore
 	private Account user;
 
 	@ManyToOne

@@ -42,10 +42,12 @@ public class StatisticalController {
 	@Autowired
 	AccountDAO uDAO;
 
+
 	@Autowired
 	OrderDeliveryStatusDAO dlvrDAO;
 	
 	@Autowired DeliveryStatusDAO statusDAO;
+
 
 	@GetMapping("/statistical-revenue/daily-revenue")
 	public ResponseEntity<?> getDailyRevenue() {
@@ -105,7 +107,10 @@ public class StatisticalController {
 	}
 
 	@PostMapping("/update-status")
+
 	public ResponseEntity<Boolean> updateStatus(@RequestParam int itemId, @RequestParam String status) {
+
+
 		// Gọi phương thức service để cập nhật trạng thái hóa đơn
 		try {
 			updateStatusOrder(itemId, status);
@@ -138,6 +143,8 @@ public class StatisticalController {
 			odrsst.setStatus(true);
 			odrsst.setDeliveryStatus(deli.get(0));
 			dlvrDAO.save(odrsst);
+
+
 		}
 	}
 
@@ -156,8 +163,12 @@ public class StatisticalController {
 		model.addAttribute("views", "best-seller-form");
 		model.addAttribute("title", "Thống kê sản phẩm bán chạy");
 
+
 		
 		model.addAttribute("bestSellers", idDAO.countProductsOrderByCountDesc());
+
+
+		// sản phẩm bán chạy
 
 		return "admin/static-best-seller";
 	}

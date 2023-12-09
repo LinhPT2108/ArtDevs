@@ -111,9 +111,8 @@
 						<ul class="list-group display-custom--sale">
 							<li class="list-group-item">Lắp đặt miễn phí lúc giao hàng</li>
 							<li class="list-group-item">Hư gì đổi nấy 12 tháng tận nhà (miễn phí tháng đầu)</li>
-							<li class="list-group-item">Bảo hành chính hãng tivi 2 năm, có người đến tận nhà</li>
-							<li class="list-group-item">Thùng tivi có: Chân đế, Remote thông minh</li>
-							<li class="list-group-item">Bảo hành Remote 1 năm</li>
+							<li class="list-group-item">Bảo hành chính hãng {{product.category.categoryName}} 2 năm, có
+								người đến tận nhà</li>
 						</ul>
 						<div class="mt-4">
 							<div ng-repeat="description in product.descriptions">
@@ -124,12 +123,14 @@
 							</div>
 						</div>
 						<div class="mt-5">
-							<h3 class="mb-2">ĐÁNH GIÁ SẢN PHẨM</h3>
-							<div ng-if="product.productDetails[0].comments.length==0" class="display-custom--sale">Chưa
-								có đánh giá nào</div>
-							<div ng-repeat="comment in product.productDetails[0].comments">
+							<h3 class="mb-2">ĐÁNH GIÁ SẢN PHẨM ({{product.sumRate}})</h3>
+
+							<!-- <div ng-repeat="pddt in product.productDetails"> -->
+							<div dir-paginate="comment in pddt|orderBy: '-date'| itemsPerPage: 3"
+								current-page="currentPage" class="mb-3">
 								<div class="d-flex align-items-center">
-									<img src="../../images/avatar/default-avatar.jpg" class="image-user--comment" />
+									<img ng-src="../../images/avatar/{{comment.imageAccount}}"
+										class="image-user--comment" />
 									<span class="font-weight-bold ml-2">{{comment.fullnameOfUser}}</span>
 								</div>
 								<div>
@@ -205,21 +206,63 @@
 									</div>
 								</div>
 								<div>{{comment.date|date: "hh:mm dd-MM-yyyy"}} &ensp; | &ensp;Phân loại hàng: Size
-									{{product.productDetails[0].size}}, Color: {{product.productDetails[0].color}}</div>
+									{{product.productDetails[0].size}}, Color: {{product.productDetails[0].color}}
+								</div>
 								<div class="mt-2 display-custom--sale">{{comment.content}}</div>
+								<div class=" d-flex align-items-center justify-content-start ">
+									<div class="list-img mr-3" ng-repeat="img in comment.imageComment">
+										<img ng-src="../images/products/{{img.image}}" class="img-thumbnail"
+											alt="{{img.image}}" width="150px">
+									</div>
+								</div>
 							</div>
+							<div class="other-controller">
+								<div class="text-center d-flex align-items-center justify-content-center">
+									<dir-pagination-controls boundary-links="true">
+									</dir-pagination-controls>
+								</div>
+							</div>
+							<!-- <div ng-show="pddt.comments!=null" class="display-custom--sale">
+									Chưa
+									có đánh giá nào</div> -->
+
+							<!-- </div> -->
+
+
 						</div>
 					</div>
-					<div class="col-lg-6 col-md-6 col-12 px-4">
-						<div class="d-flex">
-							<button type=" button"
-								class="btn btn-light bg-light mr-3 border border-radius--custom text-dark">Light</button>
-							<button type="button"
-								class="btn btn-light bg-light mr-3 border border-radius--custom text-dark">Light</button>
+					<div class="col-lg-6 col-md-6 col-12 px-5">
+						<div class="d-flex flex-wrap align-items-center justify-content-start" style="height: 80px;">
+							<div ng-repeat="p in product.productDetails">
+								<a href="#" class="btn-type p-2 border rounded border-secondary mr-3"
+									ng-click="choiceProduct(p.id, $event, product.discountPrice, product.sale)">
+									{{p.size}} - {{p.color}}
+								</a>
+							</div>
 						</div>
 						<div class="d-flex flex-column mt-4 bg-custom p-3">
 							<div class="d-flex justify-content-between ">
-								<div class="d-flex flex-column justify-content-around text-white">
+								<div ng-show="isSale" class="d-flex align-items-center">
+									<h3 class="font-weight-bold text-decoration-line-through mr-3">
+										{{ getLatestPrice(pdt.prices).price | number:0 }}
+										&#8363;
+									</h3>
+
+									<h3 class="font-weight-bold text-white mr-3">
+										{{ getLatestPrice(pdt.prices).price - (getLatestPrice(pdt.prices).price *
+										discountPrice) | number:0 }}
+										&#8363;
+									</h3>
+
+									<div class="bg-danger text-white p-2 font-weight-bold rounded">
+										Giảm {{discountPrice*100}}%
+									</div>
+								</div>
+								<h3 class="font-weight-bold text-white" ng-show="!isSale">
+									{{ getLatestPrice(pdt.prices).price | number:0 }}
+									&#8363;
+								</h3>
+								<!-- <div class="d-flex flex-column justify-content-around text-white">
 									<h5>Online giá rẻ quá</h5>
 									<h2 class="font-weight-bold text-warning">
 										{{product.productDetails[0].prices[0].price*(1-product.discountPrice)|vnNumber}}
@@ -227,11 +270,14 @@
 									<h6 ng-if="product.sale">
 										<del>{{product.productDetails[0].prices[0].price|vnNumber}}</del>(-{{product.discountPrice*100}}%)
 									</h6>
-								</div>
-								<div class="d-flex flex-column justify-content-around text-white align-itemss-end">
+								</div> -->
+								<div class="d-flex flex-column justify-content-around text-white align-itemss-end"
+									ng-show="product.sale==true">
 									<h5>Kết thúc vào</h5>
 									<h5>{{flashSaleActive.data.endDay|date:"hh:mm dd/MM/yyyy"}}</h5>
-									<h6>Còn 12/20 suất</h6>
+									<h6>Còn {{currentProduct[0].quantitySold}}/{{currentProduct[0].discountedQuantity}}
+										suất
+									</h6>
 								</div>
 							</div>
 							<div class="d-flex flex-column bg-white border-radius--sale mt-3 p-3">
@@ -276,15 +322,30 @@
 								<hr class="w-100" />
 								<ul class="ship-sale ml-3 display-custom--sale">
 									<li>Giao hàng nhanh chóng (tuỳ khu vực)</li>
-									<li>Giá và khuyến mãi có thể kết thúc sớm</li>
+									<li>Giá và khuyến mãi có thể kết thúc sớm dự kiến</li>
 								</ul>
-								<div class="d-flex mt-3">
-									<button type=" button"
-										class="btn bg-primary mr-3 border border-radius--sale text-white">Thêm vào giỏ
-										hàng</button>
-									<button type="button"
-										class="btn bg-danger mr-3 border border-radius--sale text-white">Yêu
-										thích</button>
+								<div class="d-flex mt-3 align-items-center display-5">
+									<a href="#" class="btn bg-primary mr-3 border border-radius--sale text-white"
+										ng-class="{disabled:pdt.quantityInStock == 0}" add-to-cart product="qvpd"
+										quantity="1" pd-detail-id=""
+										ng-click="addToCart($event ,qvpd, 1, choiceProductDetailId)">Thêm vào giỏ
+										hàng</a>
+
+									<a title="Wishlist" class="display-6 ml-4" href="#" add-to-wishlist
+										pd-id="product.productId" check-alive="false" ng-click="addToWishlist($event,
+										product.productId, false)" ng-show="checkInWishlist(product.productId).length==0 && userLogin!=null">
+										<i class="bi bi-heart"></i>
+									</a>
+									<a title="Wishlist" class="display-6 ml-4" href="#" add-to-wishlist
+										pd-id="product.productId" check-alive="true" ng-click="addToWishlist($event,
+										product.productId, true)" ng-show="checkInWishlist(product.productId).length!=0 && userLogin!=null">
+										<i class="bi bi-heart-fill text-danger"></i>
+									</a>
+									<a title="Wishlist" class="display-6 ml-4" href="#" add-to-wishlist
+										pd-id="product.productId" check-alive="false" ng-click="addToWishlist($event,
+										product.productId, false)" ng-show="userLogin==null">
+										<i class="bi bi-heart"></i>
+									</a>
 								</div>
 							</div>
 						</div>
@@ -303,19 +364,19 @@
 									</tr>
 									<tr>
 										<td class="col-4">Kích thước:</td>
-										<td class="col-8">{{product.productDetails[0].size}}</td>
+										<td class="col-8">{{pdt.size}}</td>
 									</tr>
 									<tr>
 										<td class="col-4">Trọng lượng:</td>
-										<td class="col-8">{{product.productDetails[0].weight}}</td>
+										<td class="col-8">{{pdt.weight}}</td>
 									</tr>
 									<tr>
 										<td class="col-4">Công suất:</td>
-										<td class="col-8">{{product.productDetails[0].power}}</td>
+										<td class="col-8">{{pdt.power}}</td>
 									</tr>
 									<tr>
 										<td class="col-4">Ngày sản xuất:</td>
-										<td class="col-8">{{product.productDetails[0].productionDate|date:"dd/MM/yyyy"}}
+										<td class="col-8">{{pdt.productionDate|date:"dd/MM/yyyy"}}
 										</td>
 									</tr>
 								</tbody>
@@ -324,67 +385,64 @@
 					</div>
 				</div>
 
-				<section class="small-banner section flash-sale-site mt-3 rounded">
-					<div class="container-fluid">
-						<div class="bg-light section-heading text-center d-flex align-items-center mb-3 p-3">
-							<div class="title-flashsale mr-3 ">
-								<h2 class="hTitle ">
-									Sản phẩm khác
-								</h2>
-							</div>
-						</div>
-						
-						<div class="section-flashsale listCarousel cardProduct-flashsale">
-							<div ng-repeat="p in listProductByCategory" class="item">
-								<div class="card h-100 mx-3 position-relative">
-									<a href="/products/{{p.productId}}" style="height: 280px !important;"
-										class="d-flex align-items-center">
-										<img ng-src="images/products/{{p.images[0]}}" class="card-img-top"
-											alt="{{p.images[0]}}">
-									</a>
-									<div class="card-body d-flex flex-column">
-										<span class="text-muted">{{p.manufacturer.manufacturerName}}</span>
-										<a class="card-title fs-6 font-weight-bold text-black text-decoration-none"
-											href="/products/{{p.productId}}" style="min-height: 48px">{{p.productName
-											}}</a>
-										<div class="price-product row">
-											<div class="col-6 d-flex flex-column" ng-if="p.sale">
-												<span class="font-weight-bold text-danger">
-													{{p.productDetails[0].prices[0].price*(1-p.discountPrice)|vnNumber}}
-												</span>
-												<span>
-													<del>{{p.productDetails[0].prices[0].price|vnNumber}}</del>
-												</span>
+			</div>
+		</div>
+	</div>
+	<section class="small-banner section flash-sale-site mt-3 rounded">
+		<div class="container-fluid">
+			<div class="bg-light section-heading text-center d-flex align-items-center mb-3 p-3">
+				<div class="title-flashsale mr-3 ">
+					<h2 class="hTitle ">
+						Sản phẩm khác
+					</h2>
+				</div>
+			</div>
 
-											</div>
-											<div class="col-6 d-flex flex-column" ng-if="!p.sale">
-												<span class="font-weight-bold text-danger">
-													{{p.productDetails[0].prices[0].price|vnNumber}}
-												</span>
+			<div class="listCarousel">
+				<div ng-repeat="p in listProductByCategory" class="item">
+					<div class="card h-100 mx-3 position-relative">
+						<a href="/products/{{p.productId}}" style="height: 280px !important;"
+							class="d-flex align-items-center">
+							<img ng-src="images/products/{{p.images[0]}}" class="card-img-top" alt="{{p.images[0]}}">
+						</a>
+						<div class="card-body d-flex flex-column">
+							<span class="text-muted">{{p.manufacturer.manufacturerName}}</span>
+							<a class="card-title fs-6 font-weight-bold text-black text-decoration-none"
+								href="/products/{{p.productId}}" style="min-height: 48px">{{p.productName
+								}}</a>
+							<div class="price-product row">
+								<div class="col-6 d-flex flex-column" ng-if="p.sale">
+									<span class="font-weight-bold text-danger">
+										{{getLatestPrice(p.productDetails[0].prices).price*(1-p.discountPrice)|vnNumber}}
+									</span>
+									<span>
+										<del>{{getLatestPrice(p.productDetails[0].prices).price|vnNumber}}</del>
+									</span>
 
-											</div>
-											<div class="col-6 d-flex align-items-center justify-content-center mb-3">
-												<a href="/products/{{p.productId}}"
-													class="btn-danger text-white font-weight-bold rounded p-2 my-auto">Thêm
-													vào giỏ hàng</a>
-											</div>
-											<div class="position-absolute" style="top: 0; left: 0">
-												<div>
-													<span class="p-1 bg-danger text-white"
-														ng-init="disPrice = p.discountedPrice" ng-if="p.sale">
-														-{{p.discountPrice*100}}%
-													</span>
-												</div>
-											</div>
-										</div>
+								</div>
+								<div class="col-6 d-flex flex-column" ng-if="!p.sale">
+									<span class="font-weight-bold text-danger">
+										{{getLatestPrice(p.productDetails[0].prices).price|vnNumber}}
+									</span>
+
+								</div>
+								<div class="col-6 d-flex align-items-center justify-content-center mb-3">
+									<a href="/products/{{p.productId}}"
+										class="btn-danger text-white font-weight-bold rounded p-2 my-auto">Xem ngay</a>
+								</div>
+								<div class="position-absolute" style="top: 0; left: 0">
+									<div>
+										<span class="p-1 bg-danger text-white" ng-init="disPrice = p.discountedPrice"
+											ng-if="p.sale">
+											-{{p.discountPrice*100}}%
+										</span>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</section>
+				</div>
 			</div>
 		</div>
-	</div>
-
+	</section>
 </div>
