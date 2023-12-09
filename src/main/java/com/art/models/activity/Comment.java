@@ -67,6 +67,5 @@ public class Comment {
 	private OrderDetail orderDetail;
 
 	@OneToMany(mappedBy = "comment", fetch = FetchType.EAGER)
-	@JsonIgnore
 	private List<ImageComment> commentImages;
 }

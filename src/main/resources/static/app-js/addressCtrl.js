@@ -4,7 +4,7 @@ app.controller(
   "addressCtrl",
   function ($scope, ApiService, $http, $timeout, $rootScope) {
     $scope.currentPage = 1;
-    $scope.pageSize = 4;
+    $scope.pageSize = 5;
 
     $scope.address = {
       phoneNumber: "",
@@ -115,6 +115,7 @@ app.controller(
         district: "",
         ward: "",
         specificValue: "",
+        nickname: ""
       };
       typeApi = "POST";
       $("#phoneNumber").attr("readonly", false);
@@ -138,6 +139,14 @@ app.controller(
       console.log($("#btnCheck").attr("href"));
       let url = "/rest" + $("#btnCheck").attr("href");
       let isValid = true;
+      if (data.nickname == "") {
+        $scope.nicknameError = "Vui lòng nhập tên ngươi nhận";
+        isValid = false;
+      } else {
+        $scope.phoneNumberError = "";
+        isValid = true;
+      }
+
       if (data.phoneNumber == "") {
         $scope.phoneNumberError = "Vui lòng nhập số điện thoại";
         isValid = false;
@@ -163,7 +172,7 @@ app.controller(
         isValid = true;
       }
 
-      if (isValid && data.phoneNumber != "") {
+      if (isValid && data.phoneNumber != "" && data.nickname) {
         ApiService.callApi(typeApi, url, data)
           .then(function (response) {
             if (typeApi == "POST") {

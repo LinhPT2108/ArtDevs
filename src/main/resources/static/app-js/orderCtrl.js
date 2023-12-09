@@ -1,14 +1,13 @@
 app.controller(
   "orderCtrl",
-  function ($scope, $rootScope, ApiService, $location, $timeout) {
+  function ($scope, $rootScope, ApiService, $location, $timeout, $http) {
     console.log("orderCtrl");
     $scope.currentPage = 1;
-    $scope.pageSize = 4;
+    $scope.pageSize = 5;
     var typeOrder = $location.path();
     console.log($rootScope.userLogin);
     $scope.type = typeOrder.substr(typeOrder.lastIndexOf("/") + 1);
-
-    $timeout(function () {
+    $scope.GetListOrder = function () {
       var accountId = $rootScope.userLogin.accountId;
       console.log(accountId);
       console.log(typeOrder);
@@ -20,12 +19,19 @@ app.controller(
             $scope.listOrder,
             $scope.type
           );
-          $scope.listOrderByType = filteredOrders;
+          if ($scope.type == "all") {
+            $scope.listOrderByType = $scope.listOrder;
+          } else {
+            $scope.listOrderByType = filteredOrders;
+          }
           console.log(filteredOrders);
         })
         .catch(function (err) {
           console.log(err);
         });
+    };
+    $timeout(function () {
+      $scope.GetListOrder();
     }, 1000);
 
     $scope.getLatestOrder = function (orderStatus) {
@@ -67,7 +73,7 @@ app.controller(
         productId: "",
         commentImages: [],
       };
-    }, 500);
+    }, 800);
     $scope.showComment = function (productId, orderDetailId) {
       console.log(productId + " - " + orderDetailId);
       $scope.rating = {
@@ -80,7 +86,7 @@ app.controller(
         commentImages: [],
       };
       $("#gallery-photo-add").val(null);
-      $(".gallery").html("");
+      $(".gallery-img").html("");
       ApiService.callApi(
         "GET",
         "/rest/comment/" + productId + "/" + orderDetailId
@@ -92,6 +98,8 @@ app.controller(
             $("#star5").trigger({ type: "click" });
           } else {
             $scope.rating = response;
+            $scope.rating.productId = productId;
+            $scope.rating.orderDetailId = orderDetailId;
             console.log($scope.rating);
             var star = response.star;
             switch (star) {
@@ -159,18 +167,74 @@ app.controller(
     };
 
     $scope.addComment = function () {
-      console.log($scope.rating);
       var imageInput = document.getElementById("gallery-photo-add");
       console.log(imageInput.files);
+      $scope.rating.commentImages = imageInput.files;
+      console.log($scope.rating);
 
-      ApiService.callApi("POST", "/rest/add-comment", {
-        comment: $scope.rating,
-      })
-        .then(function (response) {
-          console.log(response);
+      const formData = new FormData();
+
+      formData.append("ad", JSON.stringify($scope.rating));
+
+      const request = $http({
+        method: "POST",
+        url: "/rest/add-comment",
+        headers: {
+          transformRequest: angular.identity,
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify({
+          star: $scope.rating.star,
+          content: $scope.rating.content,
+          date: $scope.rating.date,
+          userComment: $rootScope.userLogin.accountId,
+          orderDetailId: $scope.rating.orderDetailId,
+          productId: $scope.rating.productId,
+        }),
+      });
+      request
+        .then((response) => {
+          console.log(response.data);
+          $scope.rating.date = new Date();
+          var imageInput2 = document.getElementById("gallery-photo-add");
+          if (imageInput2.files.length > 0) {
+            const formData2 = new FormData();
+            for (const image of imageInput2.files) {
+              formData2.append("imgsComment", image);
+            }
+
+            const request = $http({
+              method: "POST",
+              url:
+                "/rest/get-image-comment/" +
+                $rootScope.userLogin.accountId +
+                "/" +
+                $scope.rating.orderDetailId,
+              headers: {
+                transformRequest: angular.identity,
+                "Content-Type": undefined,
+              },
+              data: formData2,
+            });
+            request
+              .then((response) => {
+                console.log(response.data);
+                $scope.GetListOrder();
+                $(".show-img").html("");
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
+
+          Swal.fire({
+            title: "Đánh giá thành công",
+            text: "Cảm ơn bạn đã đánh giá đơn hàng !",
+            icon: "success",
+          });
         })
-        .catch(function (err) {
-          console.log(err);
+        .catch((error) => {
+          console.log(error);
         });
     };
   }

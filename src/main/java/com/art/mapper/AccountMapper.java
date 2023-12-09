@@ -34,7 +34,8 @@ public class AccountMapper {
 
 	private static List<InforAddress> getAddress(Account account) {
 		return account
-				.getUserInfor().stream().map(infor -> new InforAddress(infor.getPhoneNumber(), infor.getCity(),
+				.getUserInfor().stream()
+				.map(infor -> new InforAddress(infor.getPhoneNumber(), infor.getNickname(), infor.getCity(),
 						infor.getDistrict(), infor.getWard(), infor.getSpecific(), account))
 				.collect(Collectors.toList());
 	}

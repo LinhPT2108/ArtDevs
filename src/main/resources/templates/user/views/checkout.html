@@ -6,36 +6,44 @@
 					<h2>THANH TOÁN ĐƠN HÀNG CỦA BẠN TẠI ĐÂY</h2>
 					<p>Vui lòng kiểm tra thông tin giao hàng</p>
 					<!-- Form -->
-					<form class="form" method="post" action="#" modelAttribute="iv">
+					<form class="form" method="post" action="#">
 						<div class="row">
 							<div class=" col-12">
 								<div class="form-group">
 									<div class="input-group-prepend">
-										<label class="input-group-text font-weight-bold" for="address">Địa chỉ</label>
+										<label class="input-group-text font-weight-bold" for="address">
+											Thông tin người nhận:	
+										</label>
 									</div>
-									<a class="btn text-white" href="/account/address"
-										ng-show="userLogin.inforAddresses.length==0">Thêm
-										địa chỉ</a>
 
 									<select class="custom-select custom-select-lg" id="address"
 										style="height: 50px;width: 100%;" ng-show="userLogin.inforAddresses.length > 0"
 										ng-model="selectedAddress" ng-change="calculateShippingFee(selectedAddress)">
 										<option value="" class="display-6 mb-2 font-weight-bold">Chọn địa chỉ...
 										</option>
-										<option class="font-weight-bold display-6 mb-2"
-											ng-repeat="a in userLogin.inforAddresses" value="{{a}}">
-											SĐT: {{a.phoneNumber }}; ĐC: {{a.city }}, {{a.district}}, {{a.ward}},
-											{{a.specific}}
-										</option>
+										<optgroup ng-repeat="a in userLogin.inforAddresses" label="Địa chỉ {{$index+1}}"
+											ng-click="hoverAddress()">
+											<option value="{{a}}">
+												SĐT: {{a.phoneNumber }}
+											</option>
+											<option value="{{a}}" class="text-black" disabled>&emsp; Tên
+												người nhận: {{a.nickname}}
+											</option>
+											<option value="{{a}}" class="text-black" disabled>&emsp; ĐC:
+												{{a.city }}, {{a.district}},
+												{{a.ward}},
+												{{a.specific}}</option>
+										</optgroup>
 									</select>
-
+									<a class="btn text-white mt-3" href="/account/address">Thêm
+										địa chỉ</a>
 									<small class="text-danger" id="addressError"></small>
 								</div>
 							</div>
 							<div class="col-12">
 								<div class="form-group">
 									<div class="input-group-prepend">
-										<label class="input-group-text font-weight-bold" for="note">Chú thích: </label>
+										<label class="input-group-text font-weight-bold" for="note">Ghi chú: </label>
 										<textarea cols="" rows="4" name="note" id="note" ng-model="note"></textarea>
 									</div>
 								</div>
@@ -164,3 +172,5 @@
 	</div>
 </section>
 <!--/ End Checkout -->
+<script>
+</script>

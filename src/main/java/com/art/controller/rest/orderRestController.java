@@ -89,6 +89,7 @@ public class orderRestController {
             String deliveryAddress = "SĐT: " + infAddress.getPhoneNumber() + "; ĐC: " + infAddress.getCity()
                     + " - " + infAddress.getDistrict() + " - " + infAddress.getWard()
                     + " - " + infAddress.getSpecific();
+            order.setNickname(infAddress.getNickname());
             order.setDeliveryAddress(deliveryAddress);
             order.setPaymentMethod(paymentDAO.findById(orderDTO.getPaymentMethod()).get());
             System.out.println(deliveryAddress);

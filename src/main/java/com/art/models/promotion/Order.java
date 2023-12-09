@@ -60,6 +60,10 @@ public class Order {
 
 	@Column
 	@Nationalized
+	private String nickname;
+
+	@Column
+	@Nationalized
 	private String deliveryAddress;
 
 	@Column

@@ -19,6 +19,7 @@ import com.art.dao.user.AccountDAO;
 import com.art.dto.account.CartDTO;
 import com.art.mapper.CartMapper;
 import com.art.models.activity.Cart;
+import com.art.models.product.ProductDetail;
 import com.art.utils.Path;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,11 +60,16 @@ public class CartRestController {
             List<Cart> cartUser = cartDAO.findByUserAndProductDetail(
                     accountDAO.findById(userId).get(),
                     pdtDAO.findById(cartDTO.getProductDetailId()).get());
+            ProductDetail pdt = pdtDAO.findById(cartDTO.getProductDetailId()).get();
             if (cartUser.size() == 1) {
                 Cart cart = cartUser.get(0);
-                cart.setQuantity(cart.getQuantity() + cartDTO.getQuantityInCart());
-                Cart saveCart = cartDAO.save(cart);
-                return ResponseEntity.ok(CartMapper.convertToCartDTO(saveCart, proDAO, flashSaleDAO, productDAO));
+                if (cart.getQuantity() + cartDTO.getQuantityInCart() > pdt.getQuantityInStock()) {
+                    return ResponseEntity.ok(null);
+                } else {
+                    cart.setQuantity(cart.getQuantity() + cartDTO.getQuantityInCart());
+                    Cart saveCart = cartDAO.save(cart);
+                    return ResponseEntity.ok(CartMapper.convertToCartDTO(saveCart, proDAO, flashSaleDAO, productDAO));
+                }
             } else {
                 Cart cart = CartMapper.convertToCart(cartDTO);
                 cart.setProductDetail(pdtDAO.findById(cartDTO.getProductDetailId()).get());
