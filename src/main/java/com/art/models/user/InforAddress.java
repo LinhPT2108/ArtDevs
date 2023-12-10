@@ -26,7 +26,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class InforAddress implements Serializable{
+public class InforAddress implements Serializable {
 
 	/**
 	 * 
@@ -56,6 +56,10 @@ public class InforAddress implements Serializable{
 	@Column
 	@Nationalized
 	private String specific;
+	
+	@Column
+	@Nationalized
+	private String nickname;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)

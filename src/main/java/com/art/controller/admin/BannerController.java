@@ -1,5 +1,6 @@
 package com.art.controller.admin;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,18 +41,17 @@ public class BannerController {
 	}
 
 	@PostMapping("/banner")
-	public String addBanner(Model model, @RequestParam("banner") MultipartFile file) {
+	public String addBanner(Model model, @RequestParam("banner") MultipartFile file) throws IOException {
 		model.addAttribute("views", "banner");
 		model.addAttribute("title", "banner");
 		Banner banner = new Banner();
-		banner.setBannerName(paramService.save(file, "images/banner").getName());
+		banner.setBannerName(paramService.saveFile(file, "/banner").getName());
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Account user2 = acDAO.findByEmail(authentication.getName());
 		banner.setUser(user2);
         bannerDao.save(banner);
 		return "redirect:/admin/banner";
 	}
-/////////
 	@GetMapping("/banner/delete/{id}")
 	public String deleteBanner(@PathVariable("id") Integer id) {
 		// Tìm banner cần xóa theo ID

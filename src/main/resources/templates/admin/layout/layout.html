@@ -82,7 +82,25 @@
 			$('#statisticalTable').DataTable({
 				paging: true
 			});
+			$.ajax({
+				url: '/admin/accountLogin',
+				method: 'GET',
+				dataType: 'json',
+				success: function (data) {
+					if (data.image != null) {
+						// Set đường dẫn ảnh từ data.image
+						$(".admin-login--image").attr("src", "../../../images/avatar/" + data.image);
+					} else {
+						// Nếu data.image là null hoặc undefined, sử dụng ảnh mặc định
+						$(".admin-login--image").attr("src", "../../../images/avatar/default-avatar.png");
+					}
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					console.error('There was a problem with the AJAX request:', textStatus, errorThrown);
+				}
+			});
 		});
+
 	</script>
 </body>
 

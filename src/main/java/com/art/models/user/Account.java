@@ -73,6 +73,9 @@ public class Account implements Serializable {
 	@Column
 	private boolean status;
 
+	@Column
+	private boolean accountWithGoogle = false;
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private List<InforAddress> userInfor;

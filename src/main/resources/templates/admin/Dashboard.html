@@ -106,7 +106,7 @@
 											<i class="ti ti-arrow-down-right text-danger"></i>
 										</span>
 										<p class="text-dark me-1 fs-3 mb-0" th:if="${nowMonth < lastMonth}">
-											<span th:text="${#numbers.formatDecimal(100-rateMonth, 0,'COMMA',0,'POINT')}"></span>
+											<span th:text="${#numbers.formatDecimal(rateMonth, 0,'COMMA',0,'POINT')}"></span>
 										</p>
 										<p class="fs-3 mb-0" th:if="${nowMonth < lastMonth}">% tháng trước</p>
 
@@ -115,9 +115,9 @@
 											<i class="ti ti-arrow-up-left text-success"></i>
 										</span>
 										<p class="text-dark me-1 fs-3 mb-0" th:if="${nowMonth >= lastMonth}">
-											+<span th:text="${#numbers.formatDecimal(rateMonth, 2, 1)}"></span>%
+											+<span th:text="${#numbers.formatDecimal(rateMonth, 2, 1)}"></span>
 										</p>
-										<p class="fs-3 mb-0" th:if="${nowMonth >= lastMonth}">tháng trước</p>
+										<p class="fs-3 mb-0" th:if="${nowMonth >= lastMonth}">% tháng trước</p>
 									</div>
 								</div>
 								<div class="col-4">

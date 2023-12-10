@@ -98,7 +98,7 @@ public class productController {
 	// Chỉnh lại phần product -> product detail dòng 145
 	@PostMapping("/product")
 	public ResponseEntity<?> createProduct(@Valid @ModelAttribute("pd") Product product, BindingResult result,
-			@RequestParam("listImage") MultipartFile[] listImage, @RequestParam("descriptions") String descriptions) {
+			@RequestParam("listImage") MultipartFile[] listImage, @RequestParam("descriptions") String descriptions) throws IOException {
 
 		Map<String, String> errors = new HashMap<>();
 		System.out.println(descriptions);
@@ -136,7 +136,7 @@ public class productController {
 			}
 			for (MultipartFile img : listImage) {
 				Image image = new Image();
-				image.setImage(paramService.save(img, "images/products").getName());
+				image.setImage(paramService.saveFile(img, "/products").getName());
 				image.setProduct(product);
 				imgDao.save(image);
 			}
