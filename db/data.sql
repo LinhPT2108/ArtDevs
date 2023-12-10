@@ -16,7 +16,7 @@ INSERT INTO dbo.payment_method
         ( payment_name )
 VALUES  ( N'Thanh toán khi nhận hàng'  -- payment_name - nvarchar(255)
         ),
-		( N'Momo'  -- payment_name - nvarchar(255)
+		( N'VNPAY'  -- payment_name - nvarchar(255)
         );
 GO
 

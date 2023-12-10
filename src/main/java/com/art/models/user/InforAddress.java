@@ -63,6 +63,7 @@ public class InforAddress implements Serializable {
 	
 
 
+
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userInfor")

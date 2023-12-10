@@ -22,6 +22,7 @@ app.controller("loginCtrl", function($scope, $location, $timeout, $window, $http
 				gapi.auth2.getAuthInstance().signIn().then(
 					function(googleUser) {
 						profile = googleUser.getBasicProfile();
+						console.log(profile)
 						if (profile) {
 							const account = {
 								"accountId": profile.getId(),
