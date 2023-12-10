@@ -66,9 +66,7 @@ public class Order {
 	@Nationalized
 	private String deliveryAddress;
 
-	@Column
-	@Nationalized
-	private String nickname;
+
 
 	@Column
 	@Nationalized
