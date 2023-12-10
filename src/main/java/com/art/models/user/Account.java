@@ -50,17 +50,18 @@ public class Account implements Serializable {
 
 	@Column
 	@Nationalized
-//	@NotBlank(message = "Vui lòng nhập họ tên")
-//	@Pattern(regexp = "^[a-zA-ZÀ-ỹ\\s]*$", message = "Họ tên không hợp lệ")
+	// @NotBlank(message = "Vui lòng nhập họ tên")
+	// @Pattern(regexp = "^[a-zA-ZÀ-ỹ\\s]*$", message = "Họ tên không hợp lệ")
 	private String fullname;
 
 	@Column
 	private String image;
 
 	@Column
-//	@NotBlank(message = "Vui lòng nhập mật khẩu")
-//	@Size(min = 6, message = "Mật khẩu phải chứa ít nhất 6 ký tự")
-//	@Pattern(regexp = ".*[a-zA-Z].*", message = "Mật khẩu phải chứa ít nhất một chữ cái")
+	// @NotBlank(message = "Vui lòng nhập mật khẩu")
+	// @Size(min = 6, message = "Mật khẩu phải chứa ít nhất 6 ký tự")
+	// @Pattern(regexp = ".*[a-zA-Z].*", message = "Mật khẩu phải chứa ít nhất một
+	// chữ cái")
 	private String password;
 
 	@Column
@@ -72,6 +73,9 @@ public class Account implements Serializable {
 
 	@Column
 	private boolean status;
+
+	@Column
+	private boolean accountWithGoogle;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)

@@ -21,6 +21,7 @@ public class AccountDTO {
 	private String email;
 	private String verifyCode;
 	private boolean status;
+	private boolean google;
 	private List<String> roles;
 	private List<InforAddress> inforAddresses;
 	private List<KeywordSuggestionsDTO> keywordSuggestions;

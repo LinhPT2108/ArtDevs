@@ -1,12 +1,11 @@
 app.controller(
   "orderCtrl",
   function ($scope, $rootScope, ApiService, $location, $timeout, $http) {
+    $scope.showLoader = true;
     console.log("orderCtrl");
-    $scope.currentPage = 1;
-    $scope.pageSize = 5;
-    var typeOrder = $location.path();
-    console.log($rootScope.userLogin);
-    $scope.type = typeOrder.substr(typeOrder.lastIndexOf("/") + 1);
+    $rootScope.$on("$routeChangeSuccess", function () {
+      $location.url($location.path());
+    });
     $scope.GetListOrder = function () {
       var accountId = $rootScope.userLogin.accountId;
       console.log(accountId);
@@ -21,8 +20,11 @@ app.controller(
           );
           if ($scope.type == "all") {
             $scope.listOrderByType = $scope.listOrder;
+            $scope.showLoader = false;
           } else {
             $scope.listOrderByType = filteredOrders;
+            $scope.showLoader = false;
+
           }
           console.log(filteredOrders);
         })
@@ -30,6 +32,45 @@ app.controller(
           console.log(err);
         });
     };
+    $scope.currentPage = 1;
+    $scope.pageSize = 5;
+    var typeOrder = $location.path();
+    console.log($rootScope.userLogin);
+    $scope.type = typeOrder.substr(typeOrder.lastIndexOf("/") + 1);
+
+    var statusPayment = $location.search().status;
+    var orderIdStatus = $location.search().orderId;
+    console.log(statusPayment == "true");
+    if (statusPayment == "true") {
+      Swal.fire({
+        title: "Đặt hàng thành công",
+        text: "Cảm ơn bạn đã mua hàng ở cửa hàng chúng tôi !!",
+        icon: "success",
+      });
+    } else if (statusPayment == "false") {
+      ApiService.callApi(
+        "PUT",
+        "/rest/order/cancel-order/" + orderIdStatus,
+        null,
+        {
+          status: false,
+        }
+      )
+        .then(function (response) {
+          console.log(response);
+          if (response == 200) {
+            Swal.fire({
+              title: "Thanh toán không thành công!",
+              text: "Hóa đơn bị hủy vì quá trình thanh toán không thanh công.",
+              icon: "warning",
+            });
+          }
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    }
+
     $timeout(function () {
       $scope.GetListOrder();
     }, 1000);
@@ -152,11 +193,12 @@ app.controller(
                   text: "Hóa đơn bạn chọn đã được hủy.",
                   icon: "success",
                 });
-                let index2 = $scope.listOrderByType.findIndex(
-                  (el) => el.id == orderID
-                );
-                console.log(index2);
-                $scope.listOrderByType.splice(index2, 1);
+                $scope.GetListOrder();
+                // let index2 = $scope.listOrderByType.findIndex(
+                //   (el) => el.id == orderID
+                // );
+                // console.log(index2);
+                // $scope.listOrderByType.splice(index2, 1);
               }
             })
             .catch(function (err) {

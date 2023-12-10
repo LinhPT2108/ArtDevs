@@ -30,10 +30,11 @@ app.controller(
       console.log($scope.listCartAvailable);
       $rootScope.userLogin.carts = $scope.listCartAvailable;
     }, 400);
-
+    
     ApiService.callApi("GET", "/rest/voucher")
       .then(function (response) {
         $scope.listVoucher = response;
+        console.log(response);
       })
       .catch(function (error) {
         console.log(error);

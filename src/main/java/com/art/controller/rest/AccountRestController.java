@@ -221,7 +221,7 @@ public class AccountRestController {
 		account.setVerifyCode(null);
 		account.setUserRole(accountRoles);
 		account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
-
+		account.setAccountWithGoogle(true);
 		aDAO.save(account);
 
 		return ResponseEntity.ok(account);

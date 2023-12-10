@@ -1,6 +1,10 @@
 <div class="content-profile">
     <div class="title  border border-right-0 border-top-0 border-left-0 py-2 d-flex justify-content-between">
-        <span class="display-6">Danh sách đơn hàng {{type}}</span>
+        <span class="display-6">Danh sách đơn hàng {{type=='all'? '':
+            type==3?'hoàn thành':
+            type==2?'đang giao hàng':
+            type==1?'đang xử lí':
+            'đã hủy'}}</span>
         <span class="display-7 font-weight-bold">Số lượng: {{listOrderByType.length}}</span>
     </div>
     <div class="main-content p-3">
@@ -21,6 +25,18 @@
                     placeholder="Nhập số lượng hiển thị cho phép" ng-model="pageSize"> -->
             </div>
         </div>
+        <div class="d-flex align-items-center justify-content-center py-5" id="loader" ng-show="showLoader">
+            <svg class="pl" width="240" height="240" viewBox="0 0 240 240">
+                <circle class="pl__ring pl__ring--a" cx="120" cy="120" r="105" fill="none" stroke="#000"
+                    stroke-width="20" stroke-dasharray="0 660" stroke-dashoffset="-330" stroke-linecap="round"></circle>
+                <circle class="pl__ring pl__ring--b" cx="120" cy="120" r="35" fill="none" stroke="#000"
+                    stroke-width="20" stroke-dasharray="0 220" stroke-dashoffset="-110" stroke-linecap="round"></circle>
+                <circle class="pl__ring pl__ring--c" cx="85" cy="120" r="70" fill="none" stroke="#000" stroke-width="20"
+                    stroke-dasharray="0 440" stroke-linecap="round"></circle>
+                <circle class="pl__ring pl__ring--d" cx="155" cy="120" r="70" fill="none" stroke="#000"
+                    stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"></circle>
+            </svg>
+        </div>
         <div class="invoice-item mb-3 p-3 bg-white border"
             dir-paginate="o in listOrderByType| orderBy: '-orderDate' | filter:q | itemsPerPage: pageSize"
             current-page="currentPage">
@@ -29,6 +45,9 @@
                     <i class="bi bi-calendar2-check"></i>
                     <span class="font-weight-bold">Ngày đặt hàng:
                         {{o.orderDate|date:'yyyy-MM-dd HH:mm:ss'}}
+                    </span>
+                    <span class="font-weight-bold ml-5">Ngày nhận hàng dự kiến:
+                        {{o.expected_delivery_time|date:'yyyy-MM-dd'}}
                     </span>
                 </div>
                 <div class="delivery ml-auto">
@@ -46,11 +65,22 @@
                         <i class="ti ti-truck"></i>
                         Đã hủy
                     </span>
-
+                    <button class="btn-primary p-2" type="button" data-toggle="collapse" data-target="#{{'note'+o.id}}"
+                        aria-expanded="false" aria-controls="{{o.id}}">
+                        Ghi chú
+                    </button>
                     <span class="text-success mr-3" ng-show="getLatestOrder(o.orderStatus).deliveryStatus.id==3">
                         <i class="ti ti-check"></i>
                         Giao hàng thành công
                     </span>
+                </div>
+
+            </div>
+            <div class="collapse" id="{{'note'+o.id}}">
+                <div class="card card-body d-flex flex-column">
+                    <span class="font-weight-bold">Tên người nhận:</span>{{o.nickname}}
+                    <span class="font-weight-bold">Địa chỉ:</span>{{o.deliveryAddress}}
+                    <span class="font-weight-bold">Ghi chú:</span>{{o.note}}
                 </div>
             </div>
             <hr>
@@ -70,9 +100,9 @@
                             </span>
                             <span class="text-muted fs-6">Loại hàng:
                                 {{p.productDetail.product.categoryProduct.categoryName}}</span>
-                            <span class="text-muted ">Hãng:
+                            <span class="text-muted fs-6">Hãng:
                                 {{p.productDetail.product.manufacturerProduct.manufacturerName}}</span>
-                            <span>Số lượng: {{p.quantity }}</span>
+                            <span class="text-muted fs-6">Số lượng: {{p.quantity }}</span>
                         </div>
 
                     </div>
@@ -96,7 +126,7 @@
             <hr>
             <div class="site-button d-flex justify-content-beetween align-items-center">
 
-                <div class="price col-8">
+                <div class="price col-6">
                     <div class="float-start">
                         <div class="d-flex flex-column align-items-start">
                             <span class="float-right">Phí vận chuyển: <span
@@ -117,9 +147,17 @@
 
                     </div>
                 </div>
-                <div class="col-4 d-flex align-items-end justify-content-end">
-                    <a class="btn-danger  p-2 rounded text-white" href="#" id="cancel-order" data-invoice-id="${iv.id }"
-                        role="button" ng-click="cancelOrder(o.id, $index)" ng-show="type==1">Hủy đơn hàng</a>
+                <div class="col-6 d-flex align-items-center justify-content-end">
+                    <span>Hình thức thanh toán:
+                        <strong>{{o.paymentMethod.paymentName}}</strong> <br>
+                        <i class="bi bi-check-square text-success mr-2"
+                            ng-show="o.paymentMethod.id == 2 && getLatestOrder(o.orderStatus).deliveryStatus.id!=4"> Đã
+                            thanh toán</i>
+                    </span>
+                    <a class="btn-danger  p-2 rounded text-white ml-3" href="#" id="cancel-order"
+                        data-invoice-id="${iv.id }" role="button" ng-click="cancelOrder(o.id, $index)"
+                        ng-show="getLatestOrder(o.orderStatus).deliveryStatus.id==1 && o.paymentMethod.id != 2"> Hủy đơn
+                        hàng</a>
                 </div>
             </div>
         </div>

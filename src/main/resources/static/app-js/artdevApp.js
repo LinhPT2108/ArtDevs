@@ -58,15 +58,21 @@ app.config(function ($routeProvider, $locationProvider) {
       controller: "checkoutCtrl",
     })
     .when("/products/:productId", {
-			templateUrl: "templates/user/views/product-detail.html",
-			controller: "productdetailCtrl",
-		})
+      templateUrl: "templates/user/views/product-detail.html",
+      controller: "productdetailCtrl",
+    })
     .when("/products", {
       templateUrl: "templates/user/views/shop-grid.html",
       controller: "productsiteCtrl",
     })
     .when("/about-us", {
       templateUrl: "templates/user/views/about-us.html",
+    })
+    .when("/about-us", {
+      templateUrl: "templates/user/views/about-us.html",
+    })
+    .when("/payment/:status/:orderId", {
+      redirectTo: "/account/purchase-order/all",
     })
     .otherwise({
       redirectTo: "/ArtDevs",

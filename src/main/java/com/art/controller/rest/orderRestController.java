@@ -2,11 +2,13 @@ package com.art.controller.rest;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.art.dao.activity.CartDAO;
@@ -125,12 +127,10 @@ public class orderRestController {
                             promDao.save(pm);
                         }
                     }
-
                 }
-
                 cartDAO.deleteByUserAndProductDetail(account, pdt);
             }
-            return ResponseEntity.ok(200);
+            return ResponseEntity.ok(saveOrder.getId());
 
         } catch (Exception e) {
             System.out.println(e);
@@ -139,9 +139,15 @@ public class orderRestController {
     }
 
     @PutMapping("/order/cancel-order/{id}")
-    public ResponseEntity<?> putMethodName(@PathVariable("id") int id) {
+    public ResponseEntity<?> putMethodName(@PathVariable("id") int id, 
+    @RequestParam("status") Optional<Boolean> status) {
         try {
+            System.out.println(status.orElse(true));
             Order order = orderDAO.findById(id);
+            if(status.isPresent()){
+                order.setNote("Hóa đơn hủy vì thanh toán không thành công.");
+                orderDAO.save(order);
+            }
             List<OrderDelieveryStatus> ods = orderDeliStatusDAO.findByOrderStatus(order);
             for (OrderDelieveryStatus e : ods) {
                 e.setStatus(false);
