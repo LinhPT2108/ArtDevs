@@ -672,7 +672,7 @@
                                         <i class="fa fa-check-circle-o"></i> Số lượng trong kho:
                                         {{pdt.quantityInStock}}
                                     </span>
-                                    <span ng-if="pdt.quantityInStock == 0" class="text-danger">
+                                    <span ng-if="pdt.quantityInStock <= 0" class="text-danger">
                                         <i class="fa fa-times-circle text-danger" aria-hidden="true"></i>
                                         Hết hàng
                                     </span>
@@ -717,7 +717,7 @@
                                 <div class="input-group">
                                     <div class="button minus">
                                         <button type="button" class="btn btn-primary btn-number" data-type="minus"
-                                            data-field="quant[1]" ng-class="{disabled:pdt.quantityInStock == 0}">
+                                            data-field="quant[1]" ng-class="{disabled:pdt.quantityInStock <= 0}">
                                             <i class="ti-minus"></i>
                                         </button>
                                     </div>
@@ -725,7 +725,7 @@
                                         data-max="{{pdt.quantityInStock}}" value="1" ng-model="qty" numbers-only>
                                     <div class="button plus">
                                         <button type="button" class="btn btn-primary btn-number" data-type="plus"
-                                            data-field="quant[1]" ng-class="{disabled:pdt.quantityInStock == 0}">
+                                            data-field="quant[1]" ng-class="{disabled:pdt.quantityInStock <= 0}">
                                             <i class="ti-plus"></i>
                                         </button>
                                     </div>
@@ -733,7 +733,7 @@
                                 <!--/ End Input Order -->
                             </div>
                             <div class="add-to-cart">
-                                <a href="#" class="btn" ng-class="{disabled:pdt.quantityInStock == 0}" add-to-cart
+                                <a href="#" class="btn" ng-class="{disabled:pdt.quantityInStock <= 0}" add-to-cart
                                     product="qvpd" quantity="qty" pd-detail-id=""
                                     ng-click="addToCart($event ,qvpd, qty, choiceProductDetailId)">Thêm vào giỏ
                                     hàng</a>

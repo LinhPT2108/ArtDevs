@@ -9,15 +9,29 @@
 						<h3 class="title">Lọc theo giá</h3>
 						<div class="price-filter">
 							<div class="price-filter-inner">
-								<div id="slider-range-2" class="d-flex flex-column">
+								<div id="slider-range-2" class="d-flex flex-column position-relative">
 									<!-- Input nhập giá -->
-									<input type="number" id="minPrice" name="minPrice" placeholder="Giá thấp nhất"
-										ng-model="search.minPrice" class="mb-2 w-100 form-control"
-										ng-change="checkMinPrice()">
+									<input type="range" id="minPrice" name="minPrice" placeholder="Giá thấp nhất"
+										ng-model="search.minPrice" class=" input-ranges w-100 mb-3"
+										ng-change="checkMinPrice()" max="{{search.maxPrice}}" title="giá thấp">
 
 									<input type="number" id="maxPrice" name="maxPrice" placeholder="Giá tối đa"
-										ng-model="search.maxPrice" class="mb-2 w-100 form-control"
-										ng-change="checkMaxPrice()">
+										ng-model="search.maxPrice" class=" input-ranges mb-3  w-100"
+										ng-change="checkMaxPrice()" title="giá cao">
+									<span ng-if="search.maxPrice>0">
+										Từ {{search.minPrice|number:0}} đ đến
+										{{search.maxPrice|number:0}} đ
+									</span>
+
+									<!-- <input type="range" max="30000000" ng-model="search.rangePrice" class="w-100">
+									<span class="text-danger">Giá dưới: {{search.rangePrice|number:0}} đ</span> -->
+									<!-- <select ng-model="search.rangePrice">
+										<option value="2000000">2000000</option>
+										<option value="5000000">5000000</option>
+										<option value="10000000">10000000</option>
+										<option value="12000000">12000000</option>
+										<option value="15000000">15000000</option>
+									</select> -->
 								</div>
 								<!-- Nút Lọc -->
 								<button class="btn-danger p-2" ng-click="applyPriceFilter()">Xóa</button>

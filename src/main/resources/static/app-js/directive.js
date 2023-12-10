@@ -140,10 +140,9 @@ app.directive("niceSelect", function ($timeout) {
   return {
     restrict: "A",
     link: function (scope, element) {
-		$timeout(function(){
-			
-			$(element).niceSelect();
-		},100)
+      $timeout(function () {
+        $(element).niceSelect();
+      }, 100);
     },
   };
 });
@@ -414,6 +413,17 @@ app.directive("chooseImage", function () {
     },
   };
 });
+app.directive("selectNgFiles", function () {
+  return {
+    require: "ngModel",
+    link: function postLink(scope, elem, attrs, ngModel) {
+      elem.on("change", function (e) {
+        var files = elem[0].files;
+        ngModel.$setViewValue(files);
+      });
+    },
+  };
+});
 
 app.directive(
   "addToCart",
@@ -471,7 +481,13 @@ app.directive(
             )
               .then(function (resp) {
                 console.log(resp);
-                if (resp != 400) {
+                if (resp == "") {
+                  Swal.fire({
+                    title: "Chú ý",
+                    text: "Sản phẩm trong giỏ hàng không được vượt quá số lượng tồn kho!",
+                    icon: "warning",
+                  });
+                } else if (resp != 400) {
                   const Toast = Swal.mixin({
                     toast: true,
                     position: "top-end",

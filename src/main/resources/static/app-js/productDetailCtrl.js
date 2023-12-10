@@ -2,6 +2,7 @@ var host = "http://localhost:8080";
 app.controller(
   "productdetailCtrl",
   function ($scope, $http, $timeout, $routeParams, ApiService, $rootScope) {
+    window.scrollTo(0, 0);
     console.log($rootScope.flashSaleActive);
     var productId = $routeParams.productId;
     $scope.currentPage = 1;

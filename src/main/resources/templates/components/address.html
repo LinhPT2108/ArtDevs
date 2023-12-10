@@ -17,7 +17,8 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLongTitle">Địa chỉ
                             mới</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancelUpdate()">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            ng-click="cancelUpdate()">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -28,8 +29,17 @@
                                     điện thoại: <span class="text-danger">(*)</span></label>
                                 <div class="col-sm-12">
                                     <input type="text" class="form-control" ng-model="address.phoneNumber"
-                                        placeholder="" id="phoneNumber" autocomplete="none"/>
+                                        placeholder="" id="phoneNumber" autocomplete="none" />
                                     <small id="phoneNumberError" class="text-danger" ng-bind="phoneNumberError"></small>
+                                </div>
+                            </div>
+                            <div class="form-group2 row mb-3">
+                                <label for="nickname" class="col-sm-12 col-form-label">Tên người nhận: <span
+                                        class="text-danger">(*)</span></label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" ng-model="address.nickname" placeholder=""
+                                        id="nickname" autocomplete="none" />
+                                    <small id="nicknameError" class="text-danger" ng-bind="nicknameError"></small>
                                 </div>
                             </div>
                             <div class="justify-content-center mb-3">
@@ -100,14 +110,23 @@
             </div>
             <div class="col-6 ">
                 <label for="show" class="d-inline">Hiển thị:</label>
-                <input type="number" id="show" min="1" max="100" class="form-control"
-                    placeholder="Nhập số lượng hiển thị cho phép" ng-model="pageSize">
+                <select name="" id="show" ng-model="pageSize" class="form-control">
+                    <option ng-value="5" >5</option>
+                    <option ng-value="10">10</option>
+                    <option ng-value="15">15</option>
+                    <option ng-value="20">20</option>
+                </select>
+                <!-- <input type="number" id="show" min="1" max="100" class="form-control"
+                    placeholder="Nhập số lượng hiển thị cho phép" ng-model="pageSize"> -->
             </div>
         </div>
         <div class="p-3 border d-flex  justify-content-between align-items-center mb-3"
             dir-paginate="a in userLogin.inforAddresses | filter:q | itemsPerPage: pageSize" current-page="currentPage">
 
             <div class="infor d-flex flex-column">
+                <span class="nickname font-weight-bold">
+                    Tên người nhận: {{a.nickname}}
+                </span>
                 <span class="phone_number font-weight-bold">
                     Số điện thoại: {{a.phoneNumber}}
                 </span>
@@ -117,8 +136,8 @@
             </div>
             <div class="site-action" style="color: #1318ec">
                 <a type="button" href="#" class="btn-default border-0 bg-white mr-3 btnUpdateAddress"
-                    data-toggle="modal" data-target="#modalAddress"
-                    ng-click="handleUpdate($event, a, $index)"> Cập nhật </a>
+                    data-toggle="modal" data-target="#modalAddress" ng-click="handleUpdate($event, a, $index)"> Cập nhật
+                </a>
                 <a type="button" href="#" class="btn-default border-0 bg-white btnDeleteAddress"
                     ng-click="handleDelete($event, a.phoneNumber, $index)" id="">
                     Xóa </a>

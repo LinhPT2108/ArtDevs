@@ -20,9 +20,9 @@
 					</thead>
 					<tbody>
 						<tr ng-repeat="c in userLogin.carts">
-							<td class="text-center">
-								<input type="checkbox" name="check" id="" ng-model="c.checked"
-									ng-change="updateCheckAll()">
+							<td class="text-center" width="100px">
+								<input type="checkbox" name="check" id=""
+									ng-model="c.checked" ng-change="updateCheckAll()" class="display-6">
 							</td>
 							<td class="image text-center" data-title="No" width="100px">
 								<img ng-src="../images/products/{{c.productDTO.images[0]}}"
@@ -121,7 +121,8 @@
 													{{voucher.discount |number: 0}} VNĐ
 												</option>
 											</select>
-											<button ng-click="applyVoucher()" class="btn border rounded ml-3">Áp dụng</button>
+											<button ng-click="applyVoucher()" class="btn border rounded ml-3">Áp
+												dụng</button>
 										</div>
 									</div>
 								</div>
@@ -143,7 +144,8 @@
 										Bạn chưa chọn sản phẩm
 									</div>
 									<a href="#" class="btn"
-										ng-show="getCheckedProducts.length>0 && userLogin.carts.length>0" ng-click="checkChooseVoucher()">Thanh toán</a>
+										ng-show="getCheckedProducts.length>0 && userLogin.carts.length>0"
+										ng-click="checkChooseVoucher()">Thanh toán</a>
 									<a href="/ArtDevs" class="btn">Tiếp tục mua sắm</a>
 								</div>
 							</div>

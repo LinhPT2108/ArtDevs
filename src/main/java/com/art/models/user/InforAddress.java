@@ -40,6 +40,10 @@ public class InforAddress implements Serializable {
 
 	@Column
 	@Nationalized
+	private String nickname;
+
+	@Column
+	@Nationalized
 	@NotBlank
 	private String city;
 
