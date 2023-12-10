@@ -60,10 +60,6 @@ public class InforAddress implements Serializable {
 	@Column
 	@Nationalized
 	private String specific;
-	
-	@Column
-	@Nationalized
-	private String nickname;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
