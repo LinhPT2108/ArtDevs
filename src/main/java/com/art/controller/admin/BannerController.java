@@ -32,7 +32,7 @@ public class BannerController {
 	@GetMapping({ "/", "/banner" })
 	public String showIndex(Model model) {
 		model.addAttribute("views", "banner");
-		model.addAttribute("title", "banner");
+		model.addAttribute("title", "BANNER");
 		List<Banner> banners = bannerDao.findAll();
 		model.addAttribute("banners", banners);
 

@@ -152,8 +152,8 @@ public class userCustomController {
 		
 		userCustom.setUserRole(acrole);
 		userCustom.setPassword(currentUser.getPassword());
-		
-		userCustomDAO.save(userCustom);
+		System.out.println("get thu" + userCustom);
+		 userCustomDAO.save(userCustom); 
 
 		return "redirect:/admin/userCustom/edit/" + userCustom.getAccountId();
 	}

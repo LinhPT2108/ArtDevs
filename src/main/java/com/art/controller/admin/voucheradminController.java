@@ -38,6 +38,7 @@ public class voucheradminController {
 
 	@RequestMapping("/voucher")
 	public String getallVoucher(@ModelAttribute("vouchers") Voucher voucher, Model model) {
+		model.addAttribute("title", "Voucher");
 		model.addAttribute("typeButton", "Thêm");
 		model.addAttribute("updateButton", "Cập nhật");
 		model.addAttribute("deleteButton", "Xóa");
