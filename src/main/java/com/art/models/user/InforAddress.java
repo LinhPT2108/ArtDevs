@@ -26,7 +26,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class InforAddress implements Serializable{
+public class InforAddress implements Serializable {
 
 	/**
 	 * 

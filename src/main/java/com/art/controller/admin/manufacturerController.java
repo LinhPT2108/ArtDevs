@@ -94,7 +94,7 @@ public class manufacturerController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Account user2 = usDAO.findByEmail(authentication.getName());
 		mn.setUser(user2);
-		mn.setDel(false);
+		mn.setDel(true);
 		mnreps.save(mn);
 		return "redirect:/admin/manufacturer";
 	}

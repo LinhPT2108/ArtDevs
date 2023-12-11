@@ -33,7 +33,7 @@ public class validUtil {
         List<Price> prices = pdtDAO.findById(productDetailId).get().getProductPrice();
         prices.sort((o1, o2) -> o1.getCreatedDate().compareTo(o2.getCreatedDate()));
         if (fl != null) {
-            Double latestPrice = prices.get(0).getPrice();
+            Double latestPrice = (double) prices.get(0).getPrice();
             if (fl.getEndDay().after(new Date())) {
                 if (productDTO.isSale()) {
                     Double priceCurrent = latestPrice * (1 - productDTO.getDiscountPrice());
@@ -45,7 +45,7 @@ public class validUtil {
                 return latestPrice.longValue();
             }
         } else {
-            Double latestPrice = prices.get(0).getPrice();
+            Double latestPrice = (double) prices.get(0).getPrice();
             return latestPrice.longValue();
         }
     }

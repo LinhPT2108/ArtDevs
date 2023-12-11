@@ -95,6 +95,7 @@ public class categoryController {
 		System.out.println("userSecurity" + authentication.getName());
 		Account user2 = ucDao.findByEmail(authentication.getName());
 		ct.setUser(user2);
+		ct.setStatus(false);
 		categoryReponsitory.save(ct);
 		return "redirect:/admin/category";
 	}

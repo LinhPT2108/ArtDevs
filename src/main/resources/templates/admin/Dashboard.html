@@ -106,7 +106,7 @@
 											<i class="ti ti-arrow-down-right text-danger"></i>
 										</span>
 										<p class="text-dark me-1 fs-3 mb-0" th:if="${nowMonth < lastMonth}">
-											<span th:text="${#numbers.formatDecimal(100-rateMonth, 0,'COMMA',0,'POINT')}"></span>
+											<span th:text="${#numbers.formatDecimal(rateMonth, 0,'COMMA',0,'POINT')}"></span>
 										</p>
 										<p class="fs-3 mb-0" th:if="${nowMonth < lastMonth}">% tháng trước</p>
 
@@ -115,9 +115,9 @@
 											<i class="ti ti-arrow-up-left text-success"></i>
 										</span>
 										<p class="text-dark me-1 fs-3 mb-0" th:if="${nowMonth >= lastMonth}">
-											+<span th:text="${#numbers.formatDecimal(rateMonth, 2, 1)}"></span>%
+											+<span th:text="${#numbers.formatDecimal(rateMonth, 2, 1)}"></span>
 										</p>
-										<p class="fs-3 mb-0" th:if="${nowMonth >= lastMonth}">tháng trước</p>
+										<p class="fs-3 mb-0" th:if="${nowMonth >= lastMonth}">% tháng trước</p>
 									</div>
 								</div>
 								<div class="col-4">
@@ -149,7 +149,11 @@
 						<li class="timeline-item d-flex position-relative overflow-hidden"
 							th:each="item, loop : ${invoice}" th:if="${loop.index < 6}">
 							<div class="timeline-time text-dark flex-shrink-0 text-end">
-								<span th:text="${#dates.format(item.orderDate, 'hh:ss dd/MM/yyyy')}"></span>
+
+								<span th:text="${#dates.format(item.orderDate, 'hh:mm /dd/MM/yyyy')}"></span>
+
+								
+
 							</div>
 							<div class="timeline-badge-wrap d-flex flex-column align-items-center">
 								<span
@@ -214,7 +218,7 @@
 										<span class="fw-normal" th:text="${bestSeller[0].productName}"></span>
 									</td>
 									<td class="border-bottom-0 text-center">
-										<h6 class="fw-semibold mb-0 fs-4 text-danger" th:text="${bestSeller[1]}">
+										<h6 class="fw-semibold mb-0 fs-4 text-danger" th:text="${bestSeller[2]}">
 										</h6>
 									</td>
 								</tr>

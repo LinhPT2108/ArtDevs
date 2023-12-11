@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	<div class="site-product">
+
+
+		<div class="table-responsive">
+			<table id="statisticalTablePromotion" class="table table-hover" style="vertical-align:middle;">
+				<center>
+					<h1 class="text-success">
+						History
+					</h1>
+					<strong>Lịch Sử Cập Nhật Hóa Đơn Chi Tiết</strong>
+				</center>
+				<thead>
+					<tr>
+						<th>Số Thứ tư</th>
+						<th>Ngày Update</th>
+						<th>Nội Dung</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="status ,i : ${History}">
+						<td th:text="${i.index +1}"></td>
+						<td th:text="${#dates.format(status.date, 'HH:mm dd/MM/yyyy')}"></td>
+						<!--<td th:text="${promotionalDetail.product.productDetail.quantityInStock}"></td>-->
+						<td th:text="${status.DetailUpdate}">
+
+						</td>
+
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<script type="text/javascript" th:inline="javascript">
+		$(document).ready(function () {
+			var table = $('#statisticalTablePromotion').DataTable();
+
+	
+
+			// Thêm radio buttons vào phần tử có class "table-responsive"
+			$('.table-responsive').prepend(radioHtml);
+
+			// Xử lý sự kiện khi radio buttons được chọn
+			$('input[name="statusFilter"]').on('change', function () {
+				var selectedValue = $(this).val();
+
+				// Lọc dữ liệu trong cột "Trạng thái" của DataTable
+				table.column(5).search(selectedValue).draw();
+			});
+		});
+	</script>
+</body>
+
+</html>

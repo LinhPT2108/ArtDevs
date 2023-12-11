@@ -19,6 +19,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,38 +37,46 @@ public class ProductDetail {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	@Column
+	@Min(value = 0, message = "Quantity in stock must be greater than or equal to 0")
 	private int quantityInStock;
 
 	@Column
+	@NotBlank(message = "Size is required")
 	private String size;
-	
+
 	@Column
+	@NotBlank(message = "Color is required")
 	private String color;
-	
+
 	@Column
+	@DecimalMin(value = "0.0", message = "Weight must be greater than or equal to 0.0")
 	private double weight;
-	
+
 	@Column
+	@DecimalMin(value = "0.0", message = "Power must be greater than or equal to 0.0")
 	private double power;
-	
+
+	@Column
+	private boolean status;
+
 	@Column
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date productionDate;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
-	
+
 	@OneToMany(mappedBy = "productDetail")
 	@JsonIgnore
 	private List<Cart> productCarts;
-	
+
 	@OneToMany(mappedBy = "productDetail", fetch = FetchType.EAGER)
 	@JsonIgnore
 	private List<Price> productPrice;
-	
+
 	@OneToMany(mappedBy = "productDetail")
 	@JsonIgnore
 	private List<OrderDetail> productOrderDetail;
@@ -86,5 +97,4 @@ public class ProductDetail {
 		this.productPrice = productPrice;
 	}
 
-	
 }

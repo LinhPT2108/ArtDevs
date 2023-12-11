@@ -129,7 +129,7 @@
 							<div dir-paginate="comment in pddt|orderBy: '-date'| itemsPerPage: 3"
 								current-page="currentPage" class="mb-3">
 								<div class="d-flex align-items-center">
-									<img ng-src="../../images/avatar/{{comment.imageAccount}}"
+									<img ng-src="../../images/avatar/{{comment.imageAccount==null?'default-avatar.jpg':comment.imageAccount}}"
 										class="image-user--comment" />
 									<span class="font-weight-bold ml-2">{{comment.fullnameOfUser}}</span>
 								</div>
@@ -211,7 +211,7 @@
 								<div class="mt-2 display-custom--sale">{{comment.content}}</div>
 								<div class=" d-flex align-items-center justify-content-start ">
 									<div class="list-img mr-3" ng-repeat="img in comment.imageComment">
-										<img ng-src="../images/products/{{img.image}}" class="img-thumbnail"
+										<img ng-src="../images/comments/{{img.image}}" class="img-thumbnail"
 											alt="{{img.image}}" width="150px">
 									</div>
 								</div>
@@ -330,22 +330,22 @@
 									<li>Giá và khuyến mãi có thể kết thúc sớm dự kiến</li>
 								</ul>
 								<div class="d-flex mt-3 align-items-center display-5" ng-show="pdt.quantityInStock>0">
-									<div class="quantity" quantity-control>
+									<div class="d-flex align-items-center" quantity-control>
 										<!-- Input Order -->
-										<div class="input-group">
+										<div class="input-group align-items-center">
 											<div class="button minus">
-												<button type="button" class="btn btn-number" data-type="minus"
+												<button type="button" class="btn btn-number h-100 border-quantity--custom__left" data-type="minus"
 													data-field="quant[1]" ng-class="{disabled:pdt.quantityInStock <= 0}"
 													ng-disable="pdt.quantityInStock<=0">
 													<i class="ti-minus"></i>
 												</button>
 											</div>
-											<input type="text" name="quant[1]" class="input-number" data-min="1"
+											<input type="text" name="quant[1]" class="input-number h-100 text-center border-0 pt-3 display-6 font-weight-bold" data-min="1"
 												data-max="{{pdt.quantityInStock}}" value="1" ng-model="qty" numbers-only
 												ng-disable="pdt.quantityInStock<=0" style="width: 60px !important;">
 
 											<div class="button plus">
-												<button type="button" class="btn btn-number" data-type="plus"
+												<button type="button" class="btn btn-number h-100 border-quantity--custom__right" data-type="plus"
 													data-field="quant[1]" ng-disable="pdt.quantityInStock<=0">
 													<i class="ti-plus"></i>
 												</button>
@@ -353,7 +353,7 @@
 										</div>
 										<!--/ End Input Order -->
 									</div>
-									<a href="#" class="btn bg-primary mr-3 border border-radius--sale text-white"
+									<a href="#" class="btn bg-primary mx-3 mt-2 border border-radius--sale text-white"
 										ng-class="{disabled:pdt.quantityInStock <= 0}"
 										ng-disable="pdt.quantityInStock<=0" add-to-cart product="qvpd" quantity="qty"
 										pd-detail-id=""
@@ -397,11 +397,11 @@
 									</tr>
 									<tr>
 										<td class="col-4">Trọng lượng:</td>
-										<td class="col-8">{{pdt.weight}}</td>
+										<td class="col-8">{{pdt.weight}} kg</td>
 									</tr>
 									<tr>
 										<td class="col-4">Công suất:</td>
-										<td class="col-8">{{pdt.power}}</td>
+										<td class="col-8">{{pdt.power}} W</td>
 									</tr>
 									<tr>
 										<td class="col-4">Ngày sản xuất:</td>

@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.art.models.product.DetailDescription;
+import com.art.models.product.Product;
 
 
 @Transactional
@@ -19,5 +20,5 @@ public interface DetailDescriptionDAO extends JpaRepository<DetailDescription, I
 //	// Tìm mô tả chi tiết theo ID
 //	Optional<DetailDescription> findById(int detailDescriptionId);
 //
-//	void deleteByProduct(Product product);
+	void deleteByProduct(Product product);
 }

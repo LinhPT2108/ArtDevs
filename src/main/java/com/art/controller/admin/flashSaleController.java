@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,7 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.art.dao.promotion.FlashSaleDAO;
+import com.art.dao.user.AccountDAO;
 import com.art.models.promotion.FlashSale;
+import com.art.models.user.Account;
 import com.art.service.ParamService;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,6 +35,8 @@ public class flashSaleController {
 	HttpServletResponse response;
 	@Autowired
 	ParamService paramService;
+	
+	@Autowired AccountDAO ucDao;
 	
 	@GetMapping("/flashSale")
 	public String FlashSale(@ModelAttribute("flashSale") FlashSale flashSale,Model model) {	
@@ -52,6 +58,9 @@ public class flashSaleController {
 		model.addAttribute("typeButton", "Thêm");
 		model.addAttribute("updateButton", "Cập nhật"); 
 		model.addAttribute("deleteButton", "Xóa");
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Account user2 = ucDao.findByEmail(authentication.getName());
 		List<FlashSale> flashSales=flashSaleDAO.findAll();
 		model.addAttribute("flashSales",flashSales);
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
@@ -105,6 +114,7 @@ public class flashSaleController {
 					flashSale.setStartDay(dateFormat.parse(startDayStr));
 					flashSale.setEndDay(dateFormat.parse(endDayStr));
 					List<FlashSale> createFS=flashSaleDAO.findAll();
+					flashSale.setUser(user2);
 //					Account userCus=sessionService.get("userLogin");
 //					for (FlashSale f: createFS) {
 //						if(!f.isStatus()) {

@@ -21,6 +21,9 @@ app.config(function ($routeProvider, $locationProvider) {
       templateUrl: "templates/user/views/account.html",
       controller: "addressCtrl",
     })
+    .when("/contact", {
+      templateUrl: "templates/user/views/contact.html",
+    })
     .when("/account/change-password", {
       templateUrl: "templates/user/views/account.html",
       controller: "changePasswordCtrl",

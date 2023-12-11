@@ -48,6 +48,7 @@ public class SecurityConfiger {
 	 */
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
 		http.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests((authz) -> authz
 						.requestMatchers(
@@ -135,6 +136,7 @@ public class SecurityConfiger {
 						.invalidateHttpSession(true)
 						.deleteCookies("JSESSIONID"));
 		return http.build();
+
 	}
 
 	/*

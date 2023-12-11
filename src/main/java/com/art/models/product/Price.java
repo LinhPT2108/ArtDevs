@@ -30,7 +30,7 @@ public class Price {
 	private int id;
 
 	@Column
-	private double price;
+	private long price;
 
 	@Column
 	@Temporal(TemporalType.TIMESTAMP)
@@ -40,4 +40,6 @@ public class Price {
 	@ManyToOne
 	@JoinColumn(name = "product_detail_id")
 	private ProductDetail productDetail;
+	
+	
 }

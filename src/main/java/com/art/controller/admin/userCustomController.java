@@ -1,5 +1,6 @@
 package com.art.controller.admin;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,7 +87,12 @@ public class userCustomController {
 
 		}
 		if (!avatar.isEmpty()) {
-			usercustom.setImage(paramService.save(avatar, "images/avatar").getName());
+			try {
+				usercustom.setImage(paramService.saveFile(avatar, "/avatar").getName());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		List<AccountRole> acrole = new ArrayList<>();
 		for (Role role : listRole) {
@@ -121,10 +127,21 @@ public class userCustomController {
 
 		Account currentUser = userCustomDAO.getById(userCustom.getAccountId());
 		if (!avatar.isEmpty()) {
-			userCustom.setImage(paramService.save(avatar, "images/avatar").getName());
+			try {
+				userCustom.setImage(paramService.saveFile(avatar, "/avatar").getName());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else {
 			userCustom.setImage(currentUser.getImage());
 		}
+//		List<AccountRole> listDeleteRole = acRoleDAO.findByUser(userCustom);
+//		System.out.println("list Delete " + listDeleteRole.size());
+//		for (AccountRole accountRole : listDeleteRole) {
+//			acRoleDAO.delete(accountRole);
+//		}
+		acRoleDAO.deleteByUser(userCustom);
 		List<AccountRole> acrole = new ArrayList<>();
 		for (Role role : listRole) {
 			String param = req.getParameter(role.getRoleName());
@@ -132,9 +149,11 @@ public class userCustomController {
 				acrole.add(new AccountRole(userCustom, role));
 			}
 		}
+		
 		userCustom.setUserRole(acrole);
-		userCustom.setPassword(new BCryptPasswordEncoder().encode(userCustom.getPassword()));
-		userCustomDAO.save(userCustom);
+		userCustom.setPassword(currentUser.getPassword());
+		System.out.println("get thu" + userCustom);
+		 userCustomDAO.save(userCustom); 
 
 		return "redirect:/admin/userCustom/edit/" + userCustom.getAccountId();
 	}
@@ -166,9 +185,10 @@ public class userCustomController {
 			model.addAttribute("roles", listRole);
 			model.addAttribute("accroles", accRole);
 			model.addAttribute("userCustom", usercus);
-
 			model.addAttribute("userCustoms", userCustoms);
+			model.addAttribute("CheckEdit", true);
 		} catch (Exception e) {
+			
 			e.printStackTrace();
 		}
 		return "admin/UserCustom";

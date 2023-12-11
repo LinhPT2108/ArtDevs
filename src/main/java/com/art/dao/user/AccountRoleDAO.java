@@ -3,18 +3,22 @@ package com.art.dao.user;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.art.models.user.Account;
 import com.art.models.user.AccountRole;
 
+@Transactional
 public interface AccountRoleDAO extends JpaRepository<AccountRole, Integer> {
 
 //	// Thêm hoặc cập nhật một người dùng
 //	@SuppressWarnings("unchecked")
 //	UserCustom save(UserCustom user);
 //
-//	// Xóa một người dùng dựa trên ID
-//	void deleteById(String userId);
+	// Xóa một người dùng dựa trên ID
+//	void deleteByUser(Account user);
 //
 //	// Kiểm tra xem một người dùng có tồn tại dựa trên ID hay không
 //	boolean existsById(String userId);
@@ -39,5 +43,9 @@ public interface AccountRoleDAO extends JpaRepository<AccountRole, Integer> {
 //	List<UserCustom> findByFullnameContainingIgnoreCase(String keyword);
 	
     List<AccountRole> findByUser(Account user);
+    
+    @Modifying
+    @Query("DELETE FROM AccountRole p WHERE p.user = :r")
+    void deleteByUser(Account r);
 
 }

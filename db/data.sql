@@ -16,7 +16,7 @@ INSERT INTO dbo.payment_method
         ( payment_name )
 VALUES  ( N'Thanh toán khi nhận hàng'  -- payment_name - nvarchar(255)
         ),
-		( N'Momo'  -- payment_name - nvarchar(255)
+		( N'VNPAY'  -- payment_name - nvarchar(255)
         );
 GO
 
@@ -26,35 +26,40 @@ INSERT INTO dbo.account
           fullname ,
           image ,
           password ,
-          account_id
+          account_id,
+		  account_with_google
         )
 VALUES  ( 0 , -- is_del - bit
           'linhptpc04737@fpt.edu.vn' , -- email - varchar(255)
           N'Phan Tuấn Linh' , -- fullname - nvarchar(255)
           'linhptpc04737.png' , -- image - varchar(255)
           '$2a$10$kpnU5NRvBiGYfLoH.GuQ5uUFHx6M37QuihnsfN1z60VqCzX24HFZK' , -- password đã được mã hóa 
-          'linhptpc04737'  -- user_id - varchar(255)
+          'linhptpc04737',  -- user_id - varchar(255)
+		  0
         ),
 		( 0 , -- is_del - bit
           'nguyentcpc04750@fpt.edu.vn' , -- email - varchar(255)
           N'Trần Chí Nguyễn' , -- fullname - nvarchar(255)
           'nguyentcpc04750.png' , -- image - varchar(255)
           '$2a$10$kpnU5NRvBiGYfLoH.GuQ5uUFHx6M37QuihnsfN1z60VqCzX24HFZK' , -- password đã được mã hóa 
-          'nguyentcpc04750'  -- user_id - varchar(255)
+          'nguyentcpc04750'  ,  -- user_id - varchar(255)
+		  0
         ),
 		( 0 , -- is_del - bit
           'vinhtppc04838@fpt.edu.vn' , -- email - varchar(255)
           N'Trần Phúc Vinh' , -- fullname - nvarchar(255)
           'vinhtppc04838.png' , -- image - varchar(255)
           '$2a$10$kpnU5NRvBiGYfLoH.GuQ5uUFHx6M37QuihnsfN1z60VqCzX24HFZK' , -- password đã được mã hóa 
-          'vinhtppc04838'  -- user_id - varchar(255)
+          'vinhtppc04838' ,  -- user_id - varchar(255)
+		  0
         ),
 		( 0 , -- is_del - bit
           'nguyentc@fpt.edu.vn' , -- email - varchar(255)
           N'Trần Chí Nguyễn' , -- fullname - nvarchar(255)
           'nguyentc.png' , -- image - varchar(255)
           '$2a$10$kpnU5NRvBiGYfLoH.GuQ5uUFHx6M37QuihnsfN1z60VqCzX24HFZK' , -- password đã được mã hóa 
-          'nguyentc'  -- user_id - varchar(255)
+          'nguyentc' ,  -- user_id - varchar(255)
+		  0
         );
 GO
 
@@ -89,35 +94,40 @@ INSERT INTO dbo.infor_address
           phone_number ,
           specific ,
           user_infor ,
-          ward
+          ward,
+		  nickname
         )
 VALUES  ( N'Cần Thơ' , -- city - nvarchar(255)
           N'Ninh Kiều', -- district - nvarchar(255)
           '0948922927' , -- phone_number - varchar(255)
           N'Đường Trần Hưng Đạo' , -- specific - nvarchar(255)
           'linhptpc04737' , -- user_infor - varchar(255)
-          N'An phú'  -- ward - nvarchar(255)
+          N'An phú',  -- ward - nvarchar(255)
+		  N'Baba'
         ),
 		( N'Cần Thơ' , -- city - nvarchar(255) 
           N'Cờ Đỏ', -- district - nvarchar(255)
           '0909123123' , -- phone_number - varchar(255)
           N'' , -- specific - nvarchar(255)
           'linhptpc04737' , -- user_infor - varchar(255)
-          N'Thới Hưng'  -- ward - nvarchar(255)
+          N'Thới Hưng',  -- ward - nvarchar(255)
+		  N'Baba'
         ),
 		( N'Sóc Trăng' , -- city - nvarchar(255)
           N'Mỹ Tú', -- district - nvarchar(255)
           '0911726601' , -- phone_number - varchar(255)
           N'' , -- specific - nvarchar(255)
           'nguyentcpc04750' , -- user_infor - varchar(255)
-          N'Hưng Phú'  -- ward - nvarchar(255)
+          N'Hưng Phú',  -- ward - nvarchar(255)
+		  N'Baba'
         ),
 		( N'Cần Thơ' , -- city - nvarchar(255)
           N'Cờ Đỏ', -- district - nvarchar(255)
           '0909888666' , -- phone_number - varchar(255)
           N'' , -- specific - nvarchar(255)
           'vinhtppc04838' , -- user_infor - varchar(255)
-          N'Thới Hưng'  -- ward - nvarchar(255)
+          N'Thới Hưng',  -- ward - nvarchar(255)
+		  N'Baba'
         );
 GO
 
@@ -1129,42 +1139,43 @@ INSERT INTO dbo.product_detail
           production_date ,
           color ,
           product_id ,
-          size 
+          size,
+		  status
         )
-VALUES  ( 50 ,10 ,8 ,SYSDATETIME() ,'White' ,'QA55Q65A' ,'130cmx80cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA55Q65A' ,'130cmx80cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'White' ,'QA55Q65A' ,'130cmx60cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA55Q65A' ,'130cmx60cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'55NANO76SQA' ,'120cmx70cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'32V35KP' ,'150cmx65cmx8cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA43Q65A' ,'120cmx80cmx8cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'UA43BU8000' ,'130cmx80cmx8cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'UA55AU8100' ,'140cmx90cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'UA43AU7002' ,'130cmx100cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'UA65AU8100' ,'130cmx85cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA65Q65A' ,'130cmx83cmx8cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA50Q65A' ,'130cmx80cmx7cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'UA55BU8000' ,'130cmx80cmx9cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA65Q60B' ,'140cmx80cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'55UQ8000PSC' ,'133cmx80cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'65NANO76SQA' ,'135cmx60cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'65UQ8000PSC' ,'120cmx70cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'43UQ7550PSF' ,'135cmx80cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'43UQ8000PSC' ,'138cmx80cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'43NANO76SQA' ,'141cmx80cmx8cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'50UQ7550PSF' ,'150cmx80cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'50UQ8000PSC' ,'135cmx70cmx8cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'55UQ7550PSF' ,'130cmx60cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'RT25M4032BU' ,'160cmx80cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'GR-B256JDS' ,'140cmx80cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'GR-RF610WE-PGV(22)-XK' ,'130cmx90cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'WW80T3020WW' ,'130cmx85cmx6cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'T2351VSAB' ,'130cmx85cmx8cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'AW-L805AV' ,'130cmx88cmx10cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'AR13CYFAAWKNSV' ,'180cmx80cmx11cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'ZTNQ18GPLA0' ,'170cmx80cmx8cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'RAS-H10Z1KCVG-V' ,'140cmx80cmx8cm' ),
-        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'MSAGA-10CRDN8' ,'130cmx80cmx9cm' );
+VALUES  ( 50 ,10 ,8 ,SYSDATETIME() ,'White' ,'QA55Q65A' ,'130cmx80cmx6cm', 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA55Q65A' ,'130cmx80cmx6cm' , 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'White' ,'QA55Q65A' ,'130cmx60cmx6cm', 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA55Q65A' ,'130cmx60cmx6cm', 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'55NANO76SQA' ,'120cmx70cmx6cm', 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'32V35KP' ,'150cmx65cmx8cm', 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA43Q65A' ,'120cmx80cmx8cm' , 0),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'UA43BU8000' ,'130cmx80cmx8cm', 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'UA55AU8100' ,'140cmx90cmx6cm' , 0),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'UA43AU7002' ,'130cmx100cmx6cm', 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'UA65AU8100' ,'130cmx85cmx6cm', 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA65Q65A' ,'130cmx83cmx8cm', 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA50Q65A' ,'130cmx80cmx7cm', 0 ),
+        ( 50 ,8 ,8 ,SYSDATETIME() ,'Black' ,'UA55BU8000' ,'130cmx80cmx9cm' , 0),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'QA65Q60B' ,'140cmx80cmx6cm', 0 ),
+        ( 50 ,6 ,8 ,SYSDATETIME() ,'Black' ,'55UQ8000PSC' ,'133cmx80cmx6cm', 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'65NANO76SQA' ,'135cmx60cmx6cm', 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'65UQ8000PSC' ,'120cmx70cmx6cm', 0 ),
+        ( 50 ,1 ,8 ,SYSDATETIME() ,'Black' ,'43UQ7550PSF' ,'135cmx80cmx6cm', 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'43UQ8000PSC' ,'138cmx80cmx6cm', 0 ),
+        ( 50 ,3 ,8 ,SYSDATETIME() ,'Black' ,'43NANO76SQA' ,'141cmx80cmx8cm', 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'50UQ7550PSF' ,'150cmx80cmx6cm', 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'50UQ8000PSC' ,'135cmx70cmx8cm', 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'55UQ7550PSF' ,'130cmx60cmx6cm' , 0),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'RT25M4032BU' ,'160cmx80cmx6cm' , 0),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'GR-B256JDS' ,'140cmx80cmx6cm' , 0),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'GR-RF610WE-PGV(22)-XK' ,'130cmx90cmx6cm', 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'WW80T3020WW' ,'130cmx85cmx6cm', 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'T2351VSAB' ,'130cmx85cmx8cm', 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'AW-L805AV' ,'130cmx88cmx10cm' , 0),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'AR13CYFAAWKNSV' ,'180cmx80cmx11cm', 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'ZTNQ18GPLA0' ,'170cmx80cmx8cm', 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'RAS-H10Z1KCVG-V' ,'140cmx80cmx8cm', 0 ),
+        ( 50 ,10 ,8 ,SYSDATETIME() ,'Black' ,'MSAGA-10CRDN8' ,'130cmx80cmx9cm', 0 );
 GO        
 
 INSERT INTO dbo.price
@@ -1215,7 +1226,10 @@ INSERT INTO dbo.orders
           user_id,
 		  payment_id,
 		  delivery_fee ,
-		  expected_delivery_time 
+		  expected_delivery_time ,
+		  discount,
+          note ,
+		  nickname 
         )
 VALUES  ( 18000000 , -- total_amount - float
           '2023-09-01 13:10:50' , -- invoice_date - datetime2(6)
@@ -1223,7 +1237,10 @@ VALUES  ( 18000000 , -- total_amount - float
           'linhptpc04737',  -- user_id - varchar(255)
 		  1,
 		  15000,
-		  '2023-12-10 10:00:00'
+		  '2023-09-06 10:00:00',
+		  10000,
+          N'Không' ,
+		  N'Baba' 
         ),
 		( 17980000 , -- total_amount - float
           '2023-10-01 13:30:50' , -- invoice_date - datetime2(6)
@@ -1231,47 +1248,65 @@ VALUES  ( 18000000 , -- total_amount - float
           'linhptpc04737',  -- user_id - varchar(255)
           1,
 		  15000,
-		  '2023-12-10 10:30:00'
+		  '2023-10-07 10:30:00',
+		  29000,
+          N'Không' ,
+		  N'Baba'
         ),
 		( 44650000 , -- total_amount - float
-          '2023-10-05 13:15:50' , -- invoice_date - datetime2(6)
+          '2023-11-05 13:15:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
           1,
 		  15000,
-		  '2023-12-10 11:00:00'
+		  '2023-11-10 11:00:00',
+		  10000,
+          N'Không' ,
+		  N'Baba'
         ),
 		( 144950000 , -- total_amount - float
-          '2023-10-10 13:10:50' , -- invoice_date - datetime2(6)
+          '2023-11-10 13:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
 		  1,
 		  15000,
-		  '2023-12-11 10:00:00'
+		  '2023-11-15 10:00:00',
+		  10000,
+          N'Không' ,
+		  N'Baba'
         ),
 		( 374800000 , -- total_amount - float
-          '2023-10-15 15:10:50' , -- invoice_date - datetime2(6)
+          '2023-11-22 15:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
           1,
 		  15000,
-		  '2023-12-11 11:00:00'
+		  '2023-11-16 11:00:00',
+		  10000,
+          N'Không' ,
+		  N'Baba'
         ),
 		( 11090000 , -- total_amount - float
-          '2023-10-16 19:10:50' , -- invoice_date - datetime2(6)
+          '2023-12-01 19:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
           1,
 		  15000,
-		  '2023-12-12 10:00:00'
+		  '2023-12-05 10:00:00',
+		  10000,
+          N'Không' ,
+		  N'Baba'
         ),
 		( 10590000 , -- total_amount - float
-          '2023-10-16 21:10:50' , -- invoice_date - datetime2(6)
+          '2023-12-07 21:10:50' , -- invoice_date - datetime2(6)
           N'ĐC: số 123 đường số 4,Xã Thới Hưng, Huyện Cờ Đỏ, Thành Phố Cần Thơ' , -- note - nvarchar(255)
           'linhptpc04737',  -- user_id - varchar(255)
           2,
 		  15000,
-		  '2023-12-12 15:00:00'
+		  '2023-12-10 15:00:00',
+		  39000,
+          N'Không' ,
+		  N'Baba'
         );
 GO
 

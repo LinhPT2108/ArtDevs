@@ -8,35 +8,55 @@
 
 <body>
 	<div class="table-responsive">
-		<table id="statisticalTable" class="table table-hover">
+		<table id="statisticalOrderTable" class="table table-hover">
 			<thead>
 				<tr>
-					<th>STT</th>
+
 					<th>Họ tên</th>
 					<th>Ngày mua</th>
+					<th>Ngày giao hàng dự kiến</th>
+					<th>Phí vận chuyển</th>
+					<th>Mã giảm giá</th>
 					<th>Tổng tiền</th>
+					<th>Hình thức thanh toán</th>
 					<th>Trạng thái</th>
 					<th>Ghi chú</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="item : ${invoice}">
-					<td th:text="${item.id}"></td>
+
 					<td th:text="${item.user.fullname}"></td>
-					<td th:text="${#dates.format(item.orderDate, 'dd/MM/yyyy')}"></td>
+					<td th:text="${#dates.format(item.orderDate, 'hh:mm dd/MM/yyyy')}"></td>
+					<td th:text="${#dates.format(item.expected_delivery_time, 'hh:mm dd/MM/yyyy')}"></td>
+					<td th:text="${#numbers.formatDecimal(item.deliveryFee,0,'COMMA',0,'POINT')}+' đ'"></td>
+					<td th:text="${item.discount}"></td>
 					<td>
-						<span th:text="${#numbers.formatDecimal(item.totalAmount, 0, 0)} + '&#8363;' "></span>
+						<span th:text="${#numbers.formatDecimal(item.totalAmount,0,'COMMA',0,'POINT')}+' đ'"></span>
 					</td>
-					<td>
-						<select class="form-select statusSelect" th:disabled="${item.status==3}"
+					<td th:text="${item.paymentMethod.paymentName}"></td>
+					<td th:each=" orderdeliveryDeail : ${item.orderStatus}">
+
+						<select class="form-select statusSelect"
+							th:disabled="${orderdeliveryDeail.deliveryStatus.id == 3}"
 							aria-label="Default select example" style="padding: 1px 38px 1px 16px;"
-							th:data-item-id="${item.id}" th:value="${item.status}">
-							<option value="1" th:selected="${item.status==1}">Đang xử lý</option>
-							<option value="2" th:selected="${item.status==2}">Đang giao hàng</option>
-							<option value="3" th:selected="${item.status==3}">Giao hàng thành công</option>
+							th:data-item-id="${item.id}">
+							<option th:each="p : ${statusList}" th:text="${p.nameStatus}"
+								th:selected="${orderdeliveryDeail.deliveryStatus.id}==${p.id}"
+								th:if="${orderdeliveryDeail.deliveryStatus.id+3}==${p.id} "></option>
+							<option th:each="p : ${statusList}" th:text="${p.nameStatus}"
+								th:selected="${orderdeliveryDeail.deliveryStatus.id}==${p.id}"
+								th:if="${orderdeliveryDeail.deliveryStatus.id}==${p.id}"></option>
+							<option th:each="p : ${statusList}" th:text="${p.nameStatus}"
+								th:selected="${orderdeliveryDeail.deliveryStatus.id}==${p.id}"
+								th:if="${orderdeliveryDeail.deliveryStatus.id+1}==${p.id}"></option>
 						</select>
 					</td>
 					<td th:text="${item.note}"></td>
+					<td> <a type="button" class="btn btn-primary" th:href="@{/admin/OrderDetail/{Id}(Id=${item.id})}">
+							Xem Chi Tiết
+						</a></td>
 				</tr>
 			</tbody>
 		</table>
@@ -48,7 +68,7 @@
 				var itemId = $(this).data("item-id");
 
 				console.log(itemId);
-				// Gửi yêu cầu Ajax
+				console.log(selectedValue)				// Gửi yêu cầu Ajax
 				$.ajax({
 					url: "http://localhost:8080/admin/update-status", // Thay đổi đường dẫn tới endpoint cập nhật trạng thái
 					type: "POST",
@@ -58,6 +78,7 @@
 					},
 					success: function (response) {
 						// Xử lý phản hồi từ máy chủ (nếu cần)
+						console.log(response);
 						if (response) {
 							Swal.fire({
 								icon: 'success',
@@ -97,6 +118,40 @@
 						// Xử lý lỗi (nếu cần)
 					}
 				});
+			});
+			
+				var table = $('#statisticalOrderTable').DataTable();
+
+			// Tạo radio buttons
+			var radioHtml = `
+            <div class="mb-3">
+                <label class="mx-2">
+                    <input type="radio" name="statusFilter" value="" checked> Tất cả
+                </label>
+                <label class="mx-2">
+                    <input type="radio" name="statusFilter" value="Đang xử lý"> Đang xử lý
+                </label>
+                <label class="mx-2">
+                    <input type="radio" name="statusFilter" value="Đang giao hàng"> Đang giao hàng
+                </label>
+                <label class="mx-2">
+                    <input type="radio" name="statusFilter" value="Giao hàng thành công"> Giao hàng thành công
+                </label>
+                <label class="mx-2">
+                    <input type="radio" name="statusFilter" value="Đã hủy"> Đã hủy
+                </label>
+            </div>
+        `;
+
+			// Thêm radio buttons vào phần tử có class "table-responsive"
+			$('.table-responsive').prepend(radioHtml);
+
+			// Xử lý sự kiện khi radio buttons được chọn
+			$('input[name="statusFilter"]').on('change', function () {
+				var selectedValue = $(this).val();
+
+				// Lọc dữ liệu trong cột "Trạng thái" của DataTable
+				table.column(7).search(selectedValue).draw();
 			});
 		});
 	</script>

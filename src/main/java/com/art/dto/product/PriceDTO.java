@@ -13,6 +13,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PriceDTO {
 	private int id;
-	private double price;
+	private long price;
 	private Date createdDate;
 }

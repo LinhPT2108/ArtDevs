@@ -50,13 +50,14 @@ public interface ProductDAO extends JpaRepository<Product, String> {
 
 	@Query("SELECT p FROM Product p WHERE LOWER(p.productName) LIKE LOWER(CONCAT('N%', :keyword, '%'))")
 	List<Product> findByProductNameAlls(@Param("keyword") String keyword);
+
 	// Tìm Product theo số lượng trong kho
 	// List<Product> findByQuantityInStock(int quantityInStock);
 	////
 	// Tìm Product theo trạng thái is_del
 	//
-	 @Query("SELECT COUNT(c) FROM Comment c WHERE c.productDetail.product.id = :productId")
-	 int countCommentsByProduct(String productId);
+	@Query("SELECT COUNT(c) FROM Comment c WHERE c.productDetail.product.id = :productId")
+	int countCommentsByProduct(String productId);
 	//
 	// @Query("SELECT COUNT(i) FROM InvoiceDetail i WHERE i.product.id =
 	// :productId")
@@ -70,11 +71,11 @@ public interface ProductDAO extends JpaRepository<Product, String> {
 	// List<Product> findByUser_UserId(int userId);
 	//
 	Page<Product> findByCategoryProduct(Category categoryProduct, Pageable pageable);
+
 	// // Tìm Product theo ID của Category
 	List<Product> findByCategoryProduct(Category categoryProduct);
 
-	List<Product> findByCategoryProductAndManufacturerProduct(Category category,
-			Manufacturer manufacturer);
+	List<Product> findByCategoryProductAndManufacturerProduct(Category category, Manufacturer manufacturer);
 
 	@Query("SELECT p FROM Product p WHERE p.productName LIKE %:keyword%")
 	List<Product> searchProductByName(String keyword);
@@ -90,4 +91,12 @@ public interface ProductDAO extends JpaRepository<Product, String> {
 	List<Product> findByManufacturerProduct(Manufacturer manufacturerProduct);
 
 	List<Product> findByAvailable(boolean b);
+
+	@Query("SELECT p.id as id, p.productName as productName, "
+			+ "p.categoryProduct.categoryName as categoryName, p.manufacturerProduct.manufacturerName as manufacturerName, "
+			+ "SUM(pd.quantityInStock) as totalQuantity " + "FROM Product p " + "JOIN p.productDetail pd "
+			+ "WHERE p.available = true "
+			+ "GROUP BY p.id, p.productName, p.categoryProduct.categoryName, p.manufacturerProduct.manufacturerName"
+			)
+	List<Object> getProductsWithTotalQuantity();
 }

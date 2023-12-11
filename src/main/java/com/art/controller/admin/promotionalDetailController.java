@@ -34,124 +34,126 @@ public class promotionalDetailController {
 	HttpServletResponse response;
 	@Autowired
 	ParamService paramService;
-	
+
 	@Autowired
 	FlashSaleDAO flashSaleDAO;
+
 	@ModelAttribute("productList")
-	public Map<String, String> getManufacturers() {
-		List<Product> listProduct = productDAO.findByAvailable(false);
-		Map<String, String> map = new HashMap<>();
+	public Map<Product, String> getProduct() {
+		List<Product> listProduct = productDAO.findByAvailable(true);
+		Map<Product, String> map = new HashMap<>();
 		for (Product c : listProduct) {
-			map.put(c.getProductId(), c.getProductName());
+			map.put(c, c.getProductName());
 		}
 		return map;
 	}
+
 	@GetMapping("/promotionalDetail/{id}")
-	public String promotiondetailbyid(@ModelAttribute("promotionalDetail") PromotionalDetails promotionalDetail,Model model,@PathVariable("id") Integer id) {
+	public String promotiondetailbyid(@ModelAttribute("promotionalDetail") PromotionalDetails promotionalDetail,
+			Model model, @PathVariable("id") Integer id) {
 		try {
 			model.addAttribute("views", "promotionalDetail-form");
 			model.addAttribute("title", "Quản lí sản phẩm khuyến mãi");
 			model.addAttribute("typeButton", "Thêm");
-			model.addAttribute("updateButton", "Cập nhật"); 
+			model.addAttribute("updateButton", "Cập nhật");
 			model.addAttribute("deleteButton", "Xóa");
-			List<Product> products=productDAO.findAll();
-			List<PromotionalDetails> promotionalDetails=promotionDetailDAO.findByFlashSale_Id(id);
-			model.addAttribute("productList",products);
-			model.addAttribute("promotionalDetails",promotionalDetails);
-			model.addAttribute("idflashSale",id);
+			List<Product> products = productDAO.findAll();
+			List<PromotionalDetails> promotionalDetails = promotionDetailDAO.findByFlashSale_Id(id);
+//			model.addAttribute("productList",products);
+			model.addAttribute("promotionalDetails", promotionalDetails);
+			model.addAttribute("idflashSale", id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "admin/promotion-form";
 	}
+
 	@PostMapping("/promotionalDetail/create")
-	public String createpromotionalDetail(@ModelAttribute("promotionalDetail") PromotionalDetails promotionalDetail
-			, BindingResult bd,Model model) {
+	public String createpromotionalDetail(@ModelAttribute("promotionalDetail") PromotionalDetails promotionalDetail,
+			BindingResult bd, Model model) {
 		model.addAttribute("views", "promotionalDetail-form");
 		model.addAttribute("title", "Quản lí sản phẩm khuyến mãi");
 		model.addAttribute("typeButton", "Thêm");
-		model.addAttribute("updateButton", "Cập nhật"); 
+		model.addAttribute("updateButton", "Cập nhật");
 		model.addAttribute("deleteButton", "Xóa");
-//		String productIdString=paramService.getString("product","");
-		int flashSaleIdString=paramService.getInt("idflashSale", -1);
-		PromotionalDetails promotionalDetailbyid=promotionDetailDAO.findById(flashSaleIdString).get();
-		String productIdString = promotionalDetailbyid.getProduct().getProductName();
-		System.out.println("productIdString" + productIdString );
-		promotionalDetail.setProduct(promotionalDetailbyid.getProduct());
-		List<PromotionalDetails> promotionalDetails=promotionDetailDAO.findAll();
-		model.addAttribute("promotionalDetails",promotionalDetails);
-		
+		String productIdString = paramService.getString("product", "");
+		int flashSaleIdString = paramService.getInt("idflashSale", -1);
+		System.out.println("productIdString" + productIdString);
 		System.out.println(flashSaleIdString);
 		promotionalDetail.setFlashSale(flashSaleDAO.getById(flashSaleIdString));
 		promotionalDetail.setStatus(false);
 		promotionalDetail.setId(0);
+		promotionalDetail.setProduct(productDAO.getById(productIdString));
 		promotionDetailDAO.save(promotionalDetail);
-		
-		return "redirect:/admin/promotionalDetail/" +flashSaleIdString;
+		return "redirect:/admin/promotionalDetail/" + flashSaleIdString;
 	}
-	@RequestMapping("/promotionalDetail/{idflashSale}/update")
-	public String updatepromotionalDetail(@ModelAttribute("promotionalDetail") PromotionalDetails promotionalDetail
-			, BindingResult bd,Model model,@PathVariable("idflashSale") Integer idflashSale) {
+
+	@RequestMapping("/promotionalDetail/{idflashSale}/update/{id}")
+	public String updatepromotionalDetail(@ModelAttribute("promotionalDetail") PromotionalDetails promotionalDetail,
+			BindingResult bd, Model model, @PathVariable("idflashSale") Integer idflashSale,@PathVariable("id") Integer idpromotionDetail) {
 		model.addAttribute("views", "promotionalDetail-form");
 		model.addAttribute("title", "Quản lí sản phẩm khuyến mãi");
 		model.addAttribute("typeButton", "Thêm");
-		model.addAttribute("updateButton", "Cập nhật"); 
+		model.addAttribute("updateButton", "Cập nhật");
 		model.addAttribute("deleteButton", "Xóa");
-		int flashSaleIdString=paramService.getInt("idflashSale", -1);
-		PromotionalDetails promotionalDetailbyid=promotionDetailDAO.findById(flashSaleIdString).get();
-		String productIdString = promotionalDetailbyid.getProduct().getProductName();
-		System.out.println("productIdString" + productIdString );
-		promotionalDetail.setProduct(promotionalDetailbyid.getProduct());
-		List<PromotionalDetails> promotionalDetails=promotionDetailDAO.findByFlashSale_Id(idflashSale);
-		model.addAttribute("promotionalDetails",promotionalDetails);
-		System.out.println(flashSaleIdString);
-		promotionalDetail.setFlashSale(flashSaleDAO.getById(flashSaleIdString));
+//		int flashSaleIdString = paramService.getInt("idflashSale", -1);
+		String productIdString = paramService.getString("product", "");
+
+		List<PromotionalDetails> promotionalDetails = promotionDetailDAO.findByFlashSale_Id(idflashSale);
+		model.addAttribute("promotionalDetails", promotionalDetails);
+		System.out.println(idflashSale);
+		promotionalDetail.setFlashSale(flashSaleDAO.getById(idflashSale));
+		promotionalDetail.setId(idpromotionDetail);
+		promotionalDetail.setProduct(productDAO.getById(productIdString));
 		promotionDetailDAO.save(promotionalDetail);
-		model.addAttribute("idflashSale",idflashSale);
-		return "redirect:/admin/promotionalDetail/"+idflashSale +"/edit/"+promotionalDetail.getId();
+		model.addAttribute("idflashSale", idflashSale);
+		return "redirect:/admin/promotionalDetail/" + idflashSale + "/edit/" + idpromotionDetail;
 	}
+
 	@RequestMapping("/promotionalDetail/{idflashSale}/edit/{id}")
-	public String editpromotionalDetail(@ModelAttribute("promotionalDetail") PromotionalDetails promotionalDetail,Model model,
-			@PathVariable("id") Integer id,@PathVariable("idflashSale") Integer idflashSale) {
+	public String editpromotionalDetail(@ModelAttribute("promotionalDetail") PromotionalDetails promotionalDetail,
+			Model model, @PathVariable("id") Integer id, @PathVariable("idflashSale") Integer idflashSale) {
 		try {
 			model.addAttribute("views", "promotionalDetail-form");
 			model.addAttribute("title", "Quản lí sản phẩm khuyến mãi");
 			model.addAttribute("typeButton", "Thêm");
-			model.addAttribute("updateButton", "Cập nhật"); 
+			model.addAttribute("updateButton", "Cập nhật");
 			model.addAttribute("deleteButton", "Xóa");
-			List<PromotionalDetails> promotionalDetails=promotionDetailDAO.findByFlashSale_Id(idflashSale);
-			PromotionalDetails promotionalDetailbyid=promotionDetailDAO.findById(id).get();
-			model.addAttribute("productList",promotionalDetailbyid.getProduct());
-			model.addAttribute("promotionalDetail",promotionalDetailbyid);
-			model.addAttribute("promotionalDetails",promotionalDetails);
-			model.addAttribute("idflashSale",idflashSale);
+
+			List<PromotionalDetails> promotionalDetails = promotionDetailDAO.findByFlashSale_Id(idflashSale);
+			PromotionalDetails promotionalDetailbyid = promotionDetailDAO.findById(id).get();
+//			model.addAttribute("productList",promotionalDetailbyid.getProduct());
+			model.addAttribute("promotionalDetail", promotionalDetailbyid);
+			model.addAttribute("promotionalDetails", promotionalDetails);
+			model.addAttribute("idflashSale", idflashSale);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "admin/promotion-form";
 	}
+
 	@RequestMapping("/promotionalDetail/{idflashSale}/delete/{id}")
 	public String deletepromotionalDetail(@PathVariable("id") Integer id,
-			@ModelAttribute("promotionalDetail") PromotionalDetails promotionalDetail,BindingResult bd,Model model
-			,@PathVariable("idflashSale") Integer idflashSale) {
+			@ModelAttribute("promotionalDetail") PromotionalDetails promotionalDetail, BindingResult bd, Model model,
+			@PathVariable("idflashSale") Integer idflashSale) {
 		model.addAttribute("views", "promotionalDetail-form");
 		model.addAttribute("title", "Quản lí sản phẩm khuyến mãi");
 		model.addAttribute("typeButton", "Thêm");
-		model.addAttribute("updateButton", "Cập nhật"); 
+		model.addAttribute("updateButton", "Cập nhật");
 		model.addAttribute("deleteButton", "Xóa");
-		List<PromotionalDetails> promotionalDetails=promotionDetailDAO.findByFlashSale_Id(idflashSale);
-		model.addAttribute("promotionalDetails",promotionalDetails);
-		int flashSaleIdString=paramService.getInt("idflashSale", -1);
+		String productIdString = paramService.getString("product", "");
+		int flashSaleIdString = paramService.getInt("idflashSale", -1);
+		System.out.println("productIdString" + productIdString);
 		System.out.println(flashSaleIdString);
-		PromotionalDetails promotionalDetailbyid=promotionDetailDAO.findById(flashSaleIdString).get();
-		String productIdString = promotionalDetailbyid.getProduct().getProductName();
-		System.out.println("productIdString" + productIdString );
-		promotionalDetail.setProduct(promotionalDetailbyid.getProduct());
-		promotionalDetail.setFlashSale(flashSaleDAO.getById(flashSaleIdString)); 
+		promotionalDetail.setFlashSale(flashSaleDAO.getById(flashSaleIdString));
 		promotionalDetail.setStatus(true);
-		model.addAttribute("idflashSale",idflashSale);
+		promotionalDetail.setId(0);
+		promotionalDetail.setProduct(productDAO.getById(productIdString));
+		promotionalDetail.setId(id);
 		promotionDetailDAO.save(promotionalDetail);
-		return "redirect:/admin/promotionalDetail/" +flashSaleIdString;
-			
+		return "redirect:/admin/promotionalDetail/" + flashSaleIdString;
+
 	}
+	
+
 }

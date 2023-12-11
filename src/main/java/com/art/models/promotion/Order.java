@@ -60,11 +60,11 @@ public class Order {
 
 	@Column
 	@Nationalized
-	private String nickname;
+	private String deliveryAddress;
 
 	@Column
 	@Nationalized
-	private String deliveryAddress;
+	private String nickname;
 
 	@Column
 	@Nationalized
@@ -80,8 +80,7 @@ public class Order {
 	@OneToMany(mappedBy = "orderStatus")
 	private List<OrderDelieveryStatus> orderStatus;
 
-	public Order(int id, Account user, Date orderDate, BigDecimal totalAmount, String deliveryAddress,
-			String note) {
+	public Order(int id, Account user, Date orderDate, BigDecimal totalAmount, String deliveryAddress, String note) {
 		this.id = id;
 		this.user = user;
 		this.orderDate = orderDate;

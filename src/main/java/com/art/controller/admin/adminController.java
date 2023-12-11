@@ -1,8 +1,12 @@
 package com.art.controller.admin;
 
 import java.util.List;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.art.dao.promotion.OrderDAO;
 import com.art.dao.promotion.OrderDetailDAO;
+import com.art.dao.user.AccountDAO;
+import com.art.models.user.Account;
+import com.art.utils.Path;
 
 @Controller
 @RequestMapping("/admin")
@@ -19,6 +26,12 @@ public class adminController {
 
 	@Autowired
 	OrderDetailDAO idDAO;
+	
+	@Autowired
+	OrderDAO orderDAO;
+	
+	@Autowired
+	AccountDAO ucDao;
 
 	@GetMapping("/dashboard")
 	public String dashboard(Model model) {
@@ -26,6 +39,8 @@ public class adminController {
 		model.addAttribute("title", "Trang chủ");
 		model.addAttribute("invoice", revenueService.findAllByOrderByOrderDateDesc());
 		model.addAttribute("bestSellers", idDAO.countProductsOrderByCountDesc());
+
+		System.out.println("bestSellers" + idDAO.countProductsOrderByCountDesc().get(0).toString());
 
 //		System.out.println("bestsellers" + idDAO.countProductsOrderByCountDesc());
 		getRateYear(model);
@@ -47,8 +62,16 @@ public class adminController {
 		} else {
 			model.addAttribute("nowYear", values.get(values.size() - 1));
 			model.addAttribute("lastYear", values.get(values.size() - 2));
-			model.addAttribute("rateYear", values.get(values.size() - 1) / values.get(values.size() - 2));
+			model.addAttribute("rateYear",
+					(values.get(values.size() - 2) - values.get(values.size() - 1)) / values.get(values.size() - 2));
 		}
+	}
+	
+	@GetMapping("/accountLogin")
+	public ResponseEntity<Account> getAccountLogin(){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Account user2 = ucDao.findByEmail(authentication.getName());
+		return ResponseEntity.ok(user2);
 	}
 
 	public void getRateMonth(Model model) {
@@ -62,8 +85,14 @@ public class adminController {
 		} else {
 			model.addAttribute("nowMonth", values.get(values.size() - 1));
 			model.addAttribute("lastMonth", values.get(values.size() - 2));
-			model.addAttribute("rateMonth",
-					(values.get(values.size() - 2) - values.get(values.size() - 1)) / values.get(values.size() - 2));
+			if (values.get(values.size() - 2) >= values.get(values.size() - 1)) {
+				model.addAttribute("rateMonth", (values.get(values.size() - 2) - values.get(values.size() - 1))
+						/ values.get(values.size() - 2) * 100);
+			} else {
+				model.addAttribute("rateMonth", (values.get(values.size() - 1) - values.get(values.size() - 2))
+						/ values.get(values.size() - 2) * 100);
+			}
+
 		}
 	}
 

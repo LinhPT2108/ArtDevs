@@ -23,7 +23,8 @@
 						<label for="categoryProduct" class="form-label">Loại sản phẩm</label>
 						<select th:field="*{categoryProduct}" class="form-select">
 							<option value="" label="Chọn..."></option>
-							<option th:each="category : ${categoriesList}" th:value="${category}" th:text="${category}">
+							<option th:each="category : ${categoriesList}" th:value="${category.key.categoryId}"
+								th:text="${category.value}">
 							</option>
 						</select>
 						<small class="text-danger fst-italic" id="categoryProductError"></small>
@@ -33,8 +34,8 @@
 						<label for="manufacturerProduct" class="form-label">Thương hiệu</label>
 						<select class="form-select" th:field="*{manufacturerProduct}">
 							<option value="" label="Chọn..."></option>
-							<option th:each="manufacturer : ${manufacturerList}" th:value="${manufacturer}"
-								th:text="${manufacturer}"></option>
+							<option th:each="manufacturer : ${manufacturerList}" th:value="${manufacturer.key.id}"
+								th:text="${manufacturer.value}"></option>
 						</select>
 						<small class="text-danger fst-italic" id="manufacturerProductError"></small>
 					</div>
@@ -51,21 +52,58 @@
 					<div class="col-12 mb-3">
 						<label class="form-label mb-3">Thông tin chi tiết:</label>
 						<small class="text-danger fst-italic" id="detailDecriptionError"></small>
-						<div class="describe row">
-							<th:block th:switch="${typeButton}">
-								<th:block th:case="false">
-									<div class="description-container col-xs-12 col-md-6 mb-3">
-										<!-- ... rest of the code ... -->
+						<div class="describe row" th:switch="${typeButton}">
+
+							<th:block th:case="false">
+								
+								<div class="description-container col-xs-12 col-md-6 mb-3">
+									<span class="motaClass position-absolute z-3 bg-white"
+										th:data-counter-number="1" style="top: -13px">Mô tả 1:</span>
+									<div class="mb-3">
+										<div class="form-floating">
+											<input type="text" class="form-control" id="tieude1" value=""
+												placeholder="124" />
+											<label for="tieude1">Tiêu đề:</label>
+										</div>
+									</div>
+									<div class="form-floating">
+										<textarea class="form-control" placeholder="Leave a comment here"
+											style="height: 100px;" id="noidung1"></textarea>
+										<label path="">Nội dung:</label>
+									</div>
+								</div>
+							
+							</th:block>
+							<th:block th:case="true">
+								<th:block th:each="p, i : ${pd.productDescriptions}">
+									<div class="col-xs-12 col-md-6 mb-3 description-container">
+
+										<span class="position-absolute z-3 bg-white motaClass" style="top: -13px"
+											th:data-counter-number="${i.index + 1}">Mô tả
+											${i.index + 1}:</span>
+										<div class="mb-3">
+											<div class="form-floating">
+												<input type="text" class="form-control"
+													th:id="'tieude' + ${i.index + 1}" th:value="${p.title}"
+													placeholder="124" />
+												<label th:for="'tieude' + ${i.index + 1}">Tiêu đề:</label>
+											</div>
+										</div>
+										<div class="form-floating">
+											<textarea class="form-control" placeholder="Leave a comment here"
+												style="height: 100px;" th:id="'noidung' + ${i.index + 1}"
+												th:text="${p.description}"></textarea>
+											<label>Nội dung:</label>
+										</div>
+										<div th:if="${i.index != 0}">
+											<button class="btn btn-danger" th:onclick="xoaMoTa(this)"
+												style="position: absolute; top: -13px; right: -12px; padding: 2px 6px; border-radius: 50%;">X
+											</button>
+										</div>
 									</div>
 								</th:block>
-								<th:block th:case="true">
-									<th:block th:each="p, i : ${pd.productDetailDescription}">
-										<div class="col-xs-12 col-md-6 mb-3 description-container">
-											<!-- ... rest of the code ... -->
-										</div>
-									</th:block>
-								</th:block>
 							</th:block>
+
 							<button type="button" class="button ms-2 mb-3" onclick="themMoTa()">
 								<span class="button__text">Thêm mô tả</span>
 								<span class="button__icon">
@@ -94,13 +132,46 @@
 			</div>
 			<div class="col-xs-12 col-md-5">
 				<div class="mb-3">
-					<label class="form-label">Hình ảnh:</label>
+					<label th:class="form-label">Hình ảnh:</label>
 					<small class="text-danger fst-italic" id="imageError"></small>
 					<ul id="imageList">
-						<!-- ... rest of the code ... -->
+						<li style="list-style: none;">
+							<label class="custum-file-upload">
+								<div class="icon">
+									<svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24">
+										<!-- SVG content -->
+										<g stroke-width="0" id="SVGRepo_bgCarrier"></g>
+										<g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier">
+										</g>
+										<g id="SVGRepo_iconCarrier">
+											<path fill=""
+												d="M10 1C9.73478 1 9.48043 1.10536 9.29289 1.29289L3.29289 7.29289C3.10536 7.48043 3 7.73478 3 8V20C3 21.6569 4.34315 23 6 23H7C7.55228 23 8 22.5523 8 22C8 21.4477 7.55228 21 7 21H6C5.44772 21 5 20.5523 5 20V9H10C10.5523 9 11 8.55228 11 8V3H18C18.5523 3 19 3.44772 19 4V9C19 9.55228 19.4477 10 20 10C20.5523 10 21 9.55228 21 9V4C21 2.34315 19.6569 1 18 1H10ZM9 7H6.41421L9 4.41421V7ZM14 15.5C14 14.1193 15.1193 13 16.5 13C17.8807 13 19 14.1193 19 15.5V16V17H20C21.1046 17 22 17.8954 22 19C22 20.1046 21.1046 21 20 21H13C11.8954 21 11 20.1046 11 19C11 17.8954 11.8954 17 13 17H14V16V15.5ZM16.5 11C14.142 11 12.2076 12.8136 12.0156 15.122C10.2825 15.5606 9 17.1305 9 19C9 21.2091 10.7909 23 13 23H20C22.2091 23 24 21.2091 24 19C24 17.1305 22.7175 15.5606 20.9844 15.122C20.7924 12.8136 18.858 11 16.5 11Z"
+												clip-rule="evenodd" fill-rule="evenodd"></path>
+										</g>
+									</svg>
+								</div>
+								<div class="text">
+									<span>Tải ảnh lên</span>
+								</div>
+								<input type="file" name="listImage" id="listImage" multiple accept=".jpg,.jpeg,.png"
+									th:onchange="|checkFileSize(this)|">
+							</label>
+						</li>
+						<li id="listImg">
+							<th:block th:if="${typeButton}">
+								<span th:each="p, i : ${pd.productImage}">
+									<div class="image-container" style="display: inline-block; margin: 5px">
+										<img th:alt="${p.image}" th:src="@{../../../images/products/} +${p.image}"
+											style="max-height: 100px; max-width: 100px">
+									</div>
+									</th:each>
+								</span>
+							</th:block>
+						</li>
 					</ul>
 				</div>
 			</div>
+
 		</form>
 		<div id="errorMessages"></div>
 	</div>
@@ -128,7 +199,9 @@
 
 					</td>
 					<td class="d-flex justify-content-between">
-						<a type="button" class="btn btn-success btnDelProduct" th:href="@{/admin/product/edit/{productId}(productId=${product.productId})}">Chi Tiết Sản Phẩm</a>
+						<a type="button" class="btn btn-success"
+							th:href="@{/admin/ProductDetail/{productId}(productId=${product.productId})}">Chi Tiết Sản
+							Phẩm</a>
 						<a type="button" class="btn btn-secondary"
 							th:href="@{/admin/product/edit/{productId}(productId=${product.productId})}">Chỉnh sửa</a>
 						<a type="button" class="btn btn-danger btnDelProduct"

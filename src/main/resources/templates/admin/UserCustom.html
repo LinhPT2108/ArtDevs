@@ -45,7 +45,7 @@
 							<input type="text" class="form-control" th:field="*{fullname}" />
 							<div class="text-danger" th:errors="*{fullname}"></div>
 						</div>
-						<div class="col-12 mb-3">
+						<div class="col-12 mb-3" th:if="!${CheckEdit}">
 							<label for="password" class="form-label">Mật khẩu</label>
 							<input type="text" class="form-control" th:field="*{password}" th:value="*{password}" />
 							<div class="text-danger" th:errors="*{password}"></div>
@@ -74,7 +74,7 @@
 					<div class="mb-3">
 						<label for="image" class="form-label">Hình ảnh</label>
 						<br />
-						<img alt="" th:src="@{/images/avatar/{userCustom.image}}" id="image" width="300" height="300"
+						<img alt="" th:src="@{/images/avatar/} + ${userCustom.image}" id="image" width="300" height="300"
 							style="margin: 10px" />
 						<input name="avatar" type="file" id="imageFile" accept="image/gif, image/jpeg, image/png"
 							onchange="chooseFile(this)" />
@@ -88,23 +88,26 @@
 			<table id="statisticalTable" class="table table-hover">
 				<thead>
 					<tr>
+						<th>Image</th>
 						<th>Email</th>
 						<th>Fullname</th>
 						<th>Role</th>
-						<th>Image</th>
+						
 						<th>Trạng thái</th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="userCustom : ${userCustoms}" th:if="${authUser.Name}!=${userCustom.email}">
+						<td ><img alt="" th:src="@{/images/avatar/{userimg}(userimg=${userCustom.image})}" height="120"
+							width="100"></td>
 						<td th:text="${userCustom.email}"></td>
 						<td th:text="${userCustom.fullname}"></td>
 						<td>
 							<span th:each="user : ${userCustom.userRole}"
 								th:text="' *' + ${user.role.roleName} +' * '"></span>
 						</td>
-						<td th:text="${userCustom.image}"></td>
+						
 						<td>
 							<span th:utext="${userCustom.status == true ? 'Đã bị khóa' : 'Đang hoạt động'}"></span>
 						</td>

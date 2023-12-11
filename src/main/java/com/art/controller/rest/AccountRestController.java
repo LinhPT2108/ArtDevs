@@ -217,6 +217,7 @@ public class AccountRestController {
 				}
 			}
 		}
+		account.setAccountWithGoogle(true);
 		account.setStatus(false);
 		account.setVerifyCode(null);
 		account.setUserRole(accountRoles);
