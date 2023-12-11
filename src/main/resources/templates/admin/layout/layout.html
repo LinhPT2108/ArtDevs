@@ -24,6 +24,8 @@
 		th:href="@{https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css}" />
 
 	<!-- Admin Page Style -->
+	<link rel="stylesheet" type="text/css"
+		th:href="@{https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css}" />
 	<link rel="stylesheet" type="text/css" th:href="@{/css/admin-page.css}" />
 	<style>
 		.cancel-order {
@@ -76,12 +78,19 @@
 	<script th:src="@{/js/moment.min.js}"></script>
 	<!-- DataTables -->
 	<script th:src="@{https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js}"></script>
-
+	<script type="text/javascript" charset="utf8"
+		src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+	<script type="text/javascript" charset="utf8"
+		src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+	<script type="text/javascript" charset="utf8"
+		src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
 	<script>
 		$(document).ready(function () {
 			$('#statisticalTable').DataTable({
-				paging: true
-			});
+				dom: 'Bfrtip',
+				buttons: [
+					'print', 'csv', 'excel', 'pdf', // Thêm nút in
+				]});
 			$.ajax({
 				url: '/admin/accountLogin',
 				method: 'GET',

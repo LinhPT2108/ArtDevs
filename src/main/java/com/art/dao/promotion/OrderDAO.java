@@ -67,6 +67,8 @@ public interface OrderDAO extends JpaRepository<Order, Integer> {
 	
 	@Query("SELECT COUNT(o) FROM Order o JOIN o.orderStatus s WHERE s.deliveryStatus.id = :deliveryStatusId AND o.orderDate >= :startDate AND s.status=true")
     long countOrdersByDeliveryStatusThisYear(@Param("deliveryStatusId") int deliveryStatusId, @Param("startDate") Date startDate);
-
+	
+//	@Query("SELECT COUNT(o) FROM Order o JOIN o.orderStatus s WHERE s.deliveryStatus.id = :deliveryStatusId AND o.orderDate >= :startDate AND s.status=true")
+//    long countOrdersByDeliveryStatusThisYearNow(@Param("deliveryStatusId") int deliveryStatusId, @Param("startDate") Date startDate);
 	
 }

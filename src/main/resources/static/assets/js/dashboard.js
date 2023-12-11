@@ -161,7 +161,7 @@ $(document).ready(
 							sparkline: { enabled: false },
 						},
 
-						colors: ["#5D87FF", "#49BEFF"],
+						colors: ["#e6923d", "#49BEFF"],
 
 						plotOptions: {
 							bar: {
@@ -231,6 +231,226 @@ $(document).ready(
 						]
 					};
 					var chart = new ApexCharts(document.querySelector("#chart-order"), chart);
+					chart.render();
+				},
+
+				error: function(error) {
+					console.log(error);
+				}
+			});
+			$.ajax({
+				url: 'http://localhost:8080/admin/order-count-by-status-total',
+				method: 'GET',
+				success: function(response) {
+					var data = response;
+
+					// Chuyển đổi cấu trúc dữ liệu
+					var dataDay = {
+						labels: Object.keys(data.day),
+						series: [
+							Object.values(data.day),
+							Object.values(data.week),
+							Object.values(data.month),
+							Object.values(data.year)
+						]
+					};
+
+					var chart = {
+						series: [
+							{ name: "Day", data: dataDay.series[0] },
+							{ name: "Week", data: dataDay.series[1] },
+							{ name: "Month", data: dataDay.series[2] },
+							{ name: "Year", data: dataDay.series[3] },
+							// Thêm các chuỗi khác tương tự
+						],
+
+						chart: {
+							type: "bar",
+							height: 200,
+							offsetX: -15,
+							toolbar: { show: true },
+							foreColor: "#adb0bb",
+							fontFamily: 'inherit',
+							sparkline: { enabled: false },
+						},
+
+						colors: ["#5D87FF", "#49BEFF", "#FFBC42", "#FF5C5C"],
+
+						plotOptions: {
+							bar: {
+								horizontal: false,
+								columnWidth: "35%",
+								borderRadius: [6],
+								borderRadiusApplication: 'end',
+								borderRadiusWhenStacked: 'all'
+							},
+						},
+						markers: { size: 0 },
+
+						dataLabels: {
+							enabled: false,
+						},
+						legend: {
+							show: true,
+						},
+						grid: {
+							borderColor: "rgba(0,0,0,0.1)",
+							strokeDashArray: 3,
+							xaxis: {
+								lines: {
+									show: false,
+								},
+							},
+						},
+						xaxis: {
+							type: "category",
+							categories: dataDay.labels,
+							labels: {
+								style: { cssClass: "grey--text lighten-2--text fill-color" },
+							},
+						},
+						yaxis: {
+							show: true,
+							min: 0,
+							max: Math.max(...dataDay.series.flat()) + 10,
+							tickAmount: 8,
+							labels: {
+								style: {
+									cssClass: "grey--text lighten-2--text fill-color",
+								},
+							},
+						},
+						stroke: {
+							show: true,
+							width: 3,
+							lineCap: "butt",
+							colors: ["transparent"],
+						},
+
+
+						tooltip: { theme: "light" },
+
+						responsive: [
+							{
+								breakpoint: 600,
+								options: {
+									plotOptions: {
+										bar: {
+											borderRadius: 3,
+										}
+									},
+								}
+							}
+						]
+					};
+
+					var chart = new ApexCharts(document.querySelector("#chart-order-bytotal"), chart);
+					chart.render();
+				},
+
+				error: function(error) {
+					console.log(error);
+				}
+			});
+
+
+
+			$.ajax({
+				url: '/admin/order-count-by-status-byday',
+				method: 'GET',
+				success: function(response) {
+					dataDay = {
+						labels: Object.keys(response),
+						values: Object.values(response)
+					}
+
+					console.log(response)
+					var chart = {
+						series: [
+							{ name: "Earnings this month:", data: dataDay.values },/*
+					{ name: "Expense this month:", data: [280, 250, 325, 215, 250, 310, 280, 250] },*/
+						],
+
+						chart: {
+							type: "bar",
+							height: 200,
+							offsetX: -15,
+							toolbar: { show: true },
+							foreColor: "#adb0bb",
+							fontFamily: 'inherit',
+							sparkline: { enabled: false },
+						},
+
+						colors: ["#3acc1b", "#49BEFF"],
+
+						plotOptions: {
+							bar: {
+								horizontal: false,
+								columnWidth: "35%",
+								borderRadius: [6],
+								borderRadiusApplication: 'end',
+								borderRadiusWhenStacked: 'all'
+							},
+						},
+						markers: { size: 0 },
+
+						dataLabels: {
+							enabled: false,
+						},
+						legend: {
+							show: false,
+						},
+						grid: {
+							borderColor: "rgba(0,0,0,0.1)",
+							strokeDashArray: 3,
+							xaxis: {
+								lines: {
+									show: false,
+								},
+							},
+						},
+						xaxis: {
+							type: "category",
+							categories: dataDay.labels,
+							labels: {
+								style: { cssClass: "grey--text lighten-2--text fill-color" },
+							},
+						},
+						yaxis: {
+							show: true,
+							min: 0,
+							max: Math.max(...dataDay.values) + 10,
+							tickAmount: 8,
+							labels: {
+								style: {
+									cssClass: "grey--text lighten-2--text fill-color",
+								},
+							},
+						},
+						stroke: {
+							show: true,
+							width: 3,
+							lineCap: "butt",
+							colors: ["transparent"],
+						},
+
+
+						tooltip: { theme: "light" },
+
+						responsive: [
+							{
+								breakpoint: 600,
+								options: {
+									plotOptions: {
+										bar: {
+											borderRadius: 3,
+										}
+									},
+								}
+							}
+						]
+					};
+					var chart = new ApexCharts(document.querySelector("#chart-order-byday"), chart);
 					chart.render();
 				},
 
@@ -419,6 +639,7 @@ $(document).ready(
 					}
 				});
 			});
+
 			// =====================================
 
 			/*$.ajax({
@@ -481,7 +702,7 @@ $(document).ready(
 			});*/
 
 
-			
+
 
 		})
 	});
