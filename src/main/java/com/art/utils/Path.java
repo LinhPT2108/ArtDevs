@@ -36,4 +36,31 @@ public class Path {
        }
         return count;
 	}
+	
+	public static Long getCountOrderByStatusAndYear(int delivery_status, OrderDAO orderDAO) {
+		 // Tính ngày đầu tiên của năm
+	    Calendar calendar = Calendar.getInstance();
+	    calendar.set(Calendar.DAY_OF_YEAR, 1);
+	    calendar.set(Calendar.HOUR_OF_DAY, 0);
+	    calendar.set(Calendar.MINUTE, 0);
+	    calendar.set(Calendar.SECOND, 0);
+	    calendar.set(Calendar.MILLISECOND, 0);
+
+	    Date firstDayOfYear = calendar.getTime();
+	    
+	    // Ngày hiện tại
+	    Date currentDate = new Date();
+	    // Lấy số mili giây từ epoch cho mỗi ngày
+	    long startTime = firstDayOfYear.getTime();
+	    long currentTime = currentDate.getTime();
+
+	    // Tính toán sự chênh lệch giữa ngày đầu tiên của năm và ngày hiện tại
+	    long diffInMilliseconds = currentTime - startTime;
+	    Date startDate = new Date(diffInMilliseconds);
+        long count = 0;
+      
+    	   count = orderDAO.countOrdersByDeliveryStatusThisYear(delivery_status, startDate);
+       
+        return count;
+	}
 }

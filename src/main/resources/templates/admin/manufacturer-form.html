@@ -65,7 +65,11 @@
 
 	<script type="text/javascript" th:inline="javascript">
 		$(document).ready(function () {
-			var table = $('#statisticalTableManu').DataTable();
+			var table = $('#statisticalTableManu').DataTable({
+				dom: 'Bfrtip',
+				buttons: [
+					'print', 'csv', 'excel', 'pdf', // Thêm nút in
+				]});
 
 			// Tạo radio buttons
 			var radioHtml = `

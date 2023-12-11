@@ -45,6 +45,8 @@ public class adminController {
 //		System.out.println("bestsellers" + idDAO.countProductsOrderByCountDesc());
 		getRateYear(model);
 		getRateMonth(model);
+		
+		
 		return "admin/Dashboard";
 	}
 

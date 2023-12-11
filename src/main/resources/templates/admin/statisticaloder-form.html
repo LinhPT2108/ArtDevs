@@ -120,39 +120,14 @@
 				});
 			});
 			
-				var table = $('#statisticalOrderTable').DataTable();
+				var table = $('#statisticalOrderTable').DataTable({
+				dom: 'Bfrtip',
+				buttons: [
+					'print', 'csv', 'excel', 'pdf', // Thêm nút in
+				]});
 
 			// Tạo radio buttons
-			var radioHtml = `
-            <div class="mb-3">
-                <label class="mx-2">
-                    <input type="radio" name="statusFilter" value="" checked> Tất cả
-                </label>
-                <label class="mx-2">
-                    <input type="radio" name="statusFilter" value="Đang xử lý"> Đang xử lý
-                </label>
-                <label class="mx-2">
-                    <input type="radio" name="statusFilter" value="Đang giao hàng"> Đang giao hàng
-                </label>
-                <label class="mx-2">
-                    <input type="radio" name="statusFilter" value="Giao hàng thành công"> Giao hàng thành công
-                </label>
-                <label class="mx-2">
-                    <input type="radio" name="statusFilter" value="Đã hủy"> Đã hủy
-                </label>
-            </div>
-        `;
-
-			// Thêm radio buttons vào phần tử có class "table-responsive"
-			$('.table-responsive').prepend(radioHtml);
-
-			// Xử lý sự kiện khi radio buttons được chọn
-			$('input[name="statusFilter"]').on('change', function () {
-				var selectedValue = $(this).val();
-
-				// Lọc dữ liệu trong cột "Trạng thái" của DataTable
-				table.column(7).search(selectedValue).draw();
-			});
+	
 		});
 	</script>
 

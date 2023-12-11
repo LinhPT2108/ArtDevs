@@ -220,11 +220,58 @@ public class StatisticalController {
 	public ResponseEntity<Map<String, Long>> getOrder(Model model) {
 
 		Map<String, Long> getOrders = new LinkedHashMap<String, Long>();
-		getOrders.put("proccessing", Path.getCountOrderByStatus(365, 1, orderDAO));
-		getOrders.put("shipping", Path.getCountOrderByStatus(365, 2, orderDAO));
-		getOrders.put("success", Path.getCountOrderByStatus(365, 3, orderDAO));
-		getOrders.put("cancel", Path.getCountOrderByStatus(365, 4, orderDAO));
+		getOrders.put("proccessing", Path.getCountOrderByStatus(7, 1, orderDAO));
+		getOrders.put("shipping", Path.getCountOrderByStatus(7, 2, orderDAO));
+		getOrders.put("success", Path.getCountOrderByStatus(7, 3, orderDAO));
+		getOrders.put("cancel", Path.getCountOrderByStatus(7, 4, orderDAO));
 
+		return ResponseEntity.ok(getOrders);
+	}
+	@GetMapping("/order-count-by-status-byday")
+	public ResponseEntity<Map<String, Long>> getOrderbydate (Model model) {
+
+		Map<String, Long> getOrders = new LinkedHashMap<String, Long>();
+		
+		getOrders.put("proccessing", Path.getCountOrderByStatus(0, 1, orderDAO));
+		getOrders.put("shipping", Path.getCountOrderByStatus(0, 2, orderDAO));
+		getOrders.put("success", Path.getCountOrderByStatus(0, 3, orderDAO));
+		getOrders.put("cancel", Path.getCountOrderByStatus(0, 4, orderDAO));
+
+		return ResponseEntity.ok(getOrders);
+	}
+	
+	@GetMapping("/order-count-by-status-total")
+	public ResponseEntity<Map<String, Map<String, Long>>> getOrders(Model model) {
+		Map<String, Map<String, Long>> getOrders = new LinkedHashMap<>();
+		Map<String, Long> getOrdersByDay = new LinkedHashMap<String, Long>();
+		getOrdersByDay.put("proccessing", Path.getCountOrderByStatus(0, 1, orderDAO));
+		getOrdersByDay.put("shipping", Path.getCountOrderByStatus(0, 2, orderDAO));
+		getOrdersByDay.put("success", Path.getCountOrderByStatus(0, 3, orderDAO));
+		getOrdersByDay.put("cancel", Path.getCountOrderByStatus(0, 4, orderDAO));
+
+		Map<String, Long> getOrdersByWeek = new LinkedHashMap<String, Long>();
+		getOrdersByWeek.put("proccessing", Path.getCountOrderByStatus(7, 1, orderDAO));
+		getOrdersByWeek.put("shipping", Path.getCountOrderByStatus(7, 2, orderDAO));
+		getOrdersByWeek.put("success", Path.getCountOrderByStatus(7, 3, orderDAO));
+		getOrdersByWeek.put("cancel", Path.getCountOrderByStatus(7, 4, orderDAO));
+		
+		Map<String, Long> getOrdersByMoth = new LinkedHashMap<String, Long>();
+		getOrdersByMoth.put("proccessing", Path.getCountOrderByStatus(30, 1, orderDAO));
+		getOrdersByMoth.put("shipping", Path.getCountOrderByStatus(30, 2, orderDAO));
+		getOrdersByMoth.put("success", Path.getCountOrderByStatus(30, 3, orderDAO));
+		getOrdersByMoth.put("cancel", Path.getCountOrderByStatus(30, 4, orderDAO));
+		
+		Map<String, Long> getOrdersByYear = new LinkedHashMap<String, Long>();
+		getOrdersByYear.put("proccessing", Path.getCountOrderByStatusAndYear( 1, orderDAO));
+		getOrdersByYear.put("shipping", Path.getCountOrderByStatusAndYear( 2, orderDAO));
+		getOrdersByYear.put("success", Path.getCountOrderByStatusAndYear( 3, orderDAO));
+		getOrdersByYear.put("cancel", Path.getCountOrderByStatusAndYear( 4, orderDAO));
+		
+		getOrders.put("day", getOrdersByDay);
+		getOrders.put("week", getOrdersByWeek);
+		getOrders.put("month", getOrdersByMoth);
+		getOrders.put("year", getOrdersByYear);
+		
 		return ResponseEntity.ok(getOrders);
 	}
 }
