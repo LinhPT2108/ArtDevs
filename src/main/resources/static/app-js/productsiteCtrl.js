@@ -1,7 +1,17 @@
 app
   .controller(
     "productsiteCtrl",
-    function ($scope, ApiService, $rootScope, $filter, $location) {
+    function ($scope, ApiService, $rootScope, $filter, $location, $timeout) {
+      
+      var fnf = document.getElementById("minPrice");
+      fnf.addEventListener(
+        "keyup",
+        function (evt) {
+          var n = parseInt(this.value.replace(/\D/g, ""), 10);
+          fnf.value = n.toLocaleString();
+        },
+        false
+      );
       console.log("productsiteCtrl");
       var cValue = $location.search().c;
       var bValue = $location.search().b;
@@ -116,9 +126,11 @@ app
       };
 
       $scope.applyPriceFilter = function () {
-        $scope.search.minPrice = null;
-        $scope.search.maxPrice = null;
+        // $scope.search.minPrice = null;
+        // $scope.search.maxPrice = null;
+        window.print();
       };
+
       $scope.$watch(
         "search",
         function (n, o) {
@@ -142,7 +154,32 @@ app
         true
       );
 
+      var nonLinearStepSlider = document.getElementById("range-price");
+
+      noUiSlider.create(nonLinearStepSlider, {
+        start: [500, 20000000],
+        connect: true,
+        step: 100000,
+        range: {
+          min: [0],
+          max: [20000000],
+        },
+      });
+
+      var nonLinearStepSliderValueElement =
+        document.getElementById("range-value");
+      var inputMin = document.getElementById("minPrice");
+      var inputMax = document.getElementById("maxPrice");
+
+      nonLinearStepSlider.noUiSlider.on("update", function (values) {
+        $timeout(function () {
+          $scope.search.minPrice = parseInt(values[0]);
+          $scope.search.maxPrice = parseInt(values[1]);
+        });
+      });
+
       $scope.checkMinPrice = function () {
+        console.log(1231231132);
         if (isNaN($scope.search.minPrice)) {
           $scope.search.minPrice = 1;
         } else if ($scope.search.minPrice < 0) {
@@ -195,7 +232,8 @@ app
       };
     }
   )
-  .filter("myFilter", function () {
+  .filter("myFilter", function ($injector) {
+    var $rootScope = $injector.get("$rootScope");
     function getPriceForFiltering(product) {
       return product.sale
         ? product.productDetails[0].prices.reduce((max, curr) =>
@@ -239,6 +277,8 @@ app
         },
         filterItems
       );
+      $rootScope.lengthProductAfterFilter = filterItems.result.length;
+      console.log($rootScope.lengthProductAfterFilter);
       return filterItems.result;
     };
   });

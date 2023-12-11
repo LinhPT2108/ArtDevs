@@ -1,6 +1,18 @@
 app.controller(
   "orderCtrl",
   function ($scope, $rootScope, ApiService, $location, $timeout, $http) {
+    $scope.showMoreProducts = {}; // Lưu trạng thái hiển thị các sản phẩm của từng order
+
+    // Hàm xử lý khi nhấn nút "Xem thêm"
+    $scope.showmore = function (orderId) {
+        $scope.showMoreProducts[orderId] = true;
+    };
+
+    // Hàm xử lý khi nhấn nút "Ẩn"
+    $scope.hiddenmore = function (orderId) {
+        $scope.showMoreProducts[orderId] = false;
+    };
+
     $scope.showLoader = true;
     console.log("orderCtrl");
     $rootScope.$on("$routeChangeSuccess", function () {
@@ -24,7 +36,6 @@ app.controller(
           } else {
             $scope.listOrderByType = filteredOrders;
             $scope.showLoader = false;
-
           }
           console.log(filteredOrders);
         })

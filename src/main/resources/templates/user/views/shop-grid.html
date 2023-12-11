@@ -11,30 +11,37 @@
 							<div class="price-filter-inner">
 								<div id="slider-range-2" class="d-flex flex-column position-relative">
 									<!-- Input nhập giá -->
-									<input type="range" id="minPrice" name="minPrice" placeholder="Giá thấp nhất"
-										ng-model="search.minPrice" class=" input-ranges w-100 mb-3"
-										ng-change="checkMinPrice()" max="{{search.maxPrice}}" title="giá thấp">
+									<div id="range-price">
+									</div>
 
-									<input type="number" id="maxPrice" name="maxPrice" placeholder="Giá tối đa"
-										ng-model="search.maxPrice" class=" input-ranges mb-3  w-100"
-										ng-change="checkMaxPrice()" title="giá cao">
-									<span ng-if="search.maxPrice>0">
+									<div class="show-range-price mt-4 row">
+										<div class="form-group2 d-flex mb-0 col-6 position-relative">
+											<input type="text" id="minPrice" name="minPrice"
+												placeholder="Giá thấp nhất" ng-model="search.minPrice"
+												class=" input-ranges w-100" ng-change="checkMinPrice()"
+												max="{{search.maxPrice}}" title="giá thấp">
+											<span class="text-muted position-absolute mr-3" style="right:5px;top:5px;">
+												VNĐ
+											</span>
+										</div>
+										<div class="form-group2 d-flex mb-0 col-6 position-relative">
+											<input type="text" id="maxPrice" name="maxPrice" placeholder="Giá tối đa"
+												ng-model="search.maxPrice" class=" input-ranges   w-100"
+												ng-change="checkMaxPrice()" title="giá cao">
+											<span class="text-muted position-absolute mr-3" style="right:5px;top:5px;">
+												VNĐ
+											</span>
+										</div>
+
+									</div>
+									<!-- <span ng-if="search.maxPrice>0" class="mt-2">
 										Từ {{search.minPrice|number:0}} đ đến
 										{{search.maxPrice|number:0}} đ
-									</span>
-
-									<!-- <input type="range" max="30000000" ng-model="search.rangePrice" class="w-100">
-									<span class="text-danger">Giá dưới: {{search.rangePrice|number:0}} đ</span> -->
-									<!-- <select ng-model="search.rangePrice">
-										<option value="2000000">2000000</option>
-										<option value="5000000">5000000</option>
-										<option value="10000000">10000000</option>
-										<option value="12000000">12000000</option>
-										<option value="15000000">15000000</option>
-									</select> -->
+									</span> -->
+									<span class="mt-3">Có <strong>{{lengthProductAfterFilter}} kết quả</strong></span>
 								</div>
 								<!-- Nút Lọc -->
-								<button class="btn-danger p-2" ng-click="applyPriceFilter()">Xóa</button>
+								<button class="btn-danger p-2 mt-2" ng-click="applyPriceFilter()">Xóa</button>
 							</div>
 						</div>
 					</div>
@@ -328,3 +335,6 @@
 	</div>
 </div>
 <!-- Modal end -->
+<script>
+
+</script>
