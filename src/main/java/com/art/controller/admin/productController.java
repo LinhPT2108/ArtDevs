@@ -65,7 +65,7 @@ public class productController {
 
 	@ModelAttribute("categoriesList")
 	public Map<Category, String> getCategories() {
-		List<Category> listCate = caDAO.findByStatus(false);
+		List<Category> listCate = caDAO.findByStatus(true);
 		Map<Category, String> map = new HashMap<>();
 		for (Category c : listCate) {
 			map.put(c, c.getCategoryName());

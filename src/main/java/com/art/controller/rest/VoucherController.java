@@ -27,8 +27,8 @@ public class VoucherController {
 		List<Voucher> voucherCurrents = new ArrayList<>();
 		for (Voucher voucher : lVoucher) {
 			if (voucher.getNumberOfUses() < voucher.getMaximumNumberOfUses() 
-				&& voucher.getStartDay().after(new Date())
-				&& voucher.getEndDay().before(new Date())) {
+				&& voucher.getStartDay().before(new Date()) 
+				&& voucher.getEndDay().after(new Date())) {
 				voucherCurrents.add(voucher);
 			}
 		}

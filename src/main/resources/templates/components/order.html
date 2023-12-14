@@ -105,16 +105,20 @@
                 <div class="row mb-3 orderCard{{o.id}}" ng-class="{'d-none': !showMoreProducts[o.id] && $index > 1}">
                     <div class="col-12 col-md-2 me-0 d-flex align-items-center justify-content-center">
                         <div class="img-product d-inline position-relative">
-                            <img alt="Hình ảnh sản phẩm"
-                                ng-src="../../images/products/{{p.productDetail.product.productImage[0].image}}"
-                                width="150px" height="100%" class="img-thumbnail mx-auto align-middle">
+                            <a type="button" href="/products/{{p.productDetail.product.productId}}">
+                                <img alt="Hình ảnh sản phẩm"
+                                    ng-src="../../images/products/{{p.productDetail.product.productImage[0].image}}"
+                                    width="150px" height="100%" class="img-thumbnail mx-auto align-middle">
+                            </a>
                         </div>
                     </div>
                     <div class="title-product col-12  col-md-7 ps-0 ms-0">
                         <div class="d-flex flex-column mb-3">
-                            <span class="product-description-name display-6 font-weight-bold">
-                                {{p.productDetail.product.productName}}
-                            </span>
+                            <a type="button" href="/products/{{p.productDetail.product.productId}}">
+								<span class="product-description-name display-6 font-weight-bold">
+									{{p.productDetail.product.productName}}
+								</span>
+							</a>
                             <span class="text-muted fs-6">Loại hàng:
                                 {{p.productDetail.product.categoryProduct.categoryName}}</span>
                             <span class="text-muted fs-6">Hãng:
@@ -127,12 +131,12 @@
                         <a type="button" class="btn-warning p-2  text-white align-self-end mb-3 showComment" href=""
                             data-toggle="modal" data-target="#modalReviews"
                             ng-click="showComment(p.productDetail.id, p.id)" ng-show="p.comment==null &&type==3">Chưa
-                            đánh giá {{p.id}}</a>
+                            đánh giá</a>
 
                         <a type="button" class="btn-success p-2 align-self-end mb-3 showComment rounded text-white"
                             href="" data-toggle="modal" data-target="#modalReviews"
                             ng-click="showComment(p.productDetail.id, p.id)" ng-show="p.comment!=null &&type==3">Đã đánh
-                            giá {{p.id}}</a>
+                            giá </a>
 
                         <span class="font-weight-bold float-right text-danger align-self-end mt-3">
                             {{p.price | number:0 }} &#8363;

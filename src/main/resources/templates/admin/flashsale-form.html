@@ -29,9 +29,9 @@
 						</div>
 						<div class="col-12 mb-3">
 							<label class="form-label" for="status">Thông tin:</label>
-							<input type="radio" th:field="*{status}" value="false" id="statusActive" />
+							<input type="radio" th:field="*{status}" value="true" id="statusActive" />
 							<label for="statusActive" style="margin-left:10px">Đang hoạt động</label>
-							<input type="radio" th:field="*{status}" value="true" id="statusInactive" />
+							<input type="radio" th:field="*{status}" value="false" id="statusInactive" />
 							<label for="statusInactive" style="margin-left:10px">Ngưng hoạt động</label>
 							<p class="text-danger" th:errors="*{status}"></p>
 						</div>
@@ -70,7 +70,7 @@
 						<td th:text="${flashSale.id}"></td>
 						<td th:text="${#dates.format(flashSale.startDay, 'HH:mm dd/MM/yyyy')}"></td>
 						<td th:text="${#dates.format(flashSale.endDay, 'HH:mm dd/MM/yyyy')}"></td>
-							<td th:text="${flashSale.status ? 'Ngưng hoạt động' : 'Đang hoạt động'}"></td>
+							<td th:text="${!flashSale.status ? 'Ngưng hoạt động' : 'Đang hoạt động'}"></td>
 						
 						<td th:text="${flashSale.promotionalDetailsList.size()}">
 						</td>

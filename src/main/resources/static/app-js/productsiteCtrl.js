@@ -3,15 +3,6 @@ app
     "productsiteCtrl",
     function ($scope, ApiService, $rootScope, $filter, $location, $timeout) {
       
-      var fnf = document.getElementById("minPrice");
-      fnf.addEventListener(
-        "keyup",
-        function (evt) {
-          var n = parseInt(this.value.replace(/\D/g, ""), 10);
-          fnf.value = n.toLocaleString();
-        },
-        false
-      );
       console.log("productsiteCtrl");
       var cValue = $location.search().c;
       var bValue = $location.search().b;
@@ -126,9 +117,8 @@ app
       };
 
       $scope.applyPriceFilter = function () {
-        // $scope.search.minPrice = null;
-        // $scope.search.maxPrice = null;
-        window.print();
+        $scope.search.minPrice = null;
+        $scope.search.maxPrice = null;
       };
 
       $scope.$watch(
@@ -278,7 +268,6 @@ app
         filterItems
       );
       $rootScope.lengthProductAfterFilter = filterItems.result.length;
-      console.log($rootScope.lengthProductAfterFilter);
       return filterItems.result;
     };
   });
